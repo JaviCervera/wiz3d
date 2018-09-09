@@ -20,10 +20,10 @@ struct light_t* light_new(int type)
   if (i == NUM_LIGHTS) return NULL;
 
   /* make sure that light type is in range */
-  type = clamp(type, _LIGHT_DIRECTIONAL, _LIGHT_POINT);
+  type = _clamp(type, _LIGHT_DIRECTIONAL, _LIGHT_POINT);
 
   /* create light */
-  light = alloc(struct light_t);
+  light = _alloc(struct light_t);
   light->x = 0;
   light->y = 0;
   light->z = 0;

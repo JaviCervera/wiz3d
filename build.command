@@ -24,7 +24,6 @@ cd ..
 echo "moving to _build dir..."
 mkdir _build
 mv _CMAKE/tau _build/tau
-mv _CMAKE/ide _build/ide
 
 echo "running..."
 cd _build
@@ -32,6 +31,7 @@ cd _build
 ./tau data/fog.lua
 ./tau data/helloworld.lua
 ./tau data/hoverbike.lua
+./tau data/md2.lua
 ./tau data/rotatingcube.lua
 ./tau data/specular.lua
 

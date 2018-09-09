@@ -12,7 +12,7 @@ static lmat4_t _view_matrix;
 
 struct viewer_t* viewer_new()
 {
-  struct viewer_t* viewer = alloc(struct viewer_t);
+  struct viewer_t* viewer = _alloc(struct viewer_t);
   viewer->x = 0;
   viewer->y = 0;
   viewer->z = 0;

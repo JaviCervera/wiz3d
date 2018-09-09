@@ -31,7 +31,7 @@ struct font_t* font_load(const char* filename, float height)
   fseek(f, 0, SEEK_END);
   len = ftell(f);
   fseek(f, 0, SEEK_SET);
-  buffer = allocnum(unsigned char, len);
+  buffer = _allocnum(unsigned char, len);
   fread(buffer, sizeof(char), len, f);
   fclose(f);
 
@@ -111,7 +111,7 @@ struct font_t* _font_loadbase64(const char* data, size_t size, float height)
   struct font_t* font;
 
   /* get data from base64 block */
-  buffer = allocnum(unsigned char, BASE64_DECODE_OUT_SIZE(size));
+  buffer = _allocnum(unsigned char, BASE64_DECODE_OUT_SIZE(size));
   base64_decode(data, size, buffer);
 
   /* load data */
@@ -130,13 +130,13 @@ struct font_t* _font_loadfrommemory(const unsigned char* data, float height)
   int i;
 
   /* create font object */
-  font = alloc(struct font_t);
+  font = _alloc(struct font_t);
   font->refcount = 1;
   font->height = height;
 
   /* bake font into alpha buffer */
   w = h = 256;
-  alphabuffer = allocnum(unsigned char, w * h);
+  alphabuffer = _allocnum(unsigned char, w * h);
   while ( stbtt_BakeFontBitmap(data, 0, height, alphabuffer, w, h, 0, sizeof(font->glyphs) / sizeof(font->glyphs[0]), font->glyphs) <= 0 )
   {
     if ( w == h ) w *= 2;
@@ -145,7 +145,7 @@ struct font_t* _font_loadfrommemory(const unsigned char* data, float height)
   }
 
   /* copy into color buffer */
-  colorbuffer = allocnum(unsigned char, w*h*4);
+  colorbuffer = _allocnum(unsigned char, w*h*4);
   memset(colorbuffer, 255, w*h*4);
   for ( i = 0; i < w*h; ++i ) colorbuffer[i*4 + 3] = alphabuffer[i];
   free(alphabuffer);

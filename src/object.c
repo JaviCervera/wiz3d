@@ -5,10 +5,13 @@
 #include "material.h"
 #include "mesh.h"
 #include "object.h"
+#include "screen.h"
 #include "texture.h"
 #include "util.h"
 #include "viewer.h"
 #include <string.h>
+
+static float _object_animfps = 16;
 
 void _object_setmesh(struct object_t* object, struct mesh_t* mesh)
 {
@@ -19,7 +22,7 @@ void _object_setmesh(struct object_t* object, struct mesh_t* mesh)
 
 struct object_t* object_new()
 {
-  struct object_t* object = alloc(struct object_t);
+  struct object_t* object = _alloc(struct object_t);
   object->x = 0;
   object->y = 0;
   object->z = 0;
@@ -29,6 +32,11 @@ struct object_t* object_new()
   object->sx = 1;
   object->sy = 1;
   object->sz = 1;
+  object->animmode = _ANIM_STOP;
+  object->animspeed = 1;
+  object->animframe = 0;
+  object->animmin = 0;
+  object->animmax = 0;
   object->_mesh = NULL;
   object->_materials = NULL;
   return object;
@@ -196,6 +204,28 @@ void object_draw(struct object_t* object)
 {
   lmat4_t modelview;
 
+  /* calculate animation */
+  if (object->animmode != _ANIM_STOP)
+  {
+    int lastframe = (object->animmax != 0) ? object->animmax : _mesh_lastframe(object->_mesh);
+    object->animframe += object->animspeed * _object_animfps * screen_delta();
+    if (object->animframe > lastframe)
+    {
+      if (object->animmode == _ANIM_LOOP) object->animframe -= (lastframe - object->animmin);
+      else object->animframe = lastframe;
+    }
+    if (object->animframe < object->animmin)
+    {
+      if (object->animmode == _ANIM_LOOP) object->animframe += (lastframe - object->animmin);
+      else object->animframe = object->animmin;
+    }
+    _mesh_animate(object->_mesh, object->animframe);
+  }
+  else
+  {
+    _mesh_animate(object->_mesh, 0);
+  }
+
   /* calculate modelview */
   modelview = lmat4_transform(
     lvec3(object->x, object->y, object->z),
@@ -206,4 +236,19 @@ void object_draw(struct object_t* object)
 
   /* set properties & draw */
   _mesh_draw(object->_mesh, object->_materials);
+}
+
+int object_numframes(struct object_t* object)
+{
+  return _mesh_lastframe(object->_mesh);
+}
+
+void object_setanimfps(float fps)
+{
+  _object_animfps = fps;
+}
+
+float object_animfps()
+{
+  return _object_animfps;
 }

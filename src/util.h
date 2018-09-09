@@ -8,19 +8,22 @@ extern "C"
 {
 #endif
 
-#define min(A, B)       (A < B ? A : B)
-#define max(A, B)       (A > B ? A : B)
-#define clamp(A, B, C)  min(max(A, B), C)
-#define alloc(T)        ((T*)malloc(sizeof(T)))
-#define allocnum(T,S)   ((T*)malloc(S*sizeof(T)))
+#define _min(A, B)       (A < B ? A : B)
+#define _max(A, B)       (A > B ? A : B)
+#define _clamp(A, B, C)  _min(_max(A, B), C)
+#define _alloc(T)        ((T*)malloc(sizeof(T)))
+#define _allocnum(T,S)   ((T*)malloc(S*sizeof(T)))
 
 void string_write(const char* str, const char* filename, bool_t append);
 
+void ext_strip(const char* filename, char* out, size_t len);
+void ext_extract(const char* filename, char* out, size_t len);
 void dir_strip(const char* filename, char* out, size_t len);
 void dir_extract(const char* filename, char* out, size_t len);
 bool_t dir_contents(const char* path, char* out, size_t len);
 void dir_current(char* out, size_t len);
 bool_t dir_change(const char* path);
+int str_casecmp(char const *a, char const *b);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -9,7 +9,7 @@ void material_init(struct material_t* material)
   material->emissive = _COLOR_BLACK;
   material->specular = _COLOR_WHITE;
   material->shininess = 0;
-  material->blend = 0;
+  material->blend = _BLEND_SOLID;
   material->flags = _FLAG_ALL;
 }
 

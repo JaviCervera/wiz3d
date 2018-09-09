@@ -1,20 +1,21 @@
 TAU
-- Add MD2 and ASSBIN support
-- Add skybox
-- Add billboards
-* Add 2d functions
-- Add audio support (WAV and OGG)
-* Port Vortex samples (except for shadows and collisions)
-- Add mesh bounding box
-* Add ODE physics
-- Add TinyGL support
-======
-- Add lightmaps
-- Add spot lights
-- Add more primitives (sphere, cone, cylinder, ramp)
 - Check that specular is correct
-- Add UI library (https://github.com/vurtun/nuklear)
-- Make font & mesh loading routines more robust
+- Added ASSBIN support
+- Added object.new()
+- Added mesh bounding box
+- Added skybox
+- Added billboards
+* Added 2d functions
+- Added audio support (WAV and OGG)
+* Ported Vortex samples (except for shadows and collisions)
+* Added ODE physics
+- Added TinyGL support
+======
+- Added lightmaps
+- Added spot lights
+- Added more primitives (sphere, cone, cylinder, ramp)
+- Added UI library (https://github.com/vurtun/nuklear)
+- Font & mesh loading routines made more robust
 
 COLLISION FUNCTIONS:
 - object_setactive(bool) // enables or disables geom and rigibody

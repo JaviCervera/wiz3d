@@ -1,6 +1,7 @@
 #include "util.h"
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #ifndef _MSC_VER
 #include <dirent.h>
@@ -34,6 +35,60 @@ void string_write(const char* str, const char* filename, bool_t append)
   fclose(f);
 }
 
+void ext_strip(const char* filename, char* out, size_t len)
+{
+  const char* endp;
+  size_t plen, copylen;
+
+  /* get last dot pointer */
+  endp = strrchr(filename, '.');
+
+  /* if contains no extension, returns filename */
+  if ( !endp )
+  {
+    if ( len > 0 )
+    {
+      strncpy(out, filename, len);
+      out[len] = 0;
+    }
+    return;
+  }
+
+  /* get extension length */
+  plen = endp - filename;
+  copylen = len < plen ? len : plen;
+
+  /* copy extension */
+  strncpy(out, filename, copylen);
+  out[copylen < len ? copylen : len-1] = 0;
+}
+
+void ext_extract(const char* filename, char* out, size_t len)
+{
+  const char* beginp;
+  size_t plen, copylen;
+
+  /* get string after the extension */
+  beginp = strrchr(filename, '.');
+  if ( beginp ) ++beginp;
+
+  /* if contains no extension, returns empty string */
+  if ( !beginp )
+  {
+    if ( len > 0 ) out[0] = 0;
+    return;
+  }
+
+  /* get filename length */
+  plen = strlen(filename);
+  if ( beginp ) plen -= beginp - filename;
+  copylen = len < plen ? len : plen;
+
+  /* copy filename */
+  strncpy(out, beginp ? beginp : filename, copylen);
+  out[copylen < len ? copylen : len-1] = 0;
+}
+
 void dir_strip(const char* filename, char* out, size_t len)
 {
   const char* fp;
@@ -41,6 +96,7 @@ void dir_strip(const char* filename, char* out, size_t len)
   const char* beginp;
   size_t plen, copylen;
 
+  /* get string after the path */
   fp = strrchr(filename, '/');
   bp = strrchr(filename, '\\');
   beginp = (fp > bp) ? fp : bp;
@@ -63,6 +119,7 @@ void dir_extract(const char* filename, char* out, size_t len)
   const char* endp;
   size_t plen, copylen;
 
+  /* get last separator pointer */
   fp = strrchr(filename, '/');
   bp = strrchr(filename, '\\');
   endp = (fp > bp) ? fp : bp;
@@ -113,4 +170,13 @@ void dir_current(char* out, size_t len)
 bool_t dir_change(const char* path)
 {
   return _chdir(path) == 0;
+}
+
+int str_casecmp(char const *a, char const *b)
+{
+    for (;; a++, b++)
+    {
+        int d = tolower((unsigned char)*a) - tolower((unsigned char)*b);
+        if (d != 0 || !*a) return d;
+    }
 }

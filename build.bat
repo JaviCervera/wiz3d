@@ -23,7 +23,10 @@ cd ..
 echo moving to _build dir...
 mkdir _build
 move "_CMAKE\tau.exe" "_build"
-move "_CMAKE\ide.exe" "_build"
+
+echo compressing...
+upx.exe _build/bin/tau.exe
+rem upx.exe --brute _build/bin/tau.exe
 
 echo running...
 cd _build
@@ -31,6 +34,7 @@ tau.exe data/angel.lua
 tau.exe data/fog.lua
 tau.exe data/helloworld.lua
 tau.exe data/hoverbike.lua
+tau.exe data/md2.lua
 tau.exe data/rotatingcube.lua
 tau.exe data/specular.lua
 pause

@@ -99,7 +99,7 @@ void* p_open_screen(int width, int height, bool_t fullscreen, int samples, bool_
   if ( resizable ) flags |= SDL_WINDOW_RESIZABLE;
 
   /* create window object */
-  win = alloc(struct p_window_t);
+  win = _alloc(struct p_window_t);
   win->closePressed = FALSE;
   win->window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
   win->context = SDL_GL_CreateContext(win->window);

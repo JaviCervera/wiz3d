@@ -13,7 +13,7 @@ struct texture_t
 
 struct texture_t* texture_new(int width, int height)
 {
-  struct texture_t* tex = alloc(struct texture_t);
+  struct texture_t* tex = _alloc(struct texture_t);
   tex->refcount = 0;
   tex->ptr = ltex_alloc(width, height, _texture_filtering);
   return tex;

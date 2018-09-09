@@ -3,6 +3,10 @@
 
 #include "types.h"
 
+#define _ANIM_STOP 0
+#define _ANIM_PLAY 1
+#define _ANIM_LOOP 2
+
 #define _BLEND_SOLID  0
 #define _BLEND_ALPHA  1
 #define _BLEND_ADD    2
@@ -18,9 +22,14 @@ struct mesh_t;
 
 struct object_t
 {
-  float          x, y, z;
-  float          pitch, yaw, roll;
-  float          sx, sy, sz;
+  float x, y, z;
+  float pitch, yaw, roll;
+  float sx, sy, sz;
+  int   animmode;
+  float animspeed;
+  float animframe;
+  int   animmin;
+  int   animmax;
 #ifndef SWIG
   struct mesh_t*     _mesh;
   struct material_t* _materials;
@@ -38,7 +47,9 @@ struct material_t* object_material(struct object_t* object, int mat);
 void object_move(struct object_t* object, float x, float y, float z);
 void object_turn(struct object_t* object, float pitch, float yaw, float roll);
 void object_draw(struct object_t* object);
-
+int object_numframes(struct object_t* object);
+void object_setanimfps(float fps);
+float object_animfps();
 
 #ifdef __cplusplus
 } /* extern "C" */
