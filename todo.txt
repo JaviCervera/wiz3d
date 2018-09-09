@@ -1,6 +1,7 @@
 TAU
+* Added ASSBIN support
+- Added pixmaps
 - Check that specular is correct
-- Added ASSBIN support
 - Added object.new()
 - Added mesh bounding box
 - Added skybox

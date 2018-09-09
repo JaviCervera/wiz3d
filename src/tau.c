@@ -3,7 +3,11 @@
 #include "platform.h"
 #include "screen.h"
 #include "tau.h"
+#define LITE_ASSBIN_USE_GFX
 #define LITE_MD2_USE_GFX
+#define LITE_ASSBIN_IMPLEMENTATION
+#include "../lib/litelibs/liteassbin.h"
+#undef LITE_ASSBIN_IMPLEMENTATION
 #define LITE_GFX_IMPLEMENTATION
 #include "../lib/litelibs/litegfx.h"
 #undef LITE_GFX_IMPLEMENTATION

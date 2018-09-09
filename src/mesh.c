@@ -1,4 +1,6 @@
+#define LITE_ASSBIN_USE_GFX /* add support for litegfx specific stuff in assbin laoder */
 #define LITE_MD2_USE_GFX /* add support for litegfx specific stuff in md2 laoder */
+#include "../lib/litelibs/liteassbin.h"
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
 #include "../lib/litelibs/litemd2.h"
@@ -53,6 +55,7 @@ struct mshmaterial_t
 };
 #pragma pack(pop)
 
+static struct mesh_t* _mesh_load_assimp(const char* filename);
 static struct mesh_t* _mesh_load_md2(const char* filename);
 static struct mesh_t* _mesh_load_msh(const char* filename);
 
@@ -74,6 +77,10 @@ struct mesh_t* mesh_load(const char* filename)
   if (str_casecmp(ext, "msh") == 0)
   {
     return _mesh_load_msh(filename);
+  }
+  else if (str_casecmp(ext, "assbin") == 0)
+  {
+    return _mesh_load_assimp(filename);
   }
   else if (str_casecmp(ext, "md2") == 0)
   {
@@ -478,6 +485,54 @@ static struct mesh_t* _mesh_load_msh(const char* filename)
   /* free temp resources */
   free(path);
   fclose(f);
+
+  return mesh;
+}
+
+static struct mesh_t* _mesh_load_assimp(const char* filename)
+{
+  lassbin_scene_t* scene;
+  struct mesh_t* mesh;
+  int m;
+
+  scene = lassbin_load(filename);
+  if (!scene) return NULL;
+
+  /* make sure that meshes use 16 bits indices */
+  for (m = 0; m < scene->num_meshes; ++m)
+    if (scene->meshes[m].num_vertices > 65536)
+      return NULL;
+
+  /* create mesh */
+  mesh = mesh_new();
+
+  /* add buffers */
+  for (m = 0; m < scene->num_meshes; ++m)
+  {
+    int buffer;
+    lvert_t* verts;
+    unsigned short* indices;
+    int num_indices;
+
+    buffer = mesh_addbuffer(mesh);
+
+    /* add vertices */
+    verts = lassbin_getvertices(&scene->meshes[m]);
+    sb_add(mesh->buffers[buffer].vertices, scene->meshes[m].num_vertices);
+    memcpy(mesh->buffers[buffer].vertices, verts, scene->meshes[m].num_vertices * sizeof(lvert_t));
+    free(verts);
+
+    /* add indices */
+    indices = lassbin_getindices(&scene->meshes[m], &num_indices);
+    if (indices)
+    {
+      sb_add(mesh->buffers[buffer].indices, num_indices);
+      memcpy(mesh->buffers[buffer].indices, indices, num_indices * sizeof(unsigned short));
+      free(indices);
+    }
+  }
+
+  lassbin_free(scene);
 
   return mesh;
 }
