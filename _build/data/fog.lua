@@ -4,6 +4,10 @@ ROTATION_SPEED = 32
 -- make screen resizable
 screen.set(800, 600, false, true)
 
+-- setup lighting
+local dir_light = light.new(_LIGHT_DIRECTIONAL)
+light.turn(dir_light, 45, 45)
+
 -- create and position viewer
 local view = viewer.new()
 view.color = _COLOR_DARKGRAY

@@ -8,6 +8,7 @@ extern "C"
 {
 #endif
 
+struct pixmap_t;
 struct texture_t;
 
 struct texture_t* texture_new(int width, int height);
@@ -19,6 +20,7 @@ void texture_release(struct texture_t* texture);
 void texture_delete(struct texture_t* texture);
 int texture_width(struct texture_t* texture);
 int texture_height(struct texture_t* texture);
+void texture_setpixels(struct texture_t* texture, struct pixmap_t* pixmap);
 void texture_setfilter(bool_t filter);
 
 #ifndef SWIG

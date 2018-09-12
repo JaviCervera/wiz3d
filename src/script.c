@@ -12,6 +12,7 @@ int luaopen_light(lua_State* l);
 int luaopen_log(lua_State* l);
 int luaopen_material(lua_State* l);
 int luaopen_object(lua_State* l);
+int luaopen_pixmap(lua_State* l);
 int luaopen_screen(lua_State* l);
 int luaopen_texture(lua_State* l);
 int luaopen_viewer(lua_State* l);
@@ -39,6 +40,7 @@ bool_t script_init()
   luaopen_log(_lua_state);
   luaopen_material(_lua_state);
   luaopen_object(_lua_state);
+  luaopen_pixmap(_lua_state);
   luaopen_screen(_lua_state);
   luaopen_texture(_lua_state);
   luaopen_viewer(_lua_state);
@@ -50,6 +52,7 @@ bool_t script_init()
   luaL_dostring(_lua_state, "for k,v in pairs(log) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(material) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(object) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
+  luaL_dostring(_lua_state, "for k,v in pairs(pixmap) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(screen) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(texture) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(viewer) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");

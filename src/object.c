@@ -161,7 +161,7 @@ struct object_t* object_clone(struct object_t* object)
   sb_add(new_object->_materials, sb_count(object->_materials));
   memcpy(new_object->_materials, object->_materials, sizeof(struct material_t) * sb_count(object->_materials));
   if (object->_mesh) mesh_retain(object->_mesh);
-  return object;
+  return new_object;
 }
 
 void object_delete(struct object_t* object)

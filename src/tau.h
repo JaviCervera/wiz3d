@@ -7,6 +7,7 @@
 #include "log.h"
 #include "object.h"
 #include "physics.h"
+#include "pixmap.h"
 #include "screen.h"
 #include "texture.h"
 #include "viewer.h"

@@ -1,5 +1,5 @@
 #include "../lib/litelibs/litegfx.h"
-#include "../lib/stb_image.h"
+#include "pixmap.h"
 #include "texture.h"
 #include "util.h"
 
@@ -21,23 +21,19 @@ struct texture_t* texture_new(int width, int height)
 
 struct texture_t* texture_load(const char* filename)
 {
-  unsigned char* buffer;
-  int w, h;
+  struct pixmap_t* pixmap;
   struct texture_t* tex;
 
-  /* load buffer */
-  buffer = stbi_load(filename, &w, &h, NULL, 4);
-  if ( !buffer ) return NULL;
+  /* load pixmap */
+  pixmap = pixmap_load(filename);
+  if (!pixmap) return NULL;
 
   /* create texture */
-  tex = texture_new(w, h);
-  if ( tex )
-  {
-    ltex_setpixels(tex->ptr, buffer);
-  }
+  tex = texture_new(pixmap_width(pixmap), pixmap_height(pixmap));
+  if (tex) texture_setpixels(tex, pixmap);
 
-  /* delete buffer */
-  stbi_image_free(buffer);
+  /* delete pixmap */
+  pixmap_delete(pixmap);
 
   return tex;
 }
@@ -69,6 +65,14 @@ int texture_width(struct texture_t* texture)
 int texture_height(struct texture_t* texture)
 {
   return texture->ptr->height;
+}
+
+void texture_setpixels(struct texture_t* texture, struct pixmap_t* pixmap)
+{
+  if (texture->ptr->width == pixmap_width(pixmap) && texture->ptr->height == pixmap_height(pixmap))
+  {
+    ltex_setpixels(texture->ptr, _pixmap_ptr(pixmap));
+  }
 }
 
 void texture_setfilter(bool_t filter)

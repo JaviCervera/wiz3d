@@ -278,6 +278,7 @@ void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
 
     material = &materials[i];
 
+    /* set material settings */
     specular = color_multiply(material->specular, material->shininess);
     lgfx_setblend(material->blend);
     ltex_bindcolor((const ltex_t*)_texture_ptr(material->texture));
@@ -297,12 +298,19 @@ void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
     lgfx_setshininess(material->shininess * MAX_SHININESS);
     lgfx_setculling((material->flags & _FLAG_CULL) == _FLAG_CULL);
     lgfx_setdepthwrite((material->flags & _FLAG_DEPTHWRITE) == _FLAG_DEPTHWRITE);
+
+    /* setup lighting */
     if ((material->flags & _FLAG_LIGHTING) == _FLAG_LIGHTING)
     {
       int numlights = _light_numlights();
       lgfx_setlighting(numlights);
     }
-    else lgfx_setlighting(0);
+    else
+    {
+      lgfx_setlighting(0);
+    }
+
+    /* setup fog */
     if ((material->flags & _FLAG_FOG) == _FLAG_FOG)
     {
       lgfx_setfog(
@@ -318,6 +326,8 @@ void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
     {
       lgfx_setfog(FALSE, 0, 0, 0, 0, 0);
     }
+
+    /* draw */
     if (sb_count(mesh->buffers[i].indices) > 0)
     {
       lvert_drawindexed(

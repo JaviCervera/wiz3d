@@ -14,6 +14,18 @@ No warranty implied. Use as you wish and at your own risk
 #include "litegfx.h"
 #endif
 
+#define LASSBIN_TEXTURE_DIFFUSE 0x1
+#define LASSBIN_TEXTURE_SPECULAR 0x2
+#define LASSBIN_TEXTURE_AMBIENT 0x3
+#define LASSBIN_TEXTURE_EMISSIVE 0x4
+#define LASSBIN_TEXTURE_HEIGHT 0x5
+#define LASSBIN_TEXTURE_NORMALS 0x6
+#define LASSBIN_TEXTURE_SHININESS 0x7
+#define LASSBIN_TEXTURE_OPACITY 0x8
+#define LASSBIN_TEXTURE_DISPLACEMENT 0x9
+#define LASSBIN_TEXTURE_LIGHTMAP 0xA
+#define LASSBIN_TEXTURE_REFLECTION 0xB
+
 #define LASSBIN_MAX_COLOR_SETS 0x8
 #define LASSBIN_MAX_TEXCOORD_SETS 0x8
 
@@ -79,6 +91,23 @@ typedef struct
   lassbin_face_t* faces;
 } lassbin_mesh_t;
 
+/* material property */
+typedef struct
+{
+  char key[128];
+  int semantic;
+  int index;
+  int data_length;
+  char* data;
+} lassbin_matproperty_t;
+
+/* material */
+typedef struct
+{
+  int                    num_properties;
+  lassbin_matproperty_t* properties;
+} lassbin_material_t;
+
 /* scene */
 typedef struct
 {
@@ -90,10 +119,12 @@ typedef struct
   int num_lights;
   int num_cameras;
   lassbin_mesh_t* meshes;
+  lassbin_material_t* materials;
 } lassbin_scene_t;
 
 lassbin_scene_t* lassbin_load(const char* filename);
 void lassbin_free(lassbin_scene_t* assbin);
+int lassbin_numtextures(const lassbin_material_t* material, int type);
 
 #ifdef LITE_ASSBIN_USE_GFX
 lvert_t* lassbin_getvertices(const lassbin_mesh_t* mesh);
@@ -143,6 +174,8 @@ unsigned short* lassbin_getindices(const lassbin_mesh_t* mesh, int* num_indices)
 #define LASSBIN_SCENE_FIXED_SIZE 28
 #define LASSBIN_NODE_FIXED_SIZE 72
 #define LASSBIN_MESH_FIXED_SIZE 24
+#define LASSBIN_MATERIAL_FIXED_SIZE 4
+#define LASSBIN_MATPROPERTY_FIXED_SIZE 12
 
 #ifdef __cplusplus
 extern "C" {
@@ -151,6 +184,8 @@ extern "C" {
 static lassbin_scene_t* _lassbin_load_scene(FILE* fp);
 static int _lassbin_load_node(FILE* fp);
 static int _lassbin_load_mesh(FILE* fp, lassbin_mesh_t* mesh);
+static int _lassbin_load_material(FILE* fp, lassbin_material_t* material);
+static int _lassbin_load_matproperty(FILE* fp, lassbin_matproperty_t* prop);
 static void _lassbin_load_string(FILE* fp, char* out, int len);
 static void _lassbin_skip(FILE* fp);
 
@@ -178,6 +213,62 @@ lassbin_scene_t* lassbin_load(const char* filename)
 void lassbin_free(lassbin_scene_t* assbin)
 {
 
+}
+
+int lassbin_numtextures(const lassbin_material_t* material, int type)
+{
+  int i;
+  int num = 0;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "$tex.file") == 0 && prop->semantic == type) ++num;
+  }
+
+  return num;
+}
+
+static void _lassbin_printid(int magic_id)
+{
+  switch (magic_id)
+  {
+    case LASSBIN_CHUNK_AICAMERA:
+      printf("camera\n");
+      break;
+    case LASSBIN_CHUNK_AILIGHT:
+      printf("light\n");
+      break;
+    case LASSBIN_CHUNK_AITEXTURE:
+      printf("texture\n");
+      break;
+    case LASSBIN_CHUNK_AIMESH:
+      printf("mesh\n");
+      break;
+    case LASSBIN_CHUNK_AINODEANIM:
+      printf("nodeanim\n");
+      break;
+    case LASSBIN_CHUNK_AISCENE:
+      printf("scene\n");
+      break;
+    case LASSBIN_CHUNK_AIBONE:
+      printf("bone\n");
+      break;
+    case LASSBIN_CHUNK_AIANIMATION:
+      printf("animation\n");
+      break;
+    case LASSBIN_CHUNK_AINODE:
+      printf("node\n");
+      break;
+    case LASSBIN_CHUNK_AIMATERIAL:
+      printf("material\n");
+      break;
+    case LASSBIN_CHUNK_AIMATERIALPROPERTY:
+      printf("materialproperty\n");
+      break;
+    default:
+      printf("unknown\n");
+  }
 }
 
 static lassbin_scene_t* _lassbin_load_scene(FILE* fp)
@@ -214,6 +305,15 @@ static lassbin_scene_t* _lassbin_load_scene(FILE* fp)
   }
 
   /* load materials */
+  scene->materials = (lassbin_material_t*)malloc(scene->num_materials * sizeof(lassbin_material_t));
+  for (i = 0; i < scene->num_materials; ++i)
+  {
+    if (!_lassbin_load_material(fp, &scene->materials[i]))
+    {
+      lassbin_free(scene);
+      return 0;
+    }
+  }
 
   /* load animations */
 
@@ -230,15 +330,19 @@ static int _lassbin_load_node(FILE* fp)
 {
   lassbin_chunk_header_t header;
   lassbin_node_t node;
+  long end;
   int i;
 
   /* read header */
   fread(&header, 1, sizeof(header), fp);
   if (header.magic_id != LASSBIN_CHUNK_AINODE) return 0;
 
+  /* get end position of chunk, to skip metadata if present at end */
+  end = ftell(fp) + header.length;
+
   /* read node */
   memset(&node, 0, sizeof(lassbin_node_t));
-  _lassbin_load_string(fp, (char*)&node.name, sizeof(node.name));
+  _lassbin_load_string(fp, node.name, sizeof(node.name));
   fread(&node.transform, 1, LASSBIN_NODE_FIXED_SIZE, fp);
   node.mesh_indices = (int*)malloc(node.num_meshes * sizeof(int));
 
@@ -247,6 +351,9 @@ static int _lassbin_load_node(FILE* fp)
 
   /* load children */
   for (i = 0; i < node.num_children; ++i) _lassbin_load_node(fp);
+
+  /* skip metadata (if exported with "export" instead of "dump") */
+  fseek(fp, end, SEEK_SET);
 
   return 1;
 }
@@ -259,12 +366,7 @@ static int _lassbin_load_mesh(FILE* fp, lassbin_mesh_t* mesh)
 
   /* read header */
   fread(&header, 1, sizeof(header), fp);
-  if (header.magic_id != LASSBIN_CHUNK_AIMESH) {
-    return 0;
-  }
-
-  /* store pointer to the end of mesh */
-  end = ftell(fp) + header.length;
+  if (header.magic_id != LASSBIN_CHUNK_AIMESH) return 0;
 
   /* read mesh */
   memset(mesh, 0, sizeof(lassbin_mesh_t));
@@ -324,8 +426,50 @@ static int _lassbin_load_mesh(FILE* fp, lassbin_mesh_t* mesh)
     fread(mesh->faces[i].indices, mesh->faces[i].num_indices, index_size, fp);
   }
 
-  /* move to end of mesh, skipping remaining data (bones) */
-  fseek(fp, end, SEEK_SET);
+  /* skip bones (unsupported yet) */
+  for (i = 0; i < mesh->num_bones; ++i)
+  {
+    _lassbin_skip(fp);
+  }
+
+  return 1;
+}
+
+static int _lassbin_load_material(FILE* fp, lassbin_material_t* material)
+{
+  lassbin_chunk_header_t header;
+  int i;
+
+  /* read header */
+  fread(&header, 1, sizeof(header), fp);
+  if (header.magic_id != LASSBIN_CHUNK_AIMATERIAL) return 0;
+
+  /* read material */
+  memset(material, 0, sizeof(lassbin_material_t));
+  fread(material, 1, LASSBIN_MATERIAL_FIXED_SIZE, fp);
+
+  /* read properties */
+  material->properties = (lassbin_matproperty_t*)malloc(material->num_properties * sizeof(lassbin_matproperty_t));
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    _lassbin_load_matproperty(fp, &material->properties[i]);
+  }
+
+  return 1;
+}
+
+static int _lassbin_load_matproperty(FILE* fp, lassbin_matproperty_t* prop)
+{
+  lassbin_chunk_header_t header;
+
+  /* read header */
+  fread(&header, 1, sizeof(header), fp);
+  if (header.magic_id != LASSBIN_CHUNK_AIMATERIALPROPERTY) return 0;
+
+  _lassbin_load_string(fp, prop->key, sizeof(prop->key));
+  fread(&prop->semantic, 1, LASSBIN_MATPROPERTY_FIXED_SIZE, fp);
+  prop->data = (char*)malloc(prop->data_length);
+  fread(prop->data, 1, prop->data_length, fp);
 
   return 1;
 }
