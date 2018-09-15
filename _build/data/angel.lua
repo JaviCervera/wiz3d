@@ -22,7 +22,7 @@ local point_light2 = light.new(_LIGHT_POINT)
 light.move(point_light2, 0, 8, 4)
 point_light2.color = color.rgb(0, 100, 255)
 
--- load object
+-- load object (contains embedded texture)
 local angel = object.load("angel.assbin")
 object.turn(angel, 90, 0, 0)
 

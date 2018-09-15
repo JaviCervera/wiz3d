@@ -136,6 +136,7 @@ lassbin_scene_t* lassbin_load(const char* filename);
 void lassbin_free(lassbin_scene_t* scene);
 int lassbin_matnumtextures(const lassbin_material_t* material, int type);
 const char* lassbin_matname(const lassbin_material_t* material);
+unsigned int lassbin_texturesize(const lassbin_texture_t* texture);
 
 #ifdef LITE_ASSBIN_USE_GFX
 lvert_t* lassbin_getvertices(const lassbin_mesh_t* mesh);
@@ -287,6 +288,12 @@ const char* lassbin_matname(const lassbin_material_t* material)
   }
 
   return 0;
+}
+
+unsigned int lassbin_texturesize(const lassbin_texture_t* texture)
+{
+  if (texture->height != 0) return texture->width * texture->height * 4;
+  else return texture->width;
 }
 
 /*
@@ -571,16 +578,8 @@ static int _lassbin_load_texture(FILE* fp, lassbin_texture_t* texture)
   fread(texture, 1, LASSBIN_TEXTURE_FIXED_SIZE, fp);
 
   /* read data */
-  if (texture->height == 0)
-  {
-    texture->data = (unsigned char*)malloc(texture->width);
-    fread(texture->data, texture->width, sizeof(unsigned char), fp);
-  }
-  else
-  {
-    texture->data = (unsigned char*)malloc(texture->width*texture->height*4);
-    fread(texture->data, texture->width * texture->height, 4 * sizeof(unsigned char), fp);
-  }
+  texture->data = (unsigned char*)malloc(lassbin_texturesize(texture));
+  fread(texture->data, lassbin_texturesize(texture), sizeof(unsigned char), fp);
 
   return 1;
 }
@@ -652,6 +651,7 @@ lvert_t* lassbin_getvertices(const lassbin_mesh_t* mesh)
         g = mesh->colors[i][v*4+1];
         b = mesh->colors[i][v*4+2];
         a = mesh->colors[i][v*4+3];
+        break;
       }
     }
 
@@ -659,8 +659,9 @@ lvert_t* lassbin_getvertices(const lassbin_mesh_t* mesh)
     {
       if (mesh->components & LASSBIN_MESH_HAS_TEXCOORD(i))
       {
-        tu = mesh->texcoords[i][v*mesh->numuvs[i]];
-        tv = mesh->texcoords[i][v*mesh->numuvs[i]+1];
+        tu = mesh->texcoords[i][v*3];
+        tv = mesh->texcoords[i][v*3+1];
+        break;
       }
     }
 

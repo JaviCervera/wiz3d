@@ -15,7 +15,10 @@ local dir_light = light.new(_LIGHT_DIRECTIONAL)
 light.turn(dir_light, 45, 45)
 
 -- load hoverbike
-local hoverbike = object.load("hoverbike.msh")
+local hoverbike = object.load("hoverbike.assbin")
+hoverbike.sx = 0.025
+hoverbike.sy = 0.025
+hoverbike.sz = 0.025
 
 while screen.opened() and not input.keydown(_KEY_ESC) do
   -- turn model

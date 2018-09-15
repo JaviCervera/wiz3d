@@ -9,6 +9,7 @@
 #include "light.h"
 #include "material.h"
 #include "mesh.h"
+#include "pixmap.h"
 #include "screen.h"
 #include "texture.h"
 #include "util.h"
@@ -57,7 +58,6 @@ struct mshmaterial_t
 
 static struct mesh_t* _mesh_load_assimp(const char* filename);
 static struct mesh_t* _mesh_load_md2(const char* filename);
-static struct mesh_t* _mesh_load_msh(const char* filename);
 
 
 struct mesh_t* mesh_new()
@@ -74,11 +74,7 @@ struct mesh_t* mesh_load(const char* filename)
 {
   char ext[STRING_SIZE];
   ext_extract(filename, ext, sizeof(ext));
-  if (str_casecmp(ext, "msh") == 0)
-  {
-    return _mesh_load_msh(filename);
-  }
-  else if (str_casecmp(ext, "assbin") == 0)
+  if (str_casecmp(ext, "assbin") == 0)
   {
     return _mesh_load_assimp(filename);
   }
@@ -348,163 +344,11 @@ void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
   }
 }
 
-static struct mesh_t* _mesh_load_msh(const char* filename)
-{
-  FILE* f;
-  size_t filenamelen;
-  char* path;
-  struct mesh_t* mesh;
-  char id[5];
-  unsigned short numsurfs;
-  int i, j;
-  int len;
-
-  /* open file */
-  f = fopen(filename, "rb");
-  if (!f) return NULL;
-
-  /* read id */
-  id[4] = 0;
-  fread(id, sizeof(char), 4, f);
-  if (strcmp(id, "ME01") != 0) return NULL;
-
-  /* store path */
-  filenamelen = strlen(filename);
-  path = _allocnum(char, filenamelen+1);
-  dir_extract(filename, path, filenamelen+1);
-  filenamelen = strlen(path);
-
-  /* create mesh */
-  mesh = mesh_new();
-
-  /* read surfaces */
-  fread(&numsurfs, sizeof(numsurfs), 1, f);
-  for (i = 0; i < numsurfs; ++i)
-  {
-    struct mshmaterial_t mat;
-    struct texture_t* texture = NULL;
-    int flags = _FLAG_ALL;
-    int numindices;
-    unsigned short numvertices;
-    unsigned char vertexflags;
-    int buffer;
-
-    /* read material */
-    fread(&mat, sizeof(mat), 1, f);
-
-    /* parse flags */
-    if ((mat.flags & _FLAG_CULL) == 0) flags -= _FLAG_CULL;
-    if ((mat.flags & _FLAG_DEPTHWRITE) == 0) flags -= _FLAG_DEPTHWRITE;
-
-    /* read textures */
-    if (mat.usedtexs & 1) /* color texture */
-    {
-      char* str;
-
-      fread(&len, sizeof(len), 1, f);
-      str = _allocnum(char, filenamelen+len+1);
-      str[filenamelen+len] = 0;
-      strcpy(str, path);
-      fread(str + filenamelen, sizeof(char), len, f);
-      texture = texture_load(str);
-      if (texture) texture_retain(texture); /* automatically loaded textures are reference counted */
-      free(str);
-    }
-    if (mat.usedtexs & 2) /* normal tex */
-    {
-      fread(&len, sizeof(len), 1, f);
-      fseek(f, len, SEEK_CUR);
-    }
-    if (mat.usedtexs & 4) /* specular tex */
-    {
-      fread(&len, sizeof(len), 1, f);
-      fseek(f, len, SEEK_CUR);
-    }
-    if (mat.usedtexs & 8) /* emissive tex */
-    {
-      fread(&len, sizeof(len), 1, f);
-      fseek(f, len, SEEK_CUR);
-    }
-    if (mat.usedtexs & 16) /* ambient tex */
-    {
-      fread(&len, sizeof(len), 1, f);
-      fseek(f, len, SEEK_CUR);
-    }
-    if (mat.usedtexs & 32) /* lightmap */
-    {
-      fread(&len, sizeof(len), 1, f);
-      fseek(f, len, SEEK_CUR);
-    }
-    if (mat.usedtexs & 64) /* cubemap */
-    {
-      fread(&len, sizeof(len), 1, f);
-      fseek(f, len, SEEK_CUR);
-    }
-
-    /* read number of indices, number of vertices and vertex flags */
-    fread(&numindices, sizeof(numindices), 1, f);
-    fread(&numvertices, sizeof(numvertices), 1, f);
-    fread(&vertexflags, sizeof(vertexflags), 1, f);
-
-    /* create buffer */
-    buffer = mesh_addbuffer(mesh);
-    mesh_material(mesh, buffer)->texture = texture;
-    mesh_material(mesh, buffer)->color = mat.color;
-    mesh_material(mesh, buffer)->emissive = mat.emissive;
-    mesh_material(mesh, buffer)->specular = mat.specular;
-    mesh_material(mesh, buffer)->shininess = color_alpha(mat.specular) / 255.0f;
-    mesh_material(mesh, buffer)->blend = mat.blendmode;
-    mesh_material(mesh, buffer)->flags = flags;
-
-    /* read indices */
-    for (j = 0; j < numindices; j += 3)
-    {
-      unsigned short indices[3];
-      fread(indices, sizeof(indices), 1, f);
-      mesh_addtriangle(mesh, buffer, indices[0], indices[1], indices[2]);
-    }
-
-    /* read vertices */
-    for (j = 0; j < numvertices; ++j)
-    {
-      lvec3_t position;
-      lvec3_t normal;
-      lvec3_t tangent;
-      int color = _COLOR_WHITE;
-      float tex0[2] = { 0, 0 };
-      float tex1[2];
-      int bones[4];
-      float weights[4];
-
-      fread(&position, sizeof(position), 1, f);
-      if (vertexflags & 1) fread(&normal, sizeof(normal), 1, f);
-      else normal = lvec3(0, 0, -1);
-      if (vertexflags & 2) fread(&tangent, sizeof(tangent), 1, f);
-      if (vertexflags & 4) fread(&color, sizeof(color), 1, f);
-      else color = _COLOR_WHITE;
-      if (vertexflags & 8) fread(tex0, sizeof(tex0), 1, f);
-      if (vertexflags & 16) fread(tex1, sizeof(tex1), 1, f);
-      if (vertexflags & 32)
-      {
-        fread(bones, sizeof(bones), 1, f);
-        fread(weights, sizeof(weights), 1, f);
-      }
-      mesh_addvertex(mesh, buffer, position.x, position.y, position.z, normal.x, normal.y, normal.z, tex0[0], tex0[1]);
-    }
-  }
-
-  /* free temp resources */
-  free(path);
-  fclose(f);
-
-  return mesh;
-}
-
 static struct mesh_t* _mesh_load_assimp(const char* filename)
 {
   lassbin_scene_t* scene;
   struct mesh_t* mesh;
-  int m;
+  int m, t;
 
   scene = lassbin_load(filename);
   if (!scene) return NULL;
@@ -540,6 +384,22 @@ static struct mesh_t* _mesh_load_assimp(const char* filename)
       sb_add(mesh->buffers[buffer].indices, num_indices);
       memcpy(mesh->buffers[buffer].indices, indices, num_indices * sizeof(unsigned short));
       free(indices);
+    }
+  }
+
+  /* assign embedded textures */
+  if (mesh_numbuffers(mesh) <= scene->num_textures)
+  {
+    for (t = 0; t < mesh_numbuffers(mesh); ++t)
+    {
+      struct pixmap_t* pixmap = _pixmap_newfromdata(scene->textures[t].data, lassbin_texturesize(&scene->textures[t]));
+      if (pixmap)
+      {
+        struct texture_t* texture = texture_newfrompixmap(pixmap);
+        if (texture) texture_retain(texture); /* automatically loaded textures are reference counted */
+        mesh->materials[t].texture = texture;
+        pixmap_delete(pixmap);
+      }
     }
   }
 

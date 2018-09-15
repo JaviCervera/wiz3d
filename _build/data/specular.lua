@@ -14,9 +14,10 @@ viewer.move(view, 0, 0, -6)
 local dir_light = light.new(_LIGHT_DIRECTIONAL)
 light.turn(dir_light, 30, 20)
 
--- load sphere
-local sphere = object.load("sphere.msh")
-local mat = object.material(sphere, 0)
+-- create cube
+local cube = object.newcube()
+local mat = object.material(cube, 0)
+object.turn(cube, 45, 45, 0)
 mat.color = _COLOR_ORANGE
 mat.shininess = 0
 
@@ -27,7 +28,7 @@ while screen.opened() and not input.keydown(_KEY_ESC) do
 
   -- draw scene
   viewer.prepare(view)
-  object.draw(sphere)
+  object.draw(cube)
 
   -- draw ui
   screen.setup2d()

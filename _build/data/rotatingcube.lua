@@ -11,7 +11,7 @@ light.turn(dir_light, 45, 45)
 
 -- create a cube
 local cube = object.newcube()
-object.material(cube, 0).texture = texture.load("box-texture.png")
+object.material(cube, 0).texture = texture.load("box.png")
 
 while screen.opened() and not input.keydown(_KEY_ESC) do
   object.turn(cube, 0, ROTATION_SPEED * screen.delta(), 0)
