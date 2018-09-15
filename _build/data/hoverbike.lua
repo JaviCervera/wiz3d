@@ -10,9 +10,10 @@ view.color = _COLOR_DARKGRAY
 viewer.move(view, 0, 4, -8)
 viewer.turn(view, 20, 0, 0)
 
--- create light
+-- setup lighting
+material.setshininesspower(2)
 local dir_light = light.new(_LIGHT_DIRECTIONAL)
-light.turn(dir_light, 45, 45)
+light.turn(dir_light, 45, -45)
 
 -- load hoverbike
 local hoverbike = object.load("hoverbike.assbin")

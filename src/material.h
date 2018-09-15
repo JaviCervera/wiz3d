@@ -30,12 +30,16 @@ struct material_t
   float             shininess;
   int               blend;
   int               flags;
+  int               shininesspower;
 };
 
 #ifndef SWIG
 void material_init(struct material_t* material);
 void material_deinit(struct material_t* material);
 #endif
+
+int material_shininesspower();
+void material_setshininesspower(int power);
 
 #ifdef __cplusplus
 } /* extern "C" */

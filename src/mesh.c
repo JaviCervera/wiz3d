@@ -17,8 +17,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_SHININESS 8
-
 struct frame_t
 {
   int                frame;
@@ -280,19 +278,19 @@ void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
     lgfx_setblend(material->blend);
     ltex_bindcolor((const ltex_t*)_texture_ptr(material->texture));
     lgfx_setcolor(
-      color_red(material->diffuse) / 255.0,
-      color_green(material->diffuse) / 255.0,
-      color_blue(material->diffuse) / 255.0,
-      color_alpha(material->diffuse) / 255.0);
+      color_red(material->diffuse) / 255.0f,
+      color_green(material->diffuse) / 255.0f,
+      color_blue(material->diffuse) / 255.0f,
+      color_alpha(material->diffuse) / 255.0f);
     lgfx_setemissive(
-      color_red(material->emissive) / 255.0,
-      color_green(material->emissive) / 255.0,
-      color_blue(material->emissive) / 255.0);
+      color_red(material->emissive) / 255.0f,
+      color_green(material->emissive) / 255.0f,
+      color_blue(material->emissive) / 255.0f);
     lgfx_setspecular(
-      color_red(specular) / 255.0,
-      color_green(specular) / 255.0,
-      color_blue(specular) / 255.0);
-    lgfx_setshininess(material->shininess * MAX_SHININESS);
+      color_red(specular) / 255.0f,
+      color_green(specular) / 255.0f,
+      color_blue(specular) / 255.0f);
+    lgfx_setshininess(_clamp(material->shininess * material->shininesspower > -1 ? material->shininesspower : material_shininesspower(), 0, 128));
     lgfx_setculling((material->flags & _FLAG_CULL) == _FLAG_CULL);
     lgfx_setdepthwrite((material->flags & _FLAG_DEPTHWRITE) == _FLAG_DEPTHWRITE);
 
@@ -380,7 +378,7 @@ static struct mesh_t* _mesh_load_assimp(const char* filename)
     const float* emissive;
     const float* specular;
     float shininess;
-    float shinpercent;
+    /*float shinpercent;*/
 
     buffer = mesh_addbuffer(mesh);
 
@@ -407,7 +405,7 @@ static struct mesh_t* _mesh_load_assimp(const char* filename)
     emissive = lassbin_matemissive(material);
     specular = lassbin_matspecular(material);
     shininess = lassbin_matshininess(material);
-    shinpercent = lassbin_matshinpercent(material);
+    /*shinpercent = lassbin_matshinpercent(material);*/
 
     /* apply texture */
     if (tex_name)

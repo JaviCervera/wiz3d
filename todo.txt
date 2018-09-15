@@ -5,7 +5,6 @@ TAU
 - Added billboards
 * Added 2d functions
 - Added mesh bounding box
-- Check that specular is correct
 - Added audio support (WAV and OGG)
 * Ported Vortex samples (except for shadows and collisions)
 * Added ODE physics

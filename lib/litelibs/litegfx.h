@@ -169,6 +169,7 @@ void lgfx_setup3d(int width, int height)
   glEnable(GL_BLEND);
   glEnable(GL_COLOR_MATERIAL);
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_NORMALIZE);
   glEnable(GL_SCISSOR_TEST);
   glEnable(GL_TEXTURE_2D);
   glEnableClientState(GL_VERTEX_ARRAY);

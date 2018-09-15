@@ -1,6 +1,9 @@
 #include "color.h"
 #include "material.h"
 #include "texture.h"
+#include "util.h"
+
+static int _material_shininesspower = 128;
 
 void material_init(struct material_t* material)
 {
@@ -11,9 +14,20 @@ void material_init(struct material_t* material)
   material->shininess = 0;
   material->blend = _BLEND_SOLID;
   material->flags = _FLAG_ALL;
+  material->shininesspower = -1;
 }
 
 void material_deinit(struct material_t* material)
 {
   if (material->texture) texture_release(material->texture);
+}
+
+int material_shininesspower()
+{
+  return _material_shininesspower;
+}
+
+void material_setshininesspower(int power)
+{
+  _material_shininesspower = _clamp(power, 0, 128);
 }

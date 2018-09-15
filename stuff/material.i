@@ -3,6 +3,6 @@
   #include "material.h"
 %}
 
-%import "material.i"
+%import "common.i"
 
 %include "src/material.h"
