@@ -280,10 +280,10 @@ void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
     lgfx_setblend(material->blend);
     ltex_bindcolor((const ltex_t*)_texture_ptr(material->texture));
     lgfx_setcolor(
-      color_red(material->color) / 255.0,
-      color_green(material->color) / 255.0,
-      color_blue(material->color) / 255.0,
-      color_alpha(material->color) / 255.0);
+      color_red(material->diffuse) / 255.0,
+      color_green(material->diffuse) / 255.0,
+      color_blue(material->diffuse) / 255.0,
+      color_alpha(material->diffuse) / 255.0);
     lgfx_setemissive(
       color_red(material->emissive) / 255.0,
       color_green(material->emissive) / 255.0,
@@ -355,8 +355,13 @@ static struct mesh_t* _mesh_load_assimp(const char* filename)
 
   /* make sure that meshes use 16 bits indices */
   for (m = 0; m < scene->num_meshes; ++m)
+  {
     if (scene->meshes[m].num_vertices > 65536)
+    {
+      lassbin_free(scene);
       return NULL;
+    }
+  }
 
   /* create mesh */
   mesh = mesh_new();
@@ -368,6 +373,14 @@ static struct mesh_t* _mesh_load_assimp(const char* filename)
     lvert_t* verts;
     unsigned short* indices;
     int num_indices;
+    const lassbin_material_t* material;
+    const char* tex_name;
+    float opacity;
+    const float* diffuse;
+    const float* emissive;
+    const float* specular;
+    float shininess;
+    float shinpercent;
 
     buffer = mesh_addbuffer(mesh);
 
@@ -385,22 +398,82 @@ static struct mesh_t* _mesh_load_assimp(const char* filename)
       memcpy(mesh->buffers[buffer].indices, indices, num_indices * sizeof(unsigned short));
       free(indices);
     }
-  }
 
-  /* assign embedded textures */
-  if (mesh_numbuffers(mesh) <= scene->num_textures)
-  {
-    for (t = 0; t < mesh_numbuffers(mesh); ++t)
+    /* parse material */
+    material = &scene->materials[scene->meshes[m].material_index];
+    tex_name = lassbin_mattexturename(material, LASSBIN_TEXTURE_DIFFUSE, 0);
+    opacity = lassbin_matopacity(material);
+    diffuse = lassbin_matdiffuse(material);
+    emissive = lassbin_matemissive(material);
+    specular = lassbin_matspecular(material);
+    shininess = lassbin_matshininess(material);
+    shinpercent = lassbin_matshinpercent(material);
+
+    /* apply texture */
+    if (tex_name)
     {
-      struct pixmap_t* pixmap = _pixmap_newfromdata(scene->textures[t].data, lassbin_texturesize(&scene->textures[t]));
-      if (pixmap)
+      struct texture_t* texture = NULL;
+
+      /* create embedded texture */
+      if (tex_name[0] == '*')
       {
-        struct texture_t* texture = texture_newfrompixmap(pixmap);
-        if (texture) texture_retain(texture); /* automatically loaded textures are reference counted */
-        mesh->materials[t].texture = texture;
-        pixmap_delete(pixmap);
+        int tex_index;
+        struct pixmap_t* pixmap;
+        tex_index = tex_name[1] - 48; /* convert ascii code tu number */
+        pixmap = _pixmap_newfromdata(scene->textures[tex_index].data, lassbin_texturesize(&scene->textures[tex_index]));
+        if (pixmap) {
+          texture = texture_newfrompixmap(pixmap);
+          pixmap_delete(pixmap);
+        }
       }
+      /* load texture */
+      else
+      {
+        texture = texture_load(tex_name);
+      }
+      if (texture) texture_retain(texture); /* automatically loaded textures are reference counted */
+      mesh->materials[buffer].texture = texture;
     }
+
+    /* apply diffuse */
+    if (diffuse)
+    {
+      mesh->materials[buffer].diffuse = color_rgba(
+        (int)diffuse[0] * 255,
+        (int)diffuse[1] * 255,
+        (int)diffuse[2] * 255,
+        (int)opacity * 255
+      );
+    }
+    else
+    {
+      mesh->materials[buffer].diffuse = color_rgba(1, 1, 1, (int)opacity * 255);
+    }
+
+    /* apply emissive */
+    if (emissive)
+    {
+      mesh->materials[buffer].emissive = color_rgba(
+        (int)emissive[0] * 255,
+        (int)emissive[1] * 255,
+        (int)emissive[2] * 255,
+        255
+      );
+    }
+
+    /* apply specular */
+    if (specular)
+    {
+      mesh->materials[buffer].specular = color_rgba(
+        (int)specular[0] * 255,
+        (int)specular[1] * 255,
+        (int)specular[2] * 255,
+        255
+      );
+    }
+
+    /* apply shininess */
+    mesh->materials[buffer].shininess = shininess;
   }
 
   lassbin_free(scene);

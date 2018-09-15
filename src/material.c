@@ -5,7 +5,7 @@
 void material_init(struct material_t* material)
 {
   material->texture = NULL;
-  material->color = _COLOR_WHITE;
+  material->diffuse = _COLOR_WHITE;
   material->emissive = _COLOR_BLACK;
   material->specular = _COLOR_WHITE;
   material->shininess = 0;

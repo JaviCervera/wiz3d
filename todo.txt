@@ -1,5 +1,4 @@
 TAU
-* Added ASSBIN support
 - Added object.new()
 - Added object.newfrommemory()
 - Added skybox
@@ -12,8 +11,10 @@ TAU
 * Added ODE physics
 - Added TinyGL support
 ======
+- Added material.ambient
 - Added lightmaps
 - Added spot lights
+- Added ini module
 - Added more primitives (sphere, cone, cylinder, ramp)
 - Added UI library (https://github.com/vurtun/nuklear)
 - Font & mesh loading routines made more robust

@@ -18,7 +18,7 @@ light.turn(dir_light, 30, 20)
 local cube = object.newcube()
 local mat = object.material(cube, 0)
 object.turn(cube, 45, 45, 0)
-mat.color = _COLOR_ORANGE
+mat.diffuse = _COLOR_ORANGE
 mat.shininess = 0
 
 while screen.opened() and not input.keydown(_KEY_ESC) do

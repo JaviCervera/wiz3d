@@ -16,6 +16,15 @@ light.turn(dir_light, 45, 45)
 
 -- load hoverbike
 local hoverbike = object.load("hoverbike.assbin")
+local mat0 = object.material(hoverbike, 0)
+local mat1 = object.material(hoverbike, 1)
+mat0.texture = texture.load("bike.png")
+mat0.diffuse = _COLOR_WHITE
+mat0.specular = _COLOR_WHITE
+mat1.texture = texture.load("glass.png")
+mat1.diffuse = _COLOR_WHITE
+mat1.specular = _COLOR_WHITE
+mat1.blend = _BLEND_ALPHA
 hoverbike.sx = 0.025
 hoverbike.sy = 0.025
 hoverbike.sz = 0.025

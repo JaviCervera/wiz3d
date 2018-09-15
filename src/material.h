@@ -24,7 +24,7 @@ struct texture_t;
 struct material_t
 {
   struct texture_t* texture;
-  int               color;
+  int               diffuse;
   int               emissive;
   int               specular;
   float             shininess;

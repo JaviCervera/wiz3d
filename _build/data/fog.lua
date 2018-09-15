@@ -24,7 +24,7 @@ for i = 1, NUM_CUBES, 2 do
   local cube
   if i == 1 then
     cube = object.newcube()
-    object.material(cube, 0).color = _COLOR_BROWN
+    object.material(cube, 0).diffuse = _COLOR_BROWN
   else
     cube = object.clone(cubes[1])
   end

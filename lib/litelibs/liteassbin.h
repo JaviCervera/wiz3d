@@ -98,6 +98,7 @@ typedef struct
   int semantic;
   int index;
   int data_length;
+  int type;
   char* data;
 } lassbin_matproperty_t;
 
@@ -134,8 +135,17 @@ typedef struct
 
 lassbin_scene_t* lassbin_load(const char* filename);
 void lassbin_free(lassbin_scene_t* scene);
-int lassbin_matnumtextures(const lassbin_material_t* material, int type);
 const char* lassbin_matname(const lassbin_material_t* material);
+int lassbin_matnumtextures(const lassbin_material_t* material, int type);
+const char* lassbin_mattexturename(const lassbin_material_t* material, int type, int index);
+float lassbin_matopacity(const lassbin_material_t* material);
+float* lassbin_matdiffuse(const lassbin_material_t* material);
+float* lassbin_matemissive(const lassbin_material_t* material);
+float* lassbin_matspecular(const lassbin_material_t* material);
+float* lassbin_matambient(const lassbin_material_t* material);
+float lassbin_matshininess(const lassbin_material_t* material);
+float lassbin_matshinpercent(const lassbin_material_t* material);
+/*const char* lassbin_matblend(const lassbin_material_t* material);*/
 unsigned int lassbin_texturesize(const lassbin_texture_t* texture);
 
 #ifdef LITE_ASSBIN_USE_GFX
@@ -187,7 +197,7 @@ unsigned short* lassbin_getindices(const lassbin_mesh_t* mesh, int* num_indices)
 #define LASSBIN_NODE_FIXED_SIZE 72
 #define LASSBIN_MESH_FIXED_SIZE 24
 #define LASSBIN_MATERIAL_FIXED_SIZE 4
-#define LASSBIN_MATPROPERTY_FIXED_SIZE 12
+#define LASSBIN_MATPROPERTY_FIXED_SIZE 16
 #define LASSBIN_TEXTURE_FIXED_SIZE 12
 
 #ifdef __cplusplus
@@ -263,6 +273,19 @@ void lassbin_free(lassbin_scene_t* scene)
   free(scene);
 }
 
+const char* lassbin_matname(const lassbin_material_t* material)
+{
+  int i;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "?mat.name") == 0) return &prop->data[4];
+  }
+
+  return NULL;
+}
+
 int lassbin_matnumtextures(const lassbin_material_t* material, int type)
 {
   int i;
@@ -277,18 +300,152 @@ int lassbin_matnumtextures(const lassbin_material_t* material, int type)
   return num;
 }
 
-const char* lassbin_matname(const lassbin_material_t* material)
+const char* lassbin_mattexturename(const lassbin_material_t* material, int type, int index)
+{
+  int i;
+  int num = 0;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "$tex.file") == 0 && prop->semantic == type) {
+      if (num == index) return &prop->data[4];
+      else ++num;
+    }
+  }
+
+  return NULL;
+}
+
+float lassbin_matopacity(const lassbin_material_t* material)
 {
   int i;
 
   for (i = 0; i < material->num_properties; ++i)
   {
     const lassbin_matproperty_t* prop = &material->properties[i];
-    if (strcmp(prop->key, "?mat.name") == 0) return prop->data;
+    if (strcmp(prop->key, "$mat.opacity") == 0)
+    {
+      return *((float*)prop->data);
+    }
+  }
+
+  return 1;
+}
+
+float* lassbin_matdiffuse(const lassbin_material_t* material)
+{
+  int i;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "$clr.diffuse") == 0)
+    {
+      return (float*)prop->data;
+    }
+  }
+
+  return NULL;
+}
+
+float* lassbin_matemissive(const lassbin_material_t* material)
+{
+  int i;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "$clr.emissive") == 0)
+    {
+      return (float*)prop->data;
+    }
+  }
+
+  return NULL;
+}
+
+float* lassbin_matspecular(const lassbin_material_t* material)
+{
+  int i;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "$clr.specular") == 0)
+    {
+      return (float*)prop->data;
+    }
+  }
+
+  return NULL;
+}
+
+float* lassbin_matambient(const lassbin_material_t* material)
+{
+  int i;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "$clr.ambient") == 0)
+    {
+      return (float*)prop->data;
+    }
+  }
+
+  return NULL;
+}
+
+float lassbin_matshininess(const lassbin_material_t* material)
+{
+  int i;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "$mat.shininess") == 0)
+    {
+      return *((float*)prop->data);
+    }
   }
 
   return 0;
 }
+
+float lassbin_matshinpercent(const lassbin_material_t* material)
+{
+  int i;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "$mat.shinpercent") == 0)
+    {
+      return *((float*)prop->data);
+    }
+  }
+
+  return 1;
+}
+
+/*
+const char* lassbin_matblend(const lassbin_material_t* material)
+{
+  int i;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "$mat.blend") == 0)
+    {
+      //return &prop->data[4];
+    }
+  }
+
+  return NULL;
+}
+*/
 
 unsigned int lassbin_texturesize(const lassbin_texture_t* texture)
 {
@@ -521,15 +678,11 @@ static int _lassbin_load_mesh(FILE* fp, lassbin_mesh_t* mesh)
 static int _lassbin_load_material(FILE* fp, lassbin_material_t* material)
 {
   lassbin_chunk_header_t header;
-  long end;
   int i;
 
   /* read header */
   fread(&header, 1, sizeof(header), fp);
   if (header.magic_id != LASSBIN_CHUNK_AIMATERIAL) return 0;
-
-  /* get end position of chunk, to skip remaining data present at end */
-  end = ftell(fp) + header.length;
 
   /* read material */
   memset(material, 0, sizeof(lassbin_material_t));
@@ -539,11 +692,11 @@ static int _lassbin_load_material(FILE* fp, lassbin_material_t* material)
   material->properties = (lassbin_matproperty_t*)calloc(material->num_properties, sizeof(lassbin_matproperty_t));
   for (i = 0; i < material->num_properties; ++i)
   {
-    _lassbin_load_matproperty(fp, &material->properties[i]);
+    if (!_lassbin_load_matproperty(fp, &material->properties[i]))
+    {
+      return 0;
+    }
   }
-
-  /* skip remaining data */
-  fseek(fp, end, SEEK_SET);
 
   return 1;
 }
@@ -556,6 +709,7 @@ static int _lassbin_load_matproperty(FILE* fp, lassbin_matproperty_t* prop)
   fread(&header, 1, sizeof(header), fp);
   if (header.magic_id != LASSBIN_CHUNK_AIMATERIALPROPERTY) return 0;
 
+  /* read data */
   _lassbin_load_string(fp, prop->key, sizeof(prop->key));
   fread(&prop->semantic, 1, LASSBIN_MATPROPERTY_FIXED_SIZE, fp);
   prop->data = (char*)malloc(prop->data_length);
