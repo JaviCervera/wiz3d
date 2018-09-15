@@ -126,7 +126,8 @@ void lb3d_free(lb3d_t* b3d);
 extern "C" {
 #endif
 
-lb3d_t* lb3d_load(const char* filename) {
+lb3d_t* lb3d_load(const char* filename)
+{
   lb3d_chunk_header_t header;
   lb3d_t* b3d;
   FILE* fp;
@@ -137,11 +138,12 @@ lb3d_t* lb3d_load(const char* filename) {
 
   /* open file for reading */
   fp = fopen(filename, "rb");
-  if ( !fp ) return 0;
+  if (!fp) return 0;
 
   /* read header and compare tag */
   fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
-  if ( strncmp(header.tag, "BB3D", 4) != 0 ) {
+  if (strncmp(header.tag, "BB3D", 4) != 0)
+  {
     fclose(fp);
     return 0;
   }
@@ -152,19 +154,22 @@ lb3d_t* lb3d_load(const char* filename) {
 
   /* read version */
   fread(&b3d->version, 1, sizeof(int), fp);
-  if ( b3d->version != 1 ) {
+  if (b3d->version != 1)
+  {
     free(b3d);
     fclose(fp);
     return 0;
   }
 
   /* read next chunk header */
-  if ( !feof(fp) ) fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
+  if (!feof(fp)) fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
 
   /* read texture chunk */
-  if ( !feof(fp) && strncmp(header.tag, "TEXS", 4) == 0 ) {
+  if (!feof(fp) && strncmp(header.tag, "TEXS", 4) == 0)
+  {
     remaining = header.length;
-    while ( remaining > 0 ) {
+    while (remaining > 0)
+    {
       /* create new texture */
       ++b3d->num_texs;
       b3d->texs = (lb3d_tex_t*)realloc(b3d->texs, b3d->num_texs * sizeof(lb3d_tex_t));
@@ -173,7 +178,8 @@ lb3d_t* lb3d_load(const char* filename) {
       i = 0;
       fread(&c, 1, sizeof(char), fp);
       --remaining;
-      while ( c != 0 ) {
+      while (c != 0)
+      {
         b3d->texs[b3d->num_texs-1].file[i] = c;
         ++i;
         fread(&c, 1, sizeof(char), fp);
@@ -187,28 +193,30 @@ lb3d_t* lb3d_load(const char* filename) {
     }
 
     /* read next chunk header */
-    if ( !feof(fp) ) fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
+    if (!feof(fp)) fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
   }
 
   /* read brush chunk */
-  if ( !feof(fp) && strncmp(header.tag, "BRUS", 4) == 0 ) {
+  if (!feof(fp) && strncmp(header.tag, "BRUS", 4) == 0)
+  {
     remaining = header.length;
 
     /* read number of texture layers per brush (should be 8 or less) */
     fread(&num_textures, 1, sizeof(int), fp);
     remaining -= sizeof(int);
 
-    while ( remaining > 0 ) {
+    while (remaining > 0)
+    {
       /* create new brush */
       ++b3d->num_brushes;
       b3d->brushes = (lb3d_brush_t*)realloc(b3d->brushes, b3d->num_brushes * sizeof(lb3d_brush_t));
-      if ( b3d->brushes == 0 ) printf("Could not reallocate: %i\n", b3d->num_brushes * sizeof(lb3d_brush_t));
 
       /* read brush name */
       i = 0;
       fread(&c, 1, sizeof(char), fp);
       --remaining;
-      while ( c != 0 ) {
+      while (c != 0)
+      {
         b3d->brushes[b3d->num_brushes-1].name[i] = c;
         ++i;
         fread(&c, 1, sizeof(char), fp);
@@ -222,12 +230,14 @@ lb3d_t* lb3d_load(const char* filename) {
     }
 
     /* read next chunk header */
-    if ( !feof(fp) ) fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
+    if (!feof(fp)) fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
   }
 
   /* read the rest of chunks */
-  while ( !feof(fp) ) {
-    if ( strncmp(header.tag, "NODE", 4) == 0 ) {
+  while (!feof(fp))
+  {
+    if (strncmp(header.tag, "NODE", 4) == 0)
+    {
       /* node chunk */
       remaining = header.length;
 
@@ -239,7 +249,8 @@ lb3d_t* lb3d_load(const char* filename) {
       i = 0;
       fread(&c, 1, sizeof(char), fp);
       --remaining;
-      while ( c != 0 ) {
+      while (c != 0)
+      {
         b3d->nodes[b3d->num_nodes-1].name[i] = c;
         ++i;
         fread(&c, 1, sizeof(char), fp);
@@ -253,9 +264,11 @@ lb3d_t* lb3d_load(const char* filename) {
 
       /* read mesh if present */
       b3d->nodes[b3d->num_nodes-1].mesh = 0;
-      if ( remaining > 0 ) {
+      if (remaining > 0)
+      {
         fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
-        if ( strncmp(header.tag, "MESH", 4) == 0 ) {
+        if (strncmp(header.tag, "MESH", 4) == 0)
+        {
           int verts_remaining;
           int verts_flags;
           int verts_tex_coord_sets;
@@ -278,7 +291,8 @@ lb3d_t* lb3d_load(const char* filename) {
           fread(&verts_flags, 1, sizeof(int), fp);
           fread(&verts_tex_coord_sets, 1, sizeof(int), fp);
           fread(&verts_tex_coord_set_size, 1, sizeof(int), fp);
-          while ( verts_remaining ) {
+          while (verts_remaining)
+          {
             b3d->nodes[b3d->num_nodes-1].mesh->vertices = (lb3d_vert_t*)realloc(b3d->nodes[b3d->num_nodes-1].mesh->vertices, sizeof(b3d->nodes[b3d->num_nodes-1].mesh->num_vertices));
           }*/
           fseek(fp, remaining, SEEK_CUR);
@@ -293,7 +307,7 @@ lb3d_t* lb3d_load(const char* filename) {
     }
 
     /* read next chunk header */
-    if ( !feof(fp) ) fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
+    if (!feof(fp)) fread(&header, 1, sizeof(lb3d_chunk_header_t), fp);
   }
 
   //printf("%c%c%c%c\n", header.tag[0], header.tag[1], header.tag[2], header.tag[3]);
@@ -302,14 +316,16 @@ lb3d_t* lb3d_load(const char* filename) {
   return b3d;
 }
 
-void lb3d_free(lb3d_t* b3d) {
+void lb3d_free(lb3d_t* b3d)
+{
   free(b3d);
 }
 
 #ifdef LITE_MD2_USE_GFX
 
 /*
-lvert_t* lmd2_getvertices(const lmd2_model_t* mdl, int frame) {
+lvert_t* lmd2_getvertices(const lmd2_model_t* mdl, int frame)
+{
   int i, j;
   float v[3];
   float n[3];
@@ -319,7 +335,7 @@ lvert_t* lmd2_getvertices(const lmd2_model_t* mdl, int frame) {
   lvert_t* verts;
 
   /* check if n is in a valid range * /
-  if ( (frame < 0) || (frame >= mdl->header.num_frames) ) return 0;
+  if ((frame < 0) || (frame >= mdl->header.num_frames)) return 0;
 
   /* get frame * /
   pframe = &mdl->frames[frame];
@@ -328,9 +344,11 @@ lvert_t* lmd2_getvertices(const lmd2_model_t* mdl, int frame) {
   verts = (lvert_t*) malloc(sizeof(lvert_t) * mdl->header.num_tris * 3);
 
   /* get each triangle * /
-  for ( i = 0; i < mdl->header.num_tris; ++i ) {
+  for (i = 0; i < mdl->header.num_tris; ++i)
+  {
     /* get each vertex * /
-    for ( j = 0; j < 3; ++j ) {
+    for (j = 0; j < 3; ++j)
+    {
       /* get vertex * /
       pvert = &pframe->verts[mdl->triangles[i].vertex[j]];
 

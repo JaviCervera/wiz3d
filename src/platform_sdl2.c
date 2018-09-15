@@ -54,9 +54,9 @@ int p_cursor_y(void* win)
 
 bool_t p_mouse_button_down(void* win, int button)
 {
-  if ( button == 0 ) return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1);
-  else if ( button == 1 ) return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(3);
-  else if ( button == 2 ) return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(2);
+  if (button == 0) return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1);
+  else if (button == 1) return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(3);
+  else if (button == 2) return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(2);
   else return 0;
 }
 
@@ -95,8 +95,8 @@ void* p_open_screen(int width, int height, bool_t fullscreen, int samples, bool_
   
   /* flags */
   flags = SDL_WINDOW_OPENGL;
-  if ( fullscreen ) flags |= SDL_WINDOW_FULLSCREEN;
-  if ( resizable ) flags |= SDL_WINDOW_RESIZABLE;
+  if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
+  if (resizable) flags |= SDL_WINDOW_RESIZABLE;
 
   /* create window object */
   win = _alloc(struct p_window_t);
@@ -133,11 +133,12 @@ void p_refresh_screen(void* win)
   pwin = (struct p_window_t*)win;
   
   /* poll events */
-  while ( SDL_PollEvent(&event) )
+  while (SDL_PollEvent(&event))
   {
-    switch ( event.type ) {
+    switch (event.type)
+    {
     case SDL_WINDOWEVENT:
-      if ( event.window.event == SDL_WINDOWEVENT_CLOSE ) pwin->closePressed = TRUE;
+      if (event.window.event == SDL_WINDOWEVENT_CLOSE) pwin->closePressed = TRUE;
       break;
     case SDL_QUIT:
       break;

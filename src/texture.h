@@ -8,10 +8,13 @@ extern "C"
 {
 #endif
 
+struct memory_t;
 struct pixmap_t;
 struct texture_t;
 
 struct texture_t* texture_new(int width, int height);
+struct texture_t* texture_newfrommemory(struct memory_t* memory);
+struct texture_t* texture_newfrompixmap(struct pixmap_t* pixmap);
 struct texture_t* texture_load(const char* filename);
 #ifndef SWIG
 void texture_retain(struct texture_t* texture);

@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
   /*  if argv[0] begins with / on macOS, we'll assume it has been launched
       by double clicking on the Finder, and we'll move to the app dir */
 #ifdef __APPLE__
-  if ( argv[0][0] == '/' ) dir_change(working_dir);
+  if (argv[0][0] == '/') dir_change(working_dir);
 #endif
 
   /* get working dir */
@@ -39,8 +39,8 @@ int main(int argc, char* argv[])
   light_setambient(_COLOR_DARKGRAY);
 
   /* run script */
-  if ( !script_init() ) log_error(script_error());
-  if ( !script_load(script_file) ) log_error(script_error());
+  if (!script_init()) log_error(script_error());
+  if (!script_load(script_file)) log_error(script_error());
 
   /* shutdown */
   script_finish();

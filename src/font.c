@@ -27,7 +27,7 @@ struct font_t* font_load(const char* filename, float height)
 
   /* read file */
   f = fopen(filename, "rb");
-  if ( !f ) return NULL;
+  if (!f) return NULL;
   fseek(f, 0, SEEK_END);
   len = ftell(f);
   fseek(f, 0, SEEK_SET);
@@ -49,7 +49,7 @@ void font_retain(struct font_t* font)
 
 void font_release(struct font_t* font)
 {
-  if ( --font->refcount == 0 )
+  if (--font->refcount == 0)
   {
     ltex_free(font->tex);
     free(font);
@@ -68,7 +68,7 @@ float font_textwidth(struct font_t* font, const char* text)
   size_t len, i;
   
   len = strlen(text);
-  for ( i = 0; i < len; ++i )
+  for (i = 0; i < len; ++i)
   {
     stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, text[i], &x, &y, &q, TRUE);
   }
@@ -82,7 +82,7 @@ float font_textheight(struct font_t* font, const char* text)
   size_t len, i;
   
   len = strlen(text);
-  for ( i = 0; i < len; ++i )
+  for (i = 0; i < len; ++i)
   {
     stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, text[i], &x, &y, &q, TRUE);
     miny = miny < q.y0 ? miny : q.y0;
@@ -97,7 +97,7 @@ void font_draw(struct font_t* font, const char* text, float x, float y)
 
   y += font_textheight(font, text);
   len = strlen(text);
-  for ( i = 0; i < len; ++i )
+  for (i = 0; i < len; ++i)
   {
     stbtt_aligned_quad q;
     stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, text[i], &x, &y, &q, TRUE);
@@ -137,9 +137,9 @@ struct font_t* _font_loadfrommemory(const unsigned char* data, float height)
   /* bake font into alpha buffer */
   w = h = 256;
   alphabuffer = _allocnum(unsigned char, w * h);
-  while ( stbtt_BakeFontBitmap(data, 0, height, alphabuffer, w, h, 0, sizeof(font->glyphs) / sizeof(font->glyphs[0]), font->glyphs) <= 0 )
+  while (stbtt_BakeFontBitmap(data, 0, height, alphabuffer, w, h, 0, sizeof(font->glyphs) / sizeof(font->glyphs[0]), font->glyphs) <= 0)
   {
-    if ( w == h ) w *= 2;
+    if (w == h) w *= 2;
     else h *= 2;
     alphabuffer = (unsigned char*)realloc(alphabuffer, w * h);
   }
@@ -147,7 +147,7 @@ struct font_t* _font_loadfrommemory(const unsigned char* data, float height)
   /* copy into color buffer */
   colorbuffer = _allocnum(unsigned char, w*h*4);
   memset(colorbuffer, 255, w*h*4);
-  for ( i = 0; i < w*h; ++i ) colorbuffer[i*4 + 3] = alphabuffer[i];
+  for (i = 0; i < w*h; ++i) colorbuffer[i*4 + 3] = alphabuffer[i];
   free(alphabuffer);
 
   /* create texture */

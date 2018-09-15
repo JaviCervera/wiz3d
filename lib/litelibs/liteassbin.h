@@ -108,6 +108,15 @@ typedef struct
   lassbin_matproperty_t* properties;
 } lassbin_material_t;
 
+/* texture */
+typedef struct
+{
+  int            width;
+  int            height;
+  char           format_hint[4];
+  unsigned char* data;
+} lassbin_texture_t;
+
 /* scene */
 typedef struct
 {
@@ -120,11 +129,13 @@ typedef struct
   int num_cameras;
   lassbin_mesh_t* meshes;
   lassbin_material_t* materials;
+  lassbin_texture_t* textures;
 } lassbin_scene_t;
 
 lassbin_scene_t* lassbin_load(const char* filename);
-void lassbin_free(lassbin_scene_t* assbin);
-int lassbin_numtextures(const lassbin_material_t* material, int type);
+void lassbin_free(lassbin_scene_t* scene);
+int lassbin_matnumtextures(const lassbin_material_t* material, int type);
+const char* lassbin_matname(const lassbin_material_t* material);
 
 #ifdef LITE_ASSBIN_USE_GFX
 lvert_t* lassbin_getvertices(const lassbin_mesh_t* mesh);
@@ -176,6 +187,7 @@ unsigned short* lassbin_getindices(const lassbin_mesh_t* mesh, int* num_indices)
 #define LASSBIN_MESH_FIXED_SIZE 24
 #define LASSBIN_MATERIAL_FIXED_SIZE 4
 #define LASSBIN_MATPROPERTY_FIXED_SIZE 12
+#define LASSBIN_TEXTURE_FIXED_SIZE 12
 
 #ifdef __cplusplus
 extern "C" {
@@ -186,6 +198,7 @@ static int _lassbin_load_node(FILE* fp);
 static int _lassbin_load_mesh(FILE* fp, lassbin_mesh_t* mesh);
 static int _lassbin_load_material(FILE* fp, lassbin_material_t* material);
 static int _lassbin_load_matproperty(FILE* fp, lassbin_matproperty_t* prop);
+static int _lassbin_load_texture(FILE* fp, lassbin_texture_t* texture);
 static void _lassbin_load_string(FILE* fp, char* out, int len);
 static void _lassbin_skip(FILE* fp);
 
@@ -197,11 +210,12 @@ lassbin_scene_t* lassbin_load(const char* filename)
 
   /* open file for reading */
   fp = fopen(filename, "rb");
-  if ( !fp ) return 0;
+  if (!fp) return 0;
 
   /* read header and compare tag */
   fread(&header, 1, sizeof(header), fp);
-  if (strncmp(header.magic_id, "ASSIMP.binary", 13) != 0 || header.dump_format != 0 || header.compressed != 0) {
+  if (strncmp(header.magic_id, "ASSIMP.binary", 13) != 0 || header.dump_format != 0 || header.compressed != 0)
+  {
     fclose(fp);
     return 0;
   }
@@ -210,12 +224,45 @@ lassbin_scene_t* lassbin_load(const char* filename)
   return _lassbin_load_scene(fp);
 }
 
-void lassbin_free(lassbin_scene_t* assbin)
+void lassbin_free(lassbin_scene_t* scene)
 {
+  int i, j;
 
+  for (i = 0; i < scene->num_meshes; ++i)
+  {
+    free(scene->meshes[i].positions);
+    free(scene->meshes[i].normals);
+    free(scene->meshes[i].tangents);
+    free(scene->meshes[i].bitangents);
+    for (j = 0; j < LASSBIN_MAX_COLOR_SETS; ++j)
+    {
+      free(scene->meshes[i].colors[j]);
+    }
+    for (j = 0; j < LASSBIN_MAX_TEXCOORD_SETS; ++j)
+    {
+      free(scene->meshes[i].texcoords[j]);
+    }
+    free(scene->meshes[i].faces);
+  }
+  for (i = 0; i < scene->num_materials; ++i)
+  {
+    for (j = 0; j < scene->materials[i].num_properties; ++j)
+    {
+      free(scene->materials[i].properties[j].data);
+    }
+    free(scene->materials[i].properties);
+  }
+  for (i = 0; i < scene->num_textures; ++i)
+  {
+    free(scene->textures[i].data);
+  }
+  free(scene->meshes);
+  free(scene->materials);
+  free(scene->textures);
+  free(scene);
 }
 
-int lassbin_numtextures(const lassbin_material_t* material, int type)
+int lassbin_matnumtextures(const lassbin_material_t* material, int type)
 {
   int i;
   int num = 0;
@@ -229,6 +276,20 @@ int lassbin_numtextures(const lassbin_material_t* material, int type)
   return num;
 }
 
+const char* lassbin_matname(const lassbin_material_t* material)
+{
+  int i;
+
+  for (i = 0; i < material->num_properties; ++i)
+  {
+    const lassbin_matproperty_t* prop = &material->properties[i];
+    if (strcmp(prop->key, "?mat.name") == 0) return prop->data;
+  }
+
+  return 0;
+}
+
+/*
 static void _lassbin_printid(int magic_id)
 {
   switch (magic_id)
@@ -270,6 +331,7 @@ static void _lassbin_printid(int magic_id)
       printf("unknown\n");
   }
 }
+*/
 
 static lassbin_scene_t* _lassbin_load_scene(FILE* fp)
 {
@@ -282,19 +344,19 @@ static lassbin_scene_t* _lassbin_load_scene(FILE* fp)
   if (header.magic_id != LASSBIN_CHUNK_AISCENE) return 0;
 
   /* read scene */
-  scene = (lassbin_scene_t*)malloc(sizeof(lassbin_scene_t));
-  memset(scene, 0, sizeof(lassbin_scene_t));
+  scene = (lassbin_scene_t*)calloc(1, sizeof(lassbin_scene_t));
   fread(scene, 1, LASSBIN_SCENE_FIXED_SIZE, fp);
 
-  /* load root node */
-  if (!_lassbin_load_node(fp))
+  /* skip root node */
+  _lassbin_skip(fp);
+  /*if (!_lassbin_load_node(fp))
   {
     lassbin_free(scene);
     return 0;
-  }
+  }*/
 
   /* load meshes */
-  scene->meshes = (lassbin_mesh_t*)malloc(scene->num_meshes * sizeof(lassbin_mesh_t));
+  scene->meshes = (lassbin_mesh_t*)calloc(scene->num_meshes, sizeof(lassbin_mesh_t));
   for (i = 0; i < scene->num_meshes; ++i)
   {
     if (!_lassbin_load_mesh(fp, &scene->meshes[i]))
@@ -305,7 +367,7 @@ static lassbin_scene_t* _lassbin_load_scene(FILE* fp)
   }
 
   /* load materials */
-  scene->materials = (lassbin_material_t*)malloc(scene->num_materials * sizeof(lassbin_material_t));
+  scene->materials = (lassbin_material_t*)calloc(scene->num_materials, sizeof(lassbin_material_t));
   for (i = 0; i < scene->num_materials; ++i)
   {
     if (!_lassbin_load_material(fp, &scene->materials[i]))
@@ -315,13 +377,28 @@ static lassbin_scene_t* _lassbin_load_scene(FILE* fp)
     }
   }
 
-  /* load animations */
+  /* skip animations */
+  for (i = 0; i < scene->num_animations; ++i)
+  {
+    _lassbin_skip(fp);
+  }
 
   /* load textures */
+  scene->textures = (lassbin_texture_t*)calloc(scene->num_textures, sizeof(lassbin_texture_t));
+  for (i = 0; i < scene->num_textures; ++i)
+  {
+    if (!_lassbin_load_texture(fp, &scene->textures[i]))
+    {
+      lassbin_free(scene);
+      return 0;
+    }
+  }
 
   /* load lights */
+  /* ... */
 
   /* load cameras */
+  /* ... */
 
   return scene;
 }
@@ -361,7 +438,6 @@ static int _lassbin_load_node(FILE* fp)
 static int _lassbin_load_mesh(FILE* fp, lassbin_mesh_t* mesh)
 {
   lassbin_chunk_header_t header;
-  long end;
   int i;
 
   /* read header */
@@ -438,22 +514,29 @@ static int _lassbin_load_mesh(FILE* fp, lassbin_mesh_t* mesh)
 static int _lassbin_load_material(FILE* fp, lassbin_material_t* material)
 {
   lassbin_chunk_header_t header;
+  long end;
   int i;
 
   /* read header */
   fread(&header, 1, sizeof(header), fp);
   if (header.magic_id != LASSBIN_CHUNK_AIMATERIAL) return 0;
 
+  /* get end position of chunk, to skip remaining data present at end */
+  end = ftell(fp) + header.length;
+
   /* read material */
   memset(material, 0, sizeof(lassbin_material_t));
   fread(material, 1, LASSBIN_MATERIAL_FIXED_SIZE, fp);
 
   /* read properties */
-  material->properties = (lassbin_matproperty_t*)malloc(material->num_properties * sizeof(lassbin_matproperty_t));
+  material->properties = (lassbin_matproperty_t*)calloc(material->num_properties, sizeof(lassbin_matproperty_t));
   for (i = 0; i < material->num_properties; ++i)
   {
     _lassbin_load_matproperty(fp, &material->properties[i]);
   }
+
+  /* skip remaining data */
+  fseek(fp, end, SEEK_SET);
 
   return 1;
 }
@@ -473,6 +556,36 @@ static int _lassbin_load_matproperty(FILE* fp, lassbin_matproperty_t* prop)
 
   return 1;
 }
+
+static int _lassbin_load_texture(FILE* fp, lassbin_texture_t* texture)
+{
+  lassbin_chunk_header_t header;
+  int i;
+
+  /* read header */
+  fread(&header, 1, sizeof(header), fp);
+  if (header.magic_id != LASSBIN_CHUNK_AITEXTURE) return 0;
+
+  /* read texture */
+  memset(texture, 0, sizeof(lassbin_texture_t));
+  fread(texture, 1, LASSBIN_TEXTURE_FIXED_SIZE, fp);
+
+  /* read data */
+  if (texture->height == 0)
+  {
+    texture->data = (unsigned char*)malloc(texture->width);
+    fread(texture->data, texture->width, sizeof(unsigned char), fp);
+  }
+  else
+  {
+    texture->data = (unsigned char*)malloc(texture->width*texture->height*4);
+    fread(texture->data, texture->width * texture->height, 4 * sizeof(unsigned char), fp);
+  }
+
+  return 1;
+}
+
+
 
 static void _lassbin_load_string(FILE* fp, char* out, int len)
 {
@@ -505,7 +618,7 @@ static void _lassbin_skip(FILE* fp)
 lvert_t* lassbin_getvertices(const lassbin_mesh_t* mesh)
 {
   lvert_t* verts;
-  int v;
+  int v, i;
 
   /* create buffer */
   verts = (lvert_t*)malloc(mesh->num_vertices * sizeof(lvert_t));
@@ -531,8 +644,26 @@ lvert_t* lassbin_getvertices(const lassbin_mesh_t* mesh)
       nz = mesh->normals[v*3+2];
     }
 
-    //tu = mesh->
-    
+    for (i = 0; i < LASSBIN_MAX_COLOR_SETS; ++i)
+    {
+      if (mesh->components & LASSBIN_MESH_HAS_COLOR(i))
+      {
+        r = mesh->colors[i][v*4];
+        g = mesh->colors[i][v*4+1];
+        b = mesh->colors[i][v*4+2];
+        a = mesh->colors[i][v*4+3];
+      }
+    }
+
+    for (i = 0; i < LASSBIN_MAX_TEXCOORD_SETS; ++i)
+    {
+      if (mesh->components & LASSBIN_MESH_HAS_TEXCOORD(i))
+      {
+        tu = mesh->texcoords[i][v*mesh->numuvs[i]];
+        tv = mesh->texcoords[i][v*mesh->numuvs[i]+1];
+      }
+    }
+
     verts[v] = lvert(x, y, z, nx, ny, nz, tu, tv, r, g, b, a);
   }
 

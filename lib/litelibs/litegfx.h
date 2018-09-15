@@ -163,7 +163,8 @@ void lgfx_setup2d(int width, int height)
   ltex_bindcolor(0);
 }
 
-void lgfx_setup3d(int width, int height) {
+void lgfx_setup3d(int width, int height)
+{
   glEnable(GL_ALPHA_TEST);
   glEnable(GL_BLEND);
   glEnable(GL_COLOR_MATERIAL);
@@ -226,7 +227,7 @@ void lgfx_setmodelview(const float* m)
 
 void lgfx_setblend(lblend_t mode)
 {
-  switch ( mode )
+  switch (mode)
   {
   case BLEND_SOLID:
     glBlendFunc(GL_ONE, GL_ZERO);
@@ -268,7 +269,8 @@ void lgfx_setshininess(unsigned char shininess)
 
 void lgfx_setusevertexcolor(int enable)
 {
-  if ( enable ) {
+  if (enable)
+  {
     glEnableClientState(GL_COLOR_ARRAY);
   } else {
     glDisableClientState(GL_COLOR_ARRAY);
@@ -277,7 +279,8 @@ void lgfx_setusevertexcolor(int enable)
 
 void lgfx_setculling(int enable)
 {
-  if ( enable ) {
+  if (enable)
+  {
     glEnable(GL_CULL_FACE);
   } else {
     glDisable(GL_CULL_FACE);
@@ -293,9 +296,9 @@ void lgfx_setlighting(int numlights)
 {
   int i;
 
-  if ( numlights > 0 ) glEnable(GL_LIGHTING); else glDisable(GL_LIGHTING);
-  for ( i = 0; i < numlights; ++i ) glEnable(GL_LIGHT0+i);
-  for ( i = numlights; i < 8; ++i ) glDisable(GL_LIGHT0+i);
+  if (numlights > 0) glEnable(GL_LIGHTING); else glDisable(GL_LIGHTING);
+  for (i = 0; i < numlights; ++i) glEnable(GL_LIGHT0+i);
+  for (i = numlights; i < 8; ++i) glDisable(GL_LIGHT0+i);
 }
 
 void lgfx_setlight(int num, float x, float y, float z, float w, float r, float g, float b, float att)
@@ -335,7 +338,8 @@ void lgfx_setfog(int enable, float r, float g, float b, float start, float end)
   color[1] = g;
   color[2] = b;
   color[3] = 1;
-  if ( enable ) {
+  if (enable)
+  {
     glEnable(GL_FOG);
   } else {
     glDisable(GL_FOG);
@@ -399,7 +403,8 @@ void lgfx_drawoval(float x, float y, float width, float height)
   inc = 6.28318530718f / OVALPOINTS;
   halfwidth = width * 0.5f;
   halfheight = height * 0.5f;
-  for ( i = 0; i < OVALPOINTS; ++i ) {
+  for (i = 0; i < OVALPOINTS; ++i)
+  {
     verts[i] = lvert(centerx + ((float)cos(i * inc) * halfwidth), centery + ((float)sin(i * inc) * halfheight), 0, 0, 0, -1, 0, 0, 1, 1, 1, 1);
   }
   ltex_bindcolor(0);
@@ -431,7 +436,7 @@ ltex_t* ltex_alloc(int width, int height, int filtering)
 
 void ltex_free(ltex_t* tex)
 {
-  if ( tex && tex->glid != 0 ) glDeleteTextures(1, (const GLuint*)&tex->glid);
+  if (tex && tex->glid != 0) glDeleteTextures(1, (const GLuint*)&tex->glid);
   free(tex);
 }
 
@@ -485,7 +490,7 @@ void ltex_bindcolor(const ltex_t* tex)
 
 static GLenum _lgfx_pickglrendermode(lrendermode_t mode)
 {
-  switch ( mode )
+  switch (mode)
   {
   case MODE_POINTS:
     return GL_POINTS;

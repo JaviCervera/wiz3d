@@ -80,7 +80,7 @@ void viewer_prepare(struct viewer_t* viewer)
 
   /* prepare projection */
   ratio = vp_w / (float)vp_h;
-  if ( viewer->ortho )
+  if (viewer->ortho)
   {
     float width, height;
     height = viewer->min * tan(lm_deg2rad(viewer->fov)) * 2;

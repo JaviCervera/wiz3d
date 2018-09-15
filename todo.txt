@@ -1,11 +1,12 @@
 TAU
 * Added ASSBIN support
-- Check that specular is correct
 - Added object.new()
-- Added mesh bounding box
+- Added object.newfrommemory()
 - Added skybox
 - Added billboards
 * Added 2d functions
+- Added mesh bounding box
+- Check that specular is correct
 - Added audio support (WAV and OGG)
 * Ported Vortex samples (except for shadows and collisions)
 * Added ODE physics

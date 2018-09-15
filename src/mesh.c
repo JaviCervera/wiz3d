@@ -101,7 +101,8 @@ void mesh_release(struct mesh_t* mesh)
 {
   int i;
 
-  if (--mesh->refcount == 0) {
+  if (--mesh->refcount == 0)
+  {
     /* free buffer data */
     for (i = 0; i < sb_count(mesh->buffers); ++i)
     {
@@ -271,7 +272,7 @@ void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
   if (!materials) materials = mesh->materials;
 
   /* draw all buffers */
-  for ( i = 0; i < sb_count(mesh->buffers); ++i )
+  for (i = 0; i < sb_count(mesh->buffers); ++i)
   {
     struct material_t* material;
     int specular;
@@ -360,12 +361,12 @@ static struct mesh_t* _mesh_load_msh(const char* filename)
 
   /* open file */
   f = fopen(filename, "rb");
-  if ( !f ) return NULL;
+  if (!f) return NULL;
 
   /* read id */
   id[4] = 0;
   fread(id, sizeof(char), 4, f);
-  if ( strcmp(id, "ME01") != 0 ) return NULL;
+  if (strcmp(id, "ME01") != 0) return NULL;
 
   /* store path */
   filenamelen = strlen(filename);
@@ -378,7 +379,7 @@ static struct mesh_t* _mesh_load_msh(const char* filename)
 
   /* read surfaces */
   fread(&numsurfs, sizeof(numsurfs), 1, f);
-  for ( i = 0; i < numsurfs; ++i )
+  for (i = 0; i < numsurfs; ++i)
   {
     struct mshmaterial_t mat;
     struct texture_t* texture = NULL;
@@ -392,11 +393,11 @@ static struct mesh_t* _mesh_load_msh(const char* filename)
     fread(&mat, sizeof(mat), 1, f);
 
     /* parse flags */
-    if ( (mat.flags & _FLAG_CULL) == 0 ) flags -= _FLAG_CULL;
-    if ( (mat.flags & _FLAG_DEPTHWRITE) == 0 ) flags -= _FLAG_DEPTHWRITE;
+    if ((mat.flags & _FLAG_CULL) == 0) flags -= _FLAG_CULL;
+    if ((mat.flags & _FLAG_DEPTHWRITE) == 0) flags -= _FLAG_DEPTHWRITE;
 
     /* read textures */
-    if ( mat.usedtexs & 1 ) /* color texture */
+    if (mat.usedtexs & 1) /* color texture */
     {
       char* str;
 
@@ -409,32 +410,32 @@ static struct mesh_t* _mesh_load_msh(const char* filename)
       if (texture) texture_retain(texture); /* automatically loaded textures are reference counted */
       free(str);
     }
-    if ( mat.usedtexs & 2 ) /* normal tex */
+    if (mat.usedtexs & 2) /* normal tex */
     {
       fread(&len, sizeof(len), 1, f);
       fseek(f, len, SEEK_CUR);
     }
-    if ( mat.usedtexs & 4 ) /* specular tex */
+    if (mat.usedtexs & 4) /* specular tex */
     {
       fread(&len, sizeof(len), 1, f);
       fseek(f, len, SEEK_CUR);
     }
-    if ( mat.usedtexs & 8 ) /* emissive tex */
+    if (mat.usedtexs & 8) /* emissive tex */
     {
       fread(&len, sizeof(len), 1, f);
       fseek(f, len, SEEK_CUR);
     }
-    if ( mat.usedtexs & 16 ) /* ambient tex */
+    if (mat.usedtexs & 16) /* ambient tex */
     {
       fread(&len, sizeof(len), 1, f);
       fseek(f, len, SEEK_CUR);
     }
-    if ( mat.usedtexs & 32 ) /* lightmap */
+    if (mat.usedtexs & 32) /* lightmap */
     {
       fread(&len, sizeof(len), 1, f);
       fseek(f, len, SEEK_CUR);
     }
-    if ( mat.usedtexs & 64 ) /* cubemap */
+    if (mat.usedtexs & 64) /* cubemap */
     {
       fread(&len, sizeof(len), 1, f);
       fseek(f, len, SEEK_CUR);
@@ -456,7 +457,7 @@ static struct mesh_t* _mesh_load_msh(const char* filename)
     mesh_material(mesh, buffer)->flags = flags;
 
     /* read indices */
-    for ( j = 0; j < numindices; j += 3 )
+    for (j = 0; j < numindices; j += 3)
     {
       unsigned short indices[3];
       fread(indices, sizeof(indices), 1, f);
@@ -464,7 +465,7 @@ static struct mesh_t* _mesh_load_msh(const char* filename)
     }
 
     /* read vertices */
-    for ( j = 0; j < numvertices; ++j )
+    for (j = 0; j < numvertices; ++j)
     {
       lvec3_t position;
       lvec3_t normal;
@@ -476,14 +477,14 @@ static struct mesh_t* _mesh_load_msh(const char* filename)
       float weights[4];
 
       fread(&position, sizeof(position), 1, f);
-      if ( vertexflags & 1 ) fread(&normal, sizeof(normal), 1, f);
+      if (vertexflags & 1) fread(&normal, sizeof(normal), 1, f);
       else normal = lvec3(0, 0, -1);
-      if ( vertexflags & 2 ) fread(&tangent, sizeof(tangent), 1, f);
-      if ( vertexflags & 4 ) fread(&color, sizeof(color), 1, f);
+      if (vertexflags & 2) fread(&tangent, sizeof(tangent), 1, f);
+      if (vertexflags & 4) fread(&color, sizeof(color), 1, f);
       else color = _COLOR_WHITE;
-      if ( vertexflags & 8 ) fread(tex0, sizeof(tex0), 1, f);
-      if ( vertexflags & 16) fread(tex1, sizeof(tex1), 1, f);
-      if ( vertexflags & 32 )
+      if (vertexflags & 8) fread(tex0, sizeof(tex0), 1, f);
+      if (vertexflags & 16) fread(tex1, sizeof(tex1), 1, f);
+      if (vertexflags & 32)
       {
         fread(bones, sizeof(bones), 1, f);
         fread(weights, sizeof(weights), 1, f);

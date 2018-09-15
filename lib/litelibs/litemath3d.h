@@ -288,7 +288,7 @@ lquat_t lquat_norm(lquat_t q)
   float mag2;
 
   mag2 = q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w;
-  if ( mag2 > 0.00001f  &&  fabs(mag2 - 1.0f) > 0.00001f )
+  if (mag2 > 0.00001f  &&  fabs(mag2 - 1.0f) > 0.00001f)
   {
     float invmag;
     invmag = 1.0f / (float)sqrt(mag2);
@@ -316,7 +316,7 @@ lquat_t lquat_slerp(lquat_t a, lquat_t b, float t)
   float dot;
   
   dot = lquat_dot(a, b);
-  if ( dot < 0 )
+  if (dot < 0)
   {
     dot *= -1;
     q = lquat_mulf(b, -1);
@@ -325,7 +325,7 @@ lquat_t lquat_slerp(lquat_t a, lquat_t b, float t)
   {
     q = b;
   }
-  if ( dot < 0.95f )
+  if (dot < 0.95f)
   {
     float angle;
 
@@ -391,7 +391,7 @@ lmat4_t lmat4_mul(lmat4_t a, lmat4_t b)
   int i;
   lmat4_t mat;
 
-  for ( i = 0; i < 4; i++ )
+  for (i = 0; i < 4; i++)
   {
     float a0, a1, a2, a3;
 
@@ -474,9 +474,9 @@ lmat4_t lmat4_trans(lmat4_t m)
   int r, c;
   lmat4_t mat;
 
-  for ( r = 0; r < 4; r++ )
+  for (r = 0; r < 4; r++)
   {
-    for ( c = 0; c < 4; c++ )
+    for (c = 0; c < 4; c++)
     {
       mat.m[c*4 + r] = m.m[r*4 + c];
     }
@@ -507,9 +507,9 @@ lmat4_t lmat4_inv(lmat4_t m)
   inv.m[11] = -m.m[0] * m.m[ 5] * m.m[11] + m.m[0] * m.m[ 7] * m.m[ 9] + m.m[4] * m.m[1] * m.m[11] - m.m[4] * m.m[3] * m.m[ 9] - m.m[ 8] * m.m[1] * m.m[ 7] + m.m[ 8] * m.m[3] * m.m[ 5];
   inv.m[15] =  m.m[0] * m.m[ 5] * m.m[10] - m.m[0] * m.m[ 6] * m.m[ 9] - m.m[4] * m.m[1] * m.m[10] + m.m[4] * m.m[2] * m.m[ 9] + m.m[ 8] * m.m[1] * m.m[ 6] - m.m[ 8] * m.m[2] * m.m[ 5];
   det = m.m[0] * inv.m[0] + m.m[1] * inv.m[4] + m.m[2] * inv.m[8] + m.m[3] * inv.m[12];
-  if ( fabs(det) <= 0.00001f ) return lmat4(m.m);
+  if (fabs(det) <= 0.00001f) return lmat4(m.m);
   invdet = 1.0f / det;
-  for ( i = 0; i < 16; i++ )
+  for (i = 0; i < 16; i++)
   {
     inv.m[i] *= invdet;
   }

@@ -100,7 +100,8 @@ void _light_prepare()
       light = _lights[i];
       
       /* get position in viewer space */
-      if ( light->type == _LIGHT_DIRECTIONAL ) {
+      if (light->type == _LIGHT_DIRECTIONAL)
+      {
         pos = lquat_mulvec3(
           lquat_fromeuler(lvec3_rad(lvec3(light->pitch, light->yaw, 0))),
           lvec3(0, 0, -1));

@@ -1,7 +1,4 @@
-#include "color.h"
-#include "light.h"
 #include "platform.h"
-#include "screen.h"
 #include "tau.h"
 #define LITE_ASSBIN_USE_GFX
 #define LITE_MD2_USE_GFX
@@ -31,7 +28,7 @@ extern "C"
 
 bool_t tau_init()
 {
-  if ( p_init() )
+  if (p_init())
   {
     _physics_init();
     return TRUE;
@@ -44,7 +41,7 @@ bool_t tau_init()
 
 void tau_finish()
 {
-  if ( _screen_pointer() ) p_close_screen(_screen_pointer());
+  if (_screen_pointer()) p_close_screen(_screen_pointer());
   _physics_finish();
   p_shutdown();
 }

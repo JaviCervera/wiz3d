@@ -7,6 +7,7 @@ swig -lua -o src/wrap_input.c stuff/input.i
 swig -lua -o src/wrap_light.c stuff/light.i
 swig -lua -o src/wrap_log.c stuff/log.i
 swig -lua -o src/wrap_material.c stuff/material.i
+swig -lua -o src/wrap_memory.c stuff/memory.i
 swig -lua -o src/wrap_object.c stuff/object.i
 swig -lua -o src/wrap_pixmap.c stuff/pixmap.i
 swig -lua -o src/wrap_screen.c stuff/screen.i

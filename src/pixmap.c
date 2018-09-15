@@ -1,4 +1,5 @@
 #include "../lib/stb_image.h"
+#include "memory.h"
 #include "pixmap.h"
 #include "util.h"
 
@@ -18,6 +19,11 @@ struct pixmap_t* pixmap_new(int width, int height)
   return pixmap;
 }
 
+struct pixmap_t* pixmap_newfrommemory(struct memory_t* memory)
+{
+  return _pixmap_newfromdata((const unsigned char*)memory, memory_size(memory));
+}
+
 struct pixmap_t* pixmap_load(const char* filename)
 {
   unsigned char* buffer;
@@ -26,7 +32,7 @@ struct pixmap_t* pixmap_load(const char* filename)
 
   /* load buffer */
   buffer = stbi_load(filename, &w, &h, NULL, 4);
-  if ( !buffer ) return NULL;
+  if (!buffer) return NULL;
 
   /* create pixmap */
   pixmap = _alloc(struct pixmap_t);
@@ -61,6 +67,25 @@ int pixmap_color(struct pixmap_t* pixmap, int x, int y)
 void pixmap_setcolor(struct pixmap_t* pixmap, int x, int y, int color)
 {
   pixmap->pixels[y*pixmap->width + x] = color;
+}
+
+struct pixmap_t* _pixmap_newfromdata(const unsigned char* data, size_t len)
+{
+  unsigned char* buffer;
+  int w, h;
+  struct pixmap_t* pixmap;
+
+  /* load buffer */
+  buffer = stbi_load_from_memory(data, len, &w, &h, NULL, 4);
+  if (!buffer) return NULL;
+
+  /* create pixmap */
+  pixmap = _alloc(struct pixmap_t);
+  pixmap->pixels = (int*)buffer;
+  pixmap->width = w;
+  pixmap->height = h;
+
+  return pixmap;
 }
 
 void* _pixmap_ptr(struct pixmap_t* pixmap)

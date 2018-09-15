@@ -26,7 +26,7 @@ void string_write(const char* str, const char* filename, bool_t append)
   f = fopen(filename, append ? "ab" : "wb");
 
   /* if it could not be opened, return */
-  if ( !f ) return;
+  if (!f) return;
 
   /* write string buffer */
   fwrite(str, sizeof(char), strlen(str), f);
@@ -44,9 +44,9 @@ void ext_strip(const char* filename, char* out, size_t len)
   endp = strrchr(filename, '.');
 
   /* if contains no extension, returns filename */
-  if ( !endp )
+  if (!endp)
   {
-    if ( len > 0 )
+    if (len > 0)
     {
       strncpy(out, filename, len);
       out[len] = 0;
@@ -70,18 +70,18 @@ void ext_extract(const char* filename, char* out, size_t len)
 
   /* get string after the extension */
   beginp = strrchr(filename, '.');
-  if ( beginp ) ++beginp;
+  if (beginp) ++beginp;
 
   /* if contains no extension, returns empty string */
-  if ( !beginp )
+  if (!beginp)
   {
-    if ( len > 0 ) out[0] = 0;
+    if (len > 0) out[0] = 0;
     return;
   }
 
   /* get filename length */
   plen = strlen(filename);
-  if ( beginp ) plen -= beginp - filename;
+  if (beginp) plen -= beginp - filename;
   copylen = len < plen ? len : plen;
 
   /* copy filename */
@@ -100,11 +100,11 @@ void dir_strip(const char* filename, char* out, size_t len)
   fp = strrchr(filename, '/');
   bp = strrchr(filename, '\\');
   beginp = (fp > bp) ? fp : bp;
-  if ( beginp ) ++beginp;
+  if (beginp) ++beginp;
 
   /* get filename length */
   plen = strlen(filename);
-  if ( beginp ) plen -= beginp - filename;
+  if (beginp) plen -= beginp - filename;
   copylen = len < plen ? len : plen;
 
   /* copy filename */
@@ -125,9 +125,9 @@ void dir_extract(const char* filename, char* out, size_t len)
   endp = (fp > bp) ? fp : bp;
 
   /* if contains no path, returns empty string */
-  if ( !endp )
+  if (!endp)
   {
-    if ( len > 0 ) out[0] = 0;
+    if (len > 0) out[0] = 0;
     return;
   }
 
@@ -147,11 +147,11 @@ bool_t dir_contents(const char* path, char* out, size_t len)
 
   /* open directory */
   d = (DIR*)opendir(path);
-  if ( d == NULL ) return FALSE;
+  if (d == NULL) return FALSE;
 
   /* copy directory contents */
-  if ( len > 0) out[0] = 0;
-  while ( (entry = (struct dirent*)readdir(d)) )
+  if (len > 0) out[0] = 0;
+  while ((entry = (struct dirent*)readdir(d)))
   {
     snprintf(out, len, strlen(out) > 0 ? "%s\n%s" : "%s%s", out, entry->d_name);
   }

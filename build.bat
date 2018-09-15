@@ -6,6 +6,7 @@ stuff\swig.exe -lua -o src/wrap_input.c stuff/input.i
 stuff\swig.exe -lua -o src/wrap_light.c stuff/light.i
 stuff\swig.exe -lua -o src/wrap_log.c stuff/log.i
 stuff\swig.exe -lua -o src/wrap_material.c stuff/material.i
+stuff\swig.exe -lua -o src/wrap_memory.c stuff/memory.i
 stuff\swig.exe -lua -o src/wrap_object.c stuff/object.i
 stuff\swig.exe -lua -o src/wrap_pixmap.c stuff/pixmap.i
 stuff\swig.exe -lua -o src/wrap_screen.c stuff/screen.i

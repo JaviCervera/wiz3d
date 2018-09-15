@@ -19,6 +19,31 @@ struct texture_t* texture_new(int width, int height)
   return tex;
 }
 
+struct texture_t* texture_newfrommemory(struct memory_t* memory)
+{
+  struct pixmap_t* pixmap;
+  struct texture_t* tex;
+  
+  /* create pixmap */
+  pixmap = pixmap_newfrommemory(memory);
+
+  /* create texture */
+  tex = texture_newfrompixmap(pixmap);
+
+  /* delete pixmap */
+  pixmap_delete(pixmap);
+
+  return tex;
+}
+
+struct texture_t* texture_newfrompixmap(struct pixmap_t* pixmap)
+{
+  struct texture_t* tex;
+  tex = texture_new(pixmap_width(pixmap), pixmap_height(pixmap));
+  if (tex) texture_setpixels(tex, pixmap);
+  return tex;
+}
+
 struct texture_t* texture_load(const char* filename)
 {
   struct pixmap_t* pixmap;
@@ -29,8 +54,7 @@ struct texture_t* texture_load(const char* filename)
   if (!pixmap) return NULL;
 
   /* create texture */
-  tex = texture_new(pixmap_width(pixmap), pixmap_height(pixmap));
-  if (tex) texture_setpixels(tex, pixmap);
+  tex = texture_newfrompixmap(pixmap);
 
   /* delete pixmap */
   pixmap_delete(pixmap);
@@ -45,7 +69,7 @@ void texture_retain(struct texture_t* texture)
 
 void texture_release(struct texture_t* texture)
 {
-  if ( --texture->refcount == 0 )
+  if (--texture->refcount == 0)
   {
     texture_delete(texture);
   }

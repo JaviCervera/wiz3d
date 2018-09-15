@@ -133,7 +133,7 @@ struct object_t* object_load(const char* filename)
   struct object_t* object;
 
   mesh = mesh_load(filename);
-  if ( mesh )
+  if (mesh)
   {
     object = object_new();
     _object_setmesh(object, mesh); /* set object mesh & materials */

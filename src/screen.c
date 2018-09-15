@@ -37,10 +37,10 @@ void screen_set(int width, int height, bool_t fullscreen, bool_t resizable)
   for (i = 0; i < sb_count(_screen_loadedfonts); ++i)
     font_release(_screen_loadedfonts[i].font);
     sb_free(_screen_loadedfonts);
-  if ( _default_font ) font_release(_default_font);
+  if (_default_font) font_release(_default_font);
 
   /* close screen if opened */
-  if ( _screen_ptr ) p_close_screen(_screen_ptr);
+  if (_screen_ptr) p_close_screen(_screen_ptr);
 
   /* open screen */
   _screen_ptr = p_open_screen(width, height, fullscreen, 0, TRUE, resizable);
@@ -68,7 +68,7 @@ void screen_refresh()
   /* update fps */
   ++_screen_fpscounter;
   _screen_fpstime += _screen_delta;
-  if ( _screen_fpstime >= 1 )
+  if (_screen_fpstime >= 1)
   {
     _screen_fps = _screen_fpscounter;
     _screen_fpscounter = 0;
@@ -111,9 +111,9 @@ void screen_setdrawfont(const char* filename, float height)
   int i;
 
   /* search for already loaded font */
-  for ( i = 0; i < sb_count(_screen_loadedfonts); ++i )
+  for (i = 0; i < sb_count(_screen_loadedfonts); ++i)
   {
-    if ( strcmp(_screen_loadedfonts[i].name, filename) == 0 && _screen_loadedfonts[i].height == height )
+    if (strcmp(_screen_loadedfonts[i].name, filename) == 0 && _screen_loadedfonts[i].height == height)
     {
       _screen_font = _screen_loadedfonts[i].font;
       return;
@@ -122,7 +122,7 @@ void screen_setdrawfont(const char* filename, float height)
 
   /* load font */
   font = font_load(filename, height);
-  if ( font )
+  if (font)
   {
     struct loadedfont_t data;
 

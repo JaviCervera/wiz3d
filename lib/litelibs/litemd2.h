@@ -287,13 +287,14 @@ float lmd2_normal_table[][3] = {
   { -0.688191f, -0.587785f, -0.425325f }
 };
 
-lmd2_model_t* lmd2_load(const char* filename) {
+lmd2_model_t* lmd2_load(const char* filename)
+{
   lmd2_model_t* mdl;
   FILE *fp;
   int i;
 
   fp = fopen(filename, "rb");
-  if ( !fp ) return 0;
+  if (!fp) return 0;
 
   /* create model */
   mdl = (lmd2_model_t*) malloc(sizeof(lmd2_model_t));
@@ -301,7 +302,8 @@ lmd2_model_t* lmd2_load(const char* filename) {
   /* read header */
   fread(&mdl->header, 1, sizeof(lmd2_header_t), fp);
 
-  if ( (mdl->header.ident != 844121161 ) || (mdl->header.version != 8) ) {
+  if ((mdl->header.ident != 844121161 ) || (mdl->header.version != 8))
+  {
     free(mdl);
     fclose(fp);
     return 0;
@@ -326,7 +328,8 @@ lmd2_model_t* lmd2_load(const char* filename) {
 
   /* read frames */
   fseek(fp, mdl->header.offset_frames, SEEK_SET);
-  for ( i = 0; i < mdl->header.num_frames; ++i ) {
+  for (i = 0; i < mdl->header.num_frames; ++i)
+  {
     /* memory allocation for vertices of this frame */
     mdl->frames[i].verts = (lmd2_vertex_t*) malloc(sizeof(lmd2_vertex_t) * mdl->header.num_vertices);
 
@@ -341,7 +344,8 @@ lmd2_model_t* lmd2_load(const char* filename) {
   return mdl;
 }
 
-void lmd2_free(lmd2_model_t* mdl) {
+void lmd2_free(lmd2_model_t* mdl)
+{
   free(mdl->skins);
   free(mdl->texcoords);
   free(mdl->triangles);
@@ -352,7 +356,8 @@ void lmd2_free(lmd2_model_t* mdl) {
 
 #ifdef LITE_MD2_USE_GFX
 
-lvert_t* lmd2_getvertices(const lmd2_model_t* mdl, int frame) {
+lvert_t* lmd2_getvertices(const lmd2_model_t* mdl, int frame)
+{
   int i, j;
   float v[3];
   float n[3];
@@ -362,7 +367,7 @@ lvert_t* lmd2_getvertices(const lmd2_model_t* mdl, int frame) {
   lvert_t* verts;
 
   /* check if n is in a valid range */
-  if ( (frame < 0) || (frame >= mdl->header.num_frames) ) return 0;
+  if ((frame < 0) || (frame >= mdl->header.num_frames)) return 0;
 
   /* get frame */
   pframe = &mdl->frames[frame];
@@ -371,9 +376,11 @@ lvert_t* lmd2_getvertices(const lmd2_model_t* mdl, int frame) {
   verts = (lvert_t*) malloc(sizeof(lvert_t) * mdl->header.num_tris * 3);
 
   /* get each triangle */
-  for ( i = 0; i < mdl->header.num_tris; ++i ) {
+  for (i = 0; i < mdl->header.num_tris; ++i)
+  {
     /* get each vertex */
-    for ( j = 0; j < 3; ++j ) {
+    for (j = 0; j < 3; ++j)
+    {
       /* get vertex */
       pvert = &pframe->verts[mdl->triangles[i].vertex[j]];
 
