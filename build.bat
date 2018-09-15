@@ -27,8 +27,8 @@ mkdir _build
 move "_CMAKE\tau.exe" "_build"
 
 echo compressing...
-upx.exe _build/bin/tau.exe
-rem upx.exe --brute _build/bin/tau.exe
+upx.exe _build/tau.exe
+rem upx.exe --brute _build/tau.exe
 
 echo running...
 cd _build
