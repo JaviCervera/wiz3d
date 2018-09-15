@@ -7,6 +7,10 @@
 #define _ANIM_PLAY 1
 #define _ANIM_LOOP 2
 
+#define _BILLBOARD_NONE 0
+#define _BILLBOARD_FACE 1
+#define _BILLBOARD_UPRIGHT 2
+
 #define _BLEND_SOLID  0
 #define _BLEND_ALPHA  1
 #define _BLEND_ADD    2
@@ -25,6 +29,7 @@ struct object_t
   float x, y, z;
   float pitch, yaw, roll;
   float sx, sy, sz;
+  int   billboard;
   int   animmode;
   float animspeed;
   float animframe;
@@ -38,6 +43,7 @@ struct object_t
 
 /*struct object_t* object_new();*/
 struct object_t* object_newcube();
+struct object_t* object_newquad();
 struct object_t* object_newtriangle();
 struct object_t* object_load(const char* filename);
 struct object_t* object_clone(struct object_t* object);

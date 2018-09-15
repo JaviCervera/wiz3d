@@ -30,6 +30,7 @@ mv _CMAKE/tau _build/tau
 echo "running..."
 cd _build
 ./tau data/angel.lua
+./tau data/billboards.lua
 ./tau data/fog.lua
 ./tau data/helloworld.lua
 ./tau data/hoverbike.lua

@@ -92,6 +92,7 @@ lmat4_t lmat4_frustumrh(float left, float right, float bottom, float top, float 
 lmat4_t lmat4_perspectiverh(float fovy, float aspect, float near, float far);
 lmat4_t lmat4_lookatrh(lvec3_t center, lvec3_t eye, lvec3_t up);
 lmat4_t lmat4_transform(lvec3_t position, lquat_t rotation, lvec3_t scale);
+lmat4_t lmat4_billboard(lmat4_t view, lvec3_t pos, float spin, float width, float height, int upfront);
 
 #ifdef __cplusplus
 }
@@ -666,6 +667,28 @@ lmat4_t lmat4_transform(lvec3_t position, lquat_t rotation, lvec3_t scale)
   mat = lmat4_translate(mat, position);
   mat = lmat4_rotate(mat, lquat_angle(rotation), axis);
   mat = lmat4_scale(mat, scale);
+  return mat;
+}
+
+lmat4_t lmat4_billboard(lmat4_t view, lvec3_t pos, float spin, float width, float height, int upfront)
+{
+  lmat4_t mat;
+  mat = lmat4_trans(view);
+  mat.m[3] = 0;
+  mat.m[7] = 0;
+  mat.m[11] = 0;
+  mat.m[12] = pos.x;
+  mat.m[13] = pos.y;
+  mat.m[14] = pos.z;
+  mat.m[15] = 1;
+  if (upfront)
+  {
+    mat.m[4] = 0;
+    mat.m[5] = 1;
+    mat.m[6] = 0;
+  }
+  mat = lmat4_rotate(mat, spin, lvec3(0, 0, 1));
+  mat = lmat4_scale(mat, lvec3(width, height, 1));
   return mat;
 }
 

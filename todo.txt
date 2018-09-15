@@ -1,7 +1,6 @@
 TAU
-- Added billboards
-* Added 2d functions
 - Added object.new()
+* Added 2d functions
 - Added audio support (WAV and OGG)
 * Ported Vortex samples (except for shadows and collisions)
 - Added object.newfrommemory()

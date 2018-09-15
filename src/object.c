@@ -32,6 +32,7 @@ struct object_t* object_new()
   object->sx = 1;
   object->sy = 1;
   object->sz = 1;
+  object->billboard = _BILLBOARD_NONE;
   object->animmode = _ANIM_STOP;
   object->animspeed = 1;
   object->animframe = 0;
@@ -99,6 +100,29 @@ struct object_t* object_newcube()
   mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, -1, 0, 0, 1);
   mesh_addtriangle(mesh, buffer, 20, 21, 22);
   mesh_addtriangle(mesh, buffer, 20, 22, 23);
+
+  /* set object mesh & materials */
+  _object_setmesh(object, mesh);
+
+  return object;
+}
+
+struct object_t* object_newquad()
+{
+  struct object_t* object;
+  struct mesh_t* mesh;
+  int buffer;
+
+  object = object_new();
+  mesh = mesh_new();
+  buffer = mesh_addbuffer(mesh);
+
+  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, 0, 0, 0, -1, 0, 0);
+  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, 0, 0, 0, -1, 1, 0);
+  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0, 0, 0, -1, 1, 1);
+  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 1);
+  mesh_addtriangle(mesh, buffer, 0, 1, 2);
+  mesh_addtriangle(mesh, buffer, 0, 2, 3);
 
   /* set object mesh & materials */
   _object_setmesh(object, mesh);
@@ -227,10 +251,23 @@ void object_draw(struct object_t* object)
   }
 
   /* calculate modelview */
-  modelview = lmat4_transform(
-    lvec3(object->x, object->y, object->z),
-    lquat_fromeuler(lvec3_rad(lvec3(object->pitch, object->yaw, object->roll))),
-    lvec3(object->sx, object->sy, object->sz));
+  switch (object->billboard)
+  {
+    case _BILLBOARD_NONE:
+      modelview = lmat4_transform(
+        lvec3(object->x, object->y, object->z),
+        lquat_fromeuler(lvec3_rad(lvec3(object->pitch, object->yaw, object->roll))),
+        lvec3(object->sx, object->sy, object->sz));
+      break;
+    default:
+      modelview = lmat4_billboard(
+        *(const lmat4_t*)_viewer_activematrix(),
+        lvec3(object->x, object->y, object->z),
+        lm_deg2rad(object->roll),
+        object->sx, object->sy,
+        object->billboard == _BILLBOARD_UPRIGHT ? TRUE : FALSE);
+      break;
+  }
   modelview = lmat4_mul(*(const lmat4_t*)_viewer_activematrix(), modelview);
   lgfx_setmodelview(modelview.m);
 

@@ -33,6 +33,7 @@ rem upx.exe --brute _build/bin/tau.exe
 echo running...
 cd _build
 tau.exe data/angel.lua
+tau.exe data/billboards.lua
 tau.exe data/fog.lua
 tau.exe data/helloworld.lua
 tau.exe data/hoverbike.lua
