@@ -41,14 +41,17 @@ struct object_t
 #endif
 };
 
-/*struct object_t* object_new();*/
+struct object_t* object_new();
 struct object_t* object_newcube();
 struct object_t* object_newquad();
 struct object_t* object_newtriangle();
 struct object_t* object_load(const char* filename);
 struct object_t* object_clone(struct object_t* object);
 void object_delete(struct object_t* object);
-int object_nummaterials(struct object_t* object);
+int object_addbuffer(struct object_t* object);
+int object_numbuffers(struct object_t* object);
+int object_addvertex(struct object_t* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color);
+int object_addtriangle(struct object_t* object, int buffer, int v0, int v1, int v2);
 struct material_t* object_material(struct object_t* object, int mat);
 void object_move(struct object_t* object, float x, float y, float z);
 void object_turn(struct object_t* object, float pitch, float yaw, float roll);

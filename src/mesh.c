@@ -54,8 +54,8 @@ struct mshmaterial_t
 };
 #pragma pack(pop)
 
-static struct mesh_t* _mesh_load_assimp(const char* filename);
-static struct mesh_t* _mesh_load_md2(const char* filename);
+bool_t _mesh_load_assimp(const char* filename, struct mesh_t* mesh);
+bool_t _mesh_load_md2(const char* filename, struct mesh_t* mesh);
 
 
 struct mesh_t* mesh_new()
@@ -68,21 +68,21 @@ struct mesh_t* mesh_new()
   return mesh;
 }
 
-struct mesh_t* mesh_load(const char* filename)
+bool_t mesh_load(const char* filename, struct mesh_t* mesh)
 {
   char ext[STRING_SIZE];
   ext_extract(filename, ext, sizeof(ext));
   if (str_casecmp(ext, "assbin") == 0)
   {
-    return _mesh_load_assimp(filename);
+    return _mesh_load_assimp(filename, mesh);
   }
   else if (str_casecmp(ext, "md2") == 0)
   {
-    return _mesh_load_md2(filename);
+    return _mesh_load_md2(filename, mesh);
   }
   else
   {
-    return NULL;
+    return FALSE;
   }
 }
 
@@ -132,9 +132,18 @@ int mesh_addbuffer(struct mesh_t* mesh)
   return sb_count(mesh->buffers) - 1;
 }
 
-int mesh_addvertex(struct mesh_t* mesh, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v)
+int mesh_addvertex(struct mesh_t* mesh, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color)
 {
-  sb_push(mesh->buffers[buffer].vertices, lvert(x, y, z, nx, ny, nz, u, v, 1, 1, 1, 1));
+  sb_push(
+    mesh->buffers[buffer].vertices,
+    lvert(
+      x, y, z,
+      nx, ny, nz,
+      u, v,
+      color_red(color) / 255.0f,
+      color_green(color) / 255.0f,
+      color_blue(color) / 255.0f,
+      color_alpha(color) / 255.0f));
   return sb_count(mesh->buffers[buffer].vertices) - 1;
 }
 
@@ -354,24 +363,24 @@ struct mesh_t* _mesh_newskybox()
   buffer = mesh_addbuffer(mesh);
 
   /* add vertices */
-  ldb = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0, 1);
-  ldf = mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.16666667f, 1);
-  lub = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0, 0);
-  luf = mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.16666667f, 0);
-  rdb = mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 0.5f, 1);
-  rdf = mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 0.33333333f, 1);
-  rub = mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.5f, 0);
-  ruf = mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.33333333f, 0);
-  ldb1 = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.66555555f, 1);
-  lub1 = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66555555f, 0);
-  ulb =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66666667f, 0);
-  ulf =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.66666667f, 1);
-  urb =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0);
-  urf =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1);
-  dlb =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0);
-  dlf =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1);
-  drb =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 1, 0);
-  drf =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 1, 1);
+  ldb = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0, 1, _COLOR_WHITE);
+  ldf = mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.16666667f, 1, _COLOR_WHITE);
+  lub = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0, 0, _COLOR_WHITE);
+  luf = mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.16666667f, 0, _COLOR_WHITE);
+  rdb = mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 0.5f, 1, _COLOR_WHITE);
+  rdf = mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 0.33333333f, 1, _COLOR_WHITE);
+  rub = mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.5f, 0, _COLOR_WHITE);
+  ruf = mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.33333333f, 0, _COLOR_WHITE);
+  ldb1 = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.66555555f, 1, _COLOR_WHITE);
+  lub1 = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66555555f, 0, _COLOR_WHITE);
+  ulb =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66666667f, 0, _COLOR_WHITE);
+  ulf =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.66666667f, 1, _COLOR_WHITE);
+  urb =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, _COLOR_WHITE);
+  urf =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, _COLOR_WHITE);
+  dlb =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, _COLOR_WHITE);
+  dlf =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, _COLOR_WHITE);
+  drb =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 1, 0, _COLOR_WHITE);
+  drf =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 1, 1, _COLOR_WHITE);
 
   /* add indices */
   mesh_addtriangle(mesh, buffer, lub, luf, ldf); /* left face */
@@ -393,14 +402,13 @@ struct mesh_t* _mesh_newskybox()
   return mesh;
 }
 
-static struct mesh_t* _mesh_load_assimp(const char* filename)
+bool_t _mesh_load_assimp(const char* filename, struct mesh_t* mesh)
 {
   lassbin_scene_t* scene;
-  struct mesh_t* mesh;
   int m, t;
 
   scene = lassbin_load(filename);
-  if (!scene) return NULL;
+  if (!scene) return FALSE;
 
   /* make sure that meshes use 16 bits indices */
   for (m = 0; m < scene->num_meshes; ++m)
@@ -408,12 +416,9 @@ static struct mesh_t* _mesh_load_assimp(const char* filename)
     if (scene->meshes[m].num_vertices > 65536)
     {
       lassbin_free(scene);
-      return NULL;
+      return FALSE;
     }
   }
-
-  /* create mesh */
-  mesh = mesh_new();
 
   /* add buffers */
   for (m = 0; m < scene->num_meshes; ++m)
@@ -527,22 +532,21 @@ static struct mesh_t* _mesh_load_assimp(const char* filename)
 
   lassbin_free(scene);
 
-  return mesh;
+  return TRUE;
 }
 
-static struct mesh_t* _mesh_load_md2(const char* filename)
+bool_t _mesh_load_md2(const char* filename, struct mesh_t* mesh)
 {
   lmd2_model_t*  mdl;
-  struct mesh_t* mesh;
   struct frame_t* frame;
   int buffer;
   int i;
 
+  /* load md2 */
   mdl = lmd2_load(filename);
-  if (!mdl) return NULL;
+  if (!mdl) return FALSE;
 
   /* create mesh */
-  mesh = mesh_new();
   buffer = mesh_addbuffer(mesh);
 
   /* load texture */
@@ -585,5 +589,5 @@ static struct mesh_t* _mesh_load_md2(const char* filename)
 
   lmd2_free(mdl);
 
-  return mesh;
+  return TRUE;
 }

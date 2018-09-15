@@ -13,11 +13,13 @@
 
 static float _object_animfps = 16;
 
-void _object_setmesh(struct object_t* object, struct mesh_t* mesh)
+void _object_setmaterials(struct object_t* object)
 {
-  object->_mesh = mesh;
-  sb_add(object->_materials, mesh_numbuffers(mesh));
-  memcpy(object->_materials, mesh_material(mesh, 0), sizeof(struct material_t) * mesh_numbuffers(mesh));
+  sb_add(object->_materials, mesh_numbuffers(object->_mesh));
+  memcpy(
+    object->_materials,
+    mesh_material(object->_mesh, 0), 
+    sizeof(struct material_t) * mesh_numbuffers(object->_mesh));
 }
 
 struct object_t* object_new()
@@ -38,7 +40,7 @@ struct object_t* object_new()
   object->animframe = 0;
   object->animmin = 0;
   object->animmax = 0;
-  object->_mesh = NULL;
+  object->_mesh = mesh_new();
   object->_materials = NULL;
   return object;
 }
@@ -50,59 +52,59 @@ struct object_t* object_newcube()
   int buffer;
 
   object = object_new();
-  mesh = mesh_new();
+  mesh = object->_mesh;
   buffer = mesh_addbuffer(mesh);
     
   /* add front face */
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, -1, 0, 0);
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, -1, 1, 0);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, -1, 1, 1);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, -1, 0, 1);
+  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, -1, 0, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, -1, 1, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, -1, 1, 1, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, -1, 0, 1, _COLOR_WHITE);
   mesh_addtriangle(mesh, buffer, 0, 1, 2);
   mesh_addtriangle(mesh, buffer, 0, 2, 3);
 
   /* add right face */
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 1, 0, 0, 0, 0);
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 1, 0, 0, 1, 0);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 1, 0, 0, 1, 1);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 1, 0, 0, 0, 1);
+  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 1, 0, 0, 0, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 1, 0, 0, 1, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 1, 0, 0, 1, 1, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 1, 0, 0, 0, 1, _COLOR_WHITE);
   mesh_addtriangle(mesh, buffer, 4, 5, 6);
   mesh_addtriangle(mesh, buffer, 4, 6, 7);
 
   /* add back face */
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, 0.5f, 0, 0, 1, 0, 0);
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, 0.5f, 0, 0, 1, 1, 0);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0.5f, 0, 0, 1, 1, 1);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0.5f, 0, 0, 1, 0, 1);
+  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, 0.5f, 0, 0, 1, 0, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, 0.5f, 0, 0, 1, 1, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0.5f, 0, 0, 1, 1, 1, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0.5f, 0, 0, 1, 0, 1, _COLOR_WHITE);
   mesh_addtriangle(mesh, buffer, 8, 9, 10);
   mesh_addtriangle(mesh, buffer, 8, 10, 11);
 
   /* add left face */
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, -1, 0, 0, 0, 0);
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, -1, 0, 0, 1, 0);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, -1, 0, 0, 1, 1);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, -1, 0, 0, 0, 1);
+  mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, -1, 0, 0, 0, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, -1, 0, 0, 1, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, -1, 0, 0, 1, 1, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, -1, 0, 0, 0, 1, _COLOR_WHITE);
   mesh_addtriangle(mesh, buffer, 12, 13, 14);
   mesh_addtriangle(mesh, buffer, 12, 14, 15);
 
   /* add top face */
-  mesh_addvertex(mesh, buffer, -0.5f, 0.5f,  0.5f, 0, 1, 0, 0, 0);
-  mesh_addvertex(mesh, buffer,  0.5f, 0.5f,  0.5f, 0, 1, 0, 1, 0);
-  mesh_addvertex(mesh, buffer,  0.5f, 0.5f, -0.5f, 0, 1, 0, 1, 1);
-  mesh_addvertex(mesh, buffer, -0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 1);
+  mesh_addvertex(mesh, buffer, -0.5f, 0.5f,  0.5f, 0, 1, 0, 0, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, 0.5f,  0.5f, 0, 1, 0, 1, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, 0.5f, -0.5f, 0, 1, 0, 1, 1, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 1, _COLOR_WHITE);
   mesh_addtriangle(mesh, buffer, 16, 17, 18);
   mesh_addtriangle(mesh, buffer, 16, 18, 19);
 
   /* add bottom face */
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, -1, 0, 0, 0);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, -1, 0, 1, 0);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, -1, 0, 1, 1);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, -1, 0, 0, 1);
+  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, -1, 0, 0, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, -1, 0, 1, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, -1, 0, 1, 1, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, -1, 0, 0, 1, _COLOR_WHITE);
   mesh_addtriangle(mesh, buffer, 20, 21, 22);
   mesh_addtriangle(mesh, buffer, 20, 22, 23);
 
-  /* set object mesh & materials */
-  _object_setmesh(object, mesh);
+  /* set object materials */
+  _object_setmaterials(object);
 
   return object;
 }
@@ -114,18 +116,18 @@ struct object_t* object_newquad()
   int buffer;
 
   object = object_new();
-  mesh = mesh_new();
+  mesh = object->_mesh;
   buffer = mesh_addbuffer(mesh);
 
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, 0, 0, 0, -1, 0, 0);
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, 0, 0, 0, -1, 1, 0);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0, 0, 0, -1, 1, 1);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 1);
+  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, 0, 0, 0, -1, 0, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, 0, 0, 0, -1, 1, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0, 0, 0, -1, 1, 1, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 1, _COLOR_WHITE);
   mesh_addtriangle(mesh, buffer, 0, 1, 2);
   mesh_addtriangle(mesh, buffer, 0, 2, 3);
 
-  /* set object mesh & materials */
-  _object_setmesh(object, mesh);
+  /* set object materials */
+  _object_setmaterials(object);
 
   return object;
 }
@@ -137,34 +139,35 @@ struct object_t* object_newtriangle()
   int buffer;
 
   object = object_new();
-  mesh = mesh_new();
+  mesh = object->_mesh;
   buffer = mesh_addbuffer(mesh);
 
-  mesh_addvertex(mesh, buffer,     0,  0.5f, 0, 0, 0, -1, 0.5f, 1);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0, 0, 0, -1, 1, 0);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 0);
+  mesh_addvertex(mesh, buffer,     0,  0.5f, 0, 0, 0, -1, 0.5f, 1, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0, 0, 0, -1, 1, 0, _COLOR_WHITE);
+  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 0, _COLOR_WHITE);
   mesh_addtriangle(mesh, buffer, 0, 1, 2);
 
-  /* set object mesh & materials */
-  _object_setmesh(object, mesh);
+  /* set object materials */
+  _object_setmaterials(object);
 
   return object;
 }
 
 struct object_t* object_load(const char* filename)
 {
-  struct mesh_t* mesh;
   struct object_t* object;
+  struct mesh_t* mesh;
 
-  mesh = mesh_load(filename);
-  if (mesh)
+  object = object_new();
+  mesh = object->_mesh;
+  if (mesh_load(filename, mesh))
   {
-    object = object_new();
-    _object_setmesh(object, mesh); /* set object mesh & materials */
+    _object_setmaterials(object); /* set object materials */
     return object;
   }
   else
   {
+    object_delete(object);
     return NULL;
   }
 }
@@ -184,19 +187,36 @@ struct object_t* object_clone(struct object_t* object)
   new_object->_mesh = object->_mesh;
   sb_add(new_object->_materials, sb_count(object->_materials));
   memcpy(new_object->_materials, object->_materials, sizeof(struct material_t) * sb_count(object->_materials));
-  if (object->_mesh) mesh_retain(object->_mesh);
+  mesh_retain(object->_mesh);
   return new_object;
 }
 
 void object_delete(struct object_t* object)
 {
-  if (object->_mesh) mesh_release(object->_mesh);
+  mesh_release(object->_mesh);
   free(object);
 }
 
-int object_nummaterials(struct object_t* object)
+int object_addbuffer(struct object_t* object)
 {
-  return sb_count(object->_materials);
+  int buffer = mesh_addbuffer(object->_mesh);
+  sb_add(object->_materials, 1);
+  return buffer;
+}
+
+int object_numbuffers(struct object_t* object)
+{
+  return mesh_numbuffers(object->_mesh);
+}
+
+int object_addvertex(struct object_t* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color)
+{
+  return mesh_addvertex(object->_mesh, buffer, x, y, z, nx, ny, nz, u, v, color);
+}
+
+int object_addtriangle(struct object_t* object, int buffer, int v0, int v1, int v2)
+{
+  return mesh_addtriangle(object->_mesh, buffer, v0, v1, v2);
 }
 
 struct material_t* object_material(struct object_t* object, int mat)

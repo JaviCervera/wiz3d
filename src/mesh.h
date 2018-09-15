@@ -13,12 +13,12 @@ struct material_t;
 struct mesh_t;
 
 struct mesh_t* mesh_new();
-struct mesh_t* mesh_load(const char* filename);
+bool_t mesh_load(const char* filename, struct mesh_t* mesh);
 void mesh_retain(struct mesh_t* mesh);
 void mesh_release(struct mesh_t* mesh);
 int mesh_addbuffer(struct mesh_t* mesh);
 int mesh_numbuffers(struct mesh_t* mesh);
-int mesh_addvertex(struct mesh_t* mesh, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v);
+int mesh_addvertex(struct mesh_t* mesh, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color);
 int mesh_addtriangle(struct mesh_t* mesh, int buffer, int v0, int v1, int v2);
 struct material_t* mesh_material(struct mesh_t* mesh, int buffer);
 

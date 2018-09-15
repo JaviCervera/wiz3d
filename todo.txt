@@ -1,10 +1,9 @@
 TAU
-- Added object.new()
 * Added 2d functions
 - Added audio support (WAV and OGG)
 * Ported Vortex samples (except for shadows and collisions)
-- Added object.newfrommemory()
 - Added mesh bounding box
+- Added object.newfrommemory()
 * Added ODE physics
 - Added TinyGL support
 ======
@@ -14,7 +13,6 @@ TAU
 - Added ini module
 - Added more primitives (sphere, cone, cylinder, ramp)
 - Added UI library (https://github.com/vurtun/nuklear)
-- Font & mesh loading routines made more robust
 
 COLLISION FUNCTIONS:
 - object_setactive(bool) // enables or disables geom and rigibody
