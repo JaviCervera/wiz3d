@@ -342,6 +342,57 @@ void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
   }
 }
 
+struct mesh_t* _mesh_newskybox()
+{
+  struct mesh_t* mesh;
+  int buffer;
+  int ldb, ldf, lub, luf, rdb, rdf, rub, ruf, ldb1, lub1;
+  int ulb, ulf, urb, urf;
+  int dlb, dlf, drb, drf;
+
+  mesh = mesh_new();
+  buffer = mesh_addbuffer(mesh);
+
+  /* add vertices */
+  ldb = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0, 1);
+  ldf = mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.16666667f, 1);
+  lub = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0, 0);
+  luf = mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.16666667f, 0);
+  rdb = mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 0.5f, 1);
+  rdf = mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 0.33333333f, 1);
+  rub = mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.5f, 0);
+  ruf = mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.33333333f, 0);
+  ldb1 = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.66555555f, 1);
+  lub1 = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66555555f, 0);
+  ulb =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66666667f, 0);
+  ulf =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.66666667f, 1);
+  urb =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0);
+  urf =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1);
+  dlb =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0);
+  dlf =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1);
+  drb =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 1, 0);
+  drf =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 1, 1);
+
+  /* add indices */
+  mesh_addtriangle(mesh, buffer, lub, luf, ldf); /* left face */
+  mesh_addtriangle(mesh, buffer, lub, ldf, ldb);
+  mesh_addtriangle(mesh, buffer, luf, ruf, rdf); /* front face */
+  mesh_addtriangle(mesh, buffer, luf, rdf, ldf);
+  mesh_addtriangle(mesh, buffer, ruf, rub, rdb); /* right face */
+  mesh_addtriangle(mesh, buffer, ruf, rdb, rdf);
+  mesh_addtriangle(mesh, buffer, rub, lub1, ldb1); /* back face */
+  mesh_addtriangle(mesh, buffer, rub, ldb1, rdb);
+  mesh_addtriangle(mesh, buffer, ulb, urb, ulf); /* up face */
+  mesh_addtriangle(mesh, buffer, urb, urf, ulf);
+  mesh_addtriangle(mesh, buffer, dlb, dlf, drb); /* down face */
+  mesh_addtriangle(mesh, buffer, drb, dlf, drf);
+
+  /* setup material */
+  mesh->materials[0].flags = _FLAG_CULL;
+
+  return mesh;
+}
+
 static struct mesh_t* _mesh_load_assimp(const char* filename)
 {
   lassbin_scene_t* scene;

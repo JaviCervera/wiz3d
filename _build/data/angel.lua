@@ -7,7 +7,7 @@ screen.setdrawcolor(color.rgb(240, 240, 240))
 
 -- create and position viewer
 local view = viewer.new()
-view.color = color.rgb(15, 15, 15)
+view.clearcolor = color.rgb(15, 15, 15)
 viewer.move(view, 7, 7, -7)
 viewer.turn(view, 37.5, -45, 0)
 

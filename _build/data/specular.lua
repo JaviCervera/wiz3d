@@ -7,7 +7,7 @@ screen.set(800, 600, false, true)
 
 -- create viewer
 local view = viewer.new()
-view.color = _COLOR_DARKGRAY
+view.clearcolor = _COLOR_DARKGRAY
 viewer.move(view, 0, 0, -6)
 
 -- setup lighting

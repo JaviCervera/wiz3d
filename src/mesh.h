@@ -25,6 +25,7 @@ struct material_t* mesh_material(struct mesh_t* mesh, int buffer);
 int _mesh_lastframe(struct mesh_t* mesh);
 void _mesh_animate(struct mesh_t* mesh, float frame);
 void _mesh_draw(struct mesh_t* mesh, struct material_t* materials);
+struct mesh_t* _mesh_newskybox();
 #endif
 
 #ifdef __cplusplus

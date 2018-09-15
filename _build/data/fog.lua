@@ -10,7 +10,7 @@ light.turn(dir_light, 45, 45)
 
 -- create and position viewer
 local view = viewer.new()
-view.color = _COLOR_DARKGRAY
+view.clearcolor = _COLOR_DARKGRAY
 viewer.move(view, 0, 0, -7)
 view.max = 5000
 view.fogenabled = true

@@ -3,12 +3,18 @@
 #include "viewer.h"
 #include "color.h"
 #include "light.h"
+#include "material.h"
+#include "mesh.h"
 #include "screen.h"
+#include "texture.h"
 #include "util.h"
 #include <math.h>
 
-static struct viewer_t* _view_active_viewer;
+static struct viewer_t* _view_active_viewer = NULL;
 static lmat4_t _view_matrix;
+static struct mesh_t* _viewer_skybox = NULL;
+
+static struct mesh_t* _viewer_skybox_mesh(struct texture_t* texture);
 
 struct viewer_t* viewer_new()
 {
@@ -23,7 +29,9 @@ struct viewer_t* viewer_new()
   viewer->vy = 0;
   viewer->vw = -1;
   viewer->vh = -1;
-  viewer->color = color_rgb(52, 73, 94);
+  viewer->clearmode = _CLEAR_COLOR;
+  viewer->clearcolor = color_rgb(52, 73, 94);
+  viewer->skybox = NULL;
   viewer->ortho = FALSE;
   viewer->fov = 60;
   viewer->min = 1;
@@ -67,8 +75,13 @@ void viewer_prepare(struct viewer_t* viewer)
   int vp_w;
   int vp_h;
   float ratio;
+  float halfrange;
   lmat4_t proj;
+  lmat4_t modelview;
   lquat_t q;
+
+  /* set active viewer */
+  _view_active_viewer = viewer;
 
   /* get real viewport size */
   vp_w = (viewer->vw != -1) ? viewer->vw : screen_width() - viewer->vx;
@@ -104,11 +117,30 @@ void viewer_prepare(struct viewer_t* viewer)
 
   /* clear buffers */
   lgfx_setdepthwrite(TRUE);
-  lgfx_clearcolorbuffer(color_red(viewer->color) / 255.0f, color_green(viewer->color) / 255.0f, color_blue(viewer->color) / 255.0f);
   lgfx_cleardepthbuffer();
+  switch (viewer->clearmode)
+  {
+    case _CLEAR_COLOR:
+      lgfx_clearcolorbuffer(
+        color_red(viewer->clearcolor) / 255.0f,
+        color_green(viewer->clearcolor) / 255.0f,
+        color_blue(viewer->clearcolor) / 255.0f);
+      break;
+    case _CLEAR_SKYBOX:
+      halfrange = (viewer->max - viewer->min) * 0.5f;
+      /* calculate modelview */
+      modelview = lmat4_transform(
+        lvec3(0, 0, 0),
+        lquat(1, 0, 0, 0),
+        lvec3(halfrange, halfrange, halfrange));
+      modelview = lmat4_mul(_view_matrix, modelview);
+      lgfx_setmodelview(modelview.m);
 
-  /* set active viewer */
-  _view_active_viewer = viewer;
+      /* draw skybox */
+      _mesh_draw(_viewer_skybox_mesh(viewer->skybox), NULL);
+
+      break;
+  }
 }
 
 struct viewer_t* _viewer_active()
@@ -119,4 +151,11 @@ struct viewer_t* _viewer_active()
 void* _viewer_activematrix()
 {
   return &_view_matrix;
+}
+
+static struct mesh_t* _viewer_skybox_mesh(struct texture_t* texture)
+{
+  if (!_viewer_skybox) _viewer_skybox = _mesh_newskybox();
+  mesh_material(_viewer_skybox, 0)->texture = texture;
+  return _viewer_skybox;
 }

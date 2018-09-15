@@ -1,12 +1,11 @@
 TAU
-- Added object.new()
-- Added object.newfrommemory()
-- Added skybox
 - Added billboards
 * Added 2d functions
-- Added mesh bounding box
+- Added object.new()
 - Added audio support (WAV and OGG)
 * Ported Vortex samples (except for shadows and collisions)
+- Added object.newfrommemory()
+- Added mesh bounding box
 * Added ODE physics
 - Added TinyGL support
 ======

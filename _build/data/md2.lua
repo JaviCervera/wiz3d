@@ -3,7 +3,7 @@ screen.set(800, 600, false, true)
 
 -- create and position viewer
 local view = viewer.new()
-view.color = _COLOR_DARKGRAY
+view.clearcolor = _COLOR_DARKGRAY
 viewer.move(view, 0, 2, -4)
 viewer.turn(view, 15, 0, 0)
 

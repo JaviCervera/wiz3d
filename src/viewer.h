@@ -3,28 +3,36 @@
 
 #include "types.h"
 
+#define _CLEAR_NONE   0
+#define _CLEAR_COLOR  1
+#define _CLEAR_SKYBOX 2
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+struct texture_t;
+
 struct viewer_t
 {
-  float  x, y, z;
-  float  pitch, yaw, roll;
-  int    vx;
-  int    vy;
-  int    vw;
-  int    vh;
-  int    color;
-  bool_t ortho;
-  float  fov;
-  float  min;
-  float  max;
-  bool_t fogenabled;
-  int    fogcolor;
-  float  fogmin;
-  float  fogmax;
+  float             x, y, z;
+  float             pitch, yaw, roll;
+  int               vx;
+  int               vy;
+  int               vw;
+  int               vh;
+  int               clearmode;
+  int               clearcolor;
+  struct texture_t* skybox;
+  bool_t            ortho;
+  float             fov;
+  float             min;
+  float             max;
+  bool_t            fogenabled;
+  int               fogcolor;
+  float             fogmin;
+  float             fogmax;
 };
 
 struct viewer_t* viewer_new();

@@ -6,7 +6,8 @@ screen.set(800, 600, false, true)
 
 -- create and position viewer
 local view = viewer.new()
-view.color = _COLOR_DARKGRAY
+view.clearmode = _CLEAR_SKYBOX
+view.skybox = texture.load("skybox.png")
 viewer.move(view, 0, 4, -8)
 viewer.turn(view, 20, 0, 0)
 
