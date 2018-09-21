@@ -3,8 +3,6 @@
 #include "platform.h"
 #include "util.h"
 
-static char _p_textinput[256] = { 0 };
-
 struct p_window_t
 {
   SDL_Window*   window;
@@ -142,8 +140,6 @@ void p_refresh_screen(void* win)
       break;
     case SDL_QUIT:
       break;
-    case SDL_TEXTINPUT:
-      strcat(_p_textinput, event.text.text);
     }
   }
 
@@ -173,15 +169,4 @@ int p_screen_height(void* win)
 void p_messagebox(const char* title, const char* message)
 {
   SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, title, message, NULL);
-}
-
-void p_starttextinput()
-{
-  SDL_StartTextInput();
-}
-
-const char* p_stoptextinput()
-{
-  SDL_StopTextInput();
-  return _p_textinput;
 }

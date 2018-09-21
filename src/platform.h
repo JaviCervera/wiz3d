@@ -34,9 +34,6 @@ int p_screen_height(void* win);
 
 void p_messagebox(const char* title, const char* message);
 
-void p_starttextinput();
-const char* p_stoptextinput();
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

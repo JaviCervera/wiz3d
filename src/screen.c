@@ -52,9 +52,6 @@ void screen_set(int width, int height, bool_t fullscreen, bool_t resizable)
 
 void screen_refresh()
 {
-  int v, i;
-  float print_y;
-
   /* update physics */
   _physics_update(_screen_delta);
 
