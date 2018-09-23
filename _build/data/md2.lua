@@ -38,6 +38,6 @@ while screen.opened() and not input.keydown(_KEY_ESC) do
   -- draw ui
   screen.setup2d()
   screen.drawtext(math.floor(screen.fps()) .. " FPS", 4, 4)
-  screen.drawtext("Frame: " .. math.floor(md2.animframe), 4, 16)
+  screen.drawtext("Frame: " .. math.floor(md2.animframe), 4, 14)
   screen.refresh()
 end

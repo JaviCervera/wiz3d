@@ -103,9 +103,8 @@ struct object_t* object_newcube()
   mesh_addtriangle(mesh, buffer, 20, 21, 22);
   mesh_addtriangle(mesh, buffer, 20, 22, 23);
 
-  /* set object materials */
+  object_rebuildmesh(object);
   _object_setmaterials(object);
-
   return object;
 }
 
@@ -147,9 +146,8 @@ struct object_t* object_newtriangle()
   mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 0, _COLOR_WHITE);
   mesh_addtriangle(mesh, buffer, 0, 1, 2);
 
-  /* set object materials */
+  object_rebuildmesh(object);
   _object_setmaterials(object);
-
   return object;
 }
 
@@ -162,7 +160,8 @@ struct object_t* object_load(const char* filename)
   mesh = object->_mesh;
   if (mesh_load(filename, mesh))
   {
-    _object_setmaterials(object); /* set object materials */
+    object_rebuildmesh(object);
+    _object_setmaterials(object);
     return object;
   }
   else
@@ -219,9 +218,29 @@ int object_addtriangle(struct object_t* object, int buffer, int v0, int v1, int 
   return mesh_addtriangle(object->_mesh, buffer, v0, v1, v2);
 }
 
-struct material_t* object_material(struct object_t* object, int mat)
+void object_rebuildmesh(struct object_t* object)
 {
-  return &object->_materials[mat];
+  mesh_rebuild(object->_mesh);
+}
+
+struct material_t* object_material(struct object_t* object, int index)
+{
+  return &object->_materials[index];
+}
+
+float object_width(struct object_t* object)
+{
+  return mesh_width(object->_mesh) * object->sx;
+}
+
+float object_height(struct object_t* object)
+{
+  return mesh_height(object->_mesh) * object->sy;
+}
+
+float object_depth(struct object_t* object)
+{
+  return mesh_depth(object->_mesh) * object->sz;
 }
 
 void object_move(struct object_t* object, float x, float y, float z)
@@ -264,10 +283,13 @@ void object_draw(struct object_t* object)
       else object->animframe = object->animmin;
     }
     _mesh_animate(object->_mesh, object->animframe);
+    mesh_rebuild(object->_mesh);
   }
-  else
+  else if (object->animframe != 0)
   {
     _mesh_animate(object->_mesh, 0);
+    mesh_rebuild(object->_mesh);
+    object->animframe = 0;
   }
 
   /* calculate modelview */

@@ -1,5 +1,5 @@
-#define LITE_ASSBIN_USE_GFX /* add support for litegfx specific stuff in assbin laoder */
-#define LITE_MD2_USE_GFX /* add support for litegfx specific stuff in md2 laoder */
+#define LITE_ASSBIN_USE_GFX /* add support for litegfx specific stuff in assbin loader */
+#define LITE_MD2_USE_GFX /* add support for litegfx specific stuff in md2 loader */
 #include "../lib/litelibs/liteassbin.h"
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
@@ -36,6 +36,8 @@ struct mesh_t
   size_t             refcount;
   struct buffer_t*   buffers;
   struct material_t* materials;
+  lvec3_t            boxmin;
+  lvec3_t            boxmax;
 };
 
 #pragma pack(push, 1)
@@ -158,6 +160,39 @@ int mesh_addtriangle(struct mesh_t* mesh, int buffer, int v0, int v1, int v2)
   return (sb_count(mesh->buffers[buffer].indices) - 3) / 3;
 }
 
+void mesh_rebuild(struct mesh_t* mesh)
+{
+  int b, v;
+
+  /* calculate mesh bounds */
+  if (sb_count(mesh->buffers) > 0 && sb_count(mesh->buffers[0].vertices) > 0)
+  {
+    mesh->boxmin = lvec3(mesh->buffers[0].vertices[0].pos[0], mesh->buffers[0].vertices[0].pos[1], mesh->buffers[0].vertices[0].pos[2]);
+    mesh->boxmax = mesh->boxmin;
+  }
+  else
+  {
+    mesh->boxmin = lvec3(0, 0, 0);
+    mesh->boxmax = lvec3(0, 0, 0);
+  }
+  for (b = 0; b < sb_count(mesh->buffers); ++b)
+  {
+    for (v = 0; v < sb_count(mesh->buffers[b].vertices); ++v)
+    {
+      float vx, vy, vz;
+      vx = mesh->buffers[b].vertices[v].pos[0];
+      vy = mesh->buffers[b].vertices[v].pos[1];
+      vz = mesh->buffers[b].vertices[v].pos[2];
+      if (vx < mesh->boxmin.x) mesh->boxmin.x = vx;
+      if (vy < mesh->boxmin.y) mesh->boxmin.y = vy;
+      if (vz < mesh->boxmin.z) mesh->boxmin.z = vz;
+      if (vx > mesh->boxmax.x) mesh->boxmax.x = vx;
+      if (vy > mesh->boxmax.y) mesh->boxmax.y = vy;
+      if (vz > mesh->boxmax.z) mesh->boxmax.z = vz;
+    }
+  }
+}
+
 int mesh_numbuffers(struct mesh_t* mesh)
 {
   return sb_count(mesh->buffers);
@@ -166,6 +201,51 @@ int mesh_numbuffers(struct mesh_t* mesh)
 struct material_t* mesh_material(struct mesh_t* mesh, int buffer)
 {
   return &mesh->materials[buffer];
+}
+
+float mesh_width(struct mesh_t* mesh)
+{
+  return mesh->boxmax.x - mesh->boxmin.x;
+}
+
+float mesh_height(struct mesh_t* mesh)
+{
+  return mesh->boxmax.y - mesh->boxmin.y;
+}
+
+float mesh_depth(struct mesh_t* mesh)
+{
+  return mesh->boxmax.z - mesh->boxmin.z;
+}
+
+float mesh_boxminx(struct mesh_t* mesh)
+{
+  return mesh->boxmin.x;
+}
+
+float mesh_boxminy(struct mesh_t* mesh)
+{
+  return mesh->boxmin.y;
+}
+
+float mesh_boxminz(struct mesh_t* mesh)
+{
+  return mesh->boxmin.z;
+}
+
+float mesh_boxmaxx(struct mesh_t* mesh)
+{
+  return mesh->boxmax.x;
+}
+
+float mesh_boxmaxy(struct mesh_t* mesh)
+{
+  return mesh->boxmax.y;
+}
+
+float mesh_boxmaxz(struct mesh_t* mesh)
+{
+  return mesh->boxmax.z;
 }
 
 int _mesh_lastframe(struct mesh_t* mesh)

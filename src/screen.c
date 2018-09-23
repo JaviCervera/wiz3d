@@ -4,9 +4,6 @@
 #include "color.h"
 #include "default_font.h"
 #include "font.h"
-#include "light.h"
-#include "object.h"
-#include "physics.h"
 #include "platform.h"
 #include "screen.h"
 #include "util.h"
@@ -52,9 +49,6 @@ void screen_set(int width, int height, bool_t fullscreen, bool_t resizable)
 
 void screen_refresh()
 {
-  /* update physics */
-  _physics_update(_screen_delta);
-
   /* refresh screen */
   p_refresh_screen(_screen_ptr);
 

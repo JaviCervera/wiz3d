@@ -28,21 +28,12 @@ extern "C"
 
 bool_t tau_init()
 {
-  if (p_init())
-  {
-    _physics_init();
-    return TRUE;
-  }
-  else
-  {
-    return FALSE;
-  }
+  return p_init();
 }
 
 void tau_finish()
 {
   if (_screen_pointer()) p_close_screen(_screen_pointer());
-  _physics_finish();
   p_shutdown();
 }
 

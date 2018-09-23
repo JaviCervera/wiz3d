@@ -8,7 +8,6 @@
 #include "material.h"
 #include "memory.h"
 #include "object.h"
-#include "physics.h"
 #include "pixmap.h"
 #include "screen.h"
 #include "texture.h"

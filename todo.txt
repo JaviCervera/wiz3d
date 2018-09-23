@@ -1,19 +1,19 @@
+- Added collisions
+- Added tau_config.h
+- Replace light.att with light.radius
 * Added 2d functions
 - Added audio support (WAV and OGG)
+- Fixed "dancing text" bug
 * Ported Vortex samples (except for shadows and collisions)
-- Added mesh bounding box
-* Added ODE physics
-- Added material.ambient
+- Added object.newfrommemory()
+- Added ini support
+- Added file manager with pak support
+- Added texture wal support
+- Added Quake2 bsp support
 - Added lightmaps
 - Added spot lights
 - Added more primitives (sphere, cone, cylinder, ramp)
-- Added object.newfrommemory()
-- Added ini module
-- Added UI library (https://github.com/vurtun/nuklear)
+- Added material.ambient?
 - Added TinyGL support
-
-COLLISION FUNCTIONS:
-- object_setactive(bool) // enables or disables geom and rigibody
-- object_setstatic(bool) // to defined a non-placeable geom (cannot have a rigidbody)
-- object_setcollision(type) // none, sphere, box, mesh
-- object_setcollisionoffset(x, y, z)
+- Added UI library (https://github.com/vurtun/nuklear)
+- Embed stb, sdl2, etc, repositories directly
