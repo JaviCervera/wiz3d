@@ -4,7 +4,6 @@ Tau is a minimalist game engine licensed under the Zlib license. Its main featur
 * Lua scripting
 * OpenGL fixed pipeline graphics.
 * SDL for window, input and sound management.
-* ODE for physics simulation.
 
 The core runtime has been written in pure C, with the goal of being easily portable to any platform. It has currently been tested on Windows, macOS and Linux.
 
