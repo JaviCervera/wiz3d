@@ -1,5 +1,4 @@
 - Added collisions
-- Added tau_config.h
 - Replace light.att with light.radius
 * Added 2d functions
 - Added audio support (WAV and OGG)
@@ -10,6 +9,7 @@
 - Added file manager with pak support
 - Added texture wal support
 - Added Quake2 bsp support
+- Added tau_config.h
 - Added lightmaps
 - Added spot lights
 - Added more primitives (sphere, cone, cylinder, ramp)
