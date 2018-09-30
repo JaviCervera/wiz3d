@@ -1,4 +1,4 @@
-#include "../lib/sdl2/SDL.h"
+#include "../lib/sdl2/include/SDL.h"
 #include "input.h"
 #include "platform.h"
 #include "util.h"
@@ -13,7 +13,7 @@ struct p_window_t
 bool_t p_init()
 {
   /*SDL_SetMainReady();*/
-  return SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS) == 0;
+  return SDL_Init(SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_VIDEO ) == 0;
 }
 
 void p_shutdown()

@@ -13,16 +13,26 @@ stuff\swig.exe -lua -o src/wrap_screen.c stuff/screen.i
 stuff\swig.exe -lua -o src/wrap_texture.c stuff/texture.i
 stuff\swig.exe -lua -o src/wrap_viewer.c stuff/viewer.i
 
-echo generating project for mingw...
+echo generating sdl2 project for mingw...
+cd lib/sdl2
+mkdir _CMAKE
+cd _CMAKE
+cmake -G "MinGW Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel -DSDL_SHARED=OFF -DSDL_ATOMIC=OFF -DSDL_CPUINFO=OFF -DSDL_DLOPEN=OFF -DSDL_FILE=OFF -DSDL_FILESYSTEM=OFF -DSDL_RENDER=OFF -DSDL_THREADS=OFF ..
+
+echo building sdl2...
+mingw32-make
+cd ../../..
+
+echo generating tau project for mingw...
 mkdir _CMAKE
 cd _CMAKE
 cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel ..
 
-echo building...
+echo building tau...
 mingw32-make
 cd ..
 
-echo moving to _build dir...
+echo moving tau to _build dir...
 mkdir _build
 move "_CMAKE\tau.exe" "_build"
 
@@ -30,7 +40,7 @@ rem echo compressing...
 rem upx.exe _build/tau.exe
 rem upx.exe --brute _build/tau.exe
 
-echo running...
+echo running examples...
 cd _build
 tau.exe data/angel.lua
 tau.exe data/billboards.lua

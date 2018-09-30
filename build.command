@@ -14,20 +14,29 @@ swig -lua -o src/wrap_screen.c stuff/screen.i
 swig -lua -o src/wrap_texture.c stuff/texture.i
 swig -lua -o src/wrap_viewer.c stuff/viewer.i
 
-echo "generating project for gcc..."
+echo "generating sdl2 project for mingw..."
+mkdir lib/sdl2/_CMAKE
+cd lib/sdl2/_CMAKE
+cmake -G "Unix Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel -DSDL_SHARED=OFF -DSDL_ATOMIC=OFF -DSDL_CPUINFO=OFF -DSDL_DLOPEN=OFF -DSDL_FILE=OFF -DSDL_FILESYSTEM=OFF -DSDL_RENDER=OFF -DSDL_THREADS=OFF ..
+
+echo "building sdl2..."
+mingw32-make
+cd ../../..
+
+echo "generating tau project for gcc..."
 mkdir _CMAKE
 cd _CMAKE
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel ..
 
-echo "building..."
+echo "building tau..."
 make
 cd ..
 
-echo "moving to _build dir..."
+echo "moving tau to _build dir..."
 mkdir _build
 mv _CMAKE/tau _build/tau
 
-echo "running..."
+echo "running examples..."
 cd _build
 ./tau data/angel.lua
 ./tau data/billboards.lua

@@ -1,17 +1,28 @@
+VERSION 1.0
+===========
 - Added collisions
 * Added 2d functions
 - Added audio support (wav and ogg)
 * Ported Vortex samples (except for shadows and collisions)
+
+VERSION 1.0.X
+=============
 - Added object.newfrommemory()
 - Added ini support
 - Added file manager with pak support
-- Added texture wal support
-- Added Quake2 bsp support
-- Added tau_config.h
-- Added lightmaps
 - Added spot lights
 - Added more primitives (sphere, cone, cylinder, ramp)
 - Added material.ambient?
 - Added TinyGL support
 - Added UI library (https://github.com/vurtun/nuklear)
-- Create stb, sdl2, etc. subrepositories
+
+VERSION 1.1
+===========
+- Added tau_config.h
+- Added Doom wad support (maps included)
+
+VERSION 1.2
+===========
+- Added lightmaps
+- Added texture wal support
+- Added Quake2 bsp support
