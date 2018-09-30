@@ -1,4 +1,4 @@
-#include "../lib/stb_image.h"
+#include "../lib/stb/stb_image.h"
 #include "memory.h"
 #include "pixmap.h"
 #include "util.h"

@@ -1,6 +1,6 @@
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
-#include "../lib/stretchy_buffer.h"
+#include "../lib/stb/stretchy_buffer.h"
 #include "color.h"
 #include "default_font.h"
 #include "font.h"

@@ -1,6 +1,6 @@
 #include "../lib/base64/base64.h"
 #include "../lib/litelibs/litegfx.h"
-#include "../lib/stb_truetype.h"
+#include "../lib/stb/stb_truetype.h"
 #include "font.h"
 #include "util.h"
 #include <stdio.h>

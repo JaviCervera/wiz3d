@@ -15,10 +15,10 @@
 #include "../lib/litelibs/litemd2.h"
 #undef LITE_MD2_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
-#include "../lib/stb_image.h"
+#include "../lib/stb/stb_image.h"
 #undef STB_IMAGE_IMPLEMENTATION
 #define STB_TRUETYPE_IMPLEMENTATION
-#include "../lib/stb_truetype.h"
+#include "../lib/stb/stb_truetype.h"
 #undef STB_TRUETYPE_IMPLEMENTATION
 
 #ifdef __cplusplus
