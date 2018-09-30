@@ -20,7 +20,7 @@ cd lib/sdl2/_CMAKE
 cmake -G "Unix Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel -DSDL_SHARED=OFF -DSDL_ATOMIC=OFF -DSDL_CPUINFO=OFF -DSDL_DLOPEN=OFF -DSDL_FILE=OFF -DSDL_FILESYSTEM=OFF -DSDL_RENDER=OFF -DSDL_THREADS=OFF ..
 
 echo "building sdl2..."
-mingw32-make
+make
 cd ../../..
 
 echo "generating tau project for gcc..."
