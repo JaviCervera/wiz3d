@@ -90,7 +90,7 @@ void* p_open_screen(int width, int height, bool_t fullscreen, int samples, bool_
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, (samples > 0) ? 1 : 0);
   SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, samples);
-  
+
   /* flags */
   flags = SDL_WINDOW_OPENGL;
   if (fullscreen) flags |= SDL_WINDOW_FULLSCREEN;
@@ -102,10 +102,10 @@ void* p_open_screen(int width, int height, bool_t fullscreen, int samples, bool_
   win->window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
   win->context = SDL_GL_CreateContext(win->window);
   SDL_GL_MakeCurrent(win->window, win->context);
-  
+
   /* set vsync */
   SDL_GL_SetSwapInterval(vsync);
-  
+
   return win;
 }
 
@@ -127,9 +127,9 @@ void p_refresh_screen(void* win)
 {
   struct p_window_t* pwin;
   SDL_Event event;
-  
+
   pwin = (struct p_window_t*)win;
-  
+
   /* poll events */
   while (SDL_PollEvent(&event))
   {

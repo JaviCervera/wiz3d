@@ -54,7 +54,7 @@ struct object_t* object_newcube()
   object = object_new();
   mesh = object->_mesh;
   buffer = mesh_addbuffer(mesh);
-    
+
   /* add front face */
   mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, -1, 0, 0, _COLOR_WHITE);
   mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, -1, 1, 0, _COLOR_WHITE);
@@ -171,7 +171,7 @@ struct object_t* object_load(const char* filename)
   }
 }
 
-struct object_t* object_clone(struct object_t* object)
+struct object_t* object_clone(const struct object_t* object)
 {
   struct object_t* new_object = object_new();
   new_object->x = object->x;
@@ -228,17 +228,17 @@ struct material_t* object_material(struct object_t* object, int index)
   return &object->_materials[index];
 }
 
-float object_width(struct object_t* object)
+float object_width(const struct object_t* object)
 {
   return mesh_width(object->_mesh) * object->sx;
 }
 
-float object_height(struct object_t* object)
+float object_height(const struct object_t* object)
 {
   return mesh_height(object->_mesh) * object->sy;
 }
 
-float object_depth(struct object_t* object)
+float object_depth(const struct object_t* object)
 {
   return mesh_depth(object->_mesh) * object->sz;
 }
@@ -317,7 +317,7 @@ void object_draw(struct object_t* object)
   _mesh_draw(object->_mesh, object->_materials);
 }
 
-int object_numframes(struct object_t* object)
+int object_numframes(const struct object_t* object)
 {
   return _mesh_lastframe(object->_mesh);
 }

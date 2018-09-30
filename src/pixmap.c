@@ -19,7 +19,7 @@ struct pixmap_t* pixmap_new(int width, int height)
   return pixmap;
 }
 
-struct pixmap_t* pixmap_newfrommemory(struct memory_t* memory)
+struct pixmap_t* pixmap_newfrommemory(const struct memory_t* memory)
 {
   return _pixmap_newfromdata((const unsigned char*)memory, memory_size(memory));
 }
@@ -49,17 +49,17 @@ void pixmap_delete(struct pixmap_t* pixmap)
   free(pixmap);
 }
 
-int pixmap_width(struct pixmap_t* pixmap)
+int pixmap_width(const struct pixmap_t* pixmap)
 {
   return pixmap->width;
 }
 
-int pixmap_height(struct pixmap_t* pixmap)
+int pixmap_height(const struct pixmap_t* pixmap)
 {
   return pixmap->height;
 }
 
-int pixmap_color(struct pixmap_t* pixmap, int x, int y)
+int pixmap_color(const struct pixmap_t* pixmap, int x, int y)
 {
   return pixmap->pixels[y*pixmap->width + x];
 }
@@ -88,7 +88,7 @@ struct pixmap_t* _pixmap_newfromdata(const unsigned char* data, size_t len)
   return pixmap;
 }
 
-void* _pixmap_ptr(struct pixmap_t* pixmap)
+const void* _pixmap_ptr(const struct pixmap_t* pixmap)
 {
   return pixmap->pixels;
 }

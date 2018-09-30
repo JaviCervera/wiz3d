@@ -35,8 +35,8 @@ while screen.opened() and not input.keydown(_KEY_ESC) do
   value = value + screen.delta()
   local sin = 0.5 + math.abs(math.sin(value)) * 0.5
   local cos = 0.5 + math.abs(math.cos(value)) * 0.5
-  point_light1.att = 2 * sin
-  point_light2.att = 10 * cos
+  point_light1.range = 10 * sin
+  point_light2.range = 10 * cos
 
   -- draw scene
   viewer.prepare(view)

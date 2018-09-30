@@ -13,43 +13,43 @@ void memory_delete(struct memory_t* memory)
   free((int*)memory-1);
 }
 
-int memory_size(struct memory_t* memory)
+int memory_size(const struct memory_t* memory)
 {
-  return ((int*)memory-1)[0];
+  return ((const int*)memory-1)[0];
 }
 
-unsigned char memory_byte(struct memory_t* memory, int offset)
+unsigned char memory_byte(const struct memory_t* memory, int offset)
 {
   unsigned char val;
-  memcpy(&val, (char*)memory+offset, sizeof(val));
+  memcpy(&val, (const char*)memory+offset, sizeof(val));
   return val;
 }
 
-unsigned short memory_short(struct memory_t* memory, int offset)
+unsigned short memory_short(const struct memory_t* memory, int offset)
 {
   unsigned short val;
-  memcpy(&val, (char*)memory+offset, sizeof(val));
+  memcpy(&val, (const char*)memory+offset, sizeof(val));
   return val;
 }
 
-int memory_int(struct memory_t* memory, int offset)
+int memory_int(const struct memory_t* memory, int offset)
 {
   int val;
-  memcpy(&val, (char*)memory+offset, sizeof(val));
+  memcpy(&val, (const char*)memory+offset, sizeof(val));
   return val;
 }
 
-float memory_float(struct memory_t* memory, int offset)
+float memory_float(const struct memory_t* memory, int offset)
 {
   float val;
-  memcpy(&val, (char*)memory+offset, sizeof(val));
+  memcpy(&val, (const char*)memory+offset, sizeof(val));
   return val;
 }
 
-double memory_double(struct memory_t* memory, int offset)
+double memory_double(const struct memory_t* memory, int offset)
 {
   double val;
-  memcpy(&val, (char*)memory+offset, sizeof(val));
+  memcpy(&val, (const char*)memory+offset, sizeof(val));
   return val;
 }
 

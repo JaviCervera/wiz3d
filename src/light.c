@@ -31,7 +31,7 @@ struct light_t* light_new(int type)
   light->yaw = 0;
   light->type = type;
   light->color = _COLOR_WHITE;
-  light->att = 0;
+  light->range = 1000;
   _lights[i] = light;
   return light;
 }
@@ -45,7 +45,7 @@ void light_delete(struct light_t* light)
     if (light == _lights[i])
       break;
   if (i == NUM_LIGHTS) return;
-  
+
   _lights[i] = NULL;
   free(light);
 }
@@ -98,7 +98,7 @@ void _light_prepare()
       lvec3_t pos;
 
       light = _lights[i];
-      
+
       /* get position in viewer space */
       if (light->type == _LIGHT_DIRECTIONAL)
       {
@@ -125,7 +125,7 @@ void _light_prepare()
         color_red(light->color) / 255.0f,
         color_green(light->color) / 255.0f,
         color_blue(light->color) / 255.0f,
-        light->att);
+        1.0f / light->range);
     }
   }
 }

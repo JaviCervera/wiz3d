@@ -124,7 +124,7 @@ int mesh_addbuffer(struct mesh_t* mesh)
 {
   struct buffer_t* buffer;
   struct material_t* material;
-  
+
   buffer = sb_add(mesh->buffers, 1);
   material_init(sb_add(mesh->materials, 1));
   buffer->vertices = NULL;
@@ -203,52 +203,52 @@ struct material_t* mesh_material(struct mesh_t* mesh, int buffer)
   return &mesh->materials[buffer];
 }
 
-float mesh_width(struct mesh_t* mesh)
+float mesh_width(const struct mesh_t* mesh)
 {
   return mesh->boxmax.x - mesh->boxmin.x;
 }
 
-float mesh_height(struct mesh_t* mesh)
+float mesh_height(const struct mesh_t* mesh)
 {
   return mesh->boxmax.y - mesh->boxmin.y;
 }
 
-float mesh_depth(struct mesh_t* mesh)
+float mesh_depth(const struct mesh_t* mesh)
 {
   return mesh->boxmax.z - mesh->boxmin.z;
 }
 
-float mesh_boxminx(struct mesh_t* mesh)
+float mesh_boxminx(const struct mesh_t* mesh)
 {
   return mesh->boxmin.x;
 }
 
-float mesh_boxminy(struct mesh_t* mesh)
+float mesh_boxminy(const struct mesh_t* mesh)
 {
   return mesh->boxmin.y;
 }
 
-float mesh_boxminz(struct mesh_t* mesh)
+float mesh_boxminz(const struct mesh_t* mesh)
 {
   return mesh->boxmin.z;
 }
 
-float mesh_boxmaxx(struct mesh_t* mesh)
+float mesh_boxmaxx(const struct mesh_t* mesh)
 {
   return mesh->boxmax.x;
 }
 
-float mesh_boxmaxy(struct mesh_t* mesh)
+float mesh_boxmaxy(const struct mesh_t* mesh)
 {
   return mesh->boxmax.y;
 }
 
-float mesh_boxmaxz(struct mesh_t* mesh)
+float mesh_boxmaxz(const struct mesh_t* mesh)
 {
   return mesh->boxmax.z;
 }
 
-int _mesh_lastframe(struct mesh_t* mesh)
+int _mesh_lastframe(const struct mesh_t* mesh)
 {
   return (sb_count(mesh->buffers[0].frames) > 0) ? sb_last(mesh->buffers[0].frames).frame : 0;
 }
@@ -347,7 +347,7 @@ void _mesh_animate(struct mesh_t* mesh, float frame)
   }
 }
 
-void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
+void _mesh_draw(const struct mesh_t* mesh, const struct material_t* materials)
 {
   int i;
 
@@ -357,7 +357,7 @@ void _mesh_draw(struct mesh_t* mesh, struct material_t* materials)
   /* draw all buffers */
   for (i = 0; i < sb_count(mesh->buffers); ++i)
   {
-    struct material_t* material;
+    const struct material_t* material;
     int specular;
 
     material = &materials[i];

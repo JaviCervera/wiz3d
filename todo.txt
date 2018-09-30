@@ -1,8 +1,6 @@
 - Added collisions
-- Replace light.att with light.radius
 * Added 2d functions
-- Added audio support (WAV and OGG)
-- Fixed "dancing text" bug
+- Added audio support (wav and ogg)
 * Ported Vortex samples (except for shadows and collisions)
 - Added object.newfrommemory()
 - Added ini support
@@ -16,4 +14,4 @@
 - Added material.ambient?
 - Added TinyGL support
 - Added UI library (https://github.com/vurtun/nuklear)
-- Embed stb, sdl2, etc, repositories directly
+- Create stb, sdl2, etc. subrepositories

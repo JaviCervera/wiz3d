@@ -39,11 +39,11 @@ struct viewer_t* viewer_new();
 void viewer_delete(struct viewer_t* viewer);
 void viewer_move(struct viewer_t* viewer, float x, float y, float z);
 void viewer_turn(struct viewer_t* viewer, float pitch, float yaw, float roll);
-void viewer_prepare(struct viewer_t* viewer);
+void viewer_prepare(const struct viewer_t* viewer);
 
 #ifndef SWIG
-struct viewer_t* _viewer_active();
-void* _viewer_activematrix();
+const struct viewer_t* _viewer_active();
+const void* _viewer_activematrix();
 #endif
 
 #ifdef __cplusplus

@@ -22,6 +22,7 @@ int color_red(int color)
 {
   return (color >> 16) & 0xff;
 }
+
 int color_green(int color)
 {
   return (color >> 8) & 0xff;

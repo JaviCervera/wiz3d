@@ -17,7 +17,7 @@ struct light_t
   float pitch, yaw;
   int   type;
   int   color;
-  float att;
+  float range;
 };
 
 struct light_t* light_new(int type);

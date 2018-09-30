@@ -10,8 +10,9 @@ struct font_t
 {
   size_t          refcount;
   ltex_t*         tex;
-  stbtt_bakedchar glyphs[256];
+  stbtt_bakedchar glyphs[94];
   float           height;
+  float           maxheight;
 };
 
 struct font_t* font_load(const char* filename, float height)
@@ -20,10 +21,6 @@ struct font_t* font_load(const char* filename, float height)
   long len;
   unsigned char* buffer;
   struct font_t* font;
-  int w, h;
-  unsigned char* alphabuffer;
-  unsigned char* colorbuffer;
-  int i;
 
   /* read file */
   f = fopen(filename, "rb");
@@ -56,51 +53,51 @@ void font_release(struct font_t* font)
   }
 }
 
-float font_height(struct font_t* font)
+float font_height(const struct font_t* font)
 {
   return font->height;
 }
 
-float font_textwidth(struct font_t* font, const char* text)
+float font_textwidth(const struct font_t* font, const char* text)
 {
   float x = 0, y = 0;
   stbtt_aligned_quad q = { 0 };
   size_t len, i;
-  
+
   len = strlen(text);
   for (i = 0; i < len; ++i)
   {
-    stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, text[i], &x, &y, &q, TRUE);
+    stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, _min(text[i] - 32, 94), &x, &y, &q, TRUE);
   }
   return q.x1;
 }
 
-float font_textheight(struct font_t* font, const char* text)
+float font_textheight(const struct font_t* font, const char* text)
 {
   float x = 0, y = 0, miny = 999999, maxy = -999999;
   stbtt_aligned_quad q = { 0 };
   size_t len, i;
-  
+
   len = strlen(text);
   for (i = 0; i < len; ++i)
   {
-    stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, text[i], &x, &y, &q, TRUE);
-    miny = miny < q.y0 ? miny : q.y0;
-    maxy = maxy > q.y1 ? maxy : q.y1;
+    stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, _min(text[i] - 32, 94), &x, &y, &q, TRUE);
+    miny = _min(miny, q.y0);
+    maxy = _max(maxy, q.y1);
   }
   return maxy - miny;
 }
 
-void font_draw(struct font_t* font, const char* text, float x, float y)
+void font_draw(const struct font_t* font, const char* text, float x, float y)
 {
   size_t len, i;
 
-  y += font_textheight(font, text);
+  y += font->maxheight;
   len = strlen(text);
   for (i = 0; i < len; ++i)
   {
     stbtt_aligned_quad q;
-    stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, text[i], &x, &y, &q, TRUE);
+    stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, _min(text[i] - 32, 94), &x, &y, &q, TRUE);
     ltex_drawrotsized(font->tex, q.x0, q.y0, 0, 0, 0, q.x1 - q.x0, q.y1 - q.y0, q.s0, q.t0, q.s1, q.t1);
   }
 }
@@ -127,7 +124,10 @@ struct font_t* _font_loadfrommemory(const unsigned char* data, float height)
   int w, h;
   unsigned char* alphabuffer;
   unsigned char* colorbuffer;
-  int i;
+  size_t len, i;
+  float x = 0, y = 0;
+  float miny = 999999, maxy = -999999;
+  stbtt_aligned_quad q;
 
   /* create font object */
   font = _alloc(struct font_t);
@@ -137,7 +137,7 @@ struct font_t* _font_loadfrommemory(const unsigned char* data, float height)
   /* bake font into alpha buffer */
   w = h = 256;
   alphabuffer = _allocnum(unsigned char, w * h);
-  while (stbtt_BakeFontBitmap(data, 0, height, alphabuffer, w, h, 0, sizeof(font->glyphs) / sizeof(font->glyphs[0]), font->glyphs) <= 0)
+  while (stbtt_BakeFontBitmap(data, 0, height, alphabuffer, w, h, 32, sizeof(font->glyphs) / sizeof(font->glyphs[0]), font->glyphs) <= 0)
   {
     if (w == h) w *= 2;
     else h *= 2;
@@ -154,6 +154,17 @@ struct font_t* _font_loadfrommemory(const unsigned char* data, float height)
   font->tex = ltex_alloc(w, h, FALSE);
   ltex_setpixels(font->tex, colorbuffer);
   free(colorbuffer);
+
+  /* get max char height */
+  font->maxheight = -999999;
+  len = sizeof(font->glyphs) / sizeof(font->glyphs[0]);
+  for (i = 0; i < len; ++i)
+  {
+    stbtt_GetBakedQuad(font->glyphs, font->tex->width, font->tex->height, i, &x, &y, &q, TRUE);
+    miny = _min(miny, q.y0);
+    maxy = _max(maxy, q.y1);
+  }
+  font->maxheight = maxy - miny;
 
   return font;
 }

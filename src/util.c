@@ -18,23 +18,6 @@
 /*#undef DeleteFile*/
 #endif
 
-void string_write(const char* str, const char* filename, bool_t append)
-{
-  FILE* f;
-
-  /* open file to write or append */
-  f = fopen(filename, append ? "ab" : "wb");
-
-  /* if it could not be opened, return */
-  if (!f) return;
-
-  /* write string buffer */
-  fwrite(str, sizeof(char), strlen(str), f);
-
-  /* close file */
-  fclose(f);
-}
-
 void ext_strip(const char* filename, char* out, size_t len)
 {
   const char* endp;
@@ -179,4 +162,21 @@ int str_casecmp(char const *a, char const *b)
         int d = tolower((unsigned char)*a) - tolower((unsigned char)*b);
         if (d != 0 || !*a) return d;
     }
+}
+
+void str_write(const char* str, const char* filename, bool_t append)
+{
+  FILE* f;
+
+  /* open file to write or append */
+  f = fopen(filename, append ? "ab" : "wb");
+
+  /* if it could not be opened, return */
+  if (!f) return;
+
+  /* write string buffer */
+  fwrite(str, sizeof(char), strlen(str), f);
+
+  /* close file */
+  fclose(f);
 }

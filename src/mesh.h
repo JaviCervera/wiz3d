@@ -22,18 +22,18 @@ int mesh_addvertex(struct mesh_t* mesh, int buffer, float x, float y, float z, f
 int mesh_addtriangle(struct mesh_t* mesh, int buffer, int v0, int v1, int v2);
 void mesh_rebuild(struct mesh_t* mesh);
 struct material_t* mesh_material(struct mesh_t* mesh, int buffer);
-float mesh_width(struct mesh_t* mesh);
-float mesh_height(struct mesh_t* mesh);
-float mesh_depth(struct mesh_t* mesh);
-float mesh_boxminx(struct mesh_t* mesh);
-float mesh_boxminy(struct mesh_t* mesh);
-float mesh_boxminz(struct mesh_t* mesh);
-float mesh_boxmaxx(struct mesh_t* mesh);
-float mesh_boxmaxy(struct mesh_t* mesh);
-float mesh_boxmaxz(struct mesh_t* mesh);
-int _mesh_lastframe(struct mesh_t* mesh);
+float mesh_width(const struct mesh_t* mesh);
+float mesh_height(const struct mesh_t* mesh);
+float mesh_depth(const struct mesh_t* mesh);
+float mesh_boxminx(const struct mesh_t* mesh);
+float mesh_boxminy(const struct mesh_t* mesh);
+float mesh_boxminz(const struct mesh_t* mesh);
+float mesh_boxmaxx(const struct mesh_t* mesh);
+float mesh_boxmaxy(const struct mesh_t* mesh);
+float mesh_boxmaxz(const struct mesh_t* mesh);
+int _mesh_lastframe(const struct mesh_t* mesh);
 void _mesh_animate(struct mesh_t* mesh, float frame);
-void _mesh_draw(struct mesh_t* mesh, struct material_t* materials);
+void _mesh_draw(const struct mesh_t* mesh, const struct material_t* materials);
 struct mesh_t* _mesh_newskybox();
 #endif
 

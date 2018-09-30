@@ -46,7 +46,7 @@ struct object_t* object_newcube();
 struct object_t* object_newquad();
 struct object_t* object_newtriangle();
 struct object_t* object_load(const char* filename);
-struct object_t* object_clone(struct object_t* object);
+struct object_t* object_clone(const struct object_t* object);
 void object_delete(struct object_t* object);
 int object_addbuffer(struct object_t* object);
 int object_numbuffers(struct object_t* object);
@@ -54,13 +54,13 @@ int object_addvertex(struct object_t* object, int buffer, float x, float y, floa
 int object_addtriangle(struct object_t* object, int buffer, int v0, int v1, int v2);
 void object_rebuildmesh(struct object_t* object);
 struct material_t* object_material(struct object_t* object, int index);
-float object_width(struct object_t* object);
-float object_height(struct object_t* object);
-float object_depth(struct object_t* object);
+float object_width(const struct object_t* object);
+float object_height(const struct object_t* object);
+float object_depth(const struct object_t* object);
 void object_move(struct object_t* object, float x, float y, float z);
 void object_turn(struct object_t* object, float pitch, float yaw, float roll);
 void object_draw(struct object_t* object);
-int object_numframes(struct object_t* object);
+int object_numframes(const struct object_t* object);
 void object_setanimfps(float fps);
 float object_animfps();
 

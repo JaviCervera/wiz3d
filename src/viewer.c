@@ -10,7 +10,7 @@
 #include "util.h"
 #include <math.h>
 
-static struct viewer_t* _view_active_viewer = NULL;
+static const struct viewer_t* _view_active_viewer = NULL;
 static lmat4_t _view_matrix;
 static struct mesh_t* _viewer_skybox = NULL;
 
@@ -70,7 +70,7 @@ void viewer_turn(struct viewer_t* viewer, float pitch, float yaw, float roll)
   viewer->roll = vec.z;
 }
 
-void viewer_prepare(struct viewer_t* viewer)
+void viewer_prepare(const struct viewer_t* viewer)
 {
   int vp_w;
   int vp_h;
@@ -128,6 +128,7 @@ void viewer_prepare(struct viewer_t* viewer)
       break;
     case _CLEAR_SKYBOX:
       halfrange = (viewer->max - viewer->min) * 0.5f;
+      
       /* calculate modelview */
       modelview = lmat4_transform(
         lvec3(0, 0, 0),
@@ -143,12 +144,12 @@ void viewer_prepare(struct viewer_t* viewer)
   }
 }
 
-struct viewer_t* _viewer_active()
+const struct viewer_t* _viewer_active()
 {
   return _view_active_viewer;
 }
 
-void* _viewer_activematrix()
+const void* _viewer_activematrix()
 {
   return &_view_matrix;
 }
