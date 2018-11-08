@@ -39,26 +39,26 @@ The runtime accepts one optional parameter with the name of the Lua script to ru
 The script folder is always set as the active directory when running a program, so all paths should be relative to this folder.
 
 ## TODO v1.0
-- [ ] Added collisions
-- [*] Added 2d functions
-- [ ] Added audio support (wav and ogg)
-- [ ] Ported Vortex samples (except for shadows)
+- [ ] Add collisions
+- [*] Add 2d functions
+- [ ] Add audio support (wav and ogg)
+- [*] Port Vortex samples (except for shadows)
 
 ## TODO v1.0.X
-- [ ] Added object.newfrommemory()
-- [ ] Added ini support
-- [ ] Added file manager with pak support
-- [ ] Added spot lights
-- [ ] Added more primitives (sphere, cone, cylinder, ramp)
-- [ ] Added material.ambient?
-- [ ] Added TinyGL support
-- [ ] Added UI library (https://github.com/vurtun/nuklear)
+- [ ] Add object.newfrommemory()
+- [ ] Add ini support
+- [ ] Add file manager with pak support
+- [ ] Add spot lights
+- [ ] Add more primitives (sphere, cone, cylinder, ramp)
+- [ ] Add material.ambient?
+- [ ] Add TinyGL support
+- [ ] Add UI library (https://github.com/vurtun/nuklear)
 
 ## TODO v1.1
-- [ ] Added tau_config.h
-- [ ] Added Doom wad support (maps included)
+- [ ] Add tau_config.h
+- [ ] Add Doom wad support (maps included)
 
 ## TODO v1.2
-- [ ] Added lightmaps
-- [ ] Added texture wal support
-- [ ] Added Quake2 bsp support
+- [ ] Add lightmaps
+- [ ] Add texture wal support
+- [ ] Add Quake2 bsp support
