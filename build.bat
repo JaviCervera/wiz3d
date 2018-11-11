@@ -26,7 +26,7 @@ cd ../../..
 echo generating tau project for mingw...
 mkdir _CMAKE
 cd _CMAKE
-cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel ..
+cmake -G "MinGW Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel ..
 
 echo building tau...
 mingw32-make

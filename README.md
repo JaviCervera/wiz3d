@@ -7,6 +7,18 @@ Tau is a minimalist game engine licensed under the Zlib license. Its main featur
 
 The core runtime has been written in pure C, with the goal of being easily portable to any platform. It has currently been tested on Windows, macOS and Linux.
 
+Since Tau uses submodules, to correctly clone the repository, do:
+
+`git clone --recursive https://github.com/JaviCervera/tau.git`
+
+If you have already cloned the repository without initializing submodules, you can do it afterwards running this on the Tau repository:
+
+`git submodule update --init`
+
+To pull changes from the repository, including its submodules, do:
+
+`git pull --recurse-submodules`
+
 ## Building on Windows
 The libraries have been compiled with TDM-GCC. This compiler suite has not been updated in a while, but it can compile Tau without issues.
 
@@ -39,9 +51,10 @@ The runtime accepts one optional parameter with the name of the Lua script to ru
 The script folder is always set as the active directory when running a program, so all paths should be relative to this folder.
 
 ## TODO v1.0
+- [ ] Replace SDL with GLFW
 - [ ] Add collisions
 - [*] Add 2d functions
-- [ ] Add audio support (wav and ogg)
+- [ ] Add OpenAL audio support (wav and ogg)
 - [*] Port Vortex samples (except for shadows)
 
 ## TODO v1.0.X

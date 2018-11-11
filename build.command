@@ -17,7 +17,7 @@ swig -lua -o src/wrap_viewer.c stuff/viewer.i
 echo "generating sdl2 project for mingw..."
 mkdir lib/sdl2/_CMAKE
 cd lib/sdl2/_CMAKE
-cmake -G "Unix Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel -DSDL_SHARED=OFF -DSDL_ATOMIC=OFF -DSDL_CPUINFO=OFF -DSDL_DLOPEN=OFF -DSDL_FILE=OFF -DSDL_FILESYSTEM=OFF -DSDL_RENDER=OFF -DSDL_THREADS=OFF -DVIDEO_VULKAN=OFF -DVIDEO_OPENGLES=OFF ..
+cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DSDL_SHARED=OFF ..
 
 echo "building sdl2..."
 make
@@ -26,7 +26,7 @@ cd ../../..
 echo "generating tau project for gcc..."
 mkdir _CMAKE
 cd _CMAKE
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel ..
+cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel ..
 
 echo "building tau..."
 make
