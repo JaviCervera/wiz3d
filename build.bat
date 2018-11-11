@@ -44,6 +44,7 @@ echo running examples...
 cd _build
 tau.exe data/angel.lua
 tau.exe data/billboards.lua
+tau.exe data/collisions.lua
 tau.exe data/fog.lua
 tau.exe data/helloworld.lua
 tau.exe data/hoverbike.lua

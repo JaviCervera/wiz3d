@@ -5,6 +5,9 @@
 #define LITE_ASSBIN_IMPLEMENTATION
 #include "../lib/litelibs/liteassbin.h"
 #undef LITE_ASSBIN_IMPLEMENTATION
+#define LITE_COL_IMPLEMENTATION
+#include "../lib/litelibs/litecol.h"
+#undef LITE_COL_IMPLEMENTATION
 #define LITE_GFX_IMPLEMENTATION
 #include "../lib/litelibs/litegfx.h"
 #undef LITE_GFX_IMPLEMENTATION

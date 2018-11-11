@@ -16,6 +16,10 @@
 #define _BLEND_ADD    2
 #define _BLEND_MUL    3
 
+#define _COL_NONE 0
+#define _COL_SPHERE 1
+#define _COL_BOX 2
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -30,6 +34,8 @@ struct object_t
   float pitch, yaw, roll;
   float sx, sy, sz;
   int   billboard;
+  int   colmode;
+  float radius;
   int   animmode;
   float animspeed;
   float animframe;
@@ -57,8 +63,15 @@ struct material_t* object_material(struct object_t* object, int index);
 float object_width(const struct object_t* object);
 float object_height(const struct object_t* object);
 float object_depth(const struct object_t* object);
+float object_minx(const struct object_t* object);
+float object_miny(const struct object_t* object);
+float object_minz(const struct object_t* object);
+float object_maxx(const struct object_t* object);
+float object_maxy(const struct object_t* object);
+float object_maxz(const struct object_t* object);
 void object_move(struct object_t* object, float x, float y, float z);
 void object_turn(struct object_t* object, float pitch, float yaw, float roll);
+bool_t object_collidesobject(struct object_t* object, struct object_t* object2);
 void object_draw(struct object_t* object);
 int object_numframes(const struct object_t* object);
 void object_setanimfps(float fps);

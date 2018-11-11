@@ -40,6 +40,7 @@ echo "running examples..."
 cd _build
 ./tau data/angel.lua
 ./tau data/billboards.lua
+./tau data/collisions.lua
 ./tau data/fog.lua
 ./tau data/helloworld.lua
 ./tau data/hoverbike.lua

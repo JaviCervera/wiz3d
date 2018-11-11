@@ -52,12 +52,13 @@ The script folder is always set as the active directory when running a program, 
 
 ## TODO v1.0
 - [x] Replace SDL with GLFW
-- [ ] Add collisions
+- [x] Add collisions
+- [ ] Add static collisions
 - [*] Add 2d functions
 - [ ] Add OpenAL audio support (wav and ogg)
-- [*] Port Vortex samples (except for shadows)
+- [*] Port Vortex samples
 
-## TODO v1.0.X
+## TODO v1.0.x
 - [ ] Add object.newfrommemory()
 - [ ] Add ini support
 - [ ] Add file manager with pak support

@@ -1,3 +1,4 @@
+#include "../lib/litelibs/litecol.h"
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
 #include "../lib/stb/stretchy_buffer.h"
@@ -35,6 +36,8 @@ struct object_t* object_new()
   object->sy = 1;
   object->sz = 1;
   object->billboard = _BILLBOARD_NONE;
+  object->colmode = _COL_NONE;
+  object->radius = 0;
   object->animmode = _ANIM_STOP;
   object->animspeed = 1;
   object->animframe = 0;
@@ -243,6 +246,42 @@ float object_depth(const struct object_t* object)
   return mesh_depth(object->_mesh) * object->sz;
 }
 
+float object_minx(const struct object_t* object)
+{
+  return object->x + mesh_boxminx(object->_mesh) * object->sx;
+}
+
+float object_miny(const struct object_t* object)
+{
+  return object->y + mesh_boxminy(object->_mesh) * object->sy;
+}
+
+float object_minz(const struct object_t* object)
+{
+  if (object->billboard == _BILLBOARD_NONE)
+    return object->z + mesh_boxminz(object->_mesh) * object->sz;
+  else
+    return object_minx(object);
+}
+
+float object_maxx(const struct object_t* object)
+{
+  return object->x + mesh_boxmaxx(object->_mesh) * object->sx;
+}
+
+float object_maxy(const struct object_t* object)
+{
+  return object->y + mesh_boxmaxy(object->_mesh) * object->sy;
+}
+
+float object_maxz(const struct object_t* object)
+{
+  if (object->billboard == _BILLBOARD_NONE)
+    return object->z + mesh_boxmaxz(object->_mesh) * object->sz;
+  else
+    return object_maxx(object);
+}
+
 void object_move(struct object_t* object, float x, float y, float z)
 {
   lvec3_t vec;
@@ -261,6 +300,49 @@ void object_turn(struct object_t* object, float pitch, float yaw, float roll)
   object->pitch = vec.x;
   object->yaw = vec.y;
   object->roll = vec.z;
+}
+
+bool_t object_collidesobject(struct object_t* object, struct object_t* object2)
+{
+  if (object != object2 && object->colmode != _COL_NONE && object2->colmode != _COL_NONE)
+  {
+    if (object->colmode == _COL_SPHERE && object2->colmode == _COL_SPHERE )
+    {
+      return lcol_spheresphere(
+        object->x, object->y, object->z, object->radius * object->radius,
+        object2->x, object2->y, object2->z, object2->radius * object2->radius
+      ) == 1;
+    }
+    else if (object->colmode == _COL_SPHERE && object2->colmode == _COL_BOX )
+    {
+      return lcol_boxsphere(
+        object_minx(object2), object_miny(object2), object_minz(object2),
+        object_maxx(object2), object_maxy(object2), object_maxz(object2),
+        object->x, object->y, object->z, object->radius * object->radius
+      ) == 1;
+    }
+    else if (object->colmode == _COL_BOX && object2->colmode == _COL_SPHERE )
+    {
+      return lcol_boxsphere(
+        object_minx(object), object_miny(object), object_minz(object),
+        object_maxx(object), object_maxy(object), object_maxz(object),
+        object2->x, object2->y, object2->z, object2->radius * object2->radius
+      ) == 1;
+    }
+    else if (object->colmode == _COL_BOX && object2->colmode == _COL_BOX )
+    {
+      return lcol_boxbox(
+        object_minx(object), object_miny(object), object_minz(object),
+        object_maxx(object), object_maxy(object), object_maxz(object),
+        object_minx(object2), object_miny(object2), object_minz(object2),
+        object_maxx(object2), object_maxy(object2), object_maxz(object2)
+      ) == 1;
+    }
+  }
+  else
+  {
+    return FALSE;
+  }
 }
 
 void object_draw(struct object_t* object)
