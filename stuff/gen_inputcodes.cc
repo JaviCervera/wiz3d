@@ -57,7 +57,7 @@ int main(int, char**)
   std::string out;
 
   // write out main function
-  out += "#include \"../lib/sdl2/SDL_keycode.h\"\n";
+  out += "#include \"../lib/glfw/include/GLFW/glfw3.h\"\n";
   out += "#include <cstdio>\n";
   out += "#include <fstream>\n\n";
   out += "int main(int, char**)\n{\n";
@@ -71,8 +71,8 @@ int main(int, char**)
   {
     const std::string& line = *it;
     if ( line == "" ) continue;
-    std::string outname = string_replace(line, "SDLK_", "_KEY_");
-    outname = string_replace(line, "_ESCAPE", "_ESC");
+    std::string outname = string_replace(line, "GLFW_KEY_", "_KEY_");
+    outname = string_replace(outname, "_ESCAPE", "_ESC");
     std::transform(outname.begin(), outname.end(), outname.begin(), ::toupper);
     
     out += "\tsprintf(msg, \"#define " + outname + " %i\\n\", " + line + "); out += msg;\n";

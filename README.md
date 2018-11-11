@@ -51,7 +51,7 @@ The runtime accepts one optional parameter with the name of the Lua script to ru
 The script folder is always set as the active directory when running a program, so all paths should be relative to this folder.
 
 ## TODO v1.0
-- [ ] Replace SDL with GLFW
+- [x] Replace SDL with GLFW
 - [ ] Add collisions
 - [*] Add 2d functions
 - [ ] Add OpenAL audio support (wav and ogg)

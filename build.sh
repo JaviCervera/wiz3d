@@ -14,12 +14,12 @@ swig -lua -o src/wrap_screen.c stuff/screen.i
 swig -lua -o src/wrap_texture.c stuff/texture.i
 swig -lua -o src/wrap_viewer.c stuff/viewer.i
 
-echo "generating sdl2 project for mingw..."
-mkdir lib/sdl2/_CMAKE
-cd lib/sdl2/_CMAKE
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -DSDL_SHARED=OFF -DSDL_ATOMIC=OFF -DSDL_CPUINFO=OFF -DSDL_DLOPEN=OFF -DSDL_FILE=OFF -DSDL_FILESYSTEM=OFF -DSDL_RENDER=OFF -DSDL_THREADS=OFF -DVIDEO_VULKAN=OFF -DVIDEO_OPENGLES=OFF -DVIDEO_WAYLAND=OFF ..
+echo "generating glfw project for mingw..."
+mkdir lib/glfw/_CMAKE
+cd lib/glfw/_CMAKE
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=OFF -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_INSTALL=OFF ..
 
-echo "building sdl2..."
+echo "building glfw..."
 make
 cd ../../..
 
