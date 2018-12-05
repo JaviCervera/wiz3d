@@ -1,7 +1,7 @@
 .vscode
 _CMAKE
 *log.txt
-_build/tau*
+_build/micron*
 src/wrap_*.c
 
 

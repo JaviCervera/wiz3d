@@ -23,32 +23,32 @@ echo building glfw...
 mingw32-make
 cd ../../..
 
-echo generating tau project for mingw...
+echo generating micron project for mingw...
 mkdir _CMAKE
 cd _CMAKE
 cmake -G "MinGW Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel ..
 
-echo building tau...
+echo building micron...
 mingw32-make
 cd ..
 
-echo moving tau to _build dir...
+echo moving micron to _build dir...
 mkdir _build
-move "_CMAKE\tau.exe" "_build"
+move "_CMAKE\micron.exe" "_build"
 
 rem echo compressing...
-rem upx.exe _build/tau.exe
-rem upx.exe --brute _build/tau.exe
+rem upx.exe _build/micron.exe
+rem upx.exe --brute _build/micron.exe
 
 echo running examples...
 cd _build
-tau.exe data/angel.lua
-tau.exe data/billboards.lua
-tau.exe data/collisions.lua
-tau.exe data/fog.lua
-tau.exe data/helloworld.lua
-tau.exe data/hoverbike.lua
-tau.exe data/md2.lua
-tau.exe data/rotatingcube.lua
-tau.exe data/specular.lua
+micron.exe data/angel.lua
+micron.exe data/billboards.lua
+micron.exe data/collisions.lua
+micron.exe data/fog.lua
+micron.exe data/helloworld.lua
+micron.exe data/hoverbike.lua
+micron.exe data/md2.lua
+micron.exe data/rotatingcube.lua
+micron.exe data/specular.lua
 pause

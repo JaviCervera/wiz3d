@@ -1,5 +1,5 @@
 #include "script.h"
-#include "tau.h"
+#include "micron.h"
 #include "util.h"
 #include <string.h>
 
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
   dir_strip(script_file, script_file, sizearr(script_file));
 
   /* setup */
-  tau_init();
+  micron_init();
   screen_set(640, 480, FALSE, FALSE);
   light_setambient(_COLOR_DARKGRAY);
 
@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 
   /* shutdown */
   script_finish();
-  tau_finish();
+  micron_finish();
 
   return 0;
 }

@@ -23,29 +23,29 @@ echo "building glfw..."
 make
 cd ../../..
 
-echo "generating tau project for gcc..."
+echo "generating micron project for gcc..."
 mkdir _CMAKE
 cd _CMAKE
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel ..
 
-echo "building tau..."
+echo "building micron..."
 make
 cd ..
 
-echo "moving tau to _build dir..."
+echo "moving micron to _build dir..."
 mkdir _build
-mv _CMAKE/tau _build/tau
+mv _CMAKE/micron _build/micron
 
 echo "running examples..."
 cd _build
-./tau data/angel.lua
-./tau data/billboards.lua
-./tau data/collisions.lua
-./tau data/fog.lua
-./tau data/helloworld.lua
-./tau data/hoverbike.lua
-./tau data/md2.lua
-./tau data/rotatingcube.lua
-./tau data/specular.lua
+./micron data/angel.lua
+./micron data/billboards.lua
+./micron data/collisions.lua
+./micron data/fog.lua
+./micron data/helloworld.lua
+./micron data/hoverbike.lua
+./micron data/md2.lua
+./micron data/rotatingcube.lua
+./micron data/specular.lua
 
 echo "done."

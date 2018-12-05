@@ -3,6 +3,7 @@
 #include "input.h"
 #include "platform.h"
 #include "util.h"
+#include <math.h>
 
 bool_t p_init()
 {

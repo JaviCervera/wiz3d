@@ -2,17 +2,17 @@
 cmake_minimum_required(VERSION 2.6)
 
 #Define project
-project(tau)
+project(micron)
 
 #Define file groups
-file(GLOB TAU_FILES "src/*.c" "lib/lua/*.c" "lib/base64/base64.c" "lib/tinyfiledialogs/tinyfiledialogs.c")
+file(GLOB MICRON_FILES "src/*.c" "lib/lua/*.c" "lib/base64/base64.c" "lib/tinyfiledialogs/tinyfiledialogs.c")
 
 #Add header and lib directories
 include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/lua ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 link_directories(${LINK_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw/_CMAKE/src)
 
 #Add executable targets
-add_executable(tau ${TAU_FILES})
+add_executable(micron ${MICRON_FILES})
 
 #Add platform specific options
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -26,19 +26,19 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 		set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++98 -fno-exceptions -fno-rtti")
 		set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-s -static -mwindows")
 	endif (MSVC)
-	target_link_libraries(tau glfw3 opengl32 gdi32 user32 ${TARGET_LINK_LIBRARIES})
+	target_link_libraries(micron glfw3 opengl32 gdi32 user32 ${TARGET_LINK_LIBRARIES})
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	message("Platform is macOS")
 	#add_definitions(-std=c++11 -stdlib=libc++)
 	#set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-std=c90 -pedantic-errors -Wall")
 	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++98 -fno-exceptions -fno-rtti")
-	target_link_libraries(tau glfw3 "-framework AppKit" "-framework CoreVideo" "-framework IOKit" "-framework OpenGL" ${TARGET_LINK_LIBRARIES})
+	target_link_libraries(micron glfw3 "-framework AppKit" "-framework CoreVideo" "-framework IOKit" "-framework OpenGL" ${TARGET_LINK_LIBRARIES})
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	message("Platform is Linux")
 	#set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-std=c90 -pedantic-errors -Wall")
 	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fno-exceptions -fno-rtti")
 	#set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-s -static")
-	target_link_libraries(tau glfw3 GL X11 Xrandr Xi Xxf86vm Xinerama Xcursor pthread dl ${TARGET_LINK_LIBRARIES})
+	target_link_libraries(micron glfw3 GL X11 Xrandr Xi Xxf86vm Xinerama Xcursor pthread dl ${TARGET_LINK_LIBRARIES})
 else (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	message("Unrecognized platform " ${CMAKE_SYSTEM_NAME})
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
