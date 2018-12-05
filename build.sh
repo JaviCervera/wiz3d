@@ -12,6 +12,7 @@ swig -lua -o src/wrap_memory.c stuff/memory.i
 swig -lua -o src/wrap_object.c stuff/object.i
 swig -lua -o src/wrap_pixmap.c stuff/pixmap.i
 swig -lua -o src/wrap_screen.c stuff/screen.i
+swig -lua -o src/wrap_sound.c stuff/sound.i
 swig -lua -o src/wrap_texture.c stuff/texture.i
 swig -lua -o src/wrap_viewer.c stuff/viewer.i
 

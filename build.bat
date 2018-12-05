@@ -11,6 +11,7 @@ stuff\swig.exe -lua -o src/wrap_memory.c stuff/memory.i
 stuff\swig.exe -lua -o src/wrap_object.c stuff/object.i
 stuff\swig.exe -lua -o src/wrap_pixmap.c stuff/pixmap.i
 stuff\swig.exe -lua -o src/wrap_screen.c stuff/screen.i
+stuff\swig.exe -lua -o src/wrap_sound.c stuff/sound.i
 stuff\swig.exe -lua -o src/wrap_texture.c stuff/texture.i
 stuff\swig.exe -lua -o src/wrap_viewer.c stuff/viewer.i
 
@@ -32,6 +33,9 @@ cmake -G "MinGW Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel -D
 
 echo building openal-soft...
 mingw32-make
+
+echo renaming openal-soft static lib...
+rename libOpenAL32.dll.a libOpenAL32.a
 cd ../../..
 
 echo moving openal-soft to _build dir...

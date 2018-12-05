@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
+int luaopen_colbox(lua_State* l);
 int luaopen_color(lua_State* l);
 int luaopen_fog(lua_State* l);
 int luaopen_input(lua_State* l);
@@ -15,6 +16,7 @@ int luaopen_memory(lua_State* l);
 int luaopen_object(lua_State* l);
 int luaopen_pixmap(lua_State* l);
 int luaopen_screen(lua_State* l);
+int luaopen_sound(lua_State* l);
 int luaopen_texture(lua_State* l);
 int luaopen_viewer(lua_State* l);
 
@@ -35,6 +37,7 @@ bool_t script_init()
   luaL_requiref(_lua_state, "string", luaopen_string, TRUE); lua_pop(_lua_state, 1);
   luaL_requiref(_lua_state, "table", luaopen_table, TRUE); lua_pop(_lua_state, 1);
   luaL_requiref(_lua_state, "math", luaopen_math, TRUE); lua_pop(_lua_state, 1);
+  luaopen_colbox(_lua_state);
   luaopen_color(_lua_state);
   luaopen_input(_lua_state);
   luaopen_light(_lua_state);
@@ -44,10 +47,12 @@ bool_t script_init()
   luaopen_object(_lua_state);
   luaopen_pixmap(_lua_state);
   luaopen_screen(_lua_state);
+  luaopen_sound(_lua_state);
   luaopen_texture(_lua_state);
   luaopen_viewer(_lua_state);
 
   /* move constants into global namespace */
+  luaL_dostring(_lua_state, "for k,v in pairs(colbox) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(color) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(input) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(light) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
@@ -57,6 +62,7 @@ bool_t script_init()
   luaL_dostring(_lua_state, "for k,v in pairs(object) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(pixmap) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(screen) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
+  luaL_dostring(_lua_state, "for k,v in pairs(sound) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(texture) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
   luaL_dostring(_lua_state, "for k,v in pairs(viewer) do if k:sub(1, 1) == \"_\" then _G[k]=v end end");
 
