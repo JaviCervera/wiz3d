@@ -15,12 +15,21 @@ swig -lua -o src/wrap_screen.c stuff/screen.i
 swig -lua -o src/wrap_texture.c stuff/texture.i
 swig -lua -o src/wrap_viewer.c stuff/viewer.i
 
-echo "generating glfw project for mingw..."
+echo "generating glfw project for gcc..."
 mkdir lib/glfw/_CMAKE
 cd lib/glfw/_CMAKE
 cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=OFF -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_INSTALL=OFF ..
 
 echo "building glfw..."
+make
+cd ../../..
+
+echo "generating openal-soft project for gcc..."
+mkdir lib/openal-soft/_CMAKE
+cd lib/openal-soft/_CMAKE
+cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DALSOFT_EXAMPLES=OFF -DALSOFT_INSTALL=OFF -DALSOFT_NO_CONFIG_UTIL=ON -DALSOFT_STATIC_LIBGCC=ON -DALSOFT_TESTS=OFF -DALSOFT_UTILS=OFF ..
+
+echo "building openal-soft..."
 make
 cd ../../..
 

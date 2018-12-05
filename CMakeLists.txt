@@ -9,7 +9,7 @@ file(GLOB MICRON_FILES "src/*.c" "lib/lua/*.c" "lib/base64/base64.c" "lib/tinyfi
 
 #Add header and lib directories
 include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/lua ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-link_directories(${LINK_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw/_CMAKE/src)
+link_directories(${LINK_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw/_CMAKE/src ${CMAKE_CURRENT_SOURCE_DIR}/lib/openal-soft/_CMAKE)
 
 #Add executable targets
 add_executable(micron ${MICRON_FILES})

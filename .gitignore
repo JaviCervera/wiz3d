@@ -2,6 +2,7 @@
 _CMAKE
 *log.txt
 _build/micron*
+_build/OpenAL32.dll
 src/wrap_*.c
 
 

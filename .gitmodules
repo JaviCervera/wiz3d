@@ -5,3 +5,7 @@
 	path = lib/glfw
 	url = https://github.com/glfw/glfw.git
 	branch = 3.2.1
+[submodule "lib/openal-soft"]
+	path = lib/openal-soft
+	url = https://github.com/kcat/openal-soft.git
+	branch = v1.19
