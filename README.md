@@ -51,7 +51,7 @@ The runtime accepts one optional parameter with the name of the Lua script to ru
 
 The script folder is always set as the active directory when running a program, so all paths should be relative to this folder.
 
-## TODO v1.0
+## TODO v0.9
 - [x] Replace SDL with GLFW
 - [x] Add collisions
 - [x] Add static collisions
@@ -59,21 +59,21 @@ The script folder is always set as the active directory when running a program, 
 - [ ] Add OpenAL audio support (wav and ogg)
 - [ ] Port Vortex samples
 
-## TODO v1.0.x
+## TODO v1.0
+- [ ] Add lightmaps
 - [ ] Add object.newfrommemory()
 - [ ] Add ini support
 - [ ] Add file manager with pak support
 - [ ] Add spot lights
 - [ ] Add more primitives (sphere, cone, cylinder, ramp)
 - [ ] Add material.ambient?
-- [ ] Add TinyGL support
 - [ ] Add UI library (https://github.com/vurtun/nuklear)
 
 ## TODO v1.1
+- [ ] Add TinyGL support
 - [ ] Add micron_config.h
 - [ ] Add Doom wad support (maps included)
 
 ## TODO v1.2
-- [ ] Add lightmaps
 - [ ] Add texture wal support
 - [ ] Add Quake2 bsp support
