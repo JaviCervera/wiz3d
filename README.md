@@ -55,7 +55,7 @@ The script folder is always set as the active directory when running a program, 
 - [x] Replace SDL with GLFW
 - [x] Add collisions
 - [x] Add static collisions
-- [ ] Add 2d functions
+- [x] Add 2d functions
 - [ ] Add OpenAL audio support (wav and ogg)
 - [ ] Port Vortex samples
 

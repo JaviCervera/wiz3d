@@ -6,6 +6,7 @@
 #include "font.h"
 #include "platform.h"
 #include "screen.h"
+#include "texture.h"
 #include "util.h"
 #include <string.h>
 
@@ -138,6 +139,33 @@ void screen_clear(int color)
 void screen_setdrawfontdefault()
 {
   _screen_font = _default_font;
+}
+
+void screen_drawpoint(float x, float y)
+{
+  lgfx_drawpoint(x, y);
+}
+
+void screen_drawline(float x1, float y1, float x2, float y2)
+{
+  lgfx_drawline(x1, y1, x2, y2);
+}
+
+void screen_drawellipse(float x, float y, float width, float height)
+{
+  lgfx_drawoval(x, y, width, height);
+}
+
+void screen_drawrect(float x, float y, float width, float height)
+{
+  lgfx_drawrect(x, y, width, height);
+}
+
+void screen_drawtexture(const struct texture_t* tex, float x, float y, float width, float height)
+{
+  const ltex_t* ltex = (const ltex_t*)_texture_ptr(tex);
+  ltex_bindcolor(ltex);
+  lgfx_drawrect(x, y, width != 0 ? width : ltex->width, height != 0 ? height : ltex->height);
 }
 
 void screen_drawtext(const char* text, float x, float y)

@@ -46,6 +46,7 @@ cd _build
 ./micron data/helloworld.lua
 ./micron data/hoverbike.lua
 ./micron data/md2.lua
+./micron data/primitives.lua
 ./micron data/rotatingcube.lua
 ./micron data/specular.lua
 

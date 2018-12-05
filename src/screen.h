@@ -8,6 +8,8 @@ extern "C"
 {
 #endif
 
+struct texture_t;
+
 void screen_set(int width, int height, bool_t fullscreen, bool_t resizable);
 void screen_refresh();
 void screen_settitle(const char* title);
@@ -18,6 +20,11 @@ void screen_setdrawcolor(int color);
 void screen_setdrawfont(const char* filename, float height);
 void screen_setdrawfontdefault();
 void screen_clear(int color);
+void screen_drawpoint(float x, float y);
+void screen_drawline(float x1, float y1, float x2, float y2);
+void screen_drawellipse(float x, float y, float width, float height);
+void screen_drawrect(float x, float y, float width, float height);
+void screen_drawtexture(const struct texture_t* tex, float x, float y, float width, float height);
 void screen_drawtext(const char* text, float x, float y);
 int screen_width();
 int screen_height();
