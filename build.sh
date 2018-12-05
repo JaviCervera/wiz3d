@@ -2,6 +2,7 @@
 cd `dirname $0`
 
 echo "creating lua wrappers..."
+swig -lua -o src/wrap_colbox.c stuff/colbox.i
 swig -lua -o src/wrap_color.c stuff/color.i
 swig -lua -o src/wrap_input.c stuff/input.i
 swig -lua -o src/wrap_light.c stuff/light.i

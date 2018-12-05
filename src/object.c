@@ -2,6 +2,7 @@
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
 #include "../lib/stb/stretchy_buffer.h"
+#include "colbox.h"
 #include "color.h"
 #include "material.h"
 #include "mesh.h"
@@ -282,14 +283,39 @@ float object_maxz(const struct object_t* object)
     return object_maxx(object);
 }
 
-void object_move(struct object_t* object, float x, float y, float z)
+bool_t object_move(struct object_t* object, float x, float y, float z)
 {
   lvec3_t vec;
+  bool_t collided = FALSE;
+
+  /* transform movement by object's rotation */
   vec = lquat_mulvec3(lquat_fromeuler(lvec3_rad(lvec3(object->pitch, object->yaw, object->roll))), lvec3(x, y, z));
-  vec = lvec3_add(lvec3(object->x, object->y, object->z), vec);
-  object->x = vec.x;
-  object->y = vec.y;
-  object->z = vec.z;
+
+  /* move x and check collision boxes */
+  object->x += vec.x;
+  if (object_collidesboxes(object))
+  {
+    collided = TRUE;
+    object->x -= vec.x;
+  }
+
+  /* move y and check collision boxes */
+  object->y += vec.y;
+  if (object_collidesboxes(object))
+  {
+    collided = TRUE;
+    object->y -= vec.y;
+  }
+
+  /* move z and check collision boxes */
+  object->z += vec.z;
+  if (object_collidesboxes(object))
+  {
+    collided = TRUE;
+    object->z -= vec.z;
+  }
+
+  return collided;
 }
 
 void object_turn(struct object_t* object, float pitch, float yaw, float roll)
@@ -302,18 +328,37 @@ void object_turn(struct object_t* object, float pitch, float yaw, float roll)
   object->roll = vec.z;
 }
 
+bool_t object_collidesboxes(struct object_t* object)
+{
+  if (object->colmode == _COL_SPHERE)
+  {
+    return _colbox_checksphere(object->x, object->y, object->z, object->radius * object->radius);
+  }
+  else if (object->colmode == _COL_BOX)
+  {
+    return _colbox_checkbox(
+      object_minx(object), object_miny(object), object_minz(object),
+      object_maxx(object), object_maxy(object), object_maxz(object)
+    );
+  }
+  else
+  {
+    return FALSE;
+  }
+}
+
 bool_t object_collidesobject(struct object_t* object, struct object_t* object2)
 {
   if (object != object2 && object->colmode != _COL_NONE && object2->colmode != _COL_NONE)
   {
-    if (object->colmode == _COL_SPHERE && object2->colmode == _COL_SPHERE )
+    if (object->colmode == _COL_SPHERE && object2->colmode == _COL_SPHERE)
     {
       return lcol_spheresphere(
         object->x, object->y, object->z, object->radius * object->radius,
         object2->x, object2->y, object2->z, object2->radius * object2->radius
       ) == 1;
     }
-    else if (object->colmode == _COL_SPHERE && object2->colmode == _COL_BOX )
+    else if (object->colmode == _COL_SPHERE && object2->colmode == _COL_BOX)
     {
       return lcol_boxsphere(
         object_minx(object2), object_miny(object2), object_minz(object2),
@@ -321,7 +366,7 @@ bool_t object_collidesobject(struct object_t* object, struct object_t* object2)
         object->x, object->y, object->z, object->radius * object->radius
       ) == 1;
     }
-    else if (object->colmode == _COL_BOX && object2->colmode == _COL_SPHERE )
+    else if (object->colmode == _COL_BOX && object2->colmode == _COL_SPHERE)
     {
       return lcol_boxsphere(
         object_minx(object), object_miny(object), object_minz(object),
@@ -329,7 +374,7 @@ bool_t object_collidesobject(struct object_t* object, struct object_t* object2)
         object2->x, object2->y, object2->z, object2->radius * object2->radius
       ) == 1;
     }
-    else if (object->colmode == _COL_BOX && object2->colmode == _COL_BOX )
+    else if (object->colmode == _COL_BOX && object2->colmode == _COL_BOX)
     {
       return lcol_boxbox(
         object_minx(object), object_miny(object), object_minz(object),

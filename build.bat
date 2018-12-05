@@ -1,6 +1,7 @@
 @echo off
 
 echo creating lua wrappers...
+stuff\swig.exe -lua -o src/wrap_colbox.c stuff/colbox.i
 stuff\swig.exe -lua -o src/wrap_color.c stuff/color.i
 stuff\swig.exe -lua -o src/wrap_input.c stuff/input.i
 stuff\swig.exe -lua -o src/wrap_light.c stuff/light.i
