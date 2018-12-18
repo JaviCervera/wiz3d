@@ -9,3 +9,6 @@
 	path = lib/openal-soft
 	url = https://github.com/kcat/openal-soft.git
 	branch = v1.19
+[submodule "lib/litelibs"]
+	path = lib/litelibs
+	url = https://github.com/JaviCervera/litelibs.git
