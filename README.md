@@ -58,18 +58,18 @@ The script folder is always set as the active directory when running a program, 
 - [x] Add 2d functions
 - [ ] Add OpenAL audio support (wav and ogg)
 - [ ] Port Vortex samples
+- [ ] Add material.ambient
+- [ ] Add spot lights
 
 ## TODO v1.0
 - [ ] Add lightmaps
 - [ ] Add object.newfrommemory()
 - [ ] Add ini support
 - [ ] Add file manager with pak support
-- [ ] Add spot lights
 - [ ] Add more primitives (sphere, cone, cylinder, ramp)
-- [ ] Add material.ambient?
-- [ ] Add UI library (https://github.com/vurtun/nuklear)
 
 ## TODO v1.1
+- [ ] Add UI library (https://github.com/vurtun/nuklear)
 - [ ] Add TinyGL support
 - [ ] Add micron_config.h
 - [ ] Add Doom wad support (maps included)
