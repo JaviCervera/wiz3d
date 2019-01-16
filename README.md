@@ -57,6 +57,7 @@ The script folder is always set as the active directory when running a program, 
 - [ ] Spot lights
 - [ ] Lightmaps
 - [ ] Samples
+- [ ] IDE written in C++ with FLTK.
 
 ## TODO v1.0
 - [ ] object.newfrommemory()
