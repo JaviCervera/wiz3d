@@ -21,9 +21,7 @@ To pull changes from the repository, including its submodules, do:
 `git pull --recurse-submodules`
 
 ## Building on Windows
-The libraries have been compiled with TDM-GCC. This compiler suite has not been updated in a while, but it can compile Micron without issues.
-
-You should have **Cmake** installed and added to your PATH to build the engine. In order to compile, just double click the `build.bat` file. The executable file `micron.exe` will be created on the `_build` folder. All the samples will run automatically when you run the build script.
+You should have **Cmake** installed and added to your `PATH` to build the engine. In order to compile, just double click the `build.bat` file. The executable file `micron.exe` will be created on the `_build` folder. All the samples will run automatically when you run the build script.
 
 ## Building on macOS
 You should have **Cmake** and **swig3.0** installed to be able to build the engine. You can install them for example with [Brew](https://brew.sh/). After installing Brew on your system, type:
