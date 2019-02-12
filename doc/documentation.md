@@ -452,3 +452,203 @@ Returns the color of the pixel at the coordinates x, y in the given pixmap.
 `void pixmap_setcolor(struct pixmap_t* pixmap, int x, int y, int color)`
 
 Sets the color of the pixels at the coordinates x, y in the given pixmap.
+
+## screen
+
+This module gives control of the screen, accessing its refresh rate, and drawing 2D elements to it.
+
+`void screen_set(int width, int height, bool_t fullscreen, bool_t resizable)`
+
+Sets the resolution of the screen.
+
+`void screen_refresh()`
+
+Refreshes the screen. Calling this is required once per frame.
+
+`void screen_settitle(const char* title)`
+
+Sets the title of the screen in the window's title bar.
+
+`void screen_setup2d()`
+
+Prepares the screen for 2D drawing. Should be called before any of the draw functions.
+
+`void screen_setviewport(int x, int y, int w, int h)`
+
+Sets the drawing viewport of the screen. Pixels drawn ouside this region will be ignored.
+
+`void screen_setresolution(int w, int h)`
+
+Sets the virtual resolution of the screen. For example, setting a value of 640, 480 here and then drawing an texture of that size will make the texture appear fullscreen, despite of the screen size.
+
+`void screen_setdrawcolor(int color)`
+
+Sets the color for all future draw function calls.
+
+`void screen_setdrawfont(const char* filename, float height)`
+
+Sets the font and height used when drawing text. It should be a ttf file.
+
+`void screen_setdrawfontdefault()`
+
+Sets the default font for text drawing. The engine must have been compiled with a default font for this to work (it is by default).
+
+`void screen_clear(int color)`
+
+Clear the drawing region of the screen with the specified color.
+
+`void screen_drawpoint(float x, float y)`
+
+Draws a point at the specified coordinates.
+
+`void screen_drawline(float x1, float y1, float x2, float y2)`
+
+Draws a line between the given points.
+
+`void screen_drawellipse(float x, float y, float width, float height)`
+
+Draws an ellipse that begins at the given coordinates and extends with the given size.
+
+`void screen_drawrect(float x, float y, float width, float height)`
+
+Draws a rectangle that begins at the given coordinates and extends with the given size.
+
+`void screen_drawtexture(const struct texture_t* tex, float x, float y, float width, float height)`
+
+Draws the texture with the given coordinates and size. Pass 0 as width or height to use the texture's original width or height.
+
+`void screen_drawtext(const char* text, float x, float y)`
+
+Draws a text at the given coordinates using the font set by `screen_setdrawfont` (or the default one if not font has been specified).
+
+`int screen_width()`
+
+Returns the width in pixels of client area of the screen.
+
+`int screen_height()`
+
+Returns the height in pixels of client area of the screen.
+
+`float screen_delta()`
+
+Returns the lapse of time in seconds between the last two screen refreshes.
+
+`int screen_fps()`
+
+Returns the number of frames per second at which the screen is refreshing.
+
+`bool_t screen_opened()`
+
+Returns whether the screen has been opened or not.
+
+`int screen_desktopwidth()`
+
+Returns the width in pixels of the desktop.
+
+`int screen_desktopheight()`
+
+Returns the height in pixels of the desktop.
+
+`float screen_textwidth(const char* text)`
+
+Returns the width in pixels of the given text with the current font.
+
+`float screen_textheight(const char* text)`
+
+Returns the height in pixels of the given text with the current font.
+
+## sound
+
+Micron support audio playback several sounds at once using multiple channels. A sound is defined by the opaque structure `sound_t`, while a channel is defined by the opaque structure `channel_t`.
+
+`bool_t sound_playmusic(const char* filename, bool_t loop)`
+
+Begins playing the specified sound file (in ogg format), looping as necessary. The different between music and a normal sound is that the can only be one music playing at a time, and music data is streamed.
+
+`void sound_pausemusic()`
+
+Pauses music playback.
+
+`void sound_resumemusic()`
+
+Resumes music playback.
+
+`void sound_stopmusic()`
+
+Stops music playback. Resuming after this will cause the music to start from the beginning.
+
+`bool_t sound_musicplaying()`
+
+Tells whether the music is playing or not.
+
+`struct sound_t* sound_load(const char* filename)`
+
+Loads the specified sound (in ogg or wav format) and returns a pointer to it.
+
+`void sound_free(struct sound_t* sound)`
+
+Deletes the specified sound from memory. You should not try to play it after this.
+
+`struct channel_t* sound_play(const struct sound_t* sound, bool_t loop)`
+
+Plays the given sound. returns a pointer to the channel used for playback.
+
+`struct channel_t* sound_play3d(const struct sound_t* sound, bool_t loop, float x, float y, float z, float range)`
+
+Plays the given sound at the specified position. It will be audible at the maximum distance specified by range.
+
+`void sound_pausechannel(const struct channel_t* channel)`
+
+Plauses playback of the sound being reproduced through the specified channel.
+
+`void sound_resumechannel(const struct channel_t* channel)`
+
+Resumes playback of the sound in the specified channel.
+
+`void sound_stopchannel(const struct channel_t* channel)`
+
+Stops playback of the sound in the specified channel. The channel should not be used after this.
+
+`bool_t sound_channelplaying(const struct channel_t* channel)`
+
+Tells whether the specified channel is playing or not.
+
+## texture
+
+Textures are buffers of pixels in video RAM that can be applied to materials.
+
+`struct texture_t* texture_new(int width, int height)`
+
+Creates a new texture with the given size in pixels. We can use `texture_setpixmap` to fill the pixels of the texture.
+
+`struct texture_t* texture_newfrommemory(const struct memory_t* memory)`
+
+Creates a new texture with the image data at the specified memory buffer. It should be in a supported format like bmp, jpg or png.
+
+`struct texture_t* texture_newfrompixmap(const struct pixmap_t* pixmap)`
+
+Creates a texture from the pixel data in the given pixmap.
+
+`struct texture_t* texture_load(const char* filename)`
+
+Loads the specified texture file and returns its pointer. It should be in a supported format like bmp, jpg or png.
+
+`void texture_delete(struct texture_t* texture)`
+
+Deletes the texture from memory. Materials must not be referencing this material, and you should not try to use it after this.
+
+`int texture_width(const struct texture_t* texture)`
+
+Returns the width in pixels of the given texture.
+
+`int texture_height(const struct texture_t* texture)`
+
+Returns the height in pixels of the given texture.
+
+`void texture_setpixels(struct texture_t* texture, const struct pixmap_t* pixmap)`
+
+Sets the pixels of the given texture, by copying the pixels in the given pixmap.
+
+`void texture_setfilter(bool_t filter)`
+
+Sets whether textured loaded in the future will use linear filtering or not.
