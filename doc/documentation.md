@@ -193,7 +193,228 @@ You can get the material that an object uses and modify any of these properties.
 
 Returns the default shininess power for all materials whose shininess power value is -1.
 
-
 `void material_setshininesspower(int power)`
 
 Sets the default shininess power for all materials whose shininess power value is -1. It has to be in the range 0..128, and initially has the value 128.
+
+## memory
+
+Micron can allocate and manipulate memory buffers with this module. It defines an opaque structure `memory_t`.
+
+`struct memory_t* memory_new(int size)`
+
+Allocates a memory buffer of the specified size and returns a pointer to it.
+
+`void memory_delete(struct memory_t* memory)`
+
+Frees the specified memory buffer. You should not use the pointer after this.
+
+`int memory_size(const struct memory_t* memory)`
+
+Returns the size in bytes of the specified memory buffer.
+
+`unsigned char memory_byte(const struct memory_t* memory, int offset)`
+
+Reads an unsigned byte (0...255) from the specified offset in the memory buffer.
+
+`unsigned short memory_short(const struct memory_t* memory, int offset)`
+
+Reads a short (2 bytes, range 0...65535) from the specified offset in the memory buffer.
+
+`int memory_int(const struct memory_t* memory, int offset)`
+
+Reads a signed integer from the specified offset in the memory buffer.
+
+`float memory_float(const struct memory_t* memory, int offset)`
+
+Reads a 32 bit float from the specified offset in the memory buffer.
+
+`double memory_double(const struct memory_t* memory, int offset)`
+
+Reads a 64 bit float from the specified offset in the memory buffer.
+
+`void memory_setbyte(struct memory_t* memory, int offset, unsigned char val)`
+
+Writes an unsigned byte to the specified offset in the memory buffer.
+
+`void memory_setshort(struct memory_t* memory, int offset, unsigned short val)`
+
+Writes an unsigned short to the specified offset in the memory buffer.
+
+`void memory_setint(struct memory_t* memory, int offset, int val)`
+
+Writes a signed integer to the specified offset in the memory buffer.
+
+`void memory_setfloat(struct memory_t* memory, int offset, float val)`
+
+Writes a 32 bit float to the specified offset in the memory buffer.
+
+`void memory_setdouble(struct memory_t* memory, int offset, double val)`
+
+Writes a 64 bit float to the specified offset in the memory buffer.
+
+## object
+
+Objects are the 3D elements of the scene. They have a position, rotation, scale and a mesh. A mesh contains a set of vertices and indices that form the geometry of the object, grouped in buffers, with one material per buffer. An object is represented by the following struct:
+
+```
+struct object_t
+{
+  float x, y, z;
+  float pitch, yaw, roll;
+  float sx, sy, sz;
+  int   billboard;
+  int   colmode;
+  float radius;
+  int   animmode;
+  float animspeed;
+  float animframe;
+  int   animmin;
+  int   animmax;
+};
+```
+
+* `x`, `y`, `z`: Position.
+* `pitch`, `yaw`, `roll`: Rotation.
+* `sx`, `sy`, `sz`: Scale.
+* `billboard`: Whether the object should rotate automatically to face the viewer.
+  * `_BILLBOARD_NONE`: Does not rotate to face the camera.
+  * `_BILLBOARD_FACE`: Rotates to face the camera.
+  * `_BILLBOARD_UPRIGHT`: Rotates only yaw to face the camera.
+* `colmode`: Collision mode:
+  * `_COL_NONE`: No collision.
+  * `_COL_SPHERE`: Defines a collision sphere around the object of the specified `radius`.
+  * `_COL_BOX`: Defines a collision box around the object based on its size.
+* `radius`: Radius of the collision sphere when the collision mode is `_COL_SPHERE`.
+* `animmode`: Animation mode if the object's mesh is animated:
+  * `_ANIM_STOP`: Does not animate.
+  * `_ANIM_PLAY`: Plays the animation once.
+  * `_ANIM_LOOP`: Plays the animation in a loop.
+* `animspeed`: Relative speed in respect to the global animation fps. Default value is 1.
+* `animframe`: The current animation frame.
+* `animmin`: First frame to use in the animation sequence.
+* `animmax`: Last frame to use in the animation sequence.
+
+You can directly set any of these property.
+
+`struct object_t* object_new()`
+
+Creates a new object with an empty mesh.
+
+`struct object_t* object_newcube()`
+
+Creates a new object with a cube mesh.
+
+`struct object_t* object_newquad()`
+
+Creates a new object with a quad mesh.
+
+`struct object_t* object_newtriangle()`
+
+Creates a new object with a triangle mesh.
+
+`struct object_t* object_load(const char* filename)`
+
+Loads a mesh from disk, in the .md2 or .assbin formats.
+
+`struct object_t* object_clone(const struct object_t* object)`
+
+Creates a clone of the given object, sharing the same mesh. You can modify the materials, but modifying the mesh will change the original and all other clones.
+
+`void object_delete(struct object_t* object)`
+
+Deletes the given object.
+
+`int object_addbuffer(struct object_t* object)`
+
+Adds a new buffer to the mesh that the object uses. A buffer is a set of vertices and triangles with one material.
+
+`int object_numbuffers(struct object_t* object)`
+
+Returns the number of buffers that the mesh in the object contains. Since each buffer has a material, this is also the number of materials in the mesh.
+
+`int object_addvertex(struct object_t* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color)`
+
+Adds a new vertex to the specified buffer index. returns the index of the vertex within the buffer.
+
+`int object_addtriangle(struct object_t* object, int buffer, int v0, int v1, int v2)`
+
+Adds a triangle to the specified buffer index. You must pass the index to the three vertices that form the triangle. Returns the index of the triangle.
+
+`void object_rebuildmesh(struct object_t* object)`
+
+Rebuilds the mesh bouding box. You should call this function after adding or modifying its vertices or indices.
+
+`struct material_t* object_material(struct object_t* object, int index)`
+
+Returns the material with the specified index.
+
+`float object_width(const struct object_t* object)`
+
+Returns the total width of the object, taking its scale into account.
+
+`float object_height(const struct object_t* object)`
+
+Returns the total height of the object, taking its scale into account.
+
+`float object_depth(const struct object_t* object)`
+
+Returns the total depth of the object, taking its scale into account.
+
+`float object_minx(const struct object_t* object)`
+
+Returns the minimum x coordinate that the mesh of this object occupies, taking its position into account.
+
+`float object_miny(const struct object_t* object)`
+
+Returns the minimum y coordinate that the mesh of this object occupies, taking its position into account.
+
+`float object_minz(const struct object_t* object)`
+
+Returns the minimum z coordinate that the mesh of this object occupies, taking its position into account.
+
+`float object_maxx(const struct object_t* object)`
+
+Returns the maximum x coordinate that the mesh of this object occupies, taking its position into account.
+
+`float object_maxy(const struct object_t* object)`
+
+Returns the maximum y coordinate that the mesh of this object occupies, taking its position into account.
+
+`float object_maxz(const struct object_t* object)`
+
+Returns the maximum z coordinate that the mesh of this object occupies, taking its position into account.
+
+`bool_t object_move(struct object_t* object, float x, float y, float z)`
+
+Moves the specified object by the given amount in local coordinates. For example, a positive z value will move the object forward in the direction that it is facing. If collision is enabled for the object, it is ensured that it does not penetrate static collision objects. Returns whether the object collided any static collision boxes or not. If it did, the object will not have moved the specified amount in at least one of the three axis, to avoid penetrating the collision box.
+
+`void object_turn(struct object_t* object, float pitch, float yaw, float roll)`
+
+Turns the object with the given pitch, yaw and roll.
+
+`bool_t object_collidesboxes(struct object_t* object)`
+
+Returns whether the object is colliding any static collision boxes.
+
+`bool_t object_collidesobject(struct object_t* object, struct object_t* object2)`
+
+Returns whether the given objects collide.
+
+`void object_draw(struct object_t* object)`
+
+Draws the given object to the screen.
+
+`int object_numframes(const struct object_t* object)`
+
+Returns the number of animation frames that the mesh of the given object contains.
+
+`void object_setanimfps(float fps)`
+
+Set the global animation frames per second. The default value is 16.
+
+`float object_animfps()`
+
+Get the global animation frames per second.
+
+## pixmap
