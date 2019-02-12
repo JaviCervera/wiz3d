@@ -51,6 +51,9 @@ The runtime accepts one optional parameter with the name of the Lua script to ru
 
 The script folder is always set as the active directory when running a program, so all paths should be relative to this folder.
 
+## Documentation
+See [here](./doc/documentation.md).
+
 ## TODO v0.9-beta
 - [ ] OpenAL audio support (wav and ogg)
 - [ ] material.ambient
