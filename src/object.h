@@ -11,11 +11,6 @@
 #define _BILLBOARD_FACE 1
 #define _BILLBOARD_UPRIGHT 2
 
-#define _BLEND_SOLID  0
-#define _BLEND_ALPHA  1
-#define _BLEND_ADD    2
-#define _BLEND_MUL    3
-
 #define _COL_NONE 0
 #define _COL_SPHERE 1
 #define _COL_BOX 2
