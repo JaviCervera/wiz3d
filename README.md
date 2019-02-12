@@ -53,6 +53,8 @@ The script folder is always set as the active directory when running a program, 
 See [here](./doc/documentation.md).
 
 ## TODO v0.9-beta
+- [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat.
+- [ ] Allegro support with audio (wav and ogg)
 - [ ] OpenAL audio support (wav and ogg)
 - [ ] material.ambient
 - [ ] Spot lights
