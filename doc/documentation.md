@@ -7,6 +7,7 @@
 This module allows the addition of static collision boxes to your scene.
 
 `void colbox_add(float minx, float miny, float minz, float maxx, float maxy, float maxz)`
+
 Adds a new collision box to the scene within the given boundaries.
 
 `void colbox_clear()`
@@ -31,7 +32,7 @@ Colors are stored as standard integers. Using this module, you can extract the R
 | `_COLOR_ORANGE` |
 | `_COLOR_BROWN` |
 
-```int color_rgb(int r, int g, int b)```
+`int color_rgb(int r, int g, int b)`
 Returns a fully opaque color with the given RGB values. Each component should be given in the range 0...255.
 
 `int color_rgba(int r, int g, int b, int a)`
