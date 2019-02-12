@@ -10,7 +10,9 @@ This module allows the addition of static collision boxes to your scene.
 
 Adds a new collision box to the scene within the given boundaries.
 
+
 `void colbox_clear()`
+
 Clears all collision boxes.
 
 ## color
