@@ -17,7 +17,7 @@ Colors are stored as standard integers. Using this module, you can extract the R
 
 | Color values |
 | ---------- |
-|  `_COLOR_RED` |
+| `_COLOR_RED` |
 | `_COLOR_GREEN` |
 | `_COLOR_BLUE` |
 | `_COLOR_CYAN` |
@@ -31,7 +31,7 @@ Colors are stored as standard integers. Using this module, you can extract the R
 | `_COLOR_ORANGE` |
 | `_COLOR_BROWN` |
 
-`int color_rgb(int r, int g, int b)`
+```int color_rgb(int r, int g, int b)```
 Returns a fully opaque color with the given RGB values. Each component should be given in the range 0...255.
 
 `int color_rgba(int r, int g, int b, int a)`
@@ -99,7 +99,6 @@ struct light_t
 ```
 
 `struct light_t* light_new(int type)`
-
 
 void light_delete(struct light_t* light);
 void light_move(struct light_t* light, float x, float y, float z);
