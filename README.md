@@ -49,13 +49,13 @@ The runtime accepts one optional parameter with the name of the Lua script to ru
 
 The script folder is always set as the active directory when running a program, so all paths should be relative to this folder.
 
-## Documentation
-See [here](./doc/documentation.md).
+For documentation, see [here](./doc/documentation.md).
 
 ## TODO v0.9-beta
 - [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat.
-- [ ] Allegro support with audio (wav and ogg)
+- [ ] micron_config.h to selectively include engine features in compilation
 - [ ] OpenAL audio support (wav and ogg)
+- [ ] Allegro support with audio (wav and ogg)
 - [ ] material.ambient
 - [ ] Spot lights
 - [ ] Lightmaps
@@ -66,15 +66,18 @@ See [here](./doc/documentation.md).
 - [ ] object.newfrommemory()
 - [ ] Ini file support
 - [ ] File manager with pak support
-- [ ] More primitives (sphere, cone, cylinder, ramp)
+- [ ] More primitives (sphere, cone, cylinder, wedge)
 - [ ] Emscripten support
 
 ## TODO v1.1
 - [ ] UI library (https://github.com/vurtun/nuklear)
-- [ ] TinyGL support
-- [ ] micron_config.h to selectively include engine fetures in compilation
-- [ ] Doom WAD support (including maps)
+- [ ] TinyGL or Klimt support (with fixed point math)
 
-## TODO v1.2
+## TODO v2.0
+- Modern pipeline support, with the ability to use custom shaders, and normal, light, emissive, specular, ambient and cubic textures.
+
+## TODO MAYBE
+- [ ] Pawn support
+- [ ] Doom WAD support (including maps)
 - [ ] WAL texture support
 - [ ] Quake2 BSP support
