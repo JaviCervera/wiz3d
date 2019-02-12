@@ -418,3 +418,37 @@ Set the global animation frames per second. The default value is 16.
 Get the global animation frames per second.
 
 ## pixmap
+
+A pixmap is a buffer in memory which contains image data, allows for manipulation of individual pixels, and can be copied to a texture. A pixmap is represented by the opaque `pixmap_t` structure.
+
+`struct pixmap_t* pixmap_new(int width, int height)`
+
+Creates a new pixmap with the given width and height and return its pointer.
+
+`struct pixmap_t* pixmap_newfrommemory(const struct memory_t* memory)`
+
+Creates a new pixmap with the data contained in the given memory buffer and returns its pointer. The data should be in a supported format like bmp, jpg or png.
+
+`struct pixmap_t* pixmap_load(const char* filename)`
+
+Loads a pixmap from the specified file and returns its pointer. The file should be in a supported format like bmp, jpg on png.
+
+`void pixmap_delete(struct pixmap_t* pixmap)`
+
+Deletes the fiven pixmap. You must not use the pointer after that.
+
+`int pixmap_width(const struct pixmap_t* pixmap)`
+
+Returns the width in pixels of the given pixmap.
+
+`int pixmap_height(const struct pixmap_t* pixmap)`
+
+Returns the height in pixels of the given pixmap.
+
+`int pixmap_color(const struct pixmap_t* pixmap, int x, int y)`
+
+Returns the color of the pixel at the coordinates x, y in the given pixmap.
+
+`void pixmap_setcolor(struct pixmap_t* pixmap, int x, int y, int color)`
+
+Sets the color of the pixels at the coordinates x, y in the given pixmap.
