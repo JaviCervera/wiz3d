@@ -1,7 +1,7 @@
 #define STB_VORBIS_HEADER_ONLY
 #include "../lib/stb/stb_vorbis.c"
-#include "../lib/openal-soft/include/AL/alc.h"
-#include "../lib/openal-soft/include/AL/al.h"
+//#include "../lib/openal-soft/include/AL/alc.h"
+//#include "../lib/openal-soft/include/AL/al.h"
 #include "sound.h"
 #include "util.h"
 
@@ -15,10 +15,10 @@ struct sound_t
   unsigned int buffer;
 };
 
-static ALCdevice* _device = NULL;
+/*static ALCdevice* _device = NULL;
 static ALCcontext* _context = NULL;
 static struct channel_t* _music_channel = NULL;
-static struct sound_t* _music_sound = NULL;
+static struct sound_t* _music_sound = NULL;*/
 
 bool_t sound_playmusic(const char* filename, bool_t loop)
 {
@@ -65,7 +65,7 @@ struct sound_t* sound_load(const char* filename)
 
 void sound_free(struct sound_t* sound)
 {
-  alDeleteBuffers(1, &sound->buffer);
+  //alDeleteBuffers(1, &sound->buffer);
   free(sound);
 }
 
@@ -101,18 +101,18 @@ bool_t sound_channelplaying(const struct channel_t* channel)
 
 bool_t _sound_initaudio()
 {
-  if (!_device) _device = alcOpenDevice(NULL);
+  /*if (!_device) _device = alcOpenDevice(NULL);
   if (!_context) _context = alcCreateContext(_device, NULL);
   if (_context) alcMakeContextCurrent(_context);
-  return _device && _context;
+  return _device && _context;*/
 }
 
 void _sound_deinitaudio()
 {
-  if (_context) alcDestroyContext(_context);
+  /*if (_context) alcDestroyContext(_context);
   if (_device) alcCloseDevice(_device);
   _device = NULL;
-  _context = NULL;
+  _context = NULL;*/
 }
 
 struct sound_t* _sound_load_ogg(const char* filename)
@@ -137,8 +137,8 @@ struct sound_t* _sound_load_ogg(const char* filename)
   stb_vorbis_get_samples_short_interleaved(file, fileinfo.channels, buffer, length_samples);
 
   /* generate openal buffer */
-  alGenBuffers(1, &sound->buffer);
-  alBufferData(sound->buffer, fileinfo.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, buffer, length_samples * sizeof(short), fileinfo.sample_rate);
+  /*alGenBuffers(1, &sound->buffer);
+  alBufferData(sound->buffer, fileinfo.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, buffer, length_samples * sizeof(short), fileinfo.sample_rate);*/
 
   free(buffer);
   stb_vorbis_close(file);

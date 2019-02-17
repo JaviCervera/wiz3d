@@ -9,7 +9,7 @@ file(GLOB MICRON_FILES "src/*.c" "lib/lua/*.c" "lib/base64/base64.c" "lib/tinyfi
 
 #Add header and lib directories
 include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/lua ${CMAKE_CURRENT_SOURCE_DIR}/lib)
-link_directories(${LINK_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw/_CMAKE/src ${CMAKE_CURRENT_SOURCE_DIR}/lib/openal-soft/_CMAKE)
+link_directories(${LINK_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw/_CMAKE/src)
 
 #Add executable targets
 add_executable(micron ${MICRON_FILES})
@@ -26,7 +26,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 		set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++98 -fno-exceptions -fno-rtti")
 		set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-s -static -mwindows")
 	endif (MSVC)
-	target_link_libraries(micron OpenAL32 glfw3 opengl32 gdi32 user32 ${TARGET_LINK_LIBRARIES})
+	target_link_libraries(micron glfw3 opengl32 gdi32 user32 ${TARGET_LINK_LIBRARIES})
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	message("Platform is macOS")
 	#add_definitions(-std=c++11 -stdlib=libc++)

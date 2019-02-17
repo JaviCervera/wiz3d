@@ -35,23 +35,6 @@ echo building glfw...
 mingw32-make
 cd ../../..
 
-echo generating openal-soft project for mingw...
-cd lib/openal-soft
-mkdir _CMAKE
-cd _CMAKE
-cmake -G "MinGW Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel -DALSOFT_EXAMPLES=OFF -DALSOFT_INSTALL=OFF -DALSOFT_NO_CONFIG_UTIL=ON -DALSOFT_STATIC_LIBGCC=ON -DALSOFT_TESTS=OFF -DALSOFT_UTILS=OFF ..
-
-echo building openal-soft...
-mingw32-make
-
-echo renaming openal-soft static lib...
-rename libOpenAL32.dll.a libOpenAL32.a
-cd ../../..
-
-echo moving openal-soft to _build dir...
-mkdir _build
-move "lib\openal-soft\_CMAKE\OpenAL32.dll" "_build"
-
 echo generating micron project for mingw...
 mkdir _CMAKE
 cd _CMAKE
