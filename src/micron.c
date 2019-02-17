@@ -1,6 +1,5 @@
 #include "platform.h"
 #include "micron.h"
-#include "sound.h"
 #define LITE_ASSBIN_USE_GFX
 #define LITE_MD2_USE_GFX
 #define LITE_ASSBIN_IMPLEMENTATION
@@ -33,21 +32,13 @@ extern "C"
 
 bool_t micron_init()
 {
-  if (_sound_initaudio())
-  {
-    return p_init();
-  }
-  else
-  {
-    return FALSE;
-  }
+  return p_init();
 }
 
 void micron_finish()
 {
   if (_screen_pointer()) p_close_screen(_screen_pointer());
   p_shutdown();
-  _sound_deinitaudio();
 }
 
 #ifdef __cplusplus

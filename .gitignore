@@ -4,6 +4,7 @@ _CMAKE
 _build/micron*
 _build/OpenAL32.dll
 src/wrap_*.c
+stuff/inputcodes_out.txt
 
 
 # Created by https://www.gitignore.io/api/windows,linux,osx

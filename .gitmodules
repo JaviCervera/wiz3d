@@ -1,10 +1,6 @@
 [submodule "lib/stb"]
 	path = lib/stb
 	url = https://github.com/nothings/stb
-[submodule "lib/glfw"]
-	path = lib/glfw
-	url = https://github.com/glfw/glfw.git
-	branch = 3.2.1
 [submodule "lib/litelibs"]
 	path = lib/litelibs
 	url = https://github.com/JaviCervera/litelibs.git

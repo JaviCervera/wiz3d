@@ -23,7 +23,7 @@ inline std::vector<std::string> string_split(const std::string& str, char delim)
   std::vector<std::string> elems;
   std::stringstream sstream(str);
   std::string item;
-  if ( str != "" )
+  if (str != "")
   {
     while (std::getline(sstream, item, delim))
     {
@@ -57,7 +57,7 @@ int main(int, char**)
   std::string out;
 
   // write out main function
-  out += "#include \"../lib/glfw/include/GLFW/glfw3.h\"\n";
+  out += "#include \"../lib/allegro/include/allegro5/keycodes.h\"\n";
   out += "#include <cstdio>\n";
   out += "#include <fstream>\n\n";
   out += "int main(int, char**)\n{\n";
@@ -71,7 +71,7 @@ int main(int, char**)
   {
     const std::string& line = *it;
     if ( line == "" ) continue;
-    std::string outname = string_replace(line, "GLFW_KEY_", "_KEY_");
+    std::string outname = string_replace(line, "ALLEGRO_KEY_", "_KEY_");
     outname = string_replace(outname, "_ESCAPE", "_ESC");
     std::transform(outname.begin(), outname.end(), outname.begin(), ::toupper);
     

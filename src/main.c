@@ -5,7 +5,7 @@
 
 #define sizearr(A) (sizeof(A) / sizeof(A[0]))
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
   char working_dir[256];
   char script_file[256];
