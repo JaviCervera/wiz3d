@@ -1,5 +1,6 @@
 #include "../lib/allegro/include/allegro5/allegro.h"
 #include "../lib/allegro/addons/native_dialog/allegro5/allegro_native_dialog.h"
+#include "../lib/allegro/addons/audio/allegro5/allegro_audio.h"
 #include "input.h"
 #include "platform.h"
 #include "util.h"
@@ -25,6 +26,8 @@ bool_t p_init()
   ret = al_install_mouse();
   if (!ret) return FALSE;
   ret = al_install_joystick();
+  if (!ret) return FALSE;
+  ret = al_install_audio();
   if (!ret) return FALSE;
   return ret != FALSE;
 }

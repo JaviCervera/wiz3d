@@ -1,24 +1,12 @@
+#include "../lib/allegro/addons/audio/allegro5/allegro_audio.h"
 #define STB_VORBIS_HEADER_ONLY
 #include "../lib/stb/stb_vorbis.c"
-//#include "../lib/openal-soft/include/AL/alc.h"
-//#include "../lib/openal-soft/include/AL/al.h"
 #include "sound.h"
 #include "util.h"
 
-struct channel_t
-{
-  
-};
-
-struct sound_t
-{
-  unsigned int buffer;
-};
-
-/*static ALCdevice* _device = NULL;
-static ALCcontext* _context = NULL;
-static struct channel_t* _music_channel = NULL;
-static struct sound_t* _music_sound = NULL;*/
+bool al_init_acodec_addon(void);
+ALLEGRO_SAMPLE* _sound_load_ogg(const char* filename);
+//ALLEGRO_SAMPLE* _sound_load_wav(const char* filename);
 
 bool_t sound_playmusic(const char* filename, bool_t loop)
 {
@@ -47,77 +35,69 @@ bool_t sound_musicplaying()
 
 struct sound_t* sound_load(const char* filename)
 {
-  char ext[STRING_SIZE];
-  ext_extract(filename, ext, sizeof(ext));
-  if (str_casecmp(ext, "ogg") == 0)
-  {
-    return _sound_load_ogg(filename);
-  }
-  else if (str_casecmp(ext, "wav") == 0)
-  {
-    return _sound_load_wav(filename);
-  }
-  else
-  {
-    return FALSE;
-  }
+  return (struct sound_t*)al_load_sample(filename);
 }
 
 void sound_free(struct sound_t* sound)
 {
-  //alDeleteBuffers(1, &sound->buffer);
-  free(sound);
+  al_destroy_sample((ALLEGRO_SAMPLE*)sound);
 }
 
 struct channel_t* sound_play(const struct sound_t* sound, bool_t loop)
 {
-
+  ALLEGRO_SAMPLE_INSTANCE* inst;
+  inst = al_create_sample_instance((ALLEGRO_SAMPLE*)sound);
+  if (loop) al_set_sample_instance_playmode(inst, ALLEGRO_PLAYMODE_LOOP);
+  al_play_sample_instance(inst);
+  return (struct channel_t*)inst;
 }
 
+/*
 struct channel_t* sound_play3d(const struct sound_t* sound, bool_t loop)
 {
-
+  return NULL;
 }
+*/
 
 void sound_pausechannel(const struct channel_t* channel)
 {
-
+  al_set_sample_instance_playing((ALLEGRO_SAMPLE_INSTANCE*)channel, FALSE);
 }
 
 void sound_resumechannel(const struct channel_t* channel)
 {
-
+  al_set_sample_instance_playing((ALLEGRO_SAMPLE_INSTANCE*)channel, TRUE);
 }
 
 void sound_stopchannel(const struct channel_t* channel)
 {
-
+  al_stop_sample_instance((ALLEGRO_SAMPLE_INSTANCE*)channel);
 }
 
 bool_t sound_channelplaying(const struct channel_t* channel)
 {
-
+  return al_get_sample_instance_playing((ALLEGRO_SAMPLE_INSTANCE*)channel);
 }
 
 bool_t _sound_initaudio()
 {
-  /*if (!_device) _device = alcOpenDevice(NULL);
-  if (!_context) _context = alcCreateContext(_device, NULL);
-  if (_context) alcMakeContextCurrent(_context);
-  return _device && _context;*/
+  bool_t ret;
+  ret = al_init_acodec_addon();
+  if (!ret) return FALSE;
+  ret = al_register_sample_loader(".ogg", _sound_load_ogg);
+  if (!ret) return FALSE;
+  //ret = al_register_sample_loader(".wav", _sound_load_wav);
+  //if (!ret) return FALSE;
+  return ret != FALSE;
 }
 
 void _sound_deinitaudio()
 {
-  /*if (_context) alcDestroyContext(_context);
-  if (_device) alcCloseDevice(_device);
-  _device = NULL;
-  _context = NULL;*/
 }
 
-struct sound_t* _sound_load_ogg(const char* filename)
+ALLEGRO_SAMPLE* _sound_load_ogg(const char* filename)
 {
-  struct sound_t* sound;
+  ALLEGRO_SAMPLE *sample;
   stb_vorbis* file;
   stb_vorbis_info fileinfo;
   int length_samples;
@@ -127,26 +107,31 @@ struct sound_t* _sound_load_ogg(const char* filename)
   file = stb_vorbis_open_filename((char*)filename, NULL, NULL);
   if (!file) return NULL;
 
-  /* create sound */
-  sound = _alloc(struct sound_t);
-
   /* load ogg */
   fileinfo = stb_vorbis_get_info(file);
   length_samples = stb_vorbis_stream_length_in_samples(file) * fileinfo.channels;
-  buffer = _allocnum(short, length_samples);
+  buffer = al_malloc(sizeof(short) * length_samples);
   stb_vorbis_get_samples_short_interleaved(file, fileinfo.channels, buffer, length_samples);
 
-  /* generate openal buffer */
-  /*alGenBuffers(1, &sound->buffer);
-  alBufferData(sound->buffer, fileinfo.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, buffer, length_samples * sizeof(short), fileinfo.sample_rate);*/
-
-  free(buffer);
+  /* close file */
   stb_vorbis_close(file);
 
-  return sound;
+  /* create allegro sample */
+  sample = al_create_sample(
+    buffer,
+    length_samples,
+    fileinfo.sample_rate,
+    ALLEGRO_AUDIO_DEPTH_INT16,
+    fileinfo.channels == 1 ? ALLEGRO_CHANNEL_CONF_1 : ALLEGRO_CHANNEL_CONF_2,
+    TRUE);
+  if (!sample) al_free(buffer);
+
+  return sample;
 }
 
-struct sound_t* _sound_load_wav(const char* filename)
+/*
+ALLEGRO_SAMPLE* _sound_load_wav(const char* filename)
 {
   return NULL;
 }
+*/
