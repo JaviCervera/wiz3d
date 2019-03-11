@@ -1,10 +1,9 @@
 # Micron
 Micron is a minimalist game engine licensed under the Zlib license. Its main features are:
 
-* Lua scripting
 * OpenGL fixed pipeline graphics.
-* GLFW for window and input management.
-* OpenAL for audio.
+* Allegro for window, input and audio management.
+* Lua scripting
 
 The core runtime has been written in pure C, with the goal of being easily portable to any platform. It has currently been tested on Windows, macOS and Linux.
 
