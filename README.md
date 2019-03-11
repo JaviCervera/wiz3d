@@ -20,7 +20,11 @@ To pull changes from the repository, including its submodules, do:
 `git pull --recurse-submodules`
 
 ## Building on Windows
-You should have **Cmake** installed and added to your `PATH` to build the engine. In order to compile, just double click the `build.bat` file. The executable file `micron.exe` will be created on the `_build` folder. All the samples will run automatically when you run the build script.
+You should have **Cmake** installed and added to your `PATH` to build the engine. In order to compile, just double click the `build.bat` file. The executable file `micron.exe` will be created on the `_build` folder.
+
+Once built, you can drastically reduce the size of the generated `micron.exe` executable by running `compress.exe`, which will use the UPX compressor.
+
+To run the samples, use the `run.bat` script. You must have previously built the engine.
 
 ## Building on macOS
 You should have **Cmake** and **swig3.0** installed to be able to build the engine. You can install them for example with [Brew](https://brew.sh/). After installing Brew on your system, type:
@@ -51,15 +55,15 @@ The script folder is always set as the active directory when running a program, 
 For documentation, see [here](./doc/documentation.md).
 
 ## TODO v0.9-beta
-- [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat.
-- [ ] micron_config.h to selectively include engine features in compilation
-- [ ] OpenAL audio support (wav and ogg)
-- [ ] Allegro support with audio (wav and ogg)
+- [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat
+- [ ] Allegro audio support (wav and ogg)
 - [ ] material.ambient
 - [ ] Spot lights
 - [ ] Lightmaps
+- [ ] micron_config.h to selectively include engine features in compilation
+- [ ] Pawn scripting support
 - [ ] Samples
-- [ ] IDE written in C++ with FLTK.
+- [ ] IDE written in C++ with FLTK (or Geany support)
 
 ## TODO v1.0
 - [ ] object.newfrommemory()
@@ -75,8 +79,6 @@ For documentation, see [here](./doc/documentation.md).
 ## TODO v2.0
 - Modern pipeline support, with the ability to use custom shaders, and normal, light, emissive, specular, ambient and cubic textures.
 
-## TODO MAYBE
-- [ ] Pawn support
-- [ ] Doom WAD support (including maps)
-- [ ] WAL texture support
-- [ ] Quake2 BSP support
+## THINGS THAT MIGHT BE NICE TO HAVE
+- [ ] Doom WAD support (including maps), so maps can be created with [Doom Builder](http://doombuilder.com/)
+- [ ] Quake2 BSP and WAL texture support, so maps can be created with [TrenchBroom](http://www.kristianduske.com/trenchbroom/)
