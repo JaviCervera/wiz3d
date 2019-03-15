@@ -16,21 +16,12 @@ swig -lua -o src/wrap_sound.c stuff/sound.i
 swig -lua -o src/wrap_texture.c stuff/texture.i
 swig -lua -o src/wrap_viewer.c stuff/viewer.i
 
-echo "generating glfw project for gcc..."
-mkdir lib/glfw/_CMAKE
-cd lib/glfw/_CMAKE
-cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=OFF -DGLFW_BUILD_DOCS=OFF -DGLFW_BUILD_EXAMPLES=OFF -DGLFW_BUILD_TESTS=OFF -DGLFW_INSTALL=OFF ..
+echo "generating allegro project for gcc..."
+mkdir lib/allegro/_CMAKE
+cd lib/allegro/_CMAKE
+cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DSHARED=OFF -DWANT_COLOR=OFF -DWANT_D3D=OFF -DWANT_DEMO=OFF -DWANT_DOCS=OFF -DWANT_EXAMPLES=OFF -DWANT_FLAC=OFF -DWANT_FONT=OFF -DWANT_IMAGE=OFF -DWANT_MEMFILE=OFF -DWANT_MODAUDIO=OFF -DWANT_MONOLITH=ON -DWANT_OPENAL=OFF -DWANT_OPENSL=OFF -DWANT_OPUS=OFF -DWANT_OSS=OFF -DWANT_PHYSFS=OFF -DWANT_PRIMITIVES=OFF -DWANT_RELEASE_LOGGING=OFF -DWANT_STATIC_RUNTIME=ON -DWANT_TESTS=OFF -DWANT_TTF=OFF -DWANT_VIDEO=OFF -DWANT_VORBIS=OFF ..
 
-echo "building glfw..."
-make
-cd ../../..
-
-echo "generating openal-soft project for gcc..."
-mkdir lib/openal-soft/_CMAKE
-cd lib/openal-soft/_CMAKE
-cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DALSOFT_EXAMPLES=OFF -DALSOFT_INSTALL=OFF -DALSOFT_NO_CONFIG_UTIL=ON -DALSOFT_STATIC_LIBGCC=ON -DALSOFT_TESTS=OFF -DALSOFT_UTILS=OFF ..
-
-echo "building openal-soft..."
+echo "building allegro..."
 make
 cd ../../..
 
@@ -46,18 +37,5 @@ cd ..
 echo "moving micron to _build dir..."
 mkdir _build
 mv _CMAKE/micron _build/micron
-
-echo "running examples..."
-cd _build
-./micron data/angel.lua
-./micron data/billboards.lua
-./micron data/collisions.lua
-./micron data/fog.lua
-./micron data/helloworld.lua
-./micron data/hoverbike.lua
-./micron data/md2.lua
-./micron data/primitives.lua
-./micron data/rotatingcube.lua
-./micron data/specular.lua
 
 echo "done."
