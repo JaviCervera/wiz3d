@@ -1,8 +1,11 @@
+#include "micron_config.h"
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
 #include "../lib/stb/stretchy_buffer.h"
 #include "color.h"
+#ifdef USE_DEFAULT_FONT
 #include "default_font.h"
+#endif
 #include "font.h"
 #include "platform.h"
 #include "screen.h"
@@ -12,8 +15,8 @@
 
 struct loadedfont_t
 {
-  char           name[STRING_SIZE];
-  float          height;
+  char name[STRING_SIZE];
+  float height;
   struct font_t* font;
 };
 
@@ -24,10 +27,12 @@ static int _screen_fps = 0;
 static int _screen_fpscounter = 0;
 static float _screen_fpstime = 0;
 static struct loadedfont_t* _screen_loadedfonts = NULL;
+#ifdef USE_DEFAULT_FONT
 static struct font_t* _default_font = NULL;
+#endif
 static struct font_t* _screen_font = NULL;
 
-void screen_set(int width, int height, bool_t fullscreen, bool_t resizable)
+EXPORT void CALL screen_set(int width, int height, bool_t fullscreen, bool_t resizable)
 {
   int i;
 
@@ -35,7 +40,9 @@ void screen_set(int width, int height, bool_t fullscreen, bool_t resizable)
   for (i = 0; i < sb_count(_screen_loadedfonts); ++i)
     font_release(_screen_loadedfonts[i].font);
     sb_free(_screen_loadedfonts);
+#ifdef USE_DEFAULT_FONT
   if (_default_font) font_release(_default_font);
+#endif
 
   /* close screen if opened */
   if (_screen_ptr) p_close_screen(_screen_ptr);
@@ -44,11 +51,15 @@ void screen_set(int width, int height, bool_t fullscreen, bool_t resizable)
   _screen_ptr = p_open_screen(width, height, fullscreen, 0, TRUE, resizable);
 
   /* load default font */
-  _default_font = _font_loadbase64(DEFAULT_FONT, DEFAULT_FONT_BLOCKSIZE, 12);
+#ifdef USE_DEFAULT_FONT
+  _default_font = _font_loadbase64(DEFAULT_FONT, DEFAULT_FONT_BLOCKSIZE, 14);
   _screen_font = _default_font;
+#else
+  _screen_font = NULL;
+#endif
 }
 
-void screen_refresh()
+EXPORT void CALL screen_refresh()
 {
   /* refresh screen */
   p_refresh_screen(_screen_ptr);
@@ -68,27 +79,27 @@ void screen_refresh()
   }
 }
 
-void screen_settitle(const char* title)
+EXPORT void CALL screen_settitle(const char* title)
 {
   p_set_screen_title(_screen_ptr, title);
 }
 
-void screen_setup2d()
+EXPORT void CALL screen_setup2d()
 {
   lgfx_setup2d(screen_width(), screen_height());
 }
 
-void screen_setviewport(int x, int y, int w, int h)
+EXPORT void CALL screen_setviewport(int x, int y, int w, int h)
 {
   lgfx_setviewport(x, y, w, h);
 }
 
-void screen_setresolution(int w, int h)
+EXPORT void CALL screen_setresolution(int w, int h)
 {
   lgfx_setresolution(w, h);
 }
 
-void screen_setdrawcolor(int color)
+EXPORT void CALL screen_setdrawcolor(int color)
 {
   lgfx_setcolor(
     color_red(color) / 255.0f,
@@ -97,7 +108,7 @@ void screen_setdrawcolor(int color)
     color_alpha(color) / 255.0f);
 }
 
-void screen_setdrawfont(const char* filename, float height)
+EXPORT void CALL screen_setdrawfont(const char* filename, float height)
 {
   struct font_t* font = NULL;
   int i;
@@ -127,7 +138,7 @@ void screen_setdrawfont(const char* filename, float height)
   }
 }
 
-void screen_clear(int color)
+EXPORT void CALL screen_clear(int color)
 {
   lgfx_clearcolorbuffer(
     color_red(color) / 255.0f,
@@ -136,84 +147,86 @@ void screen_clear(int color)
   );
 }
 
-void screen_setdrawfontdefault()
+#ifdef USE_DEFAULT_FONT
+EXPORT void CALL screen_setdrawfontdefault()
 {
   _screen_font = _default_font;
 }
+#endif
 
-void screen_drawpoint(float x, float y)
+EXPORT void CALL screen_drawpoint(float x, float y)
 {
   lgfx_drawpoint(x, y);
 }
 
-void screen_drawline(float x1, float y1, float x2, float y2)
+EXPORT void CALL screen_drawline(float x1, float y1, float x2, float y2)
 {
   lgfx_drawline(x1, y1, x2, y2);
 }
 
-void screen_drawellipse(float x, float y, float width, float height)
+EXPORT void CALL screen_drawellipse(float x, float y, float width, float height)
 {
   lgfx_drawoval(x, y, width, height);
 }
 
-void screen_drawrect(float x, float y, float width, float height)
+EXPORT void CALL screen_drawrect(float x, float y, float width, float height)
 {
   lgfx_drawrect(x, y, width, height);
 }
 
-void screen_drawtexture(const struct texture_t* tex, float x, float y, float width, float height)
+EXPORT void CALL screen_drawtexture(const struct texture_t* tex, float x, float y, float width, float height)
 {
   const ltex_t* ltex = (const ltex_t*)_texture_ptr(tex);
   ltex_bindcolor(ltex);
   lgfx_drawrect(x, y, width != 0 ? width : ltex->width, height != 0 ? height : ltex->height);
 }
 
-void screen_drawtext(const char* text, float x, float y)
+EXPORT void CALL screen_drawtext(const char* text, float x, float y)
 {
   font_draw(_screen_font, text, x, y);
 }
 
-int screen_width()
+EXPORT int CALL screen_width()
 {
   return p_screen_width(_screen_ptr);
 }
 
-int screen_height()
+EXPORT int CALL screen_height()
 {
   return p_screen_height(_screen_ptr);
 }
 
-float screen_delta()
+EXPORT float CALL screen_delta()
 {
   return _screen_delta;
 }
 
-int screen_fps()
+EXPORT int CALL screen_fps()
 {
   return _screen_fps;
 }
 
-bool_t screen_opened()
+EXPORT bool_t CALL screen_opened()
 {
   return p_screen_opened(_screen_ptr);
 }
 
-int screen_desktopwidth()
+EXPORT int CALL screen_desktopwidth()
 {
   return p_desktop_width();
 }
 
-int screen_desktopheight()
+EXPORT int CALL screen_desktopheight()
 {
   return p_desktop_height();
 }
 
-float screen_textwidth(const char* text)
+EXPORT float CALL screen_textwidth(const char* text)
 {
   return font_textwidth(_screen_font, text);
 }
 
-float screen_textheight(const char* text)
+EXPORT float CALL screen_textheight(const char* text)
 {
   return font_textheight(_screen_font, text);
 }

@@ -3,8 +3,8 @@
 
 #include "types.h"
 
-#define _LIGHT_DIRECTIONAL 0
-#define _LIGHT_POINT       1
+#define LIGHT_DIRECTIONAL 0
+#define LIGHT_POINT       1
 
 #ifdef __cplusplus
 extern "C"
@@ -20,12 +20,12 @@ struct light_t
   float range;
 };
 
-struct light_t* light_new(int type);
-void light_delete(struct light_t* light);
-void light_move(struct light_t* light, float x, float y, float z);
-void light_turn(struct light_t* light, float pitch, float yaw);
-void light_setambient(int color);
-int light_ambient();
+EXPORT struct light_t* CALL light_new(int type);
+EXPORT void CALL light_delete(struct light_t* light);
+EXPORT void CALL light_move(struct light_t* light, float x, float y, float z);
+EXPORT void CALL light_turn(struct light_t* light, float pitch, float yaw);
+EXPORT void CALL light_setambient(int color);
+EXPORT int CALL light_ambient();
 
 #ifndef SWIG
 void _light_prepare();

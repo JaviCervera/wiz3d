@@ -5,29 +5,29 @@
 
 static int _material_shininesspower = 128;
 
-void material_init(struct material_t* material)
-{
-  material->texture = NULL;
-  material->diffuse = _COLOR_WHITE;
-  material->emissive = _COLOR_BLACK;
-  material->specular = _COLOR_WHITE;
-  material->shininess = 0;
-  material->blend = _BLEND_SOLID;
-  material->flags = _FLAG_ALL;
-  material->shininesspower = -1;
-}
-
-void material_deinit(struct material_t* material)
-{
-  if (material->texture) texture_release(material->texture);
-}
-
-int material_shininesspower()
+EXPORT int CALL material_shininesspower()
 {
   return _material_shininesspower;
 }
 
-void material_setshininesspower(int power)
+EXPORT void CALL material_setshininesspower(int power)
 {
   _material_shininesspower = _clamp(power, 0, 128);
+}
+
+void _material_init(struct material_t* material)
+{
+  material->texture = NULL;
+  material->diffuse = COLOR_WHITE;
+  material->emissive = COLOR_BLACK;
+  material->specular = COLOR_WHITE;
+  material->shininess = 0;
+  material->blend = BLEND_SOLID;
+  material->flags = FLAG_ALL;
+  material->shininesspower = -1;
+}
+
+void _material_deinit(struct material_t* material)
+{
+  if (material->texture) texture_release(material->texture);
 }

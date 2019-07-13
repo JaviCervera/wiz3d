@@ -3,16 +3,16 @@
 
 #include "types.h"
 
-#define _BLEND_SOLID  0
-#define _BLEND_ALPHA  1
-#define _BLEND_ADD    2
-#define _BLEND_MUL    3
+#define BLEND_SOLID 0
+#define BLEND_ALPHA 1
+#define BLEND_ADD 2
+#define BLEND_MUL 3
 
-#define _FLAG_CULL        1
-#define _FLAG_DEPTHWRITE  2
-#define _FLAG_LIGHTING    4
-#define _FLAG_FOG         8
-#define _FLAG_ALL         15
+#define FLAG_CULL 1
+#define FLAG_DEPTHWRITE 2
+#define FLAG_LIGHTING 4
+#define FLAG_FOG 8
+#define FLAG_ALL 15
 
 #ifdef __cplusplus
 extern "C"
@@ -24,22 +24,22 @@ struct texture_t;
 struct material_t
 {
   struct texture_t* texture;
-  int               diffuse;
-  int               emissive;
-  int               specular;
-  float             shininess;
-  int               blend;
-  int               flags;
-  int               shininesspower;
+  int diffuse;
+  int emissive;
+  int specular;
+  float shininess;
+  int blend;
+  int flags;
+  int shininesspower;
 };
 
-#ifndef SWIG
-void material_init(struct material_t* material);
-void material_deinit(struct material_t* material);
-#endif
+EXPORT int CALL material_shininesspower();
+EXPORT void CALL material_setshininesspower(int power);
 
-int material_shininesspower();
-void material_setshininesspower(int power);
+#ifndef SWIG
+void _material_init(struct material_t* material);
+void _material_deinit(struct material_t* material);
+#endif
 
 #ifdef __cplusplus
 } /* extern "C" */

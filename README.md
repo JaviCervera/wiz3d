@@ -55,20 +55,23 @@ The script folder is always set as the active directory when running a program, 
 For documentation, see [here](./doc/documentation.md).
 
 ## TODO v0.9-beta
+- [x] micron_config.h to selectively include engine features in compilation
+- [x] Support for Allegro, GLFW and SDL in micron_config.h
+- [x] Remove Lua support and convert Micron into a dll
+- [*] File system with pak support (object_loadmem)
 - [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat
-- [ ] Allegro audio support (wav and ogg)
+- [ ] OpenAL audio support (wav and ogg)
 - [ ] material.ambient
 - [ ] Spot lights
 - [ ] Lightmaps
-- [ ] micron_config.h to selectively include engine features in compilation
 - [ ] Pawn scripting support
 - [ ] Samples
 - [ ] IDE written in C++ with FLTK (or Geany support)
 
 ## TODO v1.0
-- [ ] object.newfrommemory()
 - [ ] Ini file support
-- [ ] File manager with pak support
+- [ ] PCX texture support
+- [ ] Bitmap font support
 - [ ] More primitives (sphere, cone, cylinder, wedge)
 - [ ] Emscripten support
 

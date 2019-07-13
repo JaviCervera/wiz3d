@@ -1,6 +1,7 @@
 #ifndef SCREEN_H_INCLUDED
 #define SCREEN_H_INCLUDED
 
+#include "micron_config.h"
 #include "types.h"
 
 #ifdef __cplusplus
@@ -10,33 +11,35 @@ extern "C"
 
 struct texture_t;
 
-void screen_set(int width, int height, bool_t fullscreen, bool_t resizable);
-void screen_refresh();
-void screen_settitle(const char* title);
-void screen_setup2d();
-void screen_setviewport(int x, int y, int w, int h);
-void screen_setresolution(int w, int h);
-void screen_setdrawcolor(int color);
-void screen_setdrawfont(const char* filename, float height);
-void screen_setdrawfontdefault();
-void screen_clear(int color);
-void screen_drawpoint(float x, float y);
-void screen_drawline(float x1, float y1, float x2, float y2);
-void screen_drawellipse(float x, float y, float width, float height);
-void screen_drawrect(float x, float y, float width, float height);
-void screen_drawtexture(const struct texture_t* tex, float x, float y, float width, float height);
-void screen_drawtext(const char* text, float x, float y);
-int screen_width();
-int screen_height();
-float screen_delta();
-int screen_fps();
-bool_t screen_opened();
+EXPORT void CALL screen_set(int width, int height, bool_t fullscreen, bool_t resizable);
+EXPORT void CALL screen_refresh();
+EXPORT void CALL screen_settitle(const char* title);
+EXPORT void CALL screen_setup2d();
+EXPORT void CALL screen_setviewport(int x, int y, int w, int h);
+EXPORT void CALL screen_setresolution(int w, int h);
+EXPORT void CALL screen_setdrawcolor(int color);
+EXPORT void CALL screen_setdrawfont(const char* filename, float height);
+#ifdef USE_DEFAULT_FONT
+EXPORT void CALL screen_setdrawfontdefault();
+#endif
+EXPORT void CALL screen_clear(int color);
+EXPORT void CALL screen_drawpoint(float x, float y);
+EXPORT void CALL screen_drawline(float x1, float y1, float x2, float y2);
+EXPORT void CALL screen_drawellipse(float x, float y, float width, float height);
+EXPORT void CALL screen_drawrect(float x, float y, float width, float height);
+EXPORT void CALL screen_drawtexture(const struct texture_t* tex, float x, float y, float width, float height);
+EXPORT void CALL screen_drawtext(const char* text, float x, float y);
+EXPORT int CALL screen_width();
+EXPORT int CALL screen_height();
+EXPORT float CALL screen_delta();
+EXPORT int CALL screen_fps();
+EXPORT bool_t CALL screen_opened();
 
-int screen_desktopwidth();
-int screen_desktopheight();
+EXPORT int CALL screen_desktopwidth();
+EXPORT int CALL screen_desktopheight();
 
-float screen_textwidth(const char* text);
-float screen_textheight(const char* text);
+EXPORT float CALL screen_textwidth(const char* text);
+EXPORT float CALL screen_textheight(const char* text);
 
 #ifndef SWIG
 void* _screen_pointer();

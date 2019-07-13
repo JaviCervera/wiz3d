@@ -31,7 +31,7 @@ extern "C"
 {
 #endif
 
-bool_t micron_init()
+EXPORT bool_t CALL micron_init()
 {
   bool_t ret;
   ret = p_init();
@@ -40,7 +40,7 @@ bool_t micron_init()
   return ret != FALSE;
 }
 
-void micron_finish()
+EXPORT void CALL micron_finish()
 {
   if (_screen_pointer()) p_close_screen(_screen_pointer());
   _sound_deinitaudio();

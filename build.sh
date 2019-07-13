@@ -1,20 +1,14 @@
 #!/bin/sh
 cd `dirname $0`
 
-echo "creating lua wrappers..."
-swig -lua -o src/wrap_colbox.c stuff/colbox.i
-swig -lua -o src/wrap_color.c stuff/color.i
-swig -lua -o src/wrap_input.c stuff/input.i
-swig -lua -o src/wrap_light.c stuff/light.i
-swig -lua -o src/wrap_log.c stuff/log.i
-swig -lua -o src/wrap_material.c stuff/material.i
-swig -lua -o src/wrap_memory.c stuff/memory.i
-swig -lua -o src/wrap_object.c stuff/object.i
-swig -lua -o src/wrap_pixmap.c stuff/pixmap.i
-swig -lua -o src/wrap_screen.c stuff/screen.i
-swig -lua -o src/wrap_sound.c stuff/sound.i
-swig -lua -o src/wrap_texture.c stuff/texture.i
-swig -lua -o src/wrap_viewer.c stuff/viewer.i
+echo "generating allegro project for gcc..."
+mkdir lib/allegro/_CMAKE
+cd lib/allegro/_CMAKE
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -DSHARED=OFF -DWANT_COLOR=OFF -DWANT_D3D=OFF -DWANT_DEMO=OFF -DWANT_DOCS=OFF -DWANT_EXAMPLES=OFF -DWANT_FLAC=OFF -DWANT_FONT=OFF -DWANT_IMAGE=OFF -DWANT_MEMFILE=OFF -DWANT_MODAUDIO=OFF -DWANT_MONOLITH=ON -DWANT_OPENAL=OFF -DWANT_OPENSL=OFF -DWANT_OPUS=OFF -DWANT_OSS=OFF -DWANT_PHYSFS=OFF -DWANT_PRIMITIVES=OFF -DWANT_RELEASE_LOGGING=OFF -DWANT_STATIC_RUNTIME=ON -DWANT_TESTS=OFF -DWANT_TTF=OFF -DWANT_VIDEO=OFF -DWANT_VORBIS=OFF ..
+
+echo "building allegro..."
+make
+cd ../../..
 
 echo "generating glfw project for gcc..."
 mkdir lib/glfw/_CMAKE
@@ -25,12 +19,12 @@ echo "building glfw..."
 make
 cd ../../..
 
-echo "generating openal-soft project for gcc..."
-mkdir lib/openal-soft/_CMAKE
-cd lib/openal-soft/_CMAKE
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -DALSOFT_EXAMPLES=OFF -DALSOFT_INSTALL=OFF -DALSOFT_NO_CONFIG_UTIL=ON -DALSOFT_STATIC_LIBGCC=ON -DALSOFT_TESTS=OFF -DALSOFT_UTILS=OFF ..
+echo "generating sdl2 project for gcc..."
+mkdir lib/sdl2/_CMAKE
+cd lib/sdl2/_CMAKE
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -DSDL_SHARED=OFF -DSDL_ATOMIC=OFF -DSDL_CPUINFO=OFF -DSDL_DLOPEN=OFF -DSDL_FILE=OFF -DSDL_FILESYSTEM=OFF -DSDL_RENDER=OFF -DSDL_THREADS=OFF -DVIDEO_VULKAN=OFF -DVIDEO_OPENGLES=OFF -DVIDEO_WAYLAND=OFF ..
 
-echo "building openal-soft..."
+echo "building sdl2..."
 make
 cd ../../..
 
@@ -45,19 +39,6 @@ cd ..
 
 echo "moving micron to _build dir..."
 mkdir _build
-mv _CMAKE/micron _build/micron
-
-echo "running examples..."
-cd _build
-./micron data/angel.lua
-./micron data/billboards.lua
-./micron data/collisions.lua
-./micron data/fog.lua
-./micron data/helloworld.lua
-./micron data/hoverbike.lua
-./micron data/md2.lua
-./micron data/primitives.lua
-./micron data/rotatingcube.lua
-./micron data/specular.lua
+mv _CMAKE/libmicron.so _build/libmicron.so
 
 echo "done."

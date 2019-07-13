@@ -11,19 +11,19 @@ extern "C"
 struct channel_t;
 struct sound_t;
 
-bool_t sound_playmusic(const char* filename, bool_t loop);
-void sound_pausemusic();
-void sound_resumemusic();
-void sound_stopmusic();
-bool_t sound_musicplaying();
-struct sound_t* sound_load(const char* filename);
-void sound_free(struct sound_t* sound);
-struct channel_t* sound_play(const struct sound_t* sound, bool_t loop);
-//struct channel_t* sound_play3d(const struct sound_t* sound, bool_t loop);
-void sound_pausechannel(const struct channel_t* channel);
-void sound_resumechannel(const struct channel_t* channel);
-void sound_stopchannel(const struct channel_t* channel);
-bool_t sound_channelplaying(const struct channel_t* channel);
+EXPORT bool_t CALL sound_playmusic(const char* filename, bool_t loop);
+EXPORT void CALL sound_pausemusic();
+EXPORT void CALL sound_resumemusic();
+EXPORT void CALL sound_stopmusic();
+EXPORT bool_t CALL sound_musicplaying();
+EXPORT struct sound_t* CALL sound_load(const char* filename);
+EXPORT void CALL sound_free(struct sound_t* sound);
+EXPORT struct channel_t* CALL sound_play(const struct sound_t* sound, bool_t loop);
+//EXPORT struct channel_t* CALL sound_play3d(const struct sound_t* sound, bool_t loop);
+EXPORT void CALL sound_pausechannel(const struct channel_t* channel);
+EXPORT void CALL sound_resumechannel(const struct channel_t* channel);
+EXPORT void CALL sound_stopchannel(const struct channel_t* channel);
+EXPORT bool_t CALL sound_channelplaying(const struct channel_t* channel);
 
 #ifndef SWIG
 bool_t _sound_initaudio();

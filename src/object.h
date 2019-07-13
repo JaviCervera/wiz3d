@@ -3,17 +3,17 @@
 
 #include "types.h"
 
-#define _ANIM_STOP 0
-#define _ANIM_PLAY 1
-#define _ANIM_LOOP 2
+#define ANIM_STOP 0
+#define ANIM_PLAY 1
+#define ANIM_LOOP 2
 
-#define _BILLBOARD_NONE 0
-#define _BILLBOARD_FACE 1
-#define _BILLBOARD_UPRIGHT 2
+#define BILLBOARD_NONE 0
+#define BILLBOARD_FACE 1
+#define BILLBOARD_UPRIGHT 2
 
-#define _COL_NONE 0
-#define _COL_SPHERE 1
-#define _COL_BOX 2
+#define COL_NONE 0
+#define COL_SPHERE 1
+#define COL_BOX 2
 
 #ifdef __cplusplus
 extern "C"
@@ -42,36 +42,36 @@ struct object_t
 #endif
 };
 
-struct object_t* object_new();
-struct object_t* object_newcube();
-struct object_t* object_newquad();
-struct object_t* object_newtriangle();
-struct object_t* object_load(const char* filename);
-struct object_t* object_clone(const struct object_t* object);
-void object_delete(struct object_t* object);
-int object_addbuffer(struct object_t* object);
-int object_numbuffers(struct object_t* object);
-int object_addvertex(struct object_t* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color);
-int object_addtriangle(struct object_t* object, int buffer, int v0, int v1, int v2);
-void object_rebuildmesh(struct object_t* object);
-struct material_t* object_material(struct object_t* object, int index);
-float object_width(const struct object_t* object);
-float object_height(const struct object_t* object);
-float object_depth(const struct object_t* object);
-float object_minx(const struct object_t* object);
-float object_miny(const struct object_t* object);
-float object_minz(const struct object_t* object);
-float object_maxx(const struct object_t* object);
-float object_maxy(const struct object_t* object);
-float object_maxz(const struct object_t* object);
-bool_t object_move(struct object_t* object, float x, float y, float z);
-void object_turn(struct object_t* object, float pitch, float yaw, float roll);
-bool_t object_collidesboxes(struct object_t* object);
-bool_t object_collidesobject(struct object_t* object, struct object_t* object2);
-void object_draw(struct object_t* object);
-int object_numframes(const struct object_t* object);
-void object_setanimfps(float fps);
-float object_animfps();
+EXPORT struct object_t* CALL object_new();
+EXPORT struct object_t* CALL object_newcube();
+EXPORT struct object_t* CALL object_newquad();
+EXPORT struct object_t* CALL object_newtriangle();
+EXPORT struct object_t* CALL object_load(const char* filename);
+EXPORT struct object_t* CALL object_clone(const struct object_t* object);
+EXPORT void CALL object_delete(struct object_t* object);
+EXPORT int CALL object_addbuffer(struct object_t* object);
+EXPORT int CALL object_numbuffers(struct object_t* object);
+EXPORT int CALL object_addvertex(struct object_t* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color);
+EXPORT int CALL object_addtriangle(struct object_t* object, int buffer, int v0, int v1, int v2);
+EXPORT void CALL object_rebuildmesh(struct object_t* object);
+EXPORT struct material_t* CALL object_material(struct object_t* object, int index);
+EXPORT float CALL object_width(const struct object_t* object);
+EXPORT float CALL object_height(const struct object_t* object);
+EXPORT float CALL object_depth(const struct object_t* object);
+EXPORT float CALL object_minx(const struct object_t* object);
+EXPORT float CALL object_miny(const struct object_t* object);
+EXPORT float CALL object_minz(const struct object_t* object);
+EXPORT float CALL object_maxx(const struct object_t* object);
+EXPORT float CALL object_maxy(const struct object_t* object);
+EXPORT float CALL object_maxz(const struct object_t* object);
+EXPORT bool_t CALL object_move(struct object_t* object, float x, float y, float z);
+EXPORT void CALL object_turn(struct object_t* object, float pitch, float yaw, float roll);
+EXPORT bool_t CALL object_collidesboxes(struct object_t* object);
+EXPORT bool_t CALL object_collidesobject(struct object_t* object, struct object_t* object2);
+EXPORT void CALL object_draw(struct object_t* object);
+EXPORT int CALL object_numframes(const struct object_t* object);
+EXPORT void CALL object_setanimfps(float fps);
+EXPORT float CALL object_animfps();
 
 #ifdef __cplusplus
 } /* extern "C" */

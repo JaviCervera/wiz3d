@@ -10,7 +10,7 @@ struct pixmap_t
   int height;
 };
 
-struct pixmap_t* pixmap_new(int width, int height)
+EXPORT struct pixmap_t* CALL pixmap_new(int width, int height)
 {
   struct pixmap_t* pixmap = _alloc(struct pixmap_t);
   pixmap->pixels = _allocnum(int, width * height);
@@ -19,12 +19,12 @@ struct pixmap_t* pixmap_new(int width, int height)
   return pixmap;
 }
 
-struct pixmap_t* pixmap_newfrommemory(const struct memory_t* memory)
+EXPORT struct pixmap_t* CALL pixmap_newfrommemory(const struct memory_t* memory)
 {
   return _pixmap_newfromdata((const unsigned char*)memory, memory_size(memory));
 }
 
-struct pixmap_t* pixmap_load(const char* filename)
+EXPORT struct pixmap_t* CALL pixmap_load(const char* filename)
 {
   unsigned char* buffer;
   int w, h;
@@ -43,28 +43,28 @@ struct pixmap_t* pixmap_load(const char* filename)
   return pixmap;
 }
 
-void pixmap_delete(struct pixmap_t* pixmap)
+EXPORT void CALL pixmap_delete(struct pixmap_t* pixmap)
 {
   free(pixmap->pixels);
   free(pixmap);
 }
 
-int pixmap_width(const struct pixmap_t* pixmap)
+EXPORT int CALL pixmap_width(const struct pixmap_t* pixmap)
 {
   return pixmap->width;
 }
 
-int pixmap_height(const struct pixmap_t* pixmap)
+EXPORT int CALL pixmap_height(const struct pixmap_t* pixmap)
 {
   return pixmap->height;
 }
 
-int pixmap_color(const struct pixmap_t* pixmap, int x, int y)
+EXPORT int CALL pixmap_color(const struct pixmap_t* pixmap, int x, int y)
 {
   return pixmap->pixels[y*pixmap->width + x];
 }
 
-void pixmap_setcolor(struct pixmap_t* pixmap, int x, int y, int color)
+EXPORT void CALL pixmap_setcolor(struct pixmap_t* pixmap, int x, int y, int color)
 {
   pixmap->pixels[y*pixmap->width + x] = color;
 }

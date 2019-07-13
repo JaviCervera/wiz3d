@@ -8,7 +8,7 @@
 static int _light_ambient;
 static struct light_t* _lights[NUM_LIGHTS] = {};
 
-struct light_t* light_new(int type)
+EXPORT struct light_t* CALL light_new(int type)
 {
   int i;
   struct light_t* light;
@@ -20,7 +20,7 @@ struct light_t* light_new(int type)
   if (i == NUM_LIGHTS) return NULL;
 
   /* make sure that light type is in range */
-  type = _clamp(type, _LIGHT_DIRECTIONAL, _LIGHT_POINT);
+  type = _clamp(type, LIGHT_DIRECTIONAL, LIGHT_POINT);
 
   /* create light */
   light = _alloc(struct light_t);
@@ -30,13 +30,13 @@ struct light_t* light_new(int type)
   light->pitch = 0;
   light->yaw = 0;
   light->type = type;
-  light->color = _COLOR_WHITE;
+  light->color = COLOR_WHITE;
   light->range = 1000;
   _lights[i] = light;
   return light;
 }
 
-void light_delete(struct light_t* light)
+EXPORT void CALL light_delete(struct light_t* light)
 {
   size_t i;
 
@@ -50,7 +50,7 @@ void light_delete(struct light_t* light)
   free(light);
 }
 
-void light_move(struct light_t* light, float x, float y, float z)
+EXPORT void CALL light_move(struct light_t* light, float x, float y, float z)
 {
   lvec3_t vec;
 
@@ -64,7 +64,7 @@ void light_move(struct light_t* light, float x, float y, float z)
   light->z = vec.z;
 }
 
-void light_turn(struct light_t* light, float pitch, float yaw)
+EXPORT void CALL light_turn(struct light_t* light, float pitch, float yaw)
 {
   lvec3_t vec;
 
@@ -73,7 +73,7 @@ void light_turn(struct light_t* light, float pitch, float yaw)
   light->yaw = vec.y;
 }
 
-void light_setambient(int color)
+EXPORT void CALL light_setambient(int color)
 {
   _light_ambient = color;
   lgfx_setambient(
@@ -82,7 +82,7 @@ void light_setambient(int color)
     color_blue(color) / 255.0f);
 }
 
-int light_ambient()
+EXPORT int CALL light_ambient()
 {
   return _light_ambient;
 }
@@ -100,7 +100,7 @@ void _light_prepare()
       light = _lights[i];
 
       /* get position in viewer space */
-      if (light->type == _LIGHT_DIRECTIONAL)
+      if (light->type == LIGHT_DIRECTIONAL)
       {
         pos = lquat_mulvec3(
           lquat_fromeuler(lvec3_rad(lvec3(light->pitch, light->yaw, 0))),

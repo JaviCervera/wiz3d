@@ -1,6 +1,7 @@
 #ifndef FONT_H_INCLUDED
 #define FONT_H_INCLUDED
 
+#include "micron_config.h"
 #include "types.h"
 
 #ifdef __cplusplus
@@ -19,8 +20,10 @@ float font_textwidth(const struct font_t* font, const char* text);
 float font_textheight(const struct font_t* font, const char* text);
 void font_draw(const struct font_t* font, const char* text, float x, float y);
 
+#ifdef USE_DEFAULT_FONT
 struct font_t* _font_loadbase64(const char* data, size_t size, float height);
-struct font_t* _font_loadfrommemory(const unsigned char* data, float height);
+#endif
+
 #endif
 
 #ifdef __cplusplus

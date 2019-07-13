@@ -16,7 +16,7 @@ static struct mesh_t* _viewer_skybox = NULL;
 
 static struct mesh_t* _viewer_skybox_mesh(struct texture_t* texture);
 
-struct viewer_t* viewer_new()
+EXPORT struct viewer_t* CALL viewer_new()
 {
   struct viewer_t* viewer = _alloc(struct viewer_t);
   viewer->x = 0;
@@ -29,7 +29,7 @@ struct viewer_t* viewer_new()
   viewer->vy = 0;
   viewer->vw = -1;
   viewer->vh = -1;
-  viewer->clearmode = _CLEAR_COLOR;
+  viewer->clearmode = CLEAR_COLOR;
   viewer->clearcolor = color_rgb(52, 73, 94);
   viewer->skybox = NULL;
   viewer->ortho = FALSE;
@@ -37,18 +37,18 @@ struct viewer_t* viewer_new()
   viewer->min = 1;
   viewer->max = 1000;
   viewer->fogenabled = FALSE;
-  viewer->fogcolor = _COLOR_DARKGRAY;
+  viewer->fogcolor = COLOR_DARKGRAY;
   viewer->fogmin = 0;
   viewer->fogmax = 1000;
   return viewer;
 }
 
-void viewer_delete(struct viewer_t* viewer)
+EXPORT void CALL viewer_delete(struct viewer_t* viewer)
 {
   free(viewer);
 }
 
-void viewer_move(struct viewer_t* viewer, float x, float y, float z)
+EXPORT void CALL viewer_move(struct viewer_t* viewer, float x, float y, float z)
 {
   lvec3_t vec;
 
@@ -60,7 +60,7 @@ void viewer_move(struct viewer_t* viewer, float x, float y, float z)
   viewer->z = vec.z;
 }
 
-void viewer_turn(struct viewer_t* viewer, float pitch, float yaw, float roll)
+EXPORT void CALL viewer_turn(struct viewer_t* viewer, float pitch, float yaw, float roll)
 {
   lvec3_t vec;
 
@@ -70,7 +70,7 @@ void viewer_turn(struct viewer_t* viewer, float pitch, float yaw, float roll)
   viewer->roll = vec.z;
 }
 
-void viewer_prepare(const struct viewer_t* viewer)
+EXPORT void CALL viewer_prepare(const struct viewer_t* viewer)
 {
   int vp_w;
   int vp_h;
@@ -120,13 +120,13 @@ void viewer_prepare(const struct viewer_t* viewer)
   lgfx_cleardepthbuffer();
   switch (viewer->clearmode)
   {
-    case _CLEAR_COLOR:
+    case CLEAR_COLOR:
       lgfx_clearcolorbuffer(
         color_red(viewer->clearcolor) / 255.0f,
         color_green(viewer->clearcolor) / 255.0f,
         color_blue(viewer->clearcolor) / 255.0f);
       break;
-    case _CLEAR_SKYBOX:
+    case CLEAR_SKYBOX:
       halfrange = (viewer->max - viewer->min) * 0.5f;
       
       /* calculate modelview */

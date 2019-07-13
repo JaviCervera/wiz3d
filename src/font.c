@@ -1,4 +1,7 @@
+#include "micron_config.h"
+#ifdef USE_DEFAULT_FONT
 #include "../lib/base64/base64.h"
+#endif
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/stb/stb_truetype.h"
 #include "font.h"
@@ -14,6 +17,9 @@ struct font_t
   float           height;
   float           maxheight;
 };
+
+struct font_t* _font_loadmem(const unsigned char* data, float height);
+
 
 struct font_t* font_load(const char* filename, float height)
 {
@@ -33,7 +39,7 @@ struct font_t* font_load(const char* filename, float height)
   fclose(f);
 
   /* load data */
-  font = _font_loadfrommemory(buffer, height);
+  font = _font_loadmem(buffer, height);
   free(buffer);
 
   return font;
@@ -102,6 +108,7 @@ void font_draw(const struct font_t* font, const char* text, float x, float y)
   }
 }
 
+#ifdef USE_DEFAULT_FONT
 struct font_t* _font_loadbase64(const char* data, size_t size, float height)
 {
   unsigned char* buffer;
@@ -112,13 +119,14 @@ struct font_t* _font_loadbase64(const char* data, size_t size, float height)
   base64_decode(data, size, buffer);
 
   /* load data */
-  font = _font_loadfrommemory(buffer, height);
+  font = _font_loadmem(buffer, height);
   free(buffer);
 
   return font;
 }
+#endif
 
-struct font_t* _font_loadfrommemory(const unsigned char* data, float height)
+struct font_t* _font_loadmem(const unsigned char* data, float height)
 {
   struct font_t* font;
   int w, h;

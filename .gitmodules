@@ -7,4 +7,12 @@
 [submodule "lib/allegro"]
 	path = lib/allegro
 	url = https://github.com/liballeg/allegro5.git
-	branch = 5.2.4
+	branch = 5.2.5
+[submodule "lib/glfw"]
+	path = lib/glfw
+	url = https://github.com/glfw/glfw.git
+	branch = 3.3-stable
+[submodule "lib/sdl2"]
+	path = lib/sdl2
+	url = https://github.com/spurious/SDL-mirror.git
+	branch = release-2.0.8

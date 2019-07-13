@@ -111,7 +111,7 @@ void mesh_release(struct mesh_t* mesh)
       sb_free(mesh->buffers[i].vertices);
       sb_free(mesh->buffers[i].indices);
       sb_free(mesh->buffers[i].frames);
-      material_deinit(&mesh->materials[i]);
+      _material_deinit(&mesh->materials[i]);
     }
 
     sb_free(mesh->materials);
@@ -126,7 +126,7 @@ int mesh_addbuffer(struct mesh_t* mesh)
   struct material_t* material;
 
   buffer = sb_add(mesh->buffers, 1);
-  material_init(sb_add(mesh->materials, 1));
+  _material_init(sb_add(mesh->materials, 1));
   buffer->vertices = NULL;
   buffer->indices = NULL;
   buffer->frames = NULL;
@@ -380,11 +380,11 @@ void _mesh_draw(const struct mesh_t* mesh, const struct material_t* materials)
       color_green(specular) / 255.0f,
       color_blue(specular) / 255.0f);
     lgfx_setshininess(_clamp(material->shininess * material->shininesspower > -1 ? material->shininesspower : material_shininesspower(), 0, 128));
-    lgfx_setculling((material->flags & _FLAG_CULL) == _FLAG_CULL);
-    lgfx_setdepthwrite((material->flags & _FLAG_DEPTHWRITE) == _FLAG_DEPTHWRITE);
+    lgfx_setculling((material->flags & FLAG_CULL) == FLAG_CULL);
+    lgfx_setdepthwrite((material->flags & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
 
     /* setup lighting */
-    if ((material->flags & _FLAG_LIGHTING) == _FLAG_LIGHTING)
+    if ((material->flags & FLAG_LIGHTING) == FLAG_LIGHTING)
     {
       int numlights = _light_numlights();
       lgfx_setlighting(numlights);
@@ -395,7 +395,7 @@ void _mesh_draw(const struct mesh_t* mesh, const struct material_t* materials)
     }
 
     /* setup fog */
-    if ((material->flags & _FLAG_FOG) == _FLAG_FOG)
+    if ((material->flags & FLAG_FOG) == FLAG_FOG)
     {
       lgfx_setfog(
         _viewer_active()->fogenabled,
@@ -443,24 +443,24 @@ struct mesh_t* _mesh_newskybox()
   buffer = mesh_addbuffer(mesh);
 
   /* add vertices */
-  ldb = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0, 1, _COLOR_WHITE);
-  ldf = mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.16666667f, 1, _COLOR_WHITE);
-  lub = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0, 0, _COLOR_WHITE);
-  luf = mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.16666667f, 0, _COLOR_WHITE);
-  rdb = mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 0.5f, 1, _COLOR_WHITE);
-  rdf = mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 0.33333333f, 1, _COLOR_WHITE);
-  rub = mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.5f, 0, _COLOR_WHITE);
-  ruf = mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.33333333f, 0, _COLOR_WHITE);
-  ldb1 = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.66555555f, 1, _COLOR_WHITE);
-  lub1 = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66555555f, 0, _COLOR_WHITE);
-  ulb =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66666667f, 0, _COLOR_WHITE);
-  ulf =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.66666667f, 1, _COLOR_WHITE);
-  urb =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, _COLOR_WHITE);
-  urf =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, _COLOR_WHITE);
-  dlb =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, _COLOR_WHITE);
-  dlf =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, _COLOR_WHITE);
-  drb =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 1, 0, _COLOR_WHITE);
-  drf =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 1, 1, _COLOR_WHITE);
+  ldb = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0, 1, COLOR_WHITE);
+  ldf = mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.16666667f, 1, COLOR_WHITE);
+  lub = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0, 0, COLOR_WHITE);
+  luf = mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.16666667f, 0, COLOR_WHITE);
+  rdb = mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 0.5f, 1, COLOR_WHITE);
+  rdf = mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 0.33333333f, 1, COLOR_WHITE);
+  rub = mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.5f, 0, COLOR_WHITE);
+  ruf = mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.33333333f, 0, COLOR_WHITE);
+  ldb1 = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.66555555f, 1, COLOR_WHITE);
+  lub1 = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66555555f, 0, COLOR_WHITE);
+  ulb =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66666667f, 0, COLOR_WHITE);
+  ulf =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.66666667f, 1, COLOR_WHITE);
+  urb =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
+  urf =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
+  dlb =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
+  dlf =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
+  drb =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 1, 0, COLOR_WHITE);
+  drf =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 1, 1, COLOR_WHITE);
 
   /* add indices */
   mesh_addtriangle(mesh, buffer, lub, luf, ldf); /* left face */
@@ -477,7 +477,7 @@ struct mesh_t* _mesh_newskybox()
   mesh_addtriangle(mesh, buffer, drb, dlf, drf);
 
   /* setup material */
-  mesh->materials[0].flags = _FLAG_CULL;
+  mesh->materials[0].flags = FLAG_CULL;
 
   return mesh;
 }

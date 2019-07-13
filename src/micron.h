@@ -2,6 +2,7 @@
 #define MICRON_H_INCLUDED
 
 #include "color.h"
+#include "file_system.h"
 #include "input.h"
 #include "light.h"
 #include "log.h"
@@ -18,8 +19,8 @@ extern "C"
 {
 #endif
 
-bool_t micron_init();
-void micron_finish();
+EXPORT bool_t CALL micron_init();
+EXPORT void CALL micron_finish();
 
 #ifdef __cplusplus
 } /* extern "C" */

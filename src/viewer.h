@@ -3,9 +3,9 @@
 
 #include "types.h"
 
-#define _CLEAR_NONE   0
-#define _CLEAR_COLOR  1
-#define _CLEAR_SKYBOX 2
+#define CLEAR_NONE   0
+#define CLEAR_COLOR  1
+#define CLEAR_SKYBOX 2
 
 #ifdef __cplusplus
 extern "C"
@@ -35,11 +35,11 @@ struct viewer_t
   float             fogmax;
 };
 
-struct viewer_t* viewer_new();
-void viewer_delete(struct viewer_t* viewer);
-void viewer_move(struct viewer_t* viewer, float x, float y, float z);
-void viewer_turn(struct viewer_t* viewer, float pitch, float yaw, float roll);
-void viewer_prepare(const struct viewer_t* viewer);
+EXPORT struct viewer_t* CALL viewer_new();
+EXPORT void CALL viewer_delete(struct viewer_t* viewer);
+EXPORT void CALL viewer_move(struct viewer_t* viewer, float x, float y, float z);
+EXPORT void CALL viewer_turn(struct viewer_t* viewer, float pitch, float yaw, float roll);
+EXPORT void CALL viewer_prepare(const struct viewer_t* viewer);
 
 #ifndef SWIG
 const struct viewer_t* _viewer_active();

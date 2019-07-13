@@ -8,8 +8,8 @@ extern "C"
 {
 #endif
 
-void colbox_add(float minx, float miny, float minz, float maxx, float maxy, float maxz);
-void colbox_clear();
+EXPORT void CALL colbox_add(float minx, float miny, float minz, float maxx, float maxy, float maxz);
+EXPORT void CALL colbox_clear();
 
 #ifndef SWIG
 bool_t _colbox_checkbox(float minx, float miny, float minz, float maxx, float maxy, float maxz);

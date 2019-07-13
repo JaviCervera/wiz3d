@@ -11,7 +11,7 @@ typedef struct
 
 static colbox_t* _colboxes = NULL; /* array of boxes */
 
-void colbox_add(float minx, float miny, float minz, float maxx, float maxy, float maxz)
+EXPORT void CALL colbox_add(float minx, float miny, float minz, float maxx, float maxy, float maxz)
 {
   colbox_t box;
   box.min = lvec3(minx, miny, minz);
@@ -19,7 +19,7 @@ void colbox_add(float minx, float miny, float minz, float maxx, float maxy, floa
   sb_push(_colboxes, box);
 }
 
-void colbox_clear()
+EXPORT void CALL colbox_clear()
 {
   sb_free(_colboxes);
 }
