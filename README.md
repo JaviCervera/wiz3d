@@ -20,11 +20,11 @@ To pull changes from the repository, including its submodules, do:
 `git pull --recurse-submodules`
 
 ## Building on Windows
-You should have **Cmake** installed and added to your `PATH` to build the engine. In order to compile, just double click the `build.bat` file. The executable file `micron.exe` will be created on the `_build` folder.
+You should have **Cmake** installed and added to your `PATH` to build the engine. In order to compile, just double click the `build.bat` file. The library `libmicron.dll` will be created on the `_build` folder.
 
-Once built, you can drastically reduce the size of the generated `micron.exe` executable by running `compress.exe`, which will use the UPX compressor.
+Once built, you can drastically reduce the size of the generated `libmicron.dll` library by running `compress.exe`, which will use the UPX compressor.
 
-To run the samples, use the `run.bat` script. You must have previously built the engine.
+To run the examples, use the `run.bat` script. You must have previously built the engine.
 
 ## Building on macOS
 You should have **Cmake** and **swig3.0** installed to be able to build the engine. You can install them for example with [Brew](https://brew.sh/). After installing Brew on your system, type:
@@ -32,7 +32,9 @@ You should have **Cmake** and **swig3.0** installed to be able to build the engi
 `$brew install cmake`
 `$brew install swig3.0`
 
-Then, just double click from Finder on `build.command` and the executable file `micron` will be created on the `_build` folder (it is a 32 bit binary). All the samples will run automatically when you run the build script.
+Then, just double click from Finder on `build.command` and the library file `libmicron.dylib` will be created on the `_build` folder.
+
+To run the examples, use the `run.command` script. You must have previously built the engine.
 
 ## Building on Linux
 You should have **Cmake** and **swig3.0** installed to be able to build the engine. For example, to install them on Ubuntu, type:
@@ -45,20 +47,19 @@ Then, from a Terminal go to the Micron folder and run the build script:
 
 `$./build.sh`
 
-The executable file `micron` will be created on the `_build` folder (it is a 64 bit binary). All the samples will run automatically when you run the build script.
+The library file `libmicron.so` will be created on the `_build` folder (it is a 64 bit binary).
 
-## Using Micron
-The runtime accepts one optional parameter with the name of the Lua script to run. If you don't provide the parameter, then the file `data/main.lua` will be run.
+To run the examples, use the `run.sh` script. You must have previously built the engine.
 
-The script folder is always set as the active directory when running a program, so all paths should be relative to this folder.
+## Documentation
 
-For documentation, see [here](./doc/documentation.md).
+See [here](./doc/documentation.md).
 
 ## TODO v0.9-beta
 - [x] micron_config.h to selectively include engine features in compilation
 - [x] Support for Allegro, GLFW and SDL in micron_config.h
 - [x] Remove Lua support and convert Micron into a dll
-- [*] File system with pak support (object_loadmem)
+- [ ] File system with pak support (object_loadmem)
 - [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat
 - [ ] OpenAL audio support (wav and ogg)
 - [ ] material.ambient
@@ -80,7 +81,7 @@ For documentation, see [here](./doc/documentation.md).
 - [ ] TinyGL or Klimt support (with fixed point math)
 
 ## TODO v2.0
-- Modern pipeline support, with the ability to use custom shaders, and normal, light, emissive, specular, ambient and cubic textures.
+- [ ] Modern pipeline support, with the ability to use custom shaders, and normal, light, emissive, specular, ambient and cubic textures.
 
 ## THINGS THAT MIGHT BE NICE TO HAVE
 - [ ] Doom WAD support (including maps), so maps can be created with [Doom Builder](http://doombuilder.com/)
