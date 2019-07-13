@@ -27,17 +27,16 @@ Once built, you can drastically reduce the size of the generated `libmicron.dll`
 To run the examples, use the `run.bat` script. You must have previously built the engine.
 
 ## Building on macOS
-You should have **Cmake** and **swig3.0** installed to be able to build the engine. You can install them for example with [Brew](https://brew.sh/). After installing Brew on your system, type:
+You should have **Cmake** installed to be able to build the engine. You can install it for example with [Brew](https://brew.sh/). After installing Brew on your system, type:
 
 `$brew install cmake`
-`$brew install swig3.0`
 
 Then, just double click from Finder on `build.command` and the library file `libmicron.dylib` will be created on the `_build` folder.
 
 To run the examples, use the `run.command` script. You must have previously built the engine.
 
 ## Building on Linux
-You should have **Cmake** and **swig3.0** installed to be able to build the engine. For example, to install them on Ubuntu, type:
+You should have **Cmake** installed to be able to build the engine. For example, to install it on Ubuntu, type:
 
 `$sudo apt install cmake`
 

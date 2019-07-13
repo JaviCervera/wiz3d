@@ -36,14 +36,14 @@ EXPORT bool_t CALL micron_init()
   bool_t ret;
   ret = p_init();
   if (!ret) return FALSE;
-  ret = _sound_initaudio();
+  /*ret = _sound_initaudio();*/
   return ret != FALSE;
 }
 
 EXPORT void CALL micron_finish()
 {
   if (_screen_pointer()) p_close_screen(_screen_pointer());
-  _sound_deinitaudio();
+  /*_sound_deinitaudio();*/
   p_shutdown();
 }
 

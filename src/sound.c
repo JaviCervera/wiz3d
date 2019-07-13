@@ -1,3 +1,4 @@
+/*
 #include "../lib/allegro/addons/audio/allegro5/allegro_audio.h"
 #define STB_VORBIS_HEADER_ONLY
 #include "../lib/stb/stb_vorbis.c"
@@ -57,7 +58,7 @@ EXPORT struct channel_t* CALL sound_play3d(const struct sound_t* sound, bool_t l
 {
   return NULL;
 }
-*/
+* /
 
 EXPORT void CALL sound_pausechannel(const struct channel_t* channel)
 {
@@ -103,20 +104,20 @@ ALLEGRO_SAMPLE* _sound_load_ogg(const char* filename)
   int length_samples;
   short* buffer;
 
-  /* open file */
+  /* open file * /
   file = stb_vorbis_open_filename((char*)filename, NULL, NULL);
   if (!file) return NULL;
 
-  /* load ogg */
+  /* load ogg * /
   fileinfo = stb_vorbis_get_info(file);
   length_samples = stb_vorbis_stream_length_in_samples(file) * fileinfo.channels;
   buffer = al_malloc(sizeof(short) * length_samples);
   stb_vorbis_get_samples_short_interleaved(file, fileinfo.channels, buffer, length_samples);
 
-  /* close file */
+  /* close file * /
   stb_vorbis_close(file);
 
-  /* create allegro sample */
+  /* create allegro sample * /
   sample = al_create_sample(
     buffer,
     length_samples,
