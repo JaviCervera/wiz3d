@@ -40,4 +40,3 @@ rm primitives
 rm rotatingcube
 rm specular
 cd ..
-

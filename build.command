@@ -35,6 +35,7 @@ cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=
 
 echo "building beam..."
 make
+install_name_tool -id libbeam.dylib libbeam.dylib
 cd ..
 
 echo "moving beam to _build dir..."
