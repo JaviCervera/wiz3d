@@ -28,17 +28,17 @@ echo "building sdl2..."
 make
 cd ../../..
 
-echo "generating micron project for gcc..."
+echo "generating beam project for gcc..."
 mkdir _CMAKE
 cd _CMAKE
 cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel ..
 
-echo "building micron..."
+echo "building beam..."
 make
 cd ..
 
-echo "moving micron to _build dir..."
+echo "moving beam to _build dir..."
 mkdir _build
-mv _CMAKE/libmicron.dylib _build/libmicron.dylib
+mv _CMAKE/libbeam.dylib _build/libbeam.dylib
 
 echo "done."

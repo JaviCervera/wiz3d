@@ -1,4 +1,4 @@
-#include "../src/micron.h"
+#include "../src/beam.h"
 #include <stdio.h>
 
 #define ROTATION_SPEED 90
@@ -12,7 +12,7 @@ int main()
   char str[STRING_SIZE];
 
   /* setup */
-  micron_init();
+  beam_init();
   screen_set(800, 600, FALSE, TRUE);
 
   /* create and position viewer */
@@ -46,5 +46,5 @@ int main()
   }
 
   /* shutdown */
-  micron_finish();
+  beam_finish();
 }

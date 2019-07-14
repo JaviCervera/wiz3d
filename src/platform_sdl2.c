@@ -1,4 +1,4 @@
-#include "micron_config.h"
+#include "beam_config.h"
 
 #ifdef USE_SDL2
 

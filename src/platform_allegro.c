@@ -1,4 +1,4 @@
-#include "micron_config.h"
+#include "beam_config.h"
 
 #ifdef USE_ALLEGRO
 
@@ -135,7 +135,7 @@ void* p_open_screen(int width, int height, bool_t fullscreen, int samples, bool_
   data->display = display;
   data->queue = queue;
   data->opened = TRUE;
-  al_set_window_title(display, "Micron");
+  al_set_window_title(display, "");
 
   return data;
 }

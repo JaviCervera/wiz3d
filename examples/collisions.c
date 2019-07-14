@@ -1,4 +1,4 @@
-#include "../src/micron.h"
+#include "../src/beam.h"
 
 int main()
 {
@@ -13,7 +13,7 @@ int main()
   int direction = 1;
 
   /* setup */
-  micron_init();
+  beam_init();
   screen_set(800, 600, FALSE, TRUE);
 
   /* create floor */
@@ -102,5 +102,5 @@ int main()
   }
 
   /* shutdown */
-  micron_finish();
+  beam_finish();
 }

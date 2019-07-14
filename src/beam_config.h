@@ -1,5 +1,5 @@
-#ifndef MICRON_CONFIG_H_INCLUDED
-#define MICRON_CONFIG_H_INCLUDED
+#ifndef BEAM_CONFIG_H_INCLUDED
+#define BEAM_CONFIG_H_INCLUDED
 
 /*#define USE_ALLEGRO*/ /*** not finished ***/
 #define USE_GLFW
@@ -10,4 +10,4 @@
 #define USE_PAK
 /*#define USE_RETINA*/
 
-#endif /* MICRON_CONFIG_H_INCLUDED */
+#endif /* BEAM_CONFIG_H_INCLUDED */

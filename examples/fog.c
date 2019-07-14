@@ -1,4 +1,4 @@
-#include "../src/micron.h"
+#include "../src/beam.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,7 +16,7 @@ int main()
   char str[STRING_SIZE];
 
   /* setup */
-  micron_init();
+  beam_init();
   screen_set(800, 600, FALSE, TRUE);
 
   /* setup lighting */
@@ -90,5 +90,5 @@ int main()
   }
 
   /* shutdown */
-  micron_finish();
+  beam_finish();
 }

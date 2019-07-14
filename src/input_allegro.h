@@ -1,7 +1,7 @@
 #ifndef INPUT_ALLEGRO_H_INCLUDED
 #define INPUT_ALLEGRO_H_INCLUDED
 
-#include "micron_config.h"
+#include "beam_config.h"
 
 #ifdef USE_ALLEGRO
 

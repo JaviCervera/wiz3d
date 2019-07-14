@@ -1,7 +1,7 @@
 #ifndef SCREEN_H_INCLUDED
 #define SCREEN_H_INCLUDED
 
-#include "micron_config.h"
+#include "beam_config.h"
 #include "types.h"
 
 #ifdef __cplusplus

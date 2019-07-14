@@ -1,4 +1,4 @@
-#include "../src/micron.h"
+#include "../src/beam.h"
 
 #define ROTATION_SPEED 32
 #define TEXT "Hover Bike by Ptis is licensed under CC Attribution-NonCommercial"
@@ -13,7 +13,7 @@ int main()
   struct material_t* mat1;
 
   /* setup */
-  micron_init();
+  beam_init();
   screen_set(800, 600, FALSE, TRUE);
 
   /* create and position viewer */
@@ -59,5 +59,5 @@ int main()
   }
 
   /* shutdown */
-  micron_finish();
+  beam_finish();
 }

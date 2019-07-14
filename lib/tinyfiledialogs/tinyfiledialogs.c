@@ -1,4 +1,4 @@
-#include "../../src/micron_config.h"
+#include "../../src/beam_config.h"
 #ifdef USE_TINYFILEDIALOGS
 
 /*_________

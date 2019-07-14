@@ -1,5 +1,5 @@
 #include "platform.h"
-#include "micron.h"
+#include "beam.h"
 #include "sound.h"
 #define LITE_ASSBIN_USE_GFX
 #define LITE_MD2_USE_GFX
@@ -31,7 +31,7 @@ extern "C"
 {
 #endif
 
-EXPORT bool_t CALL micron_init()
+EXPORT bool_t CALL beam_init()
 {
   bool_t ret;
   ret = p_init();
@@ -40,7 +40,7 @@ EXPORT bool_t CALL micron_init()
   return ret != FALSE;
 }
 
-EXPORT void CALL micron_finish()
+EXPORT void CALL beam_finish()
 {
   if (_screen_pointer()) p_close_screen(_screen_pointer());
   /*_sound_deinitaudio();*/

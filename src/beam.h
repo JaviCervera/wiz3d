@@ -1,5 +1,5 @@
-#ifndef MICRON_H_INCLUDED
-#define MICRON_H_INCLUDED
+#ifndef BEAM_H_INCLUDED
+#define BEAM_H_INCLUDED
 
 #include "color.h"
 #include "file_system.h"
@@ -19,11 +19,11 @@ extern "C"
 {
 #endif
 
-EXPORT bool_t CALL micron_init();
-EXPORT void CALL micron_finish();
+EXPORT bool_t CALL beam_init();
+EXPORT void CALL beam_finish();
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* MICRON_H_INCLUDED */
+#endif /* BEAM_H_INCLUDED */

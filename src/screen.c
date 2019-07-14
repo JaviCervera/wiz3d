@@ -1,4 +1,4 @@
-#include "micron_config.h"
+#include "beam_config.h"
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
 #include "../lib/stb/stretchy_buffer.h"
