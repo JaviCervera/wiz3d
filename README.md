@@ -67,24 +67,22 @@ See [here](./doc/documentation.md).
 - [x] Remove Lua support and convert Beam into a dll.
 - [ ] File system with pak support (object_loadmem).
 - [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat.
-- [ ] OpenAL audio support (wav and ogg).
+- [ ] Audio with support for wav and ogg formats (OpenAL, SDL & Allegro).
 - [ ] material.ambient.
 - [ ] Spot lights.
 - [ ] Lightmaps.
-- [ ] Pawn scripting support.
-- [ ] Samples.
 
 ### v1.0
 
 - [ ] Ini file support.
-- [ ] PCX texture support.
-- [ ] Bitmap font support.
 - [ ] More primitives (sphere, cone, cylinder, wedge).
 - [ ] Emscripten support.
 
 ### v1.1
 
 - [ ] UI library (https://github.com/vurtun/nuklear).
+- [ ] PCX texture support.
+- [ ] Bitmap font support.
 - [ ] TinyGL or Klimt support (with fixed point math).
 
 ### v2.0
