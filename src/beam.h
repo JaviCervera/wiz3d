@@ -1,6 +1,7 @@
 #ifndef BEAM_H_INCLUDED
 #define BEAM_H_INCLUDED
 
+#include "colbox.h"
 #include "color.h"
 #include "file_system.h"
 #include "input.h"
