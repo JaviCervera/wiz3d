@@ -8,67 +8,55 @@
 #include "util.h"
 #include <math.h>
 
-bool_t p_Init()
-{
+bool_t p_Init() {
   return glfwInit();
 }
 
-void p_Shutdown()
-{
+void p_Shutdown() {
   glfwTerminate();
 }
 
-float p_GetTime()
-{
+float p_GetTime() {
   return (float)glfwGetTime();
 }
 
-void p_SetCursorVisible(void* win, bool_t visible)
-{
+void p_SetCursorVisible(void* win, bool_t visible) {
   glfwSetInputMode((GLFWwindow*)win, GLFW_CURSOR, visible ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_HIDDEN);
 }
 
-void p_SetCursorPosition(void* win, int x, int y)
-{
+void p_SetCursorPosition(void* win, int x, int y) {
   glfwSetCursorPos((GLFWwindow*)win, x, y);
 }
 
-int p_GetCursorX(void* win)
-{
+int p_GetCursorX(void* win) {
   double x;
   glfwGetCursorPos((GLFWwindow*)win, &x, NULL);
   return (int)floor(x);
 }
 
-int p_GetCursorY(void* win)
-{
+int p_GetCursorY(void* win) {
   double y;
   glfwGetCursorPos((GLFWwindow*)win, NULL, &y);
   return (int)floor(y);
 }
 
-bool_t p_GetCursorPressed(void* win, int button)
-{
+bool_t p_GetCursorPressed(void* win, int button) {
   return glfwGetMouseButton((GLFWwindow*)win, button) == GLFW_PRESS;
 }
 
-bool_t p_GetKeyPressed(void* win, int key)
-{
+bool_t p_GetKeyPressed(void* win, int key) {
   return glfwGetKey((GLFWwindow*)win, key) == GLFW_PRESS;
 }
 
-int p_GetDesktopWidth()
-{
+int p_GetDesktopWidth() {
   return glfwGetVideoMode(glfwGetPrimaryMonitor())->width;
 }
 
-int p_GetDesktopHeight()
-{
+int p_GetDesktopHeight() {
   return glfwGetVideoMode(glfwGetPrimaryMonitor())->height;
 }
 
-void* p_OpenScreen(int width, int height, bool_t fullscreen, int samples, bool_t vsync, bool_t resizable)
-{
+void* p_OpenScreen(int width, int height, bool_t fullscreen, int samples, bool_t vsync, bool_t resizable) {
   GLFWwindow* win;
 
   /* set flags */
@@ -90,29 +78,24 @@ void* p_OpenScreen(int width, int height, bool_t fullscreen, int samples, bool_t
   return win;
 }
 
-void p_CloseScreen(void* win)
-{
+void p_CloseScreen(void* win) {
   glfwDestroyWindow((GLFWwindow*)win);
 }
 
-bool_t p_IsScreenOpened(void* win)
-{
+bool_t p_IsScreenOpened(void* win) {
   return win && !glfwWindowShouldClose((GLFWwindow*)win);
 }
 
-void p_RefreshScreen(void* win)
-{
+void p_RefreshScreen(void* win) {
   glfwSwapBuffers((GLFWwindow*)win);
   glfwPollEvents();
 }
 
-void p_SetScreenTitle(void* win, const char* title)
-{
+void p_SetScreenTitle(void* win, const char* title) {
   glfwSetWindowTitle((GLFWwindow*)win, title);
 }
 
-int p_GetScreenWidth(void* win)
-{
+int p_GetScreenWidth(void* win) {
   int w;
 #ifdef USE_RETINA
   glfwGetFramebufferSize((GLFWwindow*)win, &w, NULL);
@@ -122,8 +105,7 @@ int p_GetScreenWidth(void* win)
   return w;
 }
 
-int p_GetScreenHeight(void* win)
-{
+int p_GetScreenHeight(void* win) {
   int h;
 #ifdef USE_RETINA
   glfwGetFramebufferSize((GLFWwindow*)win, NULL, &h);
@@ -133,8 +115,7 @@ int p_GetScreenHeight(void* win)
   return h;
 }
 
-void p_MessageBox(const char* title, const char* message)
-{
+void p_MessageBox(const char* title, const char* message) {
 #ifdef USE_TINYFILEDIALOGS
   tinyfd_messageBox(title, message, "ok", "info", 0);
 #else

@@ -4,8 +4,7 @@
 #include "types.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #define _Min(A, B)       (A < B ? A : B)

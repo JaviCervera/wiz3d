@@ -15,8 +15,7 @@
 #define FLAG_ALL 15
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 struct STexture;

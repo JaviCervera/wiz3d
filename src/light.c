@@ -8,8 +8,7 @@
 static int _light_ambient;
 static Light* _lights[NUM_LIGHTS] = {};
 
-EXPORT Light* CALL CreateLight(int type)
-{
+EXPORT Light* CALL CreateLight(int type) {
   int i;
   Light* light;
 
@@ -36,8 +35,7 @@ EXPORT Light* CALL CreateLight(int type)
   return light;
 }
 
-EXPORT void CALL DeleteLight(Light* light)
-{
+EXPORT void CALL DeleteLight(Light* light) {
   size_t i;
 
   /* find light index in array */
@@ -50,8 +48,7 @@ EXPORT void CALL DeleteLight(Light* light)
   free(light);
 }
 
-EXPORT void CALL MoveLight(Light* light, float x, float y, float z)
-{
+EXPORT void CALL MoveLight(Light* light, float x, float y, float z) {
   lvec3_t vec;
 
   vec = lvec3_add(
@@ -64,8 +61,7 @@ EXPORT void CALL MoveLight(Light* light, float x, float y, float z)
   light->z = vec.z;
 }
 
-EXPORT void CALL TurnLight(Light* light, float pitch, float yaw)
-{
+EXPORT void CALL TurnLight(Light* light, float pitch, float yaw) {
   lvec3_t vec;
 
   vec = lvec3_add(lvec3(light->pitch, light->yaw, 0), lvec3(pitch, yaw, 0));
@@ -73,8 +69,7 @@ EXPORT void CALL TurnLight(Light* light, float pitch, float yaw)
   light->yaw = vec.y;
 }
 
-EXPORT void CALL SetAmbientColor(int color)
-{
+EXPORT void CALL SetAmbientColor(int color) {
   _light_ambient = color;
   lgfx_setambient(
     GetRed(color) / 255.0f,
@@ -82,32 +77,25 @@ EXPORT void CALL SetAmbientColor(int color)
     GetBlue(color) / 255.0f);
 }
 
-EXPORT int CALL GetAmbientColor()
-{
+EXPORT int CALL GetAmbientColor() {
   return _light_ambient;
 }
 
-void _PrepareLights()
-{
+void _PrepareLights() {
   int i;
-  for (i = 0; i < NUM_LIGHTS; ++i)
-  {
-    if (_lights[i])
-    {
+  for (i = 0; i < NUM_LIGHTS; ++i) {
+    if (_lights[i]) {
       Light* light;
       lvec3_t pos;
 
       light = _lights[i];
 
       /* get position in viewer space */
-      if (light->type == LIGHT_DIRECTIONAL)
-      {
+      if (light->type == LIGHT_DIRECTIONAL) {
         pos = lquat_mulvec3(
           lquat_fromeuler(lvec3_rad(lvec3(light->pitch, light->yaw, 0))),
           lvec3(0, 0, -1));
-      }
-      else
-      {
+      } else {
         pos = lvec3(
           light->x,
           light->y,
@@ -130,8 +118,7 @@ void _PrepareLights()
   }
 }
 
-int _GetNumLights()
-{
+int _GetNumLights() {
   int i;
   int num = 0;
   for (i = 0; i < NUM_LIGHTS; ++i)

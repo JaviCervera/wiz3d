@@ -15,8 +15,7 @@
 
 static float _object_animfps = 16;
 
-void _SetObjectMaterials(Object* object)
-{
+void _SetObjectMaterials(Object* object) {
   sb_add(object->_materials, GetNumMeshBuffers(object->_mesh));
   memcpy(
     object->_materials,
@@ -24,8 +23,7 @@ void _SetObjectMaterials(Object* object)
     sizeof(Material) * GetNumMeshBuffers(object->_mesh));
 }
 
-EXPORT Object* CALL CreateObject()
-{
+EXPORT Object* CALL CreateObject() {
   Object* object = _Alloc(Object);
   object->x = 0;
   object->y = 0;
@@ -49,8 +47,7 @@ EXPORT Object* CALL CreateObject()
   return object;
 }
 
-EXPORT Object* CALL CreateCube()
-{
+EXPORT Object* CALL CreateCube() {
   Object* object;
   struct SMesh* mesh;
   int buffer;
@@ -112,8 +109,7 @@ EXPORT Object* CALL CreateCube()
   return object;
 }
 
-EXPORT Object* CALL CreateQuad()
-{
+EXPORT Object* CALL CreateQuad() {
   Object* object;
   struct SMesh* mesh;
   int buffer;
@@ -135,8 +131,7 @@ EXPORT Object* CALL CreateQuad()
   return object;
 }
 
-EXPORT Object* CALL CreateTriangle()
-{
+EXPORT Object* CALL CreateTriangle() {
   Object* object;
   struct SMesh* mesh;
   int buffer;
@@ -155,28 +150,23 @@ EXPORT Object* CALL CreateTriangle()
   return object;
 }
 
-EXPORT Object* CALL LoadObject(const char* filename)
-{
+EXPORT Object* CALL LoadObject(const char* filename) {
   Object* object;
   struct SMesh* mesh;
 
   object = CreateObject();
   mesh = object->_mesh;
-  if (LoadMesh(filename, mesh))
-  {
+  if (LoadMesh(filename, mesh)) {
     RebuildObjectMesh(object);
     _SetObjectMaterials(object);
     return object;
-  }
-  else
-  {
+  } else {
     DeleteObject(object);
     return NULL;
   }
 }
 
-EXPORT Object* CALL CloneObject(const Object* object)
-{
+EXPORT Object* CALL CloneObject(const Object* object) {
   Object* new_object = CreateObject();
   new_object->x = object->x;
   new_object->y = object->y;
@@ -194,97 +184,80 @@ EXPORT Object* CALL CloneObject(const Object* object)
   return new_object;
 }
 
-EXPORT void CALL DeleteObject(Object* object)
-{
+EXPORT void CALL DeleteObject(Object* object) {
   ReleaseMesh(object->_mesh);
   free(object);
 }
 
-EXPORT int CALL AddSurface(Object* object)
-{
+EXPORT int CALL AddSurface(Object* object) {
   int buffer = AddMeshBuffer(object->_mesh);
   sb_add(object->_materials, 1);
   return buffer;
 }
 
-EXPORT int CALL GetNumSurfaces(Object* object)
-{
+EXPORT int CALL GetNumSurfaces(Object* object) {
   return GetNumMeshBuffers(object->_mesh);
 }
 
-EXPORT int CALL AddVertex(Object* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color)
-{
+EXPORT int CALL AddVertex(Object* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color) {
   return AddMeshVertex(object->_mesh, buffer, x, y, z, nx, ny, nz, u, v, color);
 }
 
-EXPORT int CALL AddTriangle(Object* object, int buffer, int v0, int v1, int v2)
-{
+EXPORT int CALL AddTriangle(Object* object, int buffer, int v0, int v1, int v2) {
   return AddMeshTriangle(object->_mesh, buffer, v0, v1, v2);
 }
 
-EXPORT void CALL RebuildObjectMesh(Object* object)
-{
+EXPORT void CALL RebuildObjectMesh(Object* object) {
   RebuildMesh(object->_mesh);
 }
 
-EXPORT Material* CALL GetObjectMaterial(Object* object, int index)
-{
+EXPORT Material* CALL GetObjectMaterial(Object* object, int index) {
   return &object->_materials[index];
 }
 
-EXPORT float CALL GetObjectWidth(const Object* object)
-{
+EXPORT float CALL GetObjectWidth(const Object* object) {
   return GetMeshWidth(object->_mesh) * object->sx;
 }
 
-EXPORT float CALL GetObjectHeight(const Object* object)
-{
+EXPORT float CALL GetObjectHeight(const Object* object) {
   return GetMeshHeight(object->_mesh) * object->sy;
 }
 
-EXPORT float CALL GetObjectDepth(const Object* object)
-{
+EXPORT float CALL GetObjectDepth(const Object* object) {
   return GetMeshDepth(object->_mesh) * object->sz;
 }
 
-EXPORT float CALL GetObjectMinX(const Object* object)
-{
+EXPORT float CALL GetObjectMinX(const Object* object) {
   return object->x + GetMeshBoxMinX(object->_mesh) * object->sx;
 }
 
-EXPORT float CALL GetObjectMinY(const Object* object)
-{
+EXPORT float CALL GetObjectMinY(const Object* object) {
   return object->y + GetMeshBoxMinY(object->_mesh) * object->sy;
 }
 
-EXPORT float CALL GetObjectMinZ(const Object* object)
-{
+EXPORT float CALL GetObjectMinZ(const Object* object) {
   if (object->billboard == BILLBOARD_NONE)
     return object->z + GetMeshBoxMinZ(object->_mesh) * object->sz;
   else
     return GetObjectMinX(object);
 }
 
-EXPORT float CALL GetObjectMaxX(const Object* object)
-{
+EXPORT float CALL GetObjectMaxX(const Object* object) {
   return object->x + GetMeshBoxMaxX(object->_mesh) * object->sx;
 }
 
-EXPORT float CALL GetObjectMaxY(const Object* object)
-{
+EXPORT float CALL GetObjectMaxY(const Object* object) {
   return object->y + GetMeshBoxMaxY(object->_mesh) * object->sy;
 }
 
-EXPORT float CALL GetObjectMaxZ(const Object* object)
-{
+EXPORT float CALL GetObjectMaxZ(const Object* object) {
   if (object->billboard == BILLBOARD_NONE)
     return object->z + GetMeshBoxMaxZ(object->_mesh) * object->sz;
   else
     return GetObjectMaxX(object);
 }
 
-EXPORT bool_t CALL MoveObject(Object* object, float x, float y, float z)
-{
+EXPORT bool_t CALL MoveObject(Object* object, float x, float y, float z) {
   lvec3_t vec;
   bool_t collided = FALSE;
 
@@ -293,24 +266,21 @@ EXPORT bool_t CALL MoveObject(Object* object, float x, float y, float z)
 
   /* move x and check collision boxes */
   object->x += vec.x;
-  if (ObjectCollidesBoxes(object))
-  {
+  if (ObjectCollidesBoxes(object)) {
     collided = TRUE;
     object->x -= vec.x;
   }
 
   /* move y and check collision boxes */
   object->y += vec.y;
-  if (ObjectCollidesBoxes(object))
-  {
+  if (ObjectCollidesBoxes(object)) {
     collided = TRUE;
     object->y -= vec.y;
   }
 
   /* move z and check collision boxes */
   object->z += vec.z;
-  if (ObjectCollidesBoxes(object))
-  {
+  if (ObjectCollidesBoxes(object)) {
     collided = TRUE;
     object->z -= vec.z;
   }
@@ -318,8 +288,7 @@ EXPORT bool_t CALL MoveObject(Object* object, float x, float y, float z)
   return collided;
 }
 
-EXPORT void CALL TurnObject(Object* object, float pitch, float yaw, float roll)
-{
+EXPORT void CALL TurnObject(Object* object, float pitch, float yaw, float roll) {
   lvec3_t vec;
 
   vec = lvec3_add(lvec3(object->pitch, object->yaw, object->roll), lvec3(pitch, yaw, roll));
@@ -328,100 +297,78 @@ EXPORT void CALL TurnObject(Object* object, float pitch, float yaw, float roll)
   object->roll = vec.z;
 }
 
-EXPORT bool_t CALL ObjectCollidesBoxes(Object* object)
-{
-  if (object->colmode == COL_SPHERE)
-  {
+EXPORT bool_t CALL ObjectCollidesBoxes(Object* object) {
+  if (object->colmode == COL_SPHERE) {
     return _CheckSphereCol(object->x, object->y, object->z, object->radius * object->radius);
-  }
-  else if (object->colmode == COL_BOX)
-  {
+  } else if (object->colmode == COL_BOX) {
     return _CheckBoxCol(
       GetObjectMinX(object), GetObjectMinY(object), GetObjectMinZ(object),
       GetObjectMaxX(object), GetObjectMaxY(object), GetObjectMaxZ(object)
     );
-  }
-  else
-  {
+  } else {
     return FALSE;
   }
 }
 
-EXPORT bool_t CALL ObjectCollidesObject(Object* object, Object* object2)
-{
-  if (object != object2 && object->colmode != COL_NONE && object2->colmode != COL_NONE)
-  {
-    if (object->colmode == COL_SPHERE && object2->colmode == COL_SPHERE)
-    {
+EXPORT bool_t CALL ObjectCollidesObject(Object* object, Object* object2) {
+  if (object != object2 && object->colmode != COL_NONE && object2->colmode != COL_NONE) {
+    if (object->colmode == COL_SPHERE && object2->colmode == COL_SPHERE) {
       return lcol_spheresphere(
         object->x, object->y, object->z, object->radius * object->radius,
         object2->x, object2->y, object2->z, object2->radius * object2->radius
       ) == 1;
-    }
-    else if (object->colmode == COL_SPHERE && object2->colmode == COL_BOX)
-    {
+    } else if (object->colmode == COL_SPHERE && object2->colmode == COL_BOX) {
       return lcol_boxsphere(
         GetObjectMinX(object2), GetObjectMinY(object2), GetObjectMinZ(object2),
         GetObjectMaxX(object2), GetObjectMaxY(object2), GetObjectMaxZ(object2),
         object->x, object->y, object->z, object->radius * object->radius
       ) == 1;
-    }
-    else if (object->colmode == COL_BOX && object2->colmode == COL_SPHERE)
-    {
+    } else if (object->colmode == COL_BOX && object2->colmode == COL_SPHERE) {
       return lcol_boxsphere(
         GetObjectMinX(object), GetObjectMinY(object), GetObjectMinZ(object),
         GetObjectMaxX(object), GetObjectMaxY(object), GetObjectMaxZ(object),
         object2->x, object2->y, object2->z, object2->radius * object2->radius
       ) == 1;
-    }
-    else if (object->colmode == COL_BOX && object2->colmode == COL_BOX)
-    {
+    } else if (object->colmode == COL_BOX && object2->colmode == COL_BOX) {
       return lcol_boxbox(
         GetObjectMinX(object), GetObjectMinY(object), GetObjectMinZ(object),
         GetObjectMaxX(object), GetObjectMaxY(object), GetObjectMaxZ(object),
         GetObjectMinX(object2), GetObjectMinY(object2), GetObjectMinZ(object2),
         GetObjectMaxX(object2), GetObjectMaxY(object2), GetObjectMaxZ(object2)
       ) == 1;
+    } else {
+      return FALSE; /* should not get here */
     }
-  }
-  else
-  {
+  } else {
     return FALSE;
   }
 }
 
-EXPORT void CALL DrawObject(Object* object)
-{
+EXPORT void CALL DrawObject(Object* object) {
   lmat4_t modelview;
 
   /* calculate animation */
-  if (object->animmode != ANIM_STOP)
-  {
+  if (object->animmode != ANIM_STOP) {
     int lastframe = (object->animmax != 0) ? object->animmax : _GetMeshLastFrame(object->_mesh);
     object->animframe += object->animspeed * _object_animfps * GetDeltaTime();
-    if (object->animframe > lastframe)
-    {
+    if (object->animframe > lastframe) {
       if (object->animmode == ANIM_LOOP) object->animframe -= (lastframe - object->animmin);
       else object->animframe = lastframe;
     }
-    if (object->animframe < object->animmin)
-    {
+    if (object->animframe < object->animmin) {
       if (object->animmode == ANIM_LOOP) object->animframe += (lastframe - object->animmin);
       else object->animframe = object->animmin;
     }
     _AnimateMesh(object->_mesh, object->animframe);
     RebuildMesh(object->_mesh);
-  }
-  else if (object->animframe != 0)
-  {
+  } else if (object->animframe != 0) {
     _AnimateMesh(object->_mesh, 0);
     RebuildMesh(object->_mesh);
     object->animframe = 0;
   }
 
   /* calculate modelview */
-  switch (object->billboard)
-  {
+  switch (object->billboard) {
     case BILLBOARD_NONE:
       modelview = lmat4_transform(
         lvec3(object->x, object->y, object->z),
@@ -444,17 +391,14 @@ EXPORT void CALL DrawObject(Object* object)
   _DrawMesh(object->_mesh, object->_materials);
 }
 
-EXPORT int CALL GetObjectNumFrames(const Object* object)
-{
+EXPORT int CALL GetObjectNumFrames(const Object* object) {
   return _GetMeshLastFrame(object->_mesh);
 }
 
-EXPORT void CALL object_setanimfps(float fps)
-{
+EXPORT void CALL object_setanimfps(float fps) {
   _object_animfps = fps;
 }
 
-EXPORT float CALL GetObjectFPS()
-{
+EXPORT float CALL GetObjectFPS() {
   return _object_animfps;
 }

@@ -16,15 +16,13 @@
 #define COL_BOX 2
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 struct SMaterial;
 struct SMesh;
 
-typedef struct
-{
+typedef struct {
   float x, y, z;
   float pitch, yaw, roll;
   float sx, sy, sz;

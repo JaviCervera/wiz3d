@@ -4,8 +4,7 @@
 #include "types.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 EXPORT void CALL AddColbox(float minx, float miny, float minz, float maxx, float maxy, float maxz);

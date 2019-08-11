@@ -7,13 +7,11 @@
 #define LIGHT_POINT       1
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 
-typedef struct
-{
+typedef struct {
   float x, y, z;
   float pitch, yaw;
   int   type;

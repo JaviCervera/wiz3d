@@ -27,12 +27,10 @@
 #include "../lib/stb/stb_vorbis.c"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-EXPORT bool_t CALL InitBeam()
-{
+EXPORT bool_t CALL InitBeam() {
   bool_t ret;
   ret = p_Init();
   if (!ret) return FALSE;
@@ -40,8 +38,7 @@ EXPORT bool_t CALL InitBeam()
   return ret != FALSE;
 }
 
-EXPORT void CALL ShutdownBeam()
-{
+EXPORT void CALL ShutdownBeam() {
   if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
   /*_sound_deinitaudio();*/
   p_Shutdown();

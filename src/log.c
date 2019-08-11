@@ -9,8 +9,7 @@ static char _log_filename[STRING_SIZE] = "";
 
 static void _InitLog();
 
-EXPORT void CALL LogInfo(const char* msg)
-{
+EXPORT void CALL LogInfo(const char* msg) {
   _InitLog();
   printf("[INFO] %s\n", msg);
   if (strcmp(_log_filename, "") != 0) WriteString("[INFO] ", _log_filename, TRUE);
@@ -18,8 +17,7 @@ EXPORT void CALL LogInfo(const char* msg)
   if (strcmp(_log_filename, "") != 0) WriteString("\r\n", _log_filename, TRUE);
 }
 
-EXPORT void CALL LogWarning(const char* msg)
-{
+EXPORT void CALL LogWarning(const char* msg) {
   _InitLog();
   printf("[WARNING] %s\n", msg);
   if (strcmp(_log_filename, "") != 0) WriteString("[WARNING] ", _log_filename, TRUE);
@@ -27,8 +25,7 @@ EXPORT void CALL LogWarning(const char* msg)
   if (strcmp(_log_filename, "") != 0) WriteString("\r\n", _log_filename, TRUE);
 }
 
-EXPORT void CALL LogError(const char* msg)
-{
+EXPORT void CALL LogError(const char* msg) {
   _InitLog();
   printf("[ERROR] %s\n", msg);
   if (strcmp(_log_filename, "") != 0) WriteString("[ERROR] ", _log_filename, TRUE);
@@ -38,15 +35,12 @@ EXPORT void CALL LogError(const char* msg)
   exit(-1);
 }
 
-void _SetLogFilename(const char* filename)
-{
+void _SetLogFilename(const char* filename) {
   strncpy(_log_filename, filename, STRING_SIZE);
 }
 
-static void _InitLog()
-{
-  if (!_log_init)
-  {
+static void _InitLog() {
+  if (!_log_init) {
     if (strcmp(_log_filename, "") != 0) WriteString("", _log_filename, FALSE);
     _log_init = TRUE;
   }

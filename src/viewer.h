@@ -8,14 +8,12 @@
 #define CLEAR_SKYBOX 2
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 struct STexture;
 
-typedef struct
-{
+typedef struct {
   float             x, y, z;
   float             pitch, yaw, roll;
   int               vx;

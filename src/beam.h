@@ -16,8 +16,7 @@
 #include "viewer.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 EXPORT bool_t CALL InitBeam();

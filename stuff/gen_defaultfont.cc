@@ -3,8 +3,7 @@
 #include <string>
 #include <vector>
 
-int main(int, char**)
-{
+int main(int, char**) {
   // read font file
   std::ifstream ifs("LiberationMono-Regular.ttf", std::ios_base::ate | std::ios_base::binary);
   if ( !ifs.is_open() ) return -1;

@@ -18,8 +18,7 @@
 #define COLOR_BROWN      -7650029
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 EXPORT int CALL GetRGB(int r, int g, int b);

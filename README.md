@@ -68,7 +68,7 @@ See [here](./doc/documentation.md).
 - [x] Dependencies build inside root _CMAKE dir.
 - [x] SDL2 is now default platform.
 - [x] Pascal case for function names.
-- [ ] Trailing braces.
+- [x] Trailing braces.
 - [ ] File system with pak support (object_loadmem).
 - [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat.
 - [ ] Audio with support for wav and ogg formats (OpenAL, SDL & Allegro).

@@ -4,8 +4,7 @@
 #include "types.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /* this is defined on macos, so undefine it */

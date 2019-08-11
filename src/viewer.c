@@ -16,8 +16,7 @@ static struct SMesh* _viewer_skybox = NULL;
 
 static struct SMesh* _SetupViewerSkyboxMesh(struct STexture* texture);
 
-EXPORT Viewer* CALL CreateViewer()
-{
+EXPORT Viewer* CALL CreateViewer() {
   Viewer* viewer = _Alloc(Viewer);
   viewer->x = 0;
   viewer->y = 0;
@@ -43,13 +42,11 @@ EXPORT Viewer* CALL CreateViewer()
   return viewer;
 }
 
-EXPORT void CALL DeleteViewer(Viewer* viewer)
-{
+EXPORT void CALL DeleteViewer(Viewer* viewer) {
   free(viewer);
 }
 
-EXPORT void CALL MoveViewer(Viewer* viewer, float x, float y, float z)
-{
+EXPORT void CALL MoveViewer(Viewer* viewer, float x, float y, float z) {
   lvec3_t vec;
 
   vec = lvec3_add(
@@ -60,8 +57,7 @@ EXPORT void CALL MoveViewer(Viewer* viewer, float x, float y, float z)
   viewer->z = vec.z;
 }
 
-EXPORT void CALL TurnViewer(Viewer* viewer, float pitch, float yaw, float roll)
-{
+EXPORT void CALL TurnViewer(Viewer* viewer, float pitch, float yaw, float roll) {
   lvec3_t vec;
 
   vec = lvec3_add(lvec3(viewer->pitch, viewer->yaw, viewer->roll), lvec3(pitch, yaw, roll));
@@ -70,8 +66,7 @@ EXPORT void CALL TurnViewer(Viewer* viewer, float pitch, float yaw, float roll)
   viewer->roll = vec.z;
 }
 
-EXPORT void CALL PrepareViewer(const Viewer* viewer)
-{
+EXPORT void CALL PrepareViewer(const Viewer* viewer) {
   int vp_w;
   int vp_h;
   float ratio;
@@ -93,15 +88,12 @@ EXPORT void CALL PrepareViewer(const Viewer* viewer)
 
   /* prepare projection */
   ratio = vp_w / (float)vp_h;
-  if (viewer->ortho)
-  {
+  if (viewer->ortho) {
     float width, height;
     height = viewer->min * tan(lm_deg2rad(viewer->fov)) * 2;
     width = height * ratio;
     proj = lmat4_ortholh(-width, width, -height, height, viewer->min, viewer->max);
-  }
-  else
-  {
+  } else {
     proj = lmat4_perspectivelh(lm_deg2rad(viewer->fov), ratio, viewer->min, viewer->max);
   }
   lgfx_setprojection(proj.m);
@@ -118,8 +110,7 @@ EXPORT void CALL PrepareViewer(const Viewer* viewer)
   /* clear buffers */
   lgfx_setdepthwrite(TRUE);
   lgfx_cleardepthbuffer();
-  switch (viewer->clearmode)
-  {
+  switch (viewer->clearmode) {
     case CLEAR_COLOR:
       lgfx_clearcolorbuffer(
         GetRed(viewer->clearcolor) / 255.0f,
@@ -144,18 +135,15 @@ EXPORT void CALL PrepareViewer(const Viewer* viewer)
   }
 }
 
-const Viewer* _GetActiveViewer()
-{
+const Viewer* _GetActiveViewer() {
   return _view_active_viewer;
 }
 
-const void* _GetActiveMatrix()
-{
+const void* _GetActiveMatrix() {
   return &_view_matrix;
 }
 
-static struct SMesh* _SetupViewerSkyboxMesh(struct STexture* texture)
-{
+static struct SMesh* _SetupViewerSkyboxMesh(struct STexture* texture) {
   if (!_viewer_skybox) _viewer_skybox = _CreateSkyboxMesh();
   GetMeshMaterial(_viewer_skybox, 0)->texture = texture;
   return _viewer_skybox;

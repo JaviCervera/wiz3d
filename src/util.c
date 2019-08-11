@@ -18,8 +18,7 @@
 /*#undef DeleteFile*/
 #endif
 
-void StripExt(const char* filename, char* out, size_t len)
-{
+void StripExt(const char* filename, char* out, size_t len) {
   const char* endp;
   size_t plen, copylen;
 
@@ -27,10 +26,8 @@ void StripExt(const char* filename, char* out, size_t len)
   endp = strrchr(filename, '.');
 
   /* if contains no extension, returns filename */
-  if (!endp)
-  {
-    if (len > 0)
-    {
+  if (!endp) {
+    if (len > 0) {
       strncpy(out, filename, len);
       out[len] = 0;
     }
@@ -56,8 +53,7 @@ void ExtractExt(const char* filename, char* out, size_t len)
   if (beginp) ++beginp;
 
   /* if contains no extension, returns empty string */
-  if (!beginp)
-  {
+  if (!beginp) {
     if (len > 0) out[0] = 0;
     return;
   }
@@ -72,8 +68,7 @@ void ExtractExt(const char* filename, char* out, size_t len)
   out[copylen < len ? copylen : len-1] = 0;
 }
 
-void StripDir(const char* filename, char* out, size_t len)
-{
+void StripDir(const char* filename, char* out, size_t len) {
   const char* fp;
   const char* bp;
   const char* beginp;
@@ -95,8 +90,7 @@ void StripDir(const char* filename, char* out, size_t len)
   out[copylen < len ? copylen : len-1] = 0;
 }
 
-void ExtractDir(const char* filename, char* out, size_t len)
-{
+void ExtractDir(const char* filename, char* out, size_t len) {
   const char* fp;
   const char* bp;
   const char* endp;
@@ -108,8 +102,7 @@ void ExtractDir(const char* filename, char* out, size_t len)
   endp = (fp > bp) ? fp : bp;
 
   /* if contains no path, returns empty string */
-  if (!endp)
-  {
+  if (!endp) {
     if (len > 0) out[0] = 0;
     return;
   }
@@ -123,8 +116,7 @@ void ExtractDir(const char* filename, char* out, size_t len)
   out[copylen < len ? copylen : len-1] = 0;
 }
 
-bool_t GetDirContents(const char* path, char* out, size_t len)
-{
+bool_t GetDirContents(const char* path, char* out, size_t len) {
   DIR* d;
   struct dirent* entry;
 
@@ -134,8 +126,7 @@ bool_t GetDirContents(const char* path, char* out, size_t len)
 
   /* copy directory contents */
   if (len > 0) out[0] = 0;
-  while ((entry = (struct dirent*)readdir(d)))
-  {
+  while ((entry = (struct dirent*)readdir(d))) {
     snprintf(out, len, strlen(out) > 0 ? "%s\n%s" : "%s%s", out, entry->d_name);
   }
 
@@ -145,27 +136,22 @@ bool_t GetDirContents(const char* path, char* out, size_t len)
   return TRUE;
 }
 
-void GetCurrentDir(char* out, size_t len)
-{
+void GetCurrentDir(char* out, size_t len) {
   _getcwd(out, len);
 }
 
-bool_t ChangeDir(const char* path)
-{
+bool_t ChangeDir(const char* path) {
   return _chdir(path) == 0;
 }
 
-int StringCompareLower(char const *a, char const *b)
-{
-    for (;; a++, b++)
-    {
+int StringCompareLower(char const *a, char const *b) {
+    for (;; a++, b++) {
         int d = tolower((unsigned char)*a) - tolower((unsigned char)*b);
         if (d != 0 || !*a) return d;
     }
 }
 
-void WriteString(const char* str, const char* filename, bool_t append)
-{
+void WriteString(const char* str, const char* filename, bool_t append) {
   FILE* f;
 
   /* open file to write or append */

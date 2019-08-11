@@ -17,22 +17,19 @@
 #include <stdio.h>
 #include <string.h>
 
-typedef struct
-{
+typedef struct {
   int frame;
   lvec3_t* positions;
   lvec3_t* normals;
 } Frame;
 
-typedef struct
-{
+typedef struct {
   lvert_t* vertices;
   unsigned short* indices;
   Frame* frames;
 } Buffer;
 
-typedef struct SMesh
-{
+typedef struct SMesh {
   size_t refcount;
   Buffer* buffers;
   Material* materials;
@@ -44,8 +41,7 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh);
 bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh);
 
 
-Mesh* CreateMesh()
-{
+Mesh* CreateMesh() {
   Mesh* mesh;
   mesh = _Alloc(struct SMesh);
   mesh->refcount = 1;
@@ -54,41 +50,30 @@ Mesh* CreateMesh()
   return mesh;
 }
 
-bool_t LoadMesh(const char* filename, Mesh* mesh)
-{
+bool_t LoadMesh(const char* filename, Mesh* mesh) {
   char ext[STRING_SIZE];
   ExtractExt(filename, ext, sizeof(ext));
-  if (StringCompareLower(ext, "assbin") == 0)
-  {
+  if (StringCompareLower(ext, "assbin") == 0) {
     return _LoadAssimpMesh(filename, mesh);
-  }
-  else if (StringCompareLower(ext, "md2") == 0)
-  {
+  } else if (StringCompareLower(ext, "md2") == 0) {
     return _LoadMD2Mesh(filename, mesh);
-  }
-  else
-  {
+  } else {
     return FALSE;
   }
 }
 
-void RetainMesh(Mesh* mesh)
-{
+void RetainMesh(Mesh* mesh) {
   ++mesh->refcount;
 }
 
-void ReleaseMesh(Mesh* mesh)
-{
+void ReleaseMesh(Mesh* mesh) {
   int i;
 
-  if (--mesh->refcount == 0)
-  {
+  if (--mesh->refcount == 0) {
     /* free buffer data */
-    for (i = 0; i < sb_count(mesh->buffers); ++i)
-    {
+    for (i = 0; i < sb_count(mesh->buffers); ++i) {
       int j;
-      for (j = 0; j < sb_count(mesh->buffers[i].frames); ++j)
-      {
+      for (j = 0; j < sb_count(mesh->buffers[i].frames); ++j) {
         sb_free(mesh->buffers[i].frames[j].positions);
         sb_free(mesh->buffers[i].frames[j].normals);
       }
@@ -104,8 +89,7 @@ void ReleaseMesh(Mesh* mesh)
   }
 }
 
-int AddMeshBuffer(Mesh* mesh)
-{
+int AddMeshBuffer(Mesh* mesh) {
   Buffer* buffer;
   Material* material;
 
@@ -118,8 +102,7 @@ int AddMeshBuffer(Mesh* mesh)
   return sb_count(mesh->buffers) - 1;
 }
 
-int AddMeshVertex(Mesh* mesh, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color)
-{
+int AddMeshVertex(Mesh* mesh, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color) {
   sb_push(
     mesh->buffers[buffer].vertices,
     lvert(
@@ -133,8 +116,7 @@ int AddMeshVertex(Mesh* mesh, int buffer, float x, float y, float z, float nx, f
   return sb_count(mesh->buffers[buffer].vertices) - 1;
 }
 
-int AddMeshTriangle(Mesh* mesh, int buffer, int v0, int v1, int v2)
-{
+int AddMeshTriangle(Mesh* mesh, int buffer, int v0, int v1, int v2) {
   unsigned short* index;
 
   index = sb_add(mesh->buffers[buffer].indices, 3);
@@ -144,25 +126,19 @@ int AddMeshTriangle(Mesh* mesh, int buffer, int v0, int v1, int v2)
   return (sb_count(mesh->buffers[buffer].indices) - 3) / 3;
 }
 
-void RebuildMesh(Mesh* mesh)
-{
+void RebuildMesh(Mesh* mesh) {
   int b, v;
 
   /* calculate mesh bounds */
-  if (sb_count(mesh->buffers) > 0 && sb_count(mesh->buffers[0].vertices) > 0)
-  {
+  if (sb_count(mesh->buffers) > 0 && sb_count(mesh->buffers[0].vertices) > 0) {
     mesh->boxmin = lvec3(mesh->buffers[0].vertices[0].pos[0], mesh->buffers[0].vertices[0].pos[1], mesh->buffers[0].vertices[0].pos[2]);
     mesh->boxmax = mesh->boxmin;
-  }
-  else
-  {
+  } else {
     mesh->boxmin = lvec3(0, 0, 0);
     mesh->boxmax = lvec3(0, 0, 0);
   }
-  for (b = 0; b < sb_count(mesh->buffers); ++b)
-  {
-    for (v = 0; v < sb_count(mesh->buffers[b].vertices); ++v)
-    {
+  for (b = 0; b < sb_count(mesh->buffers); ++b) {
+    for (v = 0; v < sb_count(mesh->buffers[b].vertices); ++v) {
       float vx, vy, vz;
       vx = mesh->buffers[b].vertices[v].pos[0];
       vy = mesh->buffers[b].vertices[v].pos[1];
@@ -177,73 +153,59 @@ void RebuildMesh(Mesh* mesh)
   }
 }
 
-int GetNumMeshBuffers(Mesh* mesh)
-{
+int GetNumMeshBuffers(Mesh* mesh) {
   return sb_count(mesh->buffers);
 }
 
-Material* GetMeshMaterial(Mesh* mesh, int buffer)
-{
+Material* GetMeshMaterial(Mesh* mesh, int buffer) {
   return &mesh->materials[buffer];
 }
 
-float GetMeshWidth(const Mesh* mesh)
-{
+float GetMeshWidth(const Mesh* mesh) {
   return mesh->boxmax.x - mesh->boxmin.x;
 }
 
-float GetMeshHeight(const Mesh* mesh)
-{
+float GetMeshHeight(const Mesh* mesh) {
   return mesh->boxmax.y - mesh->boxmin.y;
 }
 
-float GetMeshDepth(const Mesh* mesh)
-{
+float GetMeshDepth(const Mesh* mesh) {
   return mesh->boxmax.z - mesh->boxmin.z;
 }
 
-float GetMeshBoxMinX(const Mesh* mesh)
-{
+float GetMeshBoxMinX(const Mesh* mesh) {
   return mesh->boxmin.x;
 }
 
-float GetMeshBoxMinY(const Mesh* mesh)
-{
+float GetMeshBoxMinY(const Mesh* mesh) {
   return mesh->boxmin.y;
 }
 
-float GetMeshBoxMinZ(const Mesh* mesh)
-{
+float GetMeshBoxMinZ(const Mesh* mesh) {
   return mesh->boxmin.z;
 }
 
-float GetMeshBoxMaxX(const Mesh* mesh)
-{
+float GetMeshBoxMaxX(const Mesh* mesh) {
   return mesh->boxmax.x;
 }
 
-float GetMeshBoxMaxY(const Mesh* mesh)
-{
+float GetMeshBoxMaxY(const Mesh* mesh) {
   return mesh->boxmax.y;
 }
 
-float GetMeshBoxMaxZ(const Mesh* mesh)
-{
+float GetMeshBoxMaxZ(const Mesh* mesh) {
   return mesh->boxmax.z;
 }
 
-int _GetMeshLastFrame(const Mesh* mesh)
-{
+int _GetMeshLastFrame(const Mesh* mesh) {
   return (sb_count(mesh->buffers[0].frames) > 0) ? sb_last(mesh->buffers[0].frames).frame : 0;
 }
 
-void _AnimateMesh(Mesh* mesh, float frame)
-{
+void _AnimateMesh(Mesh* mesh, float frame) {
   int b;
 
   /* animate all buffers */
-  for (b = 0; b < sb_count(mesh->buffers); ++b)
-  {
+  for (b = 0; b < sb_count(mesh->buffers); ++b) {
     Buffer* buffer;
     Frame*  frames;
     int f;
@@ -256,11 +218,9 @@ void _AnimateMesh(Mesh* mesh, float frame)
     if (!frames) continue;
 
     /* if outside bounds, copy first or last frames */
-    if (frame < 0)
-    {
+    if (frame < 0) {
       int v;
-      for (v = 0; v < sb_count(buffer->vertices); ++v)
-      {
+      for (v = 0; v < sb_count(buffer->vertices); ++v) {
         buffer->vertices[v].pos[0] = frames[0].positions[v].x;
         buffer->vertices[v].pos[1] = frames[0].positions[v].y;
         buffer->vertices[v].pos[2] = frames[0].positions[v].z;
@@ -269,12 +229,9 @@ void _AnimateMesh(Mesh* mesh, float frame)
         buffer->vertices[v].nor[2] = frames[0].normals[v].z;
       }
       continue; /* continue to next buffer */
-    }
-    else if (frame > sb_last(frames).frame)
-    {
+    } else if (frame > sb_last(frames).frame) {
       int v;
-      for (v = 0; v < sb_count(buffer->vertices); ++v)
-      {
+      for (v = 0; v < sb_count(buffer->vertices); ++v) {
         buffer->vertices[v].pos[0] = sb_last(frames).positions[v].x;
         buffer->vertices[v].pos[1] = sb_last(frames).positions[v].y;
         buffer->vertices[v].pos[2] = sb_last(frames).positions[v].z;
@@ -287,17 +244,14 @@ void _AnimateMesh(Mesh* mesh, float frame)
 
     /* if within bounds, copy correct frame (interpolating when needed) */
     finished = FALSE;
-    for (f = 0; f < sb_count(frames); ++f)
-    {
+    for (f = 0; f < sb_count(frames); ++f) {
       /* if we finished in the last iteration, continue to next buffer */
       if (finished) continue;
 
       /* found frame, so copy vertices and normals */
-      if (frames[f].frame == frame)
-      {
+      if (frames[f].frame == frame) {
         int j;
-        for (j = 0; j < sb_count(buffer->vertices); ++j)
-        {
+        for (j = 0; j < sb_count(buffer->vertices); ++j) {
           buffer->vertices[j].pos[0] = frames[f].positions[j].x;
           buffer->vertices[j].pos[1] = frames[f].positions[j].y;
           buffer->vertices[j].pos[2] = frames[f].positions[j].z;
@@ -309,12 +263,10 @@ void _AnimateMesh(Mesh* mesh, float frame)
       }
 
       /* found next frame, so interpolate */
-      if (frames[f].frame > frame)
-      {
+      if (frames[f].frame > frame) {
         int v;
         float alpha = (frame - frames[f-1].frame) / (frames[f].frame - frames[f-1].frame);
-        for (v = 0; v < sb_count(buffer->vertices); ++v)
-        {
+        for (v = 0; v < sb_count(buffer->vertices); ++v) {
           lvec3_t pos, nor;
           pos = lvec3_mix(frames[f-1].positions[v], frames[f].positions[v], alpha);
           nor = lvec3_mix(frames[f-1].normals[v], frames[f].normals[v], alpha);
@@ -331,16 +283,14 @@ void _AnimateMesh(Mesh* mesh, float frame)
   }
 }
 
-void _DrawMesh(const Mesh* mesh, const Material* materials)
-{
+void _DrawMesh(const Mesh* mesh, const Material* materials) {
   int i;
 
   /* if no material array is specified, take it from the mesh */
   if (!materials) materials = mesh->materials;
 
   /* draw all buffers */
-  for (i = 0; i < sb_count(mesh->buffers); ++i)
-  {
+  for (i = 0; i < sb_count(mesh->buffers); ++i) {
     const Material* material;
     int specular;
 
@@ -368,19 +318,15 @@ void _DrawMesh(const Mesh* mesh, const Material* materials)
     lgfx_setdepthwrite((material->flags & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
 
     /* setup lighting */
-    if ((material->flags & FLAG_LIGHTING) == FLAG_LIGHTING)
-    {
+    if ((material->flags & FLAG_LIGHTING) == FLAG_LIGHTING) {
       int numlights = _GetNumLights();
       lgfx_setlighting(numlights);
-    }
-    else
-    {
+    } else {
       lgfx_setlighting(0);
     }
 
     /* setup fog */
-    if ((material->flags & FLAG_FOG) == FLAG_FOG)
-    {
+    if ((material->flags & FLAG_FOG) == FLAG_FOG) {
       lgfx_setfog(
         _GetActiveViewer()->fogenabled,
         GetRed(_GetActiveViewer()->fogcolor) / 255.0f,
@@ -389,24 +335,19 @@ void _DrawMesh(const Mesh* mesh, const Material* materials)
         _GetActiveViewer()->fogmin,
         _GetActiveViewer()->fogmax
       );
-    }
-    else
-    {
+    } else {
       lgfx_setfog(FALSE, 0, 0, 0, 0, 0);
     }
 
     /* draw */
-    if (sb_count(mesh->buffers[i].indices) > 0)
-    {
+    if (sb_count(mesh->buffers[i].indices) > 0) {
       lvert_drawindexed(
         mesh->buffers[i].vertices,
         mesh->buffers[i].indices,
         sb_count(mesh->buffers[i].indices),
         MODE_TRIANGLES
       );
-    }
-    else
-    {
+    } else {
       lvert_draw(
         mesh->buffers[i].vertices,
         sb_count(mesh->buffers[i].vertices),
@@ -415,8 +356,7 @@ void _DrawMesh(const Mesh* mesh, const Material* materials)
   }
 }
 
-Mesh* _CreateSkyboxMesh()
-{
+Mesh* _CreateSkyboxMesh() {
   Mesh* mesh;
   int buffer;
   int ldb, ldf, lub, luf, rdb, rdf, rub, ruf, ldb1, lub1;
@@ -466,8 +406,7 @@ Mesh* _CreateSkyboxMesh()
   return mesh;
 }
 
-bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh)
-{
+bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh) {
   lassbin_scene_t* scene;
   int m, t;
 
@@ -475,18 +414,15 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh)
   if (!scene) return FALSE;
 
   /* make sure that meshes use 16 bits indices */
-  for (m = 0; m < scene->num_meshes; ++m)
-  {
-    if (scene->meshes[m].num_vertices > 65536)
-    {
+  for (m = 0; m < scene->num_meshes; ++m) {
+    if (scene->meshes[m].num_vertices > 65536) {
       lassbin_free(scene);
       return FALSE;
     }
   }
 
   /* add buffers */
-  for (m = 0; m < scene->num_meshes; ++m)
-  {
+  for (m = 0; m < scene->num_meshes; ++m) {
     int buffer;
     lvert_t* verts;
     unsigned short* indices;
@@ -510,8 +446,7 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh)
 
     /* add indices */
     indices = lassbin_getindices(&scene->meshes[m], &num_indices);
-    if (indices)
-    {
+    if (indices) {
       sb_add(mesh->buffers[buffer].indices, num_indices);
       memcpy(mesh->buffers[buffer].indices, indices, num_indices * sizeof(unsigned short));
       free(indices);
@@ -528,13 +463,11 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh)
     /*shinpercent = lassbin_matshinpercent(material);*/
 
     /* apply texture */
-    if (tex_name)
-    {
+    if (tex_name) {
       struct STexture* texture = NULL;
 
-      /* create embedded texture */
-      if (tex_name[0] == '*')
-      {
+      if (tex_name[0] == '*') {
+        /* create embedded texture */
         int tex_index;
         struct SPixmap* pixmap;
         tex_index = tex_name[1] - 48; /* convert ascii code tu number */
@@ -543,10 +476,8 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh)
           texture = CreateTextureFromPixmap(pixmap);
           DeletePixmap(pixmap);
         }
-      }
-      /* load texture */
-      else
-      {
+      } else {
+        /* load texture */
         texture = LoadTexture(tex_name);
       }
       if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
@@ -554,23 +485,19 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh)
     }
 
     /* apply diffuse */
-    if (diffuse)
-    {
+    if (diffuse) {
       mesh->materials[buffer].diffuse = GetRGBA(
         (int)diffuse[0] * 255,
         (int)diffuse[1] * 255,
         (int)diffuse[2] * 255,
         (int)opacity * 255
       );
-    }
-    else
-    {
+    } else {
       mesh->materials[buffer].diffuse = GetRGBA(1, 1, 1, (int)opacity * 255);
     }
 
     /* apply emissive */
-    if (emissive)
-    {
+    if (emissive) {
       mesh->materials[buffer].emissive = GetRGBA(
         (int)emissive[0] * 255,
         (int)emissive[1] * 255,
@@ -580,8 +507,7 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh)
     }
 
     /* apply specular */
-    if (specular)
-    {
+    if (specular) {
       mesh->materials[buffer].specular = GetRGBA(
         (int)specular[0] * 255,
         (int)specular[1] * 255,
@@ -599,8 +525,7 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh)
   return TRUE;
 }
 
-bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh)
-{
+bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh) {
   lmd2_model_t*  mdl;
   Frame* frame;
   int buffer;
@@ -614,8 +539,7 @@ bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh)
   buffer = AddMeshBuffer(mesh);
 
   /* load texture */
-  if (mdl->header.num_skins > 0)
-  {
+  if (mdl->header.num_skins > 0) {
     struct STexture* texture = LoadTexture(mdl->skins[0].name);
     if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
     GetMeshMaterial(mesh, buffer)->texture = texture;
@@ -630,8 +554,7 @@ bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh)
   free(verts);
 
   /* create frames */
-  for (i = 0; i < mdl->header.num_frames; ++i )
-  {
+  for (i = 0; i < mdl->header.num_frames; ++i ) {
     int numverts;
     int v;
 
@@ -643,8 +566,7 @@ bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh)
     sb_add(frame->positions, numverts);
     sb_add(frame->normals, numverts);
     verts = lmd2_getvertices(mdl, i);
-    for (v = 0; v < numverts; ++v)
-    {
+    for (v = 0; v < numverts; ++v) {
       frame->positions[v] = lvec3(verts[v].pos[0], verts[v].pos[1], verts[v].pos[2]);
       frame->normals[v] = lvec3(verts[v].nor[0], verts[v].nor[1], verts[v].nor[2]);
     }
