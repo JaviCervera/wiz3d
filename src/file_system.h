@@ -8,10 +8,10 @@ extern "C"
 {
 #endif
 
-bool_t fs_addpak(const char* pakname);
-bool_t fs_fileinpak(const char* filename);
-size_t fs_filesize(const char* filename);
-bool_t fs_filecontents(const char* filename, void* buffer);
+bool_t AddPak(const char* pakname);
+bool_t IsFileInPak(const char* filename);
+size_t GetFileSize(const char* filename);
+bool_t GetFileContents(const char* filename, void* buffer);
 
 #ifdef __cplusplus
 } /* extern "C" */

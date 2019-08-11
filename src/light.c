@@ -6,12 +6,12 @@
 #include "viewer.h"
 
 static int _light_ambient;
-static struct light_t* _lights[NUM_LIGHTS] = {};
+static Light* _lights[NUM_LIGHTS] = {};
 
-EXPORT struct light_t* CALL light_new(int type)
+EXPORT Light* CALL CreateLight(int type)
 {
   int i;
-  struct light_t* light;
+  Light* light;
 
   /* make sure that there are lights available */
   for (i = 0; i < NUM_LIGHTS; ++i)
@@ -20,10 +20,10 @@ EXPORT struct light_t* CALL light_new(int type)
   if (i == NUM_LIGHTS) return NULL;
 
   /* make sure that light type is in range */
-  type = _clamp(type, LIGHT_DIRECTIONAL, LIGHT_POINT);
+  type = _Clamp(type, LIGHT_DIRECTIONAL, LIGHT_POINT);
 
   /* create light */
-  light = _alloc(struct light_t);
+  light = _Alloc(Light);
   light->x = 0;
   light->y = 0;
   light->z = 0;
@@ -36,7 +36,7 @@ EXPORT struct light_t* CALL light_new(int type)
   return light;
 }
 
-EXPORT void CALL light_delete(struct light_t* light)
+EXPORT void CALL DeleteLight(Light* light)
 {
   size_t i;
 
@@ -50,7 +50,7 @@ EXPORT void CALL light_delete(struct light_t* light)
   free(light);
 }
 
-EXPORT void CALL light_move(struct light_t* light, float x, float y, float z)
+EXPORT void CALL MoveLight(Light* light, float x, float y, float z)
 {
   lvec3_t vec;
 
@@ -64,7 +64,7 @@ EXPORT void CALL light_move(struct light_t* light, float x, float y, float z)
   light->z = vec.z;
 }
 
-EXPORT void CALL light_turn(struct light_t* light, float pitch, float yaw)
+EXPORT void CALL TurnLight(Light* light, float pitch, float yaw)
 {
   lvec3_t vec;
 
@@ -73,28 +73,28 @@ EXPORT void CALL light_turn(struct light_t* light, float pitch, float yaw)
   light->yaw = vec.y;
 }
 
-EXPORT void CALL light_setambient(int color)
+EXPORT void CALL SetAmbientColor(int color)
 {
   _light_ambient = color;
   lgfx_setambient(
-    color_red(color) / 255.0f,
-    color_green(color) / 255.0f,
-    color_blue(color) / 255.0f);
+    GetRed(color) / 255.0f,
+    GetGreen(color) / 255.0f,
+    GetBlue(color) / 255.0f);
 }
 
-EXPORT int CALL light_ambient()
+EXPORT int CALL GetAmbientColor()
 {
   return _light_ambient;
 }
 
-void _light_prepare()
+void _PrepareLights()
 {
   int i;
   for (i = 0; i < NUM_LIGHTS; ++i)
   {
     if (_lights[i])
     {
-      struct light_t* light;
+      Light* light;
       lvec3_t pos;
 
       light = _lights[i];
@@ -113,7 +113,7 @@ void _light_prepare()
           light->y,
           light->z);
       }
-      pos = lmat4_mulvec3(*(const lmat4_t*)_viewer_activematrix(), pos, 0);
+      pos = lmat4_mulvec3(*(const lmat4_t*)_GetActiveMatrix(), pos, 0);
 
       /* set light data */
       lgfx_setlight(
@@ -122,15 +122,15 @@ void _light_prepare()
         pos.y,
         pos.z,
         light->type,
-        color_red(light->color) / 255.0f,
-        color_green(light->color) / 255.0f,
-        color_blue(light->color) / 255.0f,
+        GetRed(light->color) / 255.0f,
+        GetGreen(light->color) / 255.0f,
+        GetBlue(light->color) / 255.0f,
         1.0f / light->range);
     }
   }
 }
 
-int _light_numlights()
+int _GetNumLights()
 {
   int i;
   int num = 0;

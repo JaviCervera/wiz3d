@@ -19,11 +19,11 @@ extern "C"
 {
 #endif
 
-struct texture_t;
+struct STexture;
 
-struct material_t
+typedef struct SMaterial
 {
-  struct texture_t* texture;
+  struct STexture* texture;
   int diffuse;
   int emissive;
   int specular;
@@ -31,14 +31,14 @@ struct material_t
   int blend;
   int flags;
   int shininesspower;
-};
+} Material;
 
-EXPORT int CALL material_shininesspower();
-EXPORT void CALL material_setshininesspower(int power);
+EXPORT int CALL GetShininessPower();
+EXPORT void CALL SetShininessPower(int power);
 
 #ifndef SWIG
-void _material_init(struct material_t* material);
-void _material_deinit(struct material_t* material);
+void _InitMaterial(Material* material);
+void _FinishMaterial(Material* material);
 #endif
 
 #ifdef __cplusplus

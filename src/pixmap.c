@@ -1,41 +1,41 @@
 #include "../lib/stb/stb_image.h"
-#include "memory.h"
+#include "memblock.h"
 #include "pixmap.h"
 #include "util.h"
 
-struct pixmap_t
+typedef struct SPixmap
 {
   int* pixels;
   int width;
   int height;
-};
+} Pixmap;
 
-EXPORT struct pixmap_t* CALL pixmap_new(int width, int height)
+EXPORT Pixmap* CALL CreatePixmap(int width, int height)
 {
-  struct pixmap_t* pixmap = _alloc(struct pixmap_t);
-  pixmap->pixels = _allocnum(int, width * height);
+  Pixmap* pixmap = _Alloc(struct SPixmap);
+  pixmap->pixels = _AllocMany(int, width * height);
   pixmap->width = width;
   pixmap->height = height;
   return pixmap;
 }
 
-EXPORT struct pixmap_t* CALL pixmap_newfrommemory(const struct memory_t* memory)
+EXPORT Pixmap* CALL CreatePixmapFromMemblock(const struct SMemblock* memblock)
 {
-  return _pixmap_newfromdata((const unsigned char*)memory, memory_size(memory));
+  return _CreatePixmapFromData((const unsigned char*)memblock, GetMemblockSize(memblock));
 }
 
-EXPORT struct pixmap_t* CALL pixmap_load(const char* filename)
+EXPORT Pixmap* CALL LoadPixmap(const char* filename)
 {
   unsigned char* buffer;
   int w, h;
-  struct pixmap_t* pixmap;
+  Pixmap* pixmap;
 
   /* load buffer */
   buffer = stbi_load(filename, &w, &h, NULL, 4);
   if (!buffer) return NULL;
 
   /* create pixmap */
-  pixmap = _alloc(struct pixmap_t);
+  pixmap = _Alloc(struct SPixmap);
   pixmap->pixels = (int*)buffer;
   pixmap->width = w;
   pixmap->height = h;
@@ -43,44 +43,44 @@ EXPORT struct pixmap_t* CALL pixmap_load(const char* filename)
   return pixmap;
 }
 
-EXPORT void CALL pixmap_delete(struct pixmap_t* pixmap)
+EXPORT void CALL DeletePixmap(Pixmap* pixmap)
 {
   free(pixmap->pixels);
   free(pixmap);
 }
 
-EXPORT int CALL pixmap_width(const struct pixmap_t* pixmap)
+EXPORT int CALL GetPixmapWidth(const Pixmap* pixmap)
 {
   return pixmap->width;
 }
 
-EXPORT int CALL pixmap_height(const struct pixmap_t* pixmap)
+EXPORT int CALL GetPixmapHeight(const Pixmap* pixmap)
 {
   return pixmap->height;
 }
 
-EXPORT int CALL pixmap_color(const struct pixmap_t* pixmap, int x, int y)
+EXPORT int CALL GetPixmapColor(const Pixmap* pixmap, int x, int y)
 {
   return pixmap->pixels[y*pixmap->width + x];
 }
 
-EXPORT void CALL pixmap_setcolor(struct pixmap_t* pixmap, int x, int y, int color)
+EXPORT void CALL SetPixmapColor(Pixmap* pixmap, int x, int y, int color)
 {
   pixmap->pixels[y*pixmap->width + x] = color;
 }
 
-struct pixmap_t* _pixmap_newfromdata(const unsigned char* data, size_t len)
+Pixmap* _CreatePixmapFromData(const unsigned char* data, size_t len)
 {
   unsigned char* buffer;
   int w, h;
-  struct pixmap_t* pixmap;
+  Pixmap* pixmap;
 
   /* load buffer */
   buffer = stbi_load_from_memory(data, len, &w, &h, NULL, 4);
   if (!buffer) return NULL;
 
   /* create pixmap */
-  pixmap = _alloc(struct pixmap_t);
+  pixmap = _Alloc(struct SPixmap);
   pixmap->pixels = (int*)buffer;
   pixmap->width = w;
   pixmap->height = h;
@@ -88,7 +88,7 @@ struct pixmap_t* _pixmap_newfromdata(const unsigned char* data, size_t len)
   return pixmap;
 }
 
-const void* _pixmap_ptr(const struct pixmap_t* pixmap)
+const void* _GetPixmapPtr(const Pixmap* pixmap)
 {
   return pixmap->pixels;
 }

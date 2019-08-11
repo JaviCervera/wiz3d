@@ -2,32 +2,32 @@
 #include "platform.h"
 #include "screen.h"
 
-EXPORT void CALL input_setmousevisible(bool_t visible)
+EXPORT void CALL SetCursorVisible(bool_t visible)
 {
-  p_set_cursor_visible(_screen_pointer(), visible);
+  p_SetCursorVisible(_GetScreenPtr(), visible);
 }
 
-EXPORT void CALL input_setmouseposition(int x, int y)
+EXPORT void CALL SetCursorPosition(int x, int y)
 {
-  p_set_cursor_position(_screen_pointer(), x, y);
+  p_SetCursorPosition(_GetScreenPtr(), x, y);
 }
 
-EXPORT int CALL input_mousex()
+EXPORT int CALL GetCursorX()
 {
-  return p_cursor_x(_screen_pointer());
+  return p_GetCursorX(_GetScreenPtr());
 }
 
-EXPORT int CALL input_mousey()
+EXPORT int CALL GetCursorY()
 {
-  return p_cursor_y(_screen_pointer());
+  return p_GetCursorY(_GetScreenPtr());
 }
 
-EXPORT bool_t CALL input_mousedown(int b)
+EXPORT bool_t CALL IsCursorPressed(int b)
 {
-  return p_mouse_button_down(_screen_pointer(), b);
+  return p_GetCursorPressed(_GetScreenPtr(), b);
 }
 
-EXPORT bool_t CALL input_keydown(int k)
+EXPORT bool_t CALL IsKeyPressed(int k)
 {
-  return p_key_down(_screen_pointer(), k);
+  return p_GetKeyPressed(_GetScreenPtr(), k);
 }

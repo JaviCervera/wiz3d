@@ -3,82 +3,82 @@
 int main()
 {
   /* data */
-  struct object_t* floor;
-  struct object_t* ball;
-  struct object_t* block;
-  struct object_t* ball_shadow;
-  struct object_t* block_shadow;
-  struct viewer_t* viewer;
-  struct light_t* dir_light;
+  Object* floor;
+  Object* ball;
+  Object* block;
+  Object* ball_shadow;
+  Object* block_shadow;
+  Viewer* viewer;
+  Light* dir_light;
   int direction = 1;
 
   /* setup */
-  beam_init();
-  screen_set(800, 600, FALSE, TRUE);
+  InitBeam();
+  SetScreen(800, 600, FALSE, TRUE);
 
   /* create floor */
-  floor = object_newcube();
-  object_move(floor, 0, -0.5f, 4);
+  floor = CreateCube();
+  MoveObject(floor, 0, -0.5f, 4);
   floor->colmode = COL_BOX;
   floor->sx = floor->sz = 20;
-  object_material(floor, 0)->diffuse = COLOR_BLUE;
+  GetObjectMaterial(floor, 0)->diffuse = COLOR_BLUE;
 
   /* load ball */
-  ball = object_load("data/sphere.assbin");
-  object_move(ball, 0, 0.5f, -4);
+  ball = LoadObject("data/sphere.assbin");
+  MoveObject(ball, 0, 0.5f, -4);
   ball->colmode = COL_SPHERE;
   ball->radius = 0.5f;
-  object_material(ball, 0)->diffuse = COLOR_RED;
+  GetObjectMaterial(ball, 0)->diffuse = COLOR_RED;
 
   /* create block */
-  block = object_newcube();
-  object_move(block, 0, 2, 0);
+  block = CreateCube();
+  MoveObject(block, 0, 2, 0);
   block->colmode = COL_BOX;
   block->sx = block->sy = 4;
-  object_material(block, 0)->diffuse = COLOR_LIGHTGRAY;
+  GetObjectMaterial(block, 0)->diffuse = COLOR_LIGHTGRAY;
 
   /* create ball shadow */
-  ball_shadow = object_newquad();
+  ball_shadow = CreateQuad();
   ball_shadow->pitch = 90;
-  object_material(ball_shadow, 0)->texture = texture_load("data/circle_shadow.png");
-  object_material(ball_shadow, 0)->diffuse = COLOR_BLACK;
-  object_material(ball_shadow, 0)->blend = BLEND_ALPHA;
+  GetObjectMaterial(ball_shadow, 0)->texture = LoadTexture("data/circle_shadow.png");
+  GetObjectMaterial(ball_shadow, 0)->diffuse = COLOR_BLACK;
+  GetObjectMaterial(ball_shadow, 0)->blend = BLEND_ALPHA;
 
   /* create block shadow */
-  block_shadow = object_newquad();
+  block_shadow = CreateQuad();
   block_shadow->pitch = 90;
   block_shadow->sx = 4;
-  object_material(block_shadow, 0)->diffuse = COLOR_LIGHTGRAY;
-  object_material(block_shadow, 0)->blend = BLEND_MUL;
+  GetObjectMaterial(block_shadow, 0)->diffuse = COLOR_LIGHTGRAY;
+  GetObjectMaterial(block_shadow, 0)->blend = BLEND_MUL;
 
   /* create and position viewer */
-  viewer = viewer_new();
-  viewer_move(viewer, 0, 7, -8);
-  viewer_turn(viewer, 45, 0, 0);
+  viewer = CreateViewer();
+  MoveViewer(viewer, 0, 7, -8);
+  TurnViewer(viewer, 45, 0, 0);
 
   /* setup lighting */
-  light_setambient(COLOR_LIGHTGRAY);
-  dir_light = light_new(LIGHT_DIRECTIONAL);
+  SetAmbientColor(COLOR_LIGHTGRAY);
+  dir_light = CreateLight(LIGHT_DIRECTIONAL);
   dir_light->pitch = 15;
   dir_light->yaw = 60;
 
   /* main loop */
-  while (screen_opened() && !input_keydown(KEY_ESC))
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
   {
     /* move ball */
-    if (input_keydown(KEY_UP)) object_move(ball, 0, 0, 2 * screen_delta());
-    if (input_keydown(KEY_DOWN)) object_move(ball, 0, 0, -2 * screen_delta());
-    if (input_keydown(KEY_LEFT)) object_move(ball, -2 * screen_delta(), 0, 0);
-    if (input_keydown(KEY_RIGHT)) object_move(ball, 2 * screen_delta(), 0, 0);
+    if (IsKeyPressed(KEY_UP)) MoveObject(ball, 0, 0, 2 * GetDeltaTime());
+    if (IsKeyPressed(KEY_DOWN)) MoveObject(ball, 0, 0, -2 * GetDeltaTime());
+    if (IsKeyPressed(KEY_LEFT)) MoveObject(ball, -2 * GetDeltaTime(), 0, 0);
+    if (IsKeyPressed(KEY_RIGHT)) MoveObject(ball, 2 * GetDeltaTime(), 0, 0);
 
     /* move block */
-    object_move(block, 0, 2 * direction * screen_delta(), 0);
+    MoveObject(block, 0, 2 * direction * GetDeltaTime(), 0);
     if (block->y >= 4)
     {
       block->y = 4;
       direction = -1;
     }
-    if (object_collidesobject(block, floor) || object_collidesobject(block, ball))
+    if (ObjectCollidesObject(block, floor) || ObjectCollidesObject(block, ball))
     {
       direction = 1;
     }
@@ -90,17 +90,17 @@ int main()
     block_shadow->z = block->z;
 
     /* draw scene */
-    viewer_prepare(viewer);
-    object_draw(floor);
-    object_draw(ball);
-    object_draw(block);
-    object_draw(block_shadow);
-    object_draw(ball_shadow);
+    PrepareViewer(viewer);
+    DrawObject(floor);
+    DrawObject(ball);
+    DrawObject(block);
+    DrawObject(block_shadow);
+    DrawObject(ball_shadow);
 
     /* draw ui */
-    screen_refresh();
+    RefreshScreen();
   }
 
   /* shutdown */
-  beam_finish();
+  ShutdownBeam();
 }

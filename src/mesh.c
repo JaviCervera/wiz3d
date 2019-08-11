@@ -17,70 +17,54 @@
 #include <stdio.h>
 #include <string.h>
 
-struct frame_t
+typedef struct
 {
-  int                frame;
-  lvec3_t*           positions;
-  lvec3_t*           normals;
-};
+  int frame;
+  lvec3_t* positions;
+  lvec3_t* normals;
+} Frame;
 
-struct buffer_t
+typedef struct
 {
-  lvert_t*           vertices;
-  unsigned short*    indices;
-  struct frame_t*    frames;
-};
+  lvert_t* vertices;
+  unsigned short* indices;
+  Frame* frames;
+} Buffer;
 
-struct mesh_t
+typedef struct SMesh
 {
-  size_t             refcount;
-  struct buffer_t*   buffers;
-  struct material_t* materials;
-  lvec3_t            boxmin;
-  lvec3_t            boxmax;
-};
+  size_t refcount;
+  Buffer* buffers;
+  Material* materials;
+  lvec3_t boxmin;
+  lvec3_t boxmax;
+} Mesh;
 
-#pragma pack(push, 1)
-struct mshmaterial_t
+bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh);
+bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh);
+
+
+Mesh* CreateMesh()
 {
-  int color;
-  int specular;
-  int emissive;
-  int ambient;
-  unsigned char blendmode;
-  unsigned char flags;
-  float specpower;
-  float cubealpha;
-  float refrcoef;
-  unsigned char usedtexs;
-};
-#pragma pack(pop)
-
-bool_t _mesh_load_assimp(const char* filename, struct mesh_t* mesh);
-bool_t _mesh_load_md2(const char* filename, struct mesh_t* mesh);
-
-
-struct mesh_t* mesh_new()
-{
-  struct mesh_t* mesh;
-  mesh = _alloc(struct mesh_t);
+  Mesh* mesh;
+  mesh = _Alloc(struct SMesh);
   mesh->refcount = 1;
   mesh->buffers = NULL;
   mesh->materials = NULL;
   return mesh;
 }
 
-bool_t mesh_load(const char* filename, struct mesh_t* mesh)
+bool_t LoadMesh(const char* filename, Mesh* mesh)
 {
   char ext[STRING_SIZE];
-  ext_extract(filename, ext, sizeof(ext));
-  if (str_casecmp(ext, "assbin") == 0)
+  ExtractExt(filename, ext, sizeof(ext));
+  if (StringCompareLower(ext, "assbin") == 0)
   {
-    return _mesh_load_assimp(filename, mesh);
+    return _LoadAssimpMesh(filename, mesh);
   }
-  else if (str_casecmp(ext, "md2") == 0)
+  else if (StringCompareLower(ext, "md2") == 0)
   {
-    return _mesh_load_md2(filename, mesh);
+    return _LoadMD2Mesh(filename, mesh);
   }
   else
   {
@@ -88,12 +72,12 @@ bool_t mesh_load(const char* filename, struct mesh_t* mesh)
   }
 }
 
-void mesh_retain(struct mesh_t* mesh)
+void RetainMesh(Mesh* mesh)
 {
   ++mesh->refcount;
 }
 
-void mesh_release(struct mesh_t* mesh)
+void ReleaseMesh(Mesh* mesh)
 {
   int i;
 
@@ -111,7 +95,7 @@ void mesh_release(struct mesh_t* mesh)
       sb_free(mesh->buffers[i].vertices);
       sb_free(mesh->buffers[i].indices);
       sb_free(mesh->buffers[i].frames);
-      _material_deinit(&mesh->materials[i]);
+      _FinishMaterial(&mesh->materials[i]);
     }
 
     sb_free(mesh->materials);
@@ -120,13 +104,13 @@ void mesh_release(struct mesh_t* mesh)
   }
 }
 
-int mesh_addbuffer(struct mesh_t* mesh)
+int AddMeshBuffer(Mesh* mesh)
 {
-  struct buffer_t* buffer;
-  struct material_t* material;
+  Buffer* buffer;
+  Material* material;
 
   buffer = sb_add(mesh->buffers, 1);
-  _material_init(sb_add(mesh->materials, 1));
+  _InitMaterial(sb_add(mesh->materials, 1));
   buffer->vertices = NULL;
   buffer->indices = NULL;
   buffer->frames = NULL;
@@ -134,7 +118,7 @@ int mesh_addbuffer(struct mesh_t* mesh)
   return sb_count(mesh->buffers) - 1;
 }
 
-int mesh_addvertex(struct mesh_t* mesh, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color)
+int AddMeshVertex(Mesh* mesh, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color)
 {
   sb_push(
     mesh->buffers[buffer].vertices,
@@ -142,14 +126,14 @@ int mesh_addvertex(struct mesh_t* mesh, int buffer, float x, float y, float z, f
       x, y, z,
       nx, ny, nz,
       u, v,
-      color_red(color) / 255.0f,
-      color_green(color) / 255.0f,
-      color_blue(color) / 255.0f,
-      color_alpha(color) / 255.0f));
+      GetRed(color) / 255.0f,
+      GetGreen(color) / 255.0f,
+      GetBlue(color) / 255.0f,
+      GetAlpha(color) / 255.0f));
   return sb_count(mesh->buffers[buffer].vertices) - 1;
 }
 
-int mesh_addtriangle(struct mesh_t* mesh, int buffer, int v0, int v1, int v2)
+int AddMeshTriangle(Mesh* mesh, int buffer, int v0, int v1, int v2)
 {
   unsigned short* index;
 
@@ -160,7 +144,7 @@ int mesh_addtriangle(struct mesh_t* mesh, int buffer, int v0, int v1, int v2)
   return (sb_count(mesh->buffers[buffer].indices) - 3) / 3;
 }
 
-void mesh_rebuild(struct mesh_t* mesh)
+void RebuildMesh(Mesh* mesh)
 {
   int b, v;
 
@@ -193,75 +177,75 @@ void mesh_rebuild(struct mesh_t* mesh)
   }
 }
 
-int mesh_numbuffers(struct mesh_t* mesh)
+int GetNumMeshBuffers(Mesh* mesh)
 {
   return sb_count(mesh->buffers);
 }
 
-struct material_t* mesh_material(struct mesh_t* mesh, int buffer)
+Material* GetMeshMaterial(Mesh* mesh, int buffer)
 {
   return &mesh->materials[buffer];
 }
 
-float mesh_width(const struct mesh_t* mesh)
+float GetMeshWidth(const Mesh* mesh)
 {
   return mesh->boxmax.x - mesh->boxmin.x;
 }
 
-float mesh_height(const struct mesh_t* mesh)
+float GetMeshHeight(const Mesh* mesh)
 {
   return mesh->boxmax.y - mesh->boxmin.y;
 }
 
-float mesh_depth(const struct mesh_t* mesh)
+float GetMeshDepth(const Mesh* mesh)
 {
   return mesh->boxmax.z - mesh->boxmin.z;
 }
 
-float mesh_boxminx(const struct mesh_t* mesh)
+float GetMeshBoxMinX(const Mesh* mesh)
 {
   return mesh->boxmin.x;
 }
 
-float mesh_boxminy(const struct mesh_t* mesh)
+float GetMeshBoxMinY(const Mesh* mesh)
 {
   return mesh->boxmin.y;
 }
 
-float mesh_boxminz(const struct mesh_t* mesh)
+float GetMeshBoxMinZ(const Mesh* mesh)
 {
   return mesh->boxmin.z;
 }
 
-float mesh_boxmaxx(const struct mesh_t* mesh)
+float GetMeshBoxMaxX(const Mesh* mesh)
 {
   return mesh->boxmax.x;
 }
 
-float mesh_boxmaxy(const struct mesh_t* mesh)
+float GetMeshBoxMaxY(const Mesh* mesh)
 {
   return mesh->boxmax.y;
 }
 
-float mesh_boxmaxz(const struct mesh_t* mesh)
+float GetMeshBoxMaxZ(const Mesh* mesh)
 {
   return mesh->boxmax.z;
 }
 
-int _mesh_lastframe(const struct mesh_t* mesh)
+int _GetMeshLastFrame(const Mesh* mesh)
 {
   return (sb_count(mesh->buffers[0].frames) > 0) ? sb_last(mesh->buffers[0].frames).frame : 0;
 }
 
-void _mesh_animate(struct mesh_t* mesh, float frame)
+void _AnimateMesh(Mesh* mesh, float frame)
 {
   int b;
 
   /* animate all buffers */
   for (b = 0; b < sb_count(mesh->buffers); ++b)
   {
-    struct buffer_t* buffer;
-    struct frame_t*  frames;
+    Buffer* buffer;
+    Frame*  frames;
     int f;
     bool_t finished;
 
@@ -347,7 +331,7 @@ void _mesh_animate(struct mesh_t* mesh, float frame)
   }
 }
 
-void _mesh_draw(const struct mesh_t* mesh, const struct material_t* materials)
+void _DrawMesh(const Mesh* mesh, const Material* materials)
 {
   int i;
 
@@ -357,36 +341,36 @@ void _mesh_draw(const struct mesh_t* mesh, const struct material_t* materials)
   /* draw all buffers */
   for (i = 0; i < sb_count(mesh->buffers); ++i)
   {
-    const struct material_t* material;
+    const Material* material;
     int specular;
 
     material = &materials[i];
 
     /* set material settings */
-    specular = color_multiply(material->specular, material->shininess);
+    specular = MultiplyColor(material->specular, material->shininess);
     lgfx_setblend(material->blend);
-    ltex_bindcolor((const ltex_t*)_texture_ptr(material->texture));
+    ltex_bindcolor((const ltex_t*)_GetTexturePtr(material->texture));
     lgfx_setcolor(
-      color_red(material->diffuse) / 255.0f,
-      color_green(material->diffuse) / 255.0f,
-      color_blue(material->diffuse) / 255.0f,
-      color_alpha(material->diffuse) / 255.0f);
+      GetRed(material->diffuse) / 255.0f,
+      GetGreen(material->diffuse) / 255.0f,
+      GetBlue(material->diffuse) / 255.0f,
+      GetAlpha(material->diffuse) / 255.0f);
     lgfx_setemissive(
-      color_red(material->emissive) / 255.0f,
-      color_green(material->emissive) / 255.0f,
-      color_blue(material->emissive) / 255.0f);
+      GetRed(material->emissive) / 255.0f,
+      GetGreen(material->emissive) / 255.0f,
+      GetBlue(material->emissive) / 255.0f);
     lgfx_setspecular(
-      color_red(specular) / 255.0f,
-      color_green(specular) / 255.0f,
-      color_blue(specular) / 255.0f);
-    lgfx_setshininess(_clamp(material->shininess * material->shininesspower > -1 ? material->shininesspower : material_shininesspower(), 0, 128));
+      GetRed(specular) / 255.0f,
+      GetGreen(specular) / 255.0f,
+      GetBlue(specular) / 255.0f);
+    lgfx_setshininess(_Clamp(material->shininess * material->shininesspower > -1 ? material->shininesspower : GetShininessPower(), 0, 128));
     lgfx_setculling((material->flags & FLAG_CULL) == FLAG_CULL);
     lgfx_setdepthwrite((material->flags & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
 
     /* setup lighting */
     if ((material->flags & FLAG_LIGHTING) == FLAG_LIGHTING)
     {
-      int numlights = _light_numlights();
+      int numlights = _GetNumLights();
       lgfx_setlighting(numlights);
     }
     else
@@ -398,12 +382,12 @@ void _mesh_draw(const struct mesh_t* mesh, const struct material_t* materials)
     if ((material->flags & FLAG_FOG) == FLAG_FOG)
     {
       lgfx_setfog(
-        _viewer_active()->fogenabled,
-        color_red(_viewer_active()->fogcolor) / 255.0f,
-        color_green(_viewer_active()->fogcolor) / 255.0f,
-        color_blue(_viewer_active()->fogcolor) / 255.0f,
-        _viewer_active()->fogmin,
-        _viewer_active()->fogmax
+        _GetActiveViewer()->fogenabled,
+        GetRed(_GetActiveViewer()->fogcolor) / 255.0f,
+        GetGreen(_GetActiveViewer()->fogcolor) / 255.0f,
+        GetBlue(_GetActiveViewer()->fogcolor) / 255.0f,
+        _GetActiveViewer()->fogmin,
+        _GetActiveViewer()->fogmax
       );
     }
     else
@@ -431,50 +415,50 @@ void _mesh_draw(const struct mesh_t* mesh, const struct material_t* materials)
   }
 }
 
-struct mesh_t* _mesh_newskybox()
+Mesh* _CreateSkyboxMesh()
 {
-  struct mesh_t* mesh;
+  Mesh* mesh;
   int buffer;
   int ldb, ldf, lub, luf, rdb, rdf, rub, ruf, ldb1, lub1;
   int ulb, ulf, urb, urf;
   int dlb, dlf, drb, drf;
 
-  mesh = mesh_new();
-  buffer = mesh_addbuffer(mesh);
+  mesh = CreateMesh();
+  buffer = AddMeshBuffer(mesh);
 
   /* add vertices */
-  ldb = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0, 1, COLOR_WHITE);
-  ldf = mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.16666667f, 1, COLOR_WHITE);
-  lub = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0, 0, COLOR_WHITE);
-  luf = mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.16666667f, 0, COLOR_WHITE);
-  rdb = mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 0.5f, 1, COLOR_WHITE);
-  rdf = mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 0.33333333f, 1, COLOR_WHITE);
-  rub = mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.5f, 0, COLOR_WHITE);
-  ruf = mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.33333333f, 0, COLOR_WHITE);
-  ldb1 = mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.66555555f, 1, COLOR_WHITE);
-  lub1 = mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66555555f, 0, COLOR_WHITE);
-  ulb =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66666667f, 0, COLOR_WHITE);
-  ulf =  mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.66666667f, 1, COLOR_WHITE);
-  urb =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
-  urf =  mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
-  dlb =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
-  dlf =  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
-  drb =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 1, 0, COLOR_WHITE);
-  drf =  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 1, 1, COLOR_WHITE);
+  ldb = AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0, 1, COLOR_WHITE);
+  ldf = AddMeshVertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.16666667f, 1, COLOR_WHITE);
+  lub = AddMeshVertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0, 0, COLOR_WHITE);
+  luf = AddMeshVertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.16666667f, 0, COLOR_WHITE);
+  rdb = AddMeshVertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 0.5f, 1, COLOR_WHITE);
+  rdf = AddMeshVertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 0.33333333f, 1, COLOR_WHITE);
+  rub = AddMeshVertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.5f, 0, COLOR_WHITE);
+  ruf = AddMeshVertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.33333333f, 0, COLOR_WHITE);
+  ldb1 = AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.66555555f, 1, COLOR_WHITE);
+  lub1 = AddMeshVertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66555555f, 0, COLOR_WHITE);
+  ulb =  AddMeshVertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, 0, 0.66666667f, 0, COLOR_WHITE);
+  ulf =  AddMeshVertex(mesh, buffer, -0.5f,  0.5f,  0.5f, 0, 0, 0, 0.66666667f, 1, COLOR_WHITE);
+  urb =  AddMeshVertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
+  urf =  AddMeshVertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
+  dlb =  AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
+  dlf =  AddMeshVertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
+  drb =  AddMeshVertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, 0, 1, 0, COLOR_WHITE);
+  drf =  AddMeshVertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, 0, 0, 1, 1, COLOR_WHITE);
 
   /* add indices */
-  mesh_addtriangle(mesh, buffer, lub, luf, ldf); /* left face */
-  mesh_addtriangle(mesh, buffer, lub, ldf, ldb);
-  mesh_addtriangle(mesh, buffer, luf, ruf, rdf); /* front face */
-  mesh_addtriangle(mesh, buffer, luf, rdf, ldf);
-  mesh_addtriangle(mesh, buffer, ruf, rub, rdb); /* right face */
-  mesh_addtriangle(mesh, buffer, ruf, rdb, rdf);
-  mesh_addtriangle(mesh, buffer, rub, lub1, ldb1); /* back face */
-  mesh_addtriangle(mesh, buffer, rub, ldb1, rdb);
-  mesh_addtriangle(mesh, buffer, ulb, urb, ulf); /* up face */
-  mesh_addtriangle(mesh, buffer, urb, urf, ulf);
-  mesh_addtriangle(mesh, buffer, dlb, dlf, drb); /* down face */
-  mesh_addtriangle(mesh, buffer, drb, dlf, drf);
+  AddMeshTriangle(mesh, buffer, lub, luf, ldf); /* left face */
+  AddMeshTriangle(mesh, buffer, lub, ldf, ldb);
+  AddMeshTriangle(mesh, buffer, luf, ruf, rdf); /* front face */
+  AddMeshTriangle(mesh, buffer, luf, rdf, ldf);
+  AddMeshTriangle(mesh, buffer, ruf, rub, rdb); /* right face */
+  AddMeshTriangle(mesh, buffer, ruf, rdb, rdf);
+  AddMeshTriangle(mesh, buffer, rub, lub1, ldb1); /* back face */
+  AddMeshTriangle(mesh, buffer, rub, ldb1, rdb);
+  AddMeshTriangle(mesh, buffer, ulb, urb, ulf); /* up face */
+  AddMeshTriangle(mesh, buffer, urb, urf, ulf);
+  AddMeshTriangle(mesh, buffer, dlb, dlf, drb); /* down face */
+  AddMeshTriangle(mesh, buffer, drb, dlf, drf);
 
   /* setup material */
   mesh->materials[0].flags = FLAG_CULL;
@@ -482,7 +466,7 @@ struct mesh_t* _mesh_newskybox()
   return mesh;
 }
 
-bool_t _mesh_load_assimp(const char* filename, struct mesh_t* mesh)
+bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh)
 {
   lassbin_scene_t* scene;
   int m, t;
@@ -516,7 +500,7 @@ bool_t _mesh_load_assimp(const char* filename, struct mesh_t* mesh)
     float shininess;
     /*float shinpercent;*/
 
-    buffer = mesh_addbuffer(mesh);
+    buffer = AddMeshBuffer(mesh);
 
     /* add vertices */
     verts = lassbin_getvertices(&scene->meshes[m]);
@@ -546,33 +530,33 @@ bool_t _mesh_load_assimp(const char* filename, struct mesh_t* mesh)
     /* apply texture */
     if (tex_name)
     {
-      struct texture_t* texture = NULL;
+      struct STexture* texture = NULL;
 
       /* create embedded texture */
       if (tex_name[0] == '*')
       {
         int tex_index;
-        struct pixmap_t* pixmap;
+        struct SPixmap* pixmap;
         tex_index = tex_name[1] - 48; /* convert ascii code tu number */
-        pixmap = _pixmap_newfromdata(scene->textures[tex_index].data, lassbin_texturesize(&scene->textures[tex_index]));
+        pixmap = _CreatePixmapFromData(scene->textures[tex_index].data, lassbin_texturesize(&scene->textures[tex_index]));
         if (pixmap) {
-          texture = texture_newfrompixmap(pixmap);
-          pixmap_delete(pixmap);
+          texture = CreateTextureFromPixmap(pixmap);
+          DeletePixmap(pixmap);
         }
       }
       /* load texture */
       else
       {
-        texture = texture_load(tex_name);
+        texture = LoadTexture(tex_name);
       }
-      if (texture) texture_retain(texture); /* automatically loaded textures are reference counted */
+      if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
       mesh->materials[buffer].texture = texture;
     }
 
     /* apply diffuse */
     if (diffuse)
     {
-      mesh->materials[buffer].diffuse = color_rgba(
+      mesh->materials[buffer].diffuse = GetRGBA(
         (int)diffuse[0] * 255,
         (int)diffuse[1] * 255,
         (int)diffuse[2] * 255,
@@ -581,13 +565,13 @@ bool_t _mesh_load_assimp(const char* filename, struct mesh_t* mesh)
     }
     else
     {
-      mesh->materials[buffer].diffuse = color_rgba(1, 1, 1, (int)opacity * 255);
+      mesh->materials[buffer].diffuse = GetRGBA(1, 1, 1, (int)opacity * 255);
     }
 
     /* apply emissive */
     if (emissive)
     {
-      mesh->materials[buffer].emissive = color_rgba(
+      mesh->materials[buffer].emissive = GetRGBA(
         (int)emissive[0] * 255,
         (int)emissive[1] * 255,
         (int)emissive[2] * 255,
@@ -598,7 +582,7 @@ bool_t _mesh_load_assimp(const char* filename, struct mesh_t* mesh)
     /* apply specular */
     if (specular)
     {
-      mesh->materials[buffer].specular = color_rgba(
+      mesh->materials[buffer].specular = GetRGBA(
         (int)specular[0] * 255,
         (int)specular[1] * 255,
         (int)specular[2] * 255,
@@ -615,10 +599,10 @@ bool_t _mesh_load_assimp(const char* filename, struct mesh_t* mesh)
   return TRUE;
 }
 
-bool_t _mesh_load_md2(const char* filename, struct mesh_t* mesh)
+bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh)
 {
   lmd2_model_t*  mdl;
-  struct frame_t* frame;
+  Frame* frame;
   int buffer;
   int i;
 
@@ -627,14 +611,14 @@ bool_t _mesh_load_md2(const char* filename, struct mesh_t* mesh)
   if (!mdl) return FALSE;
 
   /* create mesh */
-  buffer = mesh_addbuffer(mesh);
+  buffer = AddMeshBuffer(mesh);
 
   /* load texture */
   if (mdl->header.num_skins > 0)
   {
-    struct texture_t* texture = texture_load(mdl->skins[0].name);
-    if (texture) texture_retain(texture); /* automatically loaded textures are reference counted */
-    mesh_material(mesh, buffer)->texture = texture;
+    struct STexture* texture = LoadTexture(mdl->skins[0].name);
+    if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
+    GetMeshMaterial(mesh, buffer)->texture = texture;
   }
 
   /* create vertices */

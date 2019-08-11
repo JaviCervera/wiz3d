@@ -10,18 +10,18 @@ extern "C"
 #endif
 
 #ifndef SWIG
-struct font_t;
+struct Font;
 
-struct font_t* font_load(const char* filename, float height);
-void font_retain(struct font_t* font);
-void font_release(struct font_t* font);
-float font_height(const struct font_t* font);
-float font_textwidth(const struct font_t* font, const char* text);
-float font_textheight(const struct font_t* font, const char* text);
-void font_draw(const struct font_t* font, const char* text, float x, float y);
+struct Font* LoadFont(const char* filename, float height);
+void RetainFont(struct Font* font);
+void ReleaseFont(struct Font* font);
+float GetFontHeight(const struct Font* font);
+float GetFontTextWidth(const struct Font* font, const char* text);
+float GetFontTextHeight(const struct Font* font, const char* text);
+void DrawFont(const struct Font* font, const char* text, float x, float y);
 
 #ifdef USE_DEFAULT_FONT
-struct font_t* _font_loadbase64(const char* data, size_t size, float height);
+struct Font* _LoadBase64Font(const char* data, size_t size, float height);
 #endif
 
 #endif

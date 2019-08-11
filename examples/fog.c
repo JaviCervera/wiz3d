@@ -8,25 +8,25 @@
 int main()
 {
   /* data */
-  struct light_t* dir_light;
-  struct viewer_t* viewer;
-  struct object_t* cubes[NUM_CUBES];
+  Light* dir_light;
+  Viewer* viewer;
+  Object* cubes[NUM_CUBES];
   int x, z;
   int i;
   char str[STRING_SIZE];
 
   /* setup */
-  beam_init();
-  screen_set(800, 600, FALSE, TRUE);
+  InitBeam();
+  SetScreen(800, 600, FALSE, TRUE);
 
   /* setup lighting */
-  dir_light = light_new(LIGHT_DIRECTIONAL);
-  light_turn(dir_light, 45, 45);
+  dir_light = CreateLight(LIGHT_DIRECTIONAL);
+  TurnLight(dir_light, 45, 45);
 
   /* create and position viewer */
-  viewer = viewer_new();
+  viewer = CreateViewer();
   viewer->clearcolor = COLOR_DARKGRAY;
-  viewer_move(viewer, 0, 0, -7);
+  MoveViewer(viewer, 0, 0, -7);
   viewer->max = 5000;
   viewer->fogenabled = TRUE;
   viewer->fogmax = 20;
@@ -36,23 +36,23 @@ int main()
   z = NUM_CUBES / 16 * 2 - 2;
   for (i = 0; i < NUM_CUBES; i += 2)
   {
-    struct object_t* cube;
+    Object* cube;
 
     if (i == 0)
     {
-      cube = object_newcube();
-      object_material(cube, 0)->diffuse = COLOR_BROWN;
+      cube = CreateCube();
+      GetObjectMaterial(cube, 0)->diffuse = COLOR_BROWN;
     }
     else
     {
-      cube = object_clone(cubes[0]);
+      cube = CloneObject(cubes[0]);
     }
     cube->x = x;
     cube->y = -1.5f;
     cube->z = z;
     cubes[i] = cube;
 
-    cube = object_clone(cubes[0]);
+    cube = CloneObject(cubes[0]);
     cube->x = x;
     cube->y = 1.5f;
     cube->z = z;
@@ -67,28 +67,28 @@ int main()
   }
 
   /* main loop */
-  while (screen_opened() && !input_keydown(KEY_ESC))
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
   {
     /* turn objects */
     for (i = 0; i < NUM_CUBES; ++i)
     {
-      object_turn(cubes[i], 0, ROTATION_SPEED * screen_delta(), 0);
+      TurnObject(cubes[i], 0, ROTATION_SPEED * GetDeltaTime(), 0);
     }
 
     /* draw scene */
-    viewer_prepare(viewer);
+    PrepareViewer(viewer);
     for (i = 0; i < NUM_CUBES; ++i)
     {
-      object_draw(cubes[i]);
+      DrawObject(cubes[i]);
     }
 
     /* draw ui */
-    sprintf(str, "%i FPS", screen_fps());
-    screen_setup2d();
-    screen_drawtext(str, 4, 4);
-    screen_refresh();
+    sprintf(str, "%i FPS", GetScreenFPS());
+    Setup2D();
+    DrawText(str, 4, 4);
+    RefreshScreen();
   }
 
   /* shutdown */
-  beam_finish();
+  ShutdownBeam();
 }

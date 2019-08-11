@@ -15,18 +15,18 @@
 
 static float _object_animfps = 16;
 
-void _object_setmaterials(struct object_t* object)
+void _SetObjectMaterials(Object* object)
 {
-  sb_add(object->_materials, mesh_numbuffers(object->_mesh));
+  sb_add(object->_materials, GetNumMeshBuffers(object->_mesh));
   memcpy(
     object->_materials,
-    mesh_material(object->_mesh, 0), 
-    sizeof(struct material_t) * mesh_numbuffers(object->_mesh));
+    GetMeshMaterial(object->_mesh, 0), 
+    sizeof(Material) * GetNumMeshBuffers(object->_mesh));
 }
 
-EXPORT struct object_t* CALL object_new()
+EXPORT Object* CALL CreateObject()
 {
-  struct object_t* object = _alloc(struct object_t);
+  Object* object = _Alloc(Object);
   object->x = 0;
   object->y = 0;
   object->z = 0;
@@ -44,140 +44,140 @@ EXPORT struct object_t* CALL object_new()
   object->animframe = 0;
   object->animmin = 0;
   object->animmax = 0;
-  object->_mesh = mesh_new();
+  object->_mesh = CreateMesh();
   object->_materials = NULL;
   return object;
 }
 
-EXPORT struct object_t* CALL object_newcube()
+EXPORT Object* CALL CreateCube()
 {
-  struct object_t* object;
-  struct mesh_t* mesh;
+  Object* object;
+  struct SMesh* mesh;
   int buffer;
 
-  object = object_new();
+  object = CreateObject();
   mesh = object->_mesh;
-  buffer = mesh_addbuffer(mesh);
+  buffer = AddMeshBuffer(mesh);
 
   /* add front face */
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, -1, 0, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, -1, 1, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, -1, 1, 1, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, -1, 0, 1, COLOR_WHITE);
-  mesh_addtriangle(mesh, buffer, 0, 1, 2);
-  mesh_addtriangle(mesh, buffer, 0, 2, 3);
+  AddMeshVertex(mesh, buffer, -0.5f,  0.5f, -0.5f, 0, 0, -1, 0, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 0, 0, -1, 1, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, 0, -1, 1, 1, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, -1, 0, 1, COLOR_WHITE);
+  AddMeshTriangle(mesh, buffer, 0, 1, 2);
+  AddMeshTriangle(mesh, buffer, 0, 2, 3);
 
   /* add right face */
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 1, 0, 0, 0, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 1, 0, 0, 1, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 1, 0, 0, 1, 1, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 1, 0, 0, 0, 1, COLOR_WHITE);
-  mesh_addtriangle(mesh, buffer, 4, 5, 6);
-  mesh_addtriangle(mesh, buffer, 4, 6, 7);
+  AddMeshVertex(mesh, buffer,  0.5f,  0.5f, -0.5f, 1, 0, 0, 0, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f,  0.5f,  0.5f, 1, 0, 0, 1, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 1, 0, 0, 1, 1, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 1, 0, 0, 0, 1, COLOR_WHITE);
+  AddMeshTriangle(mesh, buffer, 4, 5, 6);
+  AddMeshTriangle(mesh, buffer, 4, 6, 7);
 
   /* add back face */
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, 0.5f, 0, 0, 1, 0, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, 0.5f, 0, 0, 1, 1, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0.5f, 0, 0, 1, 1, 1, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0.5f, 0, 0, 1, 0, 1, COLOR_WHITE);
-  mesh_addtriangle(mesh, buffer, 8, 9, 10);
-  mesh_addtriangle(mesh, buffer, 8, 10, 11);
+  AddMeshVertex(mesh, buffer,  0.5f,  0.5f, 0.5f, 0, 0, 1, 0, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f,  0.5f, 0.5f, 0, 0, 1, 1, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f, -0.5f, 0.5f, 0, 0, 1, 1, 1, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, -0.5f, 0.5f, 0, 0, 1, 0, 1, COLOR_WHITE);
+  AddMeshTriangle(mesh, buffer, 8, 9, 10);
+  AddMeshTriangle(mesh, buffer, 8, 10, 11);
 
   /* add left face */
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f,  0.5f, -1, 0, 0, 0, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, -0.5f, -1, 0, 0, 1, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, -1, 0, 0, 1, 1, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, -1, 0, 0, 0, 1, COLOR_WHITE);
-  mesh_addtriangle(mesh, buffer, 12, 13, 14);
-  mesh_addtriangle(mesh, buffer, 12, 14, 15);
+  AddMeshVertex(mesh, buffer, -0.5f,  0.5f,  0.5f, -1, 0, 0, 0, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f,  0.5f, -0.5f, -1, 0, 0, 1, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, -1, 0, 0, 1, 1, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f, -0.5f,  0.5f, -1, 0, 0, 0, 1, COLOR_WHITE);
+  AddMeshTriangle(mesh, buffer, 12, 13, 14);
+  AddMeshTriangle(mesh, buffer, 12, 14, 15);
 
   /* add top face */
-  mesh_addvertex(mesh, buffer, -0.5f, 0.5f,  0.5f, 0, 1, 0, 0, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, 0.5f,  0.5f, 0, 1, 0, 1, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, 0.5f, -0.5f, 0, 1, 0, 1, 1, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 1, COLOR_WHITE);
-  mesh_addtriangle(mesh, buffer, 16, 17, 18);
-  mesh_addtriangle(mesh, buffer, 16, 18, 19);
+  AddMeshVertex(mesh, buffer, -0.5f, 0.5f,  0.5f, 0, 1, 0, 0, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, 0.5f,  0.5f, 0, 1, 0, 1, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, 0.5f, -0.5f, 0, 1, 0, 1, 1, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 1, COLOR_WHITE);
+  AddMeshTriangle(mesh, buffer, 16, 17, 18);
+  AddMeshTriangle(mesh, buffer, 16, 18, 19);
 
   /* add bottom face */
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, -1, 0, 0, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, -1, 0, 1, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, -1, 0, 1, 1, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, -1, 0, 0, 1, COLOR_WHITE);
-  mesh_addtriangle(mesh, buffer, 20, 21, 22);
-  mesh_addtriangle(mesh, buffer, 20, 22, 23);
+  AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, -1, 0, 0, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, -0.5f, -0.5f, 0, -1, 0, 1, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, -0.5f,  0.5f, 0, -1, 0, 1, 1, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f, -0.5f,  0.5f, 0, -1, 0, 0, 1, COLOR_WHITE);
+  AddMeshTriangle(mesh, buffer, 20, 21, 22);
+  AddMeshTriangle(mesh, buffer, 20, 22, 23);
 
-  object_rebuildmesh(object);
-  _object_setmaterials(object);
+  RebuildObjectMesh(object);
+  _SetObjectMaterials(object);
   return object;
 }
 
-EXPORT struct object_t* CALL object_newquad()
+EXPORT Object* CALL CreateQuad()
 {
-  struct object_t* object;
-  struct mesh_t* mesh;
+  Object* object;
+  struct SMesh* mesh;
   int buffer;
 
-  object = object_new();
+  object = CreateObject();
   mesh = object->_mesh;
-  buffer = mesh_addbuffer(mesh);
+  buffer = AddMeshBuffer(mesh);
 
-  mesh_addvertex(mesh, buffer, -0.5f,  0.5f, 0, 0, 0, -1, 0, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f,  0.5f, 0, 0, 0, -1, 1, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0, 0, 0, -1, 1, 1, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 1, COLOR_WHITE);
-  mesh_addtriangle(mesh, buffer, 0, 1, 2);
-  mesh_addtriangle(mesh, buffer, 0, 2, 3);
+  AddMeshVertex(mesh, buffer, -0.5f,  0.5f, 0, 0, 0, -1, 0, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f,  0.5f, 0, 0, 0, -1, 1, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, -0.5f, 0, 0, 0, -1, 1, 1, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 1, COLOR_WHITE);
+  AddMeshTriangle(mesh, buffer, 0, 1, 2);
+  AddMeshTriangle(mesh, buffer, 0, 2, 3);
 
   /* set object materials */
-  _object_setmaterials(object);
+  _SetObjectMaterials(object);
 
   return object;
 }
 
-EXPORT struct object_t* CALL object_newtriangle()
+EXPORT Object* CALL CreateTriangle()
 {
-  struct object_t* object;
-  struct mesh_t* mesh;
+  Object* object;
+  struct SMesh* mesh;
   int buffer;
 
-  object = object_new();
+  object = CreateObject();
   mesh = object->_mesh;
-  buffer = mesh_addbuffer(mesh);
+  buffer = AddMeshBuffer(mesh);
 
-  mesh_addvertex(mesh, buffer,     0,  0.5f, 0, 0, 0, -1, 0.5f, 1, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer,  0.5f, -0.5f, 0, 0, 0, -1, 1, 0, COLOR_WHITE);
-  mesh_addvertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 0, COLOR_WHITE);
-  mesh_addtriangle(mesh, buffer, 0, 1, 2);
+  AddMeshVertex(mesh, buffer,     0,  0.5f, 0, 0, 0, -1, 0.5f, 1, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer,  0.5f, -0.5f, 0, 0, 0, -1, 1, 0, COLOR_WHITE);
+  AddMeshVertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 0, COLOR_WHITE);
+  AddMeshTriangle(mesh, buffer, 0, 1, 2);
 
-  object_rebuildmesh(object);
-  _object_setmaterials(object);
+  RebuildObjectMesh(object);
+  _SetObjectMaterials(object);
   return object;
 }
 
-EXPORT struct object_t* CALL object_load(const char* filename)
+EXPORT Object* CALL LoadObject(const char* filename)
 {
-  struct object_t* object;
-  struct mesh_t* mesh;
+  Object* object;
+  struct SMesh* mesh;
 
-  object = object_new();
+  object = CreateObject();
   mesh = object->_mesh;
-  if (mesh_load(filename, mesh))
+  if (LoadMesh(filename, mesh))
   {
-    object_rebuildmesh(object);
-    _object_setmaterials(object);
+    RebuildObjectMesh(object);
+    _SetObjectMaterials(object);
     return object;
   }
   else
   {
-    object_delete(object);
+    DeleteObject(object);
     return NULL;
   }
 }
 
-EXPORT struct object_t* CALL object_clone(const struct object_t* object)
+EXPORT Object* CALL CloneObject(const Object* object)
 {
-  struct object_t* new_object = object_new();
+  Object* new_object = CreateObject();
   new_object->x = object->x;
   new_object->y = object->y;
   new_object->z = object->z;
@@ -189,101 +189,101 @@ EXPORT struct object_t* CALL object_clone(const struct object_t* object)
   new_object->sz = object->sz;
   new_object->_mesh = object->_mesh;
   sb_add(new_object->_materials, sb_count(object->_materials));
-  memcpy(new_object->_materials, object->_materials, sizeof(struct material_t) * sb_count(object->_materials));
-  mesh_retain(object->_mesh);
+  memcpy(new_object->_materials, object->_materials, sizeof(Material) * sb_count(object->_materials));
+  RetainMesh(object->_mesh);
   return new_object;
 }
 
-EXPORT void CALL object_delete(struct object_t* object)
+EXPORT void CALL DeleteObject(Object* object)
 {
-  mesh_release(object->_mesh);
+  ReleaseMesh(object->_mesh);
   free(object);
 }
 
-EXPORT int CALL object_addbuffer(struct object_t* object)
+EXPORT int CALL AddSurface(Object* object)
 {
-  int buffer = mesh_addbuffer(object->_mesh);
+  int buffer = AddMeshBuffer(object->_mesh);
   sb_add(object->_materials, 1);
   return buffer;
 }
 
-EXPORT int CALL object_numbuffers(struct object_t* object)
+EXPORT int CALL GetNumSurfaces(Object* object)
 {
-  return mesh_numbuffers(object->_mesh);
+  return GetNumMeshBuffers(object->_mesh);
 }
 
-EXPORT int CALL object_addvertex(struct object_t* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color)
+EXPORT int CALL AddVertex(Object* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color)
 {
-  return mesh_addvertex(object->_mesh, buffer, x, y, z, nx, ny, nz, u, v, color);
+  return AddMeshVertex(object->_mesh, buffer, x, y, z, nx, ny, nz, u, v, color);
 }
 
-EXPORT int CALL object_addtriangle(struct object_t* object, int buffer, int v0, int v1, int v2)
+EXPORT int CALL AddTriangle(Object* object, int buffer, int v0, int v1, int v2)
 {
-  return mesh_addtriangle(object->_mesh, buffer, v0, v1, v2);
+  return AddMeshTriangle(object->_mesh, buffer, v0, v1, v2);
 }
 
-EXPORT void CALL object_rebuildmesh(struct object_t* object)
+EXPORT void CALL RebuildObjectMesh(Object* object)
 {
-  mesh_rebuild(object->_mesh);
+  RebuildMesh(object->_mesh);
 }
 
-EXPORT struct material_t* CALL object_material(struct object_t* object, int index)
+EXPORT Material* CALL GetObjectMaterial(Object* object, int index)
 {
   return &object->_materials[index];
 }
 
-EXPORT float CALL object_width(const struct object_t* object)
+EXPORT float CALL GetObjectWidth(const Object* object)
 {
-  return mesh_width(object->_mesh) * object->sx;
+  return GetMeshWidth(object->_mesh) * object->sx;
 }
 
-EXPORT float CALL object_height(const struct object_t* object)
+EXPORT float CALL GetObjectHeight(const Object* object)
 {
-  return mesh_height(object->_mesh) * object->sy;
+  return GetMeshHeight(object->_mesh) * object->sy;
 }
 
-EXPORT float CALL object_depth(const struct object_t* object)
+EXPORT float CALL GetObjectDepth(const Object* object)
 {
-  return mesh_depth(object->_mesh) * object->sz;
+  return GetMeshDepth(object->_mesh) * object->sz;
 }
 
-EXPORT float CALL object_minx(const struct object_t* object)
+EXPORT float CALL GetObjectMinX(const Object* object)
 {
-  return object->x + mesh_boxminx(object->_mesh) * object->sx;
+  return object->x + GetMeshBoxMinX(object->_mesh) * object->sx;
 }
 
-EXPORT float CALL object_miny(const struct object_t* object)
+EXPORT float CALL GetObjectMinY(const Object* object)
 {
-  return object->y + mesh_boxminy(object->_mesh) * object->sy;
+  return object->y + GetMeshBoxMinY(object->_mesh) * object->sy;
 }
 
-EXPORT float CALL object_minz(const struct object_t* object)
-{
-  if (object->billboard == BILLBOARD_NONE)
-    return object->z + mesh_boxminz(object->_mesh) * object->sz;
-  else
-    return object_minx(object);
-}
-
-EXPORT float CALL object_maxx(const struct object_t* object)
-{
-  return object->x + mesh_boxmaxx(object->_mesh) * object->sx;
-}
-
-EXPORT float CALL object_maxy(const struct object_t* object)
-{
-  return object->y + mesh_boxmaxy(object->_mesh) * object->sy;
-}
-
-EXPORT float CALL object_maxz(const struct object_t* object)
+EXPORT float CALL GetObjectMinZ(const Object* object)
 {
   if (object->billboard == BILLBOARD_NONE)
-    return object->z + mesh_boxmaxz(object->_mesh) * object->sz;
+    return object->z + GetMeshBoxMinZ(object->_mesh) * object->sz;
   else
-    return object_maxx(object);
+    return GetObjectMinX(object);
 }
 
-EXPORT bool_t CALL object_move(struct object_t* object, float x, float y, float z)
+EXPORT float CALL GetObjectMaxX(const Object* object)
+{
+  return object->x + GetMeshBoxMaxX(object->_mesh) * object->sx;
+}
+
+EXPORT float CALL GetObjectMaxY(const Object* object)
+{
+  return object->y + GetMeshBoxMaxY(object->_mesh) * object->sy;
+}
+
+EXPORT float CALL GetObjectMaxZ(const Object* object)
+{
+  if (object->billboard == BILLBOARD_NONE)
+    return object->z + GetMeshBoxMaxZ(object->_mesh) * object->sz;
+  else
+    return GetObjectMaxX(object);
+}
+
+EXPORT bool_t CALL MoveObject(Object* object, float x, float y, float z)
 {
   lvec3_t vec;
   bool_t collided = FALSE;
@@ -293,7 +293,7 @@ EXPORT bool_t CALL object_move(struct object_t* object, float x, float y, float 
 
   /* move x and check collision boxes */
   object->x += vec.x;
-  if (object_collidesboxes(object))
+  if (ObjectCollidesBoxes(object))
   {
     collided = TRUE;
     object->x -= vec.x;
@@ -301,7 +301,7 @@ EXPORT bool_t CALL object_move(struct object_t* object, float x, float y, float 
 
   /* move y and check collision boxes */
   object->y += vec.y;
-  if (object_collidesboxes(object))
+  if (ObjectCollidesBoxes(object))
   {
     collided = TRUE;
     object->y -= vec.y;
@@ -309,7 +309,7 @@ EXPORT bool_t CALL object_move(struct object_t* object, float x, float y, float 
 
   /* move z and check collision boxes */
   object->z += vec.z;
-  if (object_collidesboxes(object))
+  if (ObjectCollidesBoxes(object))
   {
     collided = TRUE;
     object->z -= vec.z;
@@ -318,7 +318,7 @@ EXPORT bool_t CALL object_move(struct object_t* object, float x, float y, float 
   return collided;
 }
 
-EXPORT void CALL object_turn(struct object_t* object, float pitch, float yaw, float roll)
+EXPORT void CALL TurnObject(Object* object, float pitch, float yaw, float roll)
 {
   lvec3_t vec;
 
@@ -328,17 +328,17 @@ EXPORT void CALL object_turn(struct object_t* object, float pitch, float yaw, fl
   object->roll = vec.z;
 }
 
-EXPORT bool_t CALL object_collidesboxes(struct object_t* object)
+EXPORT bool_t CALL ObjectCollidesBoxes(Object* object)
 {
   if (object->colmode == COL_SPHERE)
   {
-    return _colbox_checksphere(object->x, object->y, object->z, object->radius * object->radius);
+    return _CheckSphereCol(object->x, object->y, object->z, object->radius * object->radius);
   }
   else if (object->colmode == COL_BOX)
   {
-    return _colbox_checkbox(
-      object_minx(object), object_miny(object), object_minz(object),
-      object_maxx(object), object_maxy(object), object_maxz(object)
+    return _CheckBoxCol(
+      GetObjectMinX(object), GetObjectMinY(object), GetObjectMinZ(object),
+      GetObjectMaxX(object), GetObjectMaxY(object), GetObjectMaxZ(object)
     );
   }
   else
@@ -347,7 +347,7 @@ EXPORT bool_t CALL object_collidesboxes(struct object_t* object)
   }
 }
 
-EXPORT bool_t CALL object_collidesobject(struct object_t* object, struct object_t* object2)
+EXPORT bool_t CALL ObjectCollidesObject(Object* object, Object* object2)
 {
   if (object != object2 && object->colmode != COL_NONE && object2->colmode != COL_NONE)
   {
@@ -361,26 +361,26 @@ EXPORT bool_t CALL object_collidesobject(struct object_t* object, struct object_
     else if (object->colmode == COL_SPHERE && object2->colmode == COL_BOX)
     {
       return lcol_boxsphere(
-        object_minx(object2), object_miny(object2), object_minz(object2),
-        object_maxx(object2), object_maxy(object2), object_maxz(object2),
+        GetObjectMinX(object2), GetObjectMinY(object2), GetObjectMinZ(object2),
+        GetObjectMaxX(object2), GetObjectMaxY(object2), GetObjectMaxZ(object2),
         object->x, object->y, object->z, object->radius * object->radius
       ) == 1;
     }
     else if (object->colmode == COL_BOX && object2->colmode == COL_SPHERE)
     {
       return lcol_boxsphere(
-        object_minx(object), object_miny(object), object_minz(object),
-        object_maxx(object), object_maxy(object), object_maxz(object),
+        GetObjectMinX(object), GetObjectMinY(object), GetObjectMinZ(object),
+        GetObjectMaxX(object), GetObjectMaxY(object), GetObjectMaxZ(object),
         object2->x, object2->y, object2->z, object2->radius * object2->radius
       ) == 1;
     }
     else if (object->colmode == COL_BOX && object2->colmode == COL_BOX)
     {
       return lcol_boxbox(
-        object_minx(object), object_miny(object), object_minz(object),
-        object_maxx(object), object_maxy(object), object_maxz(object),
-        object_minx(object2), object_miny(object2), object_minz(object2),
-        object_maxx(object2), object_maxy(object2), object_maxz(object2)
+        GetObjectMinX(object), GetObjectMinY(object), GetObjectMinZ(object),
+        GetObjectMaxX(object), GetObjectMaxY(object), GetObjectMaxZ(object),
+        GetObjectMinX(object2), GetObjectMinY(object2), GetObjectMinZ(object2),
+        GetObjectMaxX(object2), GetObjectMaxY(object2), GetObjectMaxZ(object2)
       ) == 1;
     }
   }
@@ -390,15 +390,15 @@ EXPORT bool_t CALL object_collidesobject(struct object_t* object, struct object_
   }
 }
 
-EXPORT void CALL object_draw(struct object_t* object)
+EXPORT void CALL DrawObject(Object* object)
 {
   lmat4_t modelview;
 
   /* calculate animation */
   if (object->animmode != ANIM_STOP)
   {
-    int lastframe = (object->animmax != 0) ? object->animmax : _mesh_lastframe(object->_mesh);
-    object->animframe += object->animspeed * _object_animfps * screen_delta();
+    int lastframe = (object->animmax != 0) ? object->animmax : _GetMeshLastFrame(object->_mesh);
+    object->animframe += object->animspeed * _object_animfps * GetDeltaTime();
     if (object->animframe > lastframe)
     {
       if (object->animmode == ANIM_LOOP) object->animframe -= (lastframe - object->animmin);
@@ -409,13 +409,13 @@ EXPORT void CALL object_draw(struct object_t* object)
       if (object->animmode == ANIM_LOOP) object->animframe += (lastframe - object->animmin);
       else object->animframe = object->animmin;
     }
-    _mesh_animate(object->_mesh, object->animframe);
-    mesh_rebuild(object->_mesh);
+    _AnimateMesh(object->_mesh, object->animframe);
+    RebuildMesh(object->_mesh);
   }
   else if (object->animframe != 0)
   {
-    _mesh_animate(object->_mesh, 0);
-    mesh_rebuild(object->_mesh);
+    _AnimateMesh(object->_mesh, 0);
+    RebuildMesh(object->_mesh);
     object->animframe = 0;
   }
 
@@ -430,23 +430,23 @@ EXPORT void CALL object_draw(struct object_t* object)
       break;
     default:
       modelview = lmat4_billboard(
-        *(const lmat4_t*)_viewer_activematrix(),
+        *(const lmat4_t*)_GetActiveMatrix(),
         lvec3(object->x, object->y, object->z),
         lm_deg2rad(object->roll),
         object->sx, object->sy,
         object->billboard == BILLBOARD_UPRIGHT ? TRUE : FALSE);
       break;
   }
-  modelview = lmat4_mul(*(const lmat4_t*)_viewer_activematrix(), modelview);
+  modelview = lmat4_mul(*(const lmat4_t*)_GetActiveMatrix(), modelview);
   lgfx_setmodelview(modelview.m);
 
   /* set properties & draw */
-  _mesh_draw(object->_mesh, object->_materials);
+  _DrawMesh(object->_mesh, object->_materials);
 }
 
-EXPORT int CALL object_numframes(const struct object_t* object)
+EXPORT int CALL GetObjectNumFrames(const Object* object)
 {
-  return _mesh_lastframe(object->_mesh);
+  return _GetMeshLastFrame(object->_mesh);
 }
 
 EXPORT void CALL object_setanimfps(float fps)
@@ -454,7 +454,7 @@ EXPORT void CALL object_setanimfps(float fps)
   _object_animfps = fps;
 }
 
-EXPORT float CALL object_animfps()
+EXPORT float CALL GetObjectFPS()
 {
   return _object_animfps;
 }

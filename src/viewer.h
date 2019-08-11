@@ -12,9 +12,9 @@ extern "C"
 {
 #endif
 
-struct texture_t;
+struct STexture;
 
-struct viewer_t
+typedef struct
 {
   float             x, y, z;
   float             pitch, yaw, roll;
@@ -24,7 +24,7 @@ struct viewer_t
   int               vh;
   int               clearmode;
   int               clearcolor;
-  struct texture_t* skybox;
+  struct STexture* skybox;
   bool_t            ortho;
   float             fov;
   float             min;
@@ -33,17 +33,17 @@ struct viewer_t
   int               fogcolor;
   float             fogmin;
   float             fogmax;
-};
+} Viewer;
 
-EXPORT struct viewer_t* CALL viewer_new();
-EXPORT void CALL viewer_delete(struct viewer_t* viewer);
-EXPORT void CALL viewer_move(struct viewer_t* viewer, float x, float y, float z);
-EXPORT void CALL viewer_turn(struct viewer_t* viewer, float pitch, float yaw, float roll);
-EXPORT void CALL viewer_prepare(const struct viewer_t* viewer);
+EXPORT Viewer* CALL CreateViewer();
+EXPORT void CALL DeleteViewer(Viewer* viewer);
+EXPORT void CALL MoveViewer(Viewer* viewer, float x, float y, float z);
+EXPORT void CALL TurnViewer(Viewer* viewer, float pitch, float yaw, float roll);
+EXPORT void CALL PrepareViewer(const Viewer* viewer);
 
 #ifndef SWIG
-const struct viewer_t* _viewer_active();
-const void* _viewer_activematrix();
+const Viewer* _GetActiveViewer();
+const void* _GetActiveMatrix();
 #endif
 
 #ifdef __cplusplus

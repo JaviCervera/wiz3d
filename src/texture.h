@@ -8,26 +8,26 @@ extern "C"
 {
 #endif
 
-struct memory_t;
-struct pixmap_t;
-struct texture_t;
+struct SMemblock;
+struct SPixmap;
+struct STexture;
 
-EXPORT struct texture_t* CALL texture_new(int width, int height);
-EXPORT struct texture_t* CALL texture_newfrommemory(const struct memory_t* memory);
-EXPORT struct texture_t* CALL texture_newfrompixmap(const struct pixmap_t* pixmap);
-EXPORT struct texture_t* CALL texture_load(const char* filename);
+EXPORT struct STexture* CALL CreateTexture(int width, int height);
+EXPORT struct STexture* CALL CreateTextureFromMemblock(const struct SMemblock* memblock);
+EXPORT struct STexture* CALL CreateTextureFromPixmap(const struct SPixmap* pixmap);
+EXPORT struct STexture* CALL LoadTexture(const char* filename);
 #ifndef SWIG
-void texture_retain(struct texture_t* texture);
-void texture_release(struct texture_t* texture);
+void RetainTexture(struct STexture* texture);
+void ReleaseTexture(struct STexture* texture);
 #endif
-EXPORT void CALL texture_delete(struct texture_t* texture);
-EXPORT int CALL texture_width(const struct texture_t* texture);
-EXPORT int CALL texture_height(const struct texture_t* texture);
-EXPORT void CALL texture_setpixels(struct texture_t* texture, const struct pixmap_t* pixmap);
-EXPORT void CALL texture_setfilter(bool_t filter);
+EXPORT void CALL DeleteTexture(struct STexture* texture);
+EXPORT int CALL GetTextureWidth(const struct STexture* texture);
+EXPORT int CALL GetTextureHeight(const struct STexture* texture);
+EXPORT void CALL SetTexturePixels(struct STexture* texture, const struct SPixmap* pixmap);
+EXPORT void CALL SetTextureFilter(bool_t filter);
 
 #ifndef SWIG
-const void* _texture_ptr(const struct texture_t* texture);
+const void* _GetTexturePtr(const struct STexture* texture);
 #endif
 
 #ifdef __cplusplus

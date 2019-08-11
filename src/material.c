@@ -5,17 +5,17 @@
 
 static int _material_shininesspower = 128;
 
-EXPORT int CALL material_shininesspower()
+EXPORT int CALL GetShininessPower()
 {
   return _material_shininesspower;
 }
 
-EXPORT void CALL material_setshininesspower(int power)
+EXPORT void CALL SetShininessPower(int power)
 {
-  _material_shininesspower = _clamp(power, 0, 128);
+  _material_shininesspower = _Clamp(power, 0, 128);
 }
 
-void _material_init(struct material_t* material)
+void _InitMaterial(Material* material)
 {
   material->texture = NULL;
   material->diffuse = COLOR_WHITE;
@@ -27,7 +27,7 @@ void _material_init(struct material_t* material)
   material->shininesspower = -1;
 }
 
-void _material_deinit(struct material_t* material)
+void _FinishMaterial(Material* material)
 {
-  if (material->texture) texture_release(material->texture);
+  if (material->texture) ReleaseTexture(material->texture);
 }

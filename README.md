@@ -67,7 +67,8 @@ See [here](./doc/documentation.md).
 - [x] Remove Lua support and convert Beam into a dll.
 - [x] Dependencies build inside root _CMAKE dir.
 - [x] SDL2 is now default platform.
-- [ ] Pascal case, trailing braces.
+- [x] Pascal case for function names.
+- [ ] Trailing braces.
 - [ ] File system with pak support (object_loadmem).
 - [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat.
 - [ ] Audio with support for wav and ogg formats (OpenAL, SDL & Allegro).

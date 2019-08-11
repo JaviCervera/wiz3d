@@ -9,40 +9,40 @@ extern "C"
 {
 #endif
 
-struct texture_t;
+struct STexture;
 
-EXPORT void CALL screen_set(int width, int height, bool_t fullscreen, bool_t resizable);
-EXPORT void CALL screen_refresh();
-EXPORT void CALL screen_settitle(const char* title);
-EXPORT void CALL screen_setup2d();
-EXPORT void CALL screen_setviewport(int x, int y, int w, int h);
-EXPORT void CALL screen_setresolution(int w, int h);
-EXPORT void CALL screen_setdrawcolor(int color);
-EXPORT void CALL screen_setdrawfont(const char* filename, float height);
+EXPORT void CALL SetScreen(int width, int height, bool_t fullscreen, bool_t resizable);
+EXPORT void CALL RefreshScreen();
+EXPORT void CALL SetScreenTitle(const char* title);
+EXPORT void CALL Setup2D();
+EXPORT void CALL SetViewport(int x, int y, int w, int h);
+EXPORT void CALL SetResolution(int w, int h);
+EXPORT void CALL SetDrawColor(int color);
+EXPORT void CALL SetDrawFont(const char* filename, float height);
 #ifdef USE_DEFAULT_FONT
-EXPORT void CALL screen_setdrawfontdefault();
+EXPORT void CALL SetDefaultFont();
 #endif
-EXPORT void CALL screen_clear(int color);
-EXPORT void CALL screen_drawpoint(float x, float y);
-EXPORT void CALL screen_drawline(float x1, float y1, float x2, float y2);
-EXPORT void CALL screen_drawellipse(float x, float y, float width, float height);
-EXPORT void CALL screen_drawrect(float x, float y, float width, float height);
-EXPORT void CALL screen_drawtexture(const struct texture_t* tex, float x, float y, float width, float height);
-EXPORT void CALL screen_drawtext(const char* text, float x, float y);
-EXPORT int CALL screen_width();
-EXPORT int CALL screen_height();
-EXPORT float CALL screen_delta();
-EXPORT int CALL screen_fps();
-EXPORT bool_t CALL screen_opened();
+EXPORT void CALL ClearScreen(int color);
+EXPORT void CALL DrawPoint(float x, float y);
+EXPORT void CALL DrawLine(float x1, float y1, float x2, float y2);
+EXPORT void CALL DrawEllipse(float x, float y, float width, float height);
+EXPORT void CALL DrawRect(float x, float y, float width, float height);
+EXPORT void CALL DrawTexture(const struct STexture* tex, float x, float y, float width, float height);
+EXPORT void CALL DrawText(const char* text, float x, float y);
+EXPORT int CALL GetScreenWidth();
+EXPORT int CALL GetScreenHeight();
+EXPORT float CALL GetDeltaTime();
+EXPORT int CALL GetScreenFPS();
+EXPORT bool_t CALL IsScreenOpened();
 
-EXPORT int CALL screen_desktopwidth();
-EXPORT int CALL screen_desktopheight();
+EXPORT int CALL GetDesktopWidth();
+EXPORT int CALL GetDesktopHeight();
 
-EXPORT float CALL screen_textwidth(const char* text);
-EXPORT float CALL screen_textheight(const char* text);
+EXPORT float CALL GetTextWidth(const char* text);
+EXPORT float CALL GetTextHeight(const char* text);
 
 #ifndef SWIG
-void* _screen_pointer();
+void* _GetScreenPtr();
 #endif
 
 #ifdef __cplusplus

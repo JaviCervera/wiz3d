@@ -20,7 +20,7 @@ typedef struct
   int mouse_x, mouse_y;
 } data_t;
 
-bool_t p_init()
+bool_t p_Init()
 {
   bool_t ret;
   ret = al_init();
@@ -36,16 +36,16 @@ bool_t p_init()
   return ret != FALSE;
 }
 
-void p_shutdown()
+void p_Shutdown()
 {
 }
 
-float p_get_time()
+float p_GetTime()
 {
   return (float)al_get_time();
 }
 
-void p_set_cursor_visible(void* win, bool_t visible)
+void p_SetCursorVisible(void* win, bool_t visible)
 {
   if (visible)
   {
@@ -57,46 +57,46 @@ void p_set_cursor_visible(void* win, bool_t visible)
   }
 }
 
-void p_set_cursor_position(void* win, int x, int y)
+void p_SetCursorPosition(void* win, int x, int y)
 {
   al_set_mouse_xy(((data_t*)win)->display, x, y);
 }
 
-int p_cursor_x(void* win)
+int p_GetCursorX(void* win)
 {
   return ((data_t*)win)->mouse_x;
 }
 
-int p_cursor_y(void* win)
+int p_GetCursorY(void* win)
 {
   return ((data_t*)win)->mouse_y;
 }
 
-bool_t p_mouse_button_down(void* win, int button)
+bool_t p_GetCursorPressed(void* win, int button)
 {
   return ((data_t*)win)->buttons[button];
 }
 
-bool_t p_key_down(void* win, int key)
+bool_t p_GetKeyPressed(void* win, int key)
 {
   return ((data_t*)win)->keys[key];
 }
 
-int p_desktop_width()
+int p_GetDesktopWidth()
 {
   ALLEGRO_MONITOR_INFO info;
   al_get_monitor_info(0, &info);
   return info.x2 - info.x1;
 }
 
-int p_desktop_height()
+int p_GetDesktopHeight()
 {
   ALLEGRO_MONITOR_INFO info;
   al_get_monitor_info(0, &info);
   return info.y2 - info.y1;
 }
 
-void* p_open_screen(int width, int height, bool_t fullscreen, int samples, bool_t vsync, bool_t resizable)
+void* p_OpenScreen(int width, int height, bool_t fullscreen, int samples, bool_t vsync, bool_t resizable)
 {
   int flags;
   data_t* data;
@@ -130,7 +130,7 @@ void* p_open_screen(int width, int height, bool_t fullscreen, int samples, bool_
   al_register_event_source(queue, al_get_joystick_event_source());
 
   /* create data */
-  data = _alloc(data_t);
+  data = _Alloc(data_t);
   memset(data, 0, sizeof(data_t));
   data->display = display;
   data->queue = queue;
@@ -140,19 +140,19 @@ void* p_open_screen(int width, int height, bool_t fullscreen, int samples, bool_
   return data;
 }
 
-void p_close_screen(void* win)
+void p_CloseScreen(void* win)
 {
   al_destroy_event_queue(((data_t*)win)->queue);
   al_destroy_display(((data_t*)win)->display);
   free(win);
 }
 
-bool_t p_screen_opened(void* win)
+bool_t p_IsScreenOpened(void* win)
 {
   return win && ((data_t*)win)->opened;
 }
 
-void p_refresh_screen(void* win)
+void p_RefreshScreen(void* win)
 {
   ALLEGRO_EVENT event;
   while (al_get_next_event(((data_t*)win)->queue, &event))
@@ -186,22 +186,22 @@ void p_refresh_screen(void* win)
   al_flip_display();
 }
 
-void p_set_screen_title(void* win, const char* title)
+void p_SetScreenTitle(void* win, const char* title)
 {
   al_set_window_title(((data_t*)win)->display, title);
 }
 
-int p_screen_width(void* win)
+int p_GetScreenWidth(void* win)
 {
   return al_get_display_width(((data_t*)win)->display);
 }
 
-int p_screen_height(void* win)
+int p_GetScreenHeight(void* win)
 {
   return al_get_display_height(((data_t*)win)->display);
 }
 
-void p_messagebox(const char* title, const char* message)
+void p_MessageBox(const char* title, const char* message)
 {
   al_show_native_message_box(al_get_current_display(), title, "", message, NULL, 0);
 }

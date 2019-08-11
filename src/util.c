@@ -18,7 +18,7 @@
 /*#undef DeleteFile*/
 #endif
 
-void ext_strip(const char* filename, char* out, size_t len)
+void StripExt(const char* filename, char* out, size_t len)
 {
   const char* endp;
   size_t plen, copylen;
@@ -46,7 +46,7 @@ void ext_strip(const char* filename, char* out, size_t len)
   out[copylen < len ? copylen : len-1] = 0;
 }
 
-void ext_extract(const char* filename, char* out, size_t len)
+void ExtractExt(const char* filename, char* out, size_t len)
 {
   const char* beginp;
   size_t plen, copylen;
@@ -72,7 +72,7 @@ void ext_extract(const char* filename, char* out, size_t len)
   out[copylen < len ? copylen : len-1] = 0;
 }
 
-void dir_strip(const char* filename, char* out, size_t len)
+void StripDir(const char* filename, char* out, size_t len)
 {
   const char* fp;
   const char* bp;
@@ -95,7 +95,7 @@ void dir_strip(const char* filename, char* out, size_t len)
   out[copylen < len ? copylen : len-1] = 0;
 }
 
-void dir_extract(const char* filename, char* out, size_t len)
+void ExtractDir(const char* filename, char* out, size_t len)
 {
   const char* fp;
   const char* bp;
@@ -123,7 +123,7 @@ void dir_extract(const char* filename, char* out, size_t len)
   out[copylen < len ? copylen : len-1] = 0;
 }
 
-bool_t dir_contents(const char* path, char* out, size_t len)
+bool_t GetDirContents(const char* path, char* out, size_t len)
 {
   DIR* d;
   struct dirent* entry;
@@ -145,17 +145,17 @@ bool_t dir_contents(const char* path, char* out, size_t len)
   return TRUE;
 }
 
-void dir_current(char* out, size_t len)
+void GetCurrentDir(char* out, size_t len)
 {
   _getcwd(out, len);
 }
 
-bool_t dir_change(const char* path)
+bool_t ChangeDir(const char* path)
 {
   return _chdir(path) == 0;
 }
 
-int str_casecmp(char const *a, char const *b)
+int StringCompareLower(char const *a, char const *b)
 {
     for (;; a++, b++)
     {
@@ -164,7 +164,7 @@ int str_casecmp(char const *a, char const *b)
     }
 }
 
-void str_write(const char* str, const char* filename, bool_t append)
+void WriteString(const char* str, const char* filename, bool_t append)
 {
   FILE* f;
 

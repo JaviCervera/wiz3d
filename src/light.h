@@ -11,25 +11,26 @@ extern "C"
 {
 #endif
 
-struct light_t
+
+typedef struct
 {
   float x, y, z;
   float pitch, yaw;
   int   type;
   int   color;
   float range;
-};
+} Light;
 
-EXPORT struct light_t* CALL light_new(int type);
-EXPORT void CALL light_delete(struct light_t* light);
-EXPORT void CALL light_move(struct light_t* light, float x, float y, float z);
-EXPORT void CALL light_turn(struct light_t* light, float pitch, float yaw);
-EXPORT void CALL light_setambient(int color);
-EXPORT int CALL light_ambient();
+EXPORT Light* CALL CreateLight(int type);
+EXPORT void CALL DeleteLight(Light* light);
+EXPORT void CALL MoveLight(Light* light, float x, float y, float z);
+EXPORT void CALL TurnLight(Light* light, float pitch, float yaw);
+EXPORT void CALL SetAmbientColor(int color);
+EXPORT int CALL GetAmbientColor();
 
 #ifndef SWIG
-void _light_prepare();
-int _light_numlights();
+void _PrepareLights();
+int _GetNumLights();
 #endif
 
 #ifdef __cplusplus

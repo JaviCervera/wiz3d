@@ -6,45 +6,45 @@
 int main()
 {
   /* data */
-  struct viewer_t* viewer;
-  struct light_t* dir_light;
-  struct object_t* cube;
+  Viewer* viewer;
+  Light* dir_light;
+  Object* cube;
   char str[STRING_SIZE];
 
   /* setup */
-  beam_init();
-  screen_set(800, 600, FALSE, TRUE);
+  InitBeam();
+  SetScreen(800, 600, FALSE, TRUE);
 
   /* create and position viewer */
-  viewer = viewer_new();
-  viewer->clearcolor = color_rgb(15, 15, 15);
-  viewer_move(viewer, 0, 2, -2);
-  viewer_turn(viewer, 45, 0, 0);
+  viewer = CreateViewer();
+  viewer->clearcolor = GetRGB(15, 15, 15);
+  MoveViewer(viewer, 0, 2, -2);
+  TurnViewer(viewer, 45, 0, 0);
 
   /* setup lighting */
-  dir_light = light_new(LIGHT_DIRECTIONAL);
-  light_turn(dir_light, 45, 45);
+  dir_light = CreateLight(LIGHT_DIRECTIONAL);
+  TurnLight(dir_light, 45, 45);
 
   /* create a cube */
-  cube = object_newcube();
-  object_material(cube, 0)->texture = texture_load("data/box.png");
+  cube = CreateCube();
+  GetObjectMaterial(cube, 0)->texture = LoadTexture("data/box.png");
 
   /* main loop */
-  while (screen_opened() && !input_keydown(KEY_ESC))
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
   {
-    object_turn(cube, 0, ROTATION_SPEED * screen_delta(), 0);
+    TurnObject(cube, 0, ROTATION_SPEED * GetDeltaTime(), 0);
 
     /* draw scene */
-    viewer_prepare(viewer);
-    object_draw(cube);
+    PrepareViewer(viewer);
+    DrawObject(cube);
 
     /* draw ui */
-    sprintf(str, "%i FPS", screen_fps());
-    screen_setup2d();
-    screen_drawtext(str, 4, 4);
-    screen_refresh();
+    sprintf(str, "%i FPS", GetScreenFPS());
+    Setup2D();
+    DrawText(str, 4, 4);
+    RefreshScreen();
   }
 
   /* shutdown */
-  beam_finish();
+  ShutdownBeam();
 }

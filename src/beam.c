@@ -31,20 +31,20 @@ extern "C"
 {
 #endif
 
-EXPORT bool_t CALL beam_init()
+EXPORT bool_t CALL InitBeam()
 {
   bool_t ret;
-  ret = p_init();
+  ret = p_Init();
   if (!ret) return FALSE;
   /*ret = _sound_initaudio();*/
   return ret != FALSE;
 }
 
-EXPORT void CALL beam_finish()
+EXPORT void CALL ShutdownBeam()
 {
-  if (_screen_pointer()) p_close_screen(_screen_pointer());
+  if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
   /*_sound_deinitaudio();*/
-  p_shutdown();
+  p_Shutdown();
 }
 
 #ifdef __cplusplus

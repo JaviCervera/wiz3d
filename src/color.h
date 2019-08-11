@@ -22,14 +22,14 @@ extern "C"
 {
 #endif
 
-EXPORT int CALL color_rgb(int r, int g, int b);
-EXPORT int CALL color_rgba(int r, int g, int b, int a);
-EXPORT int CALL color_red(int color);
-EXPORT int CALL color_green(int color);
-EXPORT int CALL color_blue(int color);
-EXPORT int CALL color_alpha(int color);
-EXPORT int CALL color_changealpha(int color, int new_alpha);
-EXPORT int CALL color_multiply(int color, float factor);
+EXPORT int CALL GetRGB(int r, int g, int b);
+EXPORT int CALL GetRGBA(int r, int g, int b, int a);
+EXPORT int CALL GetRed(int color);
+EXPORT int CALL GetGreen(int color);
+EXPORT int CALL GetBlue(int color);
+EXPORT int CALL GetAlpha(int color);
+EXPORT int CALL ChangeAlpha(int color, int new_alpha);
+EXPORT int CALL MultiplyColor(int color, float factor);
 
 #ifdef __cplusplus
 } /* extern "C" */

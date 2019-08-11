@@ -7,24 +7,24 @@ typedef struct
 {
   lvec3_t min;
   lvec3_t max;
-} colbox_t;
+} Colbox;
 
-static colbox_t* _colboxes = NULL; /* array of boxes */
+static Colbox* _colboxes = NULL; /* array of boxes */
 
-EXPORT void CALL colbox_add(float minx, float miny, float minz, float maxx, float maxy, float maxz)
+EXPORT void CALL AddColbox(float minx, float miny, float minz, float maxx, float maxy, float maxz)
 {
-  colbox_t box;
+  Colbox box;
   box.min = lvec3(minx, miny, minz);
   box.max = lvec3(maxx, maxy, maxz);
   sb_push(_colboxes, box);
 }
 
-EXPORT void CALL colbox_clear()
+EXPORT void CALL ClearColbox()
 {
   sb_free(_colboxes);
 }
 
-bool_t _colbox_checkbox(float minx, float miny, float minz, float maxx, float maxy, float maxz)
+bool_t _CheckBoxCol(float minx, float miny, float minz, float maxx, float maxy, float maxz)
 {
   int i;
 
@@ -39,7 +39,7 @@ bool_t _colbox_checkbox(float minx, float miny, float minz, float maxx, float ma
   return FALSE;
 }
 
-bool_t _colbox_checksphere(float x, float y, float z, float sq_radius)
+bool_t _CheckSphereCol(float x, float y, float z, float sq_radius)
 {
   int i;
 

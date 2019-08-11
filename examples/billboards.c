@@ -8,36 +8,36 @@
 int main()
 {
   /* data */
-  struct viewer_t* viewer;
-  struct texture_t* tex;
-  struct object_t* billboards[NUM_BILLBOARDS];
+  Viewer* viewer;
+  struct STexture* tex;
+  Object* billboards[NUM_BILLBOARDS];
   int x, z;
   int i;
   char str[STRING_SIZE];
 
   /* setup */
-  beam_init();
-  screen_set(800, 600, FALSE, TRUE);
+  InitBeam();
+  SetScreen(800, 600, FALSE, TRUE);
 
   /* create and position viewer */
-  viewer = viewer_new();
+  viewer = CreateViewer();
   viewer->clearcolor = COLOR_WHITE;
-  viewer_turn(viewer, 45, -45, 0);
+  TurnViewer(viewer, 45, -45, 0);
 
   /* load texture */
-  tex = texture_load("data/smile.png");
+  tex = LoadTexture("data/smile.png");
 
   /* create billboards */
   x = z = -8;
   for (i = 0; i < NUM_BILLBOARDS; ++i)
   {
-    billboards[i] = object_newquad();
+    billboards[i] = CreateQuad();
     billboards[i]->billboard = BILLBOARD_FACE;
     billboards[i]->x = x;
     billboards[i]->z = z;
-    object_material(billboards[i], 0)->texture = tex;
-    object_material(billboards[i], 0)->diffuse = color_rgb(rand() % 256, rand() % 256, rand() % 256);
-    object_material(billboards[i], 0)->blend = BLEND_ALPHA;
+    GetObjectMaterial(billboards[i], 0)->texture = tex;
+    GetObjectMaterial(billboards[i], 0)->diffuse = GetRGB(rand() % 256, rand() % 256, rand() % 256);
+    GetObjectMaterial(billboards[i], 0)->blend = BLEND_ALPHA;
     
     x += 2;
     if (x >= 8)
@@ -48,28 +48,28 @@ int main()
   }
 
   /* main loop */
-  while (screen_opened() && !input_keydown(KEY_ESC))
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
   {
     /* update viewer */
-    viewer_turn(viewer, 0, ROTATION_SPEED * screen_delta(), 0);
+    TurnViewer(viewer, 0, ROTATION_SPEED * GetDeltaTime(), 0);
     viewer->x = viewer->y = viewer->z = 0;
-    viewer_move(viewer, 0, 0, -8);
+    MoveViewer(viewer, 0, 0, -8);
 
     /* draw scene */
-    viewer_prepare(viewer);
+    PrepareViewer(viewer);
     for (i = 0; i < NUM_BILLBOARDS; ++i)
     {
-      object_draw(billboards[i]);
+      DrawObject(billboards[i]);
     }
 
     /* draw ui */
-    sprintf(str, "%i FPS", screen_fps());
-    screen_setup2d();
-    screen_setdrawcolor(COLOR_BLACK);
-    screen_drawtext(str, 4, 4);
-    screen_refresh();
+    sprintf(str, "%i FPS", GetScreenFPS());
+    Setup2D();
+    SetDrawColor(COLOR_BLACK);
+    DrawText(str, 4, 4);
+    RefreshScreen();
   }
 
   /* shutdown */
-  beam_finish();
+  ShutdownBeam();
 }

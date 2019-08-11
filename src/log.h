@@ -8,12 +8,12 @@ extern "C"
 {
 #endif
 
-EXPORT void CALL log_info(const char* msg);
-EXPORT void CALL log_warning(const char* msg);
-EXPORT void CALL log_error(const char* msg);
+EXPORT void CALL LogInfo(const char* msg);
+EXPORT void CALL LogWarning(const char* msg);
+EXPORT void CALL LogError(const char* msg);
 
 #ifndef SWIG
-void _log_setfilename(const char* filename);
+void _SetLogFilename(const char* filename);
 #endif
 
 #ifdef __cplusplus

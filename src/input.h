@@ -22,12 +22,12 @@ extern "C"
 #include "input_glfw.h"
 #include "input_sdl.h"
 
-EXPORT void CALL input_setmousevisible(bool_t visible);
-EXPORT void CALL input_setmouseposition(int x, int y);
-EXPORT int CALL input_mousex();
-EXPORT int CALL input_mousey();
-EXPORT bool_t CALL input_mousedown(int b);
-EXPORT bool_t CALL input_keydown(int k);
+EXPORT void CALL SetCursorVisible(bool_t visible);
+EXPORT void CALL SetCursorPosition(int x, int y);
+EXPORT int CALL GetCursorX();
+EXPORT int CALL GetCursorY();
+EXPORT bool_t CALL IsCursorPressed(int b);
+EXPORT bool_t CALL IsKeyPressed(int k);
 
 #ifdef __cplusplus
 } /* extern "C" */

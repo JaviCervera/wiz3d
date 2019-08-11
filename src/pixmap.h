@@ -8,21 +8,21 @@ extern "C"
 {
 #endif
 
-struct memory_t;
-struct pixmap_t;
+struct SMemblock;
+struct SPixmap;
 
-EXPORT struct pixmap_t* CALL pixmap_new(int width, int height);
-EXPORT struct pixmap_t* CALL pixmap_newfrommemory(const struct memory_t* memory);
-EXPORT struct pixmap_t* CALL pixmap_load(const char* filename);
-EXPORT void CALL pixmap_delete(struct pixmap_t* pixmap);
-EXPORT int CALL pixmap_width(const struct pixmap_t* pixmap);
-EXPORT int CALL pixmap_height(const struct pixmap_t* pixmap);
-EXPORT int CALL pixmap_color(const struct pixmap_t* pixmap, int x, int y);
-EXPORT void CALL pixmap_setcolor(struct pixmap_t* pixmap, int x, int y, int color);
+EXPORT struct SPixmap* CALL CreatePixmap(int width, int height);
+EXPORT struct SPixmap* CALL CreatePixmapFromMemblock(const struct SMemblock* memblock);
+EXPORT struct SPixmap* CALL LoadPixmap(const char* filename);
+EXPORT void CALL DeletePixmap(struct SPixmap* pixmap);
+EXPORT int CALL GetPixmapWidth(const struct SPixmap* pixmap);
+EXPORT int CALL GetPixmapHeight(const struct SPixmap* pixmap);
+EXPORT int CALL GetPixmapColor(const struct SPixmap* pixmap, int x, int y);
+EXPORT void CALL SetPixmapColor(struct SPixmap* pixmap, int x, int y, int color);
 
 #ifndef SWIG
-struct pixmap_t* _pixmap_newfromdata(const unsigned char* data, size_t len);
-const void* _pixmap_ptr(const struct pixmap_t* pixmap);
+struct SPixmap* _CreatePixmapFromData(const unsigned char* data, size_t len);
+const void* _GetPixmapPtr(const struct SPixmap* pixmap);
 #endif
 
 #ifdef __cplusplus

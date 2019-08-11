@@ -8,12 +8,12 @@ extern "C"
 {
 #endif
 
-EXPORT void CALL colbox_add(float minx, float miny, float minz, float maxx, float maxy, float maxz);
-EXPORT void CALL colbox_clear();
+EXPORT void CALL AddColbox(float minx, float miny, float minz, float maxx, float maxy, float maxz);
+EXPORT void CALL ClearColbox();
 
 #ifndef SWIG
-bool_t _colbox_checkbox(float minx, float miny, float minz, float maxx, float maxy, float maxz);
-bool_t _colbox_checksphere(float x, float y, float z, float sq_radius);
+bool_t _CheckBoxCol(float minx, float miny, float minz, float maxx, float maxy, float maxz);
+bool_t _CheckSphereCol(float x, float y, float z, float sq_radius);
 #endif
 
 #ifdef __cplusplus

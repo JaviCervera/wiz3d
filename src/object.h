@@ -20,10 +20,10 @@ extern "C"
 {
 #endif
 
-struct material_t;
-struct mesh_t;
+struct SMaterial;
+struct SMesh;
 
-struct object_t
+typedef struct
 {
   float x, y, z;
   float pitch, yaw, roll;
@@ -37,41 +37,41 @@ struct object_t
   int   animmin;
   int   animmax;
 #ifndef SWIG
-  struct mesh_t*     _mesh;
-  struct material_t* _materials;
+  struct SMesh*     _mesh;
+  struct SMaterial* _materials;
 #endif
-};
+} Object;
 
-EXPORT struct object_t* CALL object_new();
-EXPORT struct object_t* CALL object_newcube();
-EXPORT struct object_t* CALL object_newquad();
-EXPORT struct object_t* CALL object_newtriangle();
-EXPORT struct object_t* CALL object_load(const char* filename);
-EXPORT struct object_t* CALL object_clone(const struct object_t* object);
-EXPORT void CALL object_delete(struct object_t* object);
-EXPORT int CALL object_addbuffer(struct object_t* object);
-EXPORT int CALL object_numbuffers(struct object_t* object);
-EXPORT int CALL object_addvertex(struct object_t* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color);
-EXPORT int CALL object_addtriangle(struct object_t* object, int buffer, int v0, int v1, int v2);
-EXPORT void CALL object_rebuildmesh(struct object_t* object);
-EXPORT struct material_t* CALL object_material(struct object_t* object, int index);
-EXPORT float CALL object_width(const struct object_t* object);
-EXPORT float CALL object_height(const struct object_t* object);
-EXPORT float CALL object_depth(const struct object_t* object);
-EXPORT float CALL object_minx(const struct object_t* object);
-EXPORT float CALL object_miny(const struct object_t* object);
-EXPORT float CALL object_minz(const struct object_t* object);
-EXPORT float CALL object_maxx(const struct object_t* object);
-EXPORT float CALL object_maxy(const struct object_t* object);
-EXPORT float CALL object_maxz(const struct object_t* object);
-EXPORT bool_t CALL object_move(struct object_t* object, float x, float y, float z);
-EXPORT void CALL object_turn(struct object_t* object, float pitch, float yaw, float roll);
-EXPORT bool_t CALL object_collidesboxes(struct object_t* object);
-EXPORT bool_t CALL object_collidesobject(struct object_t* object, struct object_t* object2);
-EXPORT void CALL object_draw(struct object_t* object);
-EXPORT int CALL object_numframes(const struct object_t* object);
+EXPORT Object* CALL CreateObject();
+EXPORT Object* CALL CreateCube();
+EXPORT Object* CALL CreateQuad();
+EXPORT Object* CALL CreateTriangle();
+EXPORT Object* CALL LoadObject(const char* filename);
+EXPORT Object* CALL CloneObject(const Object* object);
+EXPORT void CALL DeleteObject(Object* object);
+EXPORT int CALL AddSurface(Object* object);
+EXPORT int CALL GetNumSurfaces(Object* object);
+EXPORT int CALL AddVertex(Object* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color);
+EXPORT int CALL AddTriangle(Object* object, int buffer, int v0, int v1, int v2);
+EXPORT void CALL RebuildObjectMesh(Object* object);
+EXPORT struct SMaterial* CALL GetObjectMaterial(Object* object, int index);
+EXPORT float CALL GetObjectWidth(const Object* object);
+EXPORT float CALL GetObjectHeight(const Object* object);
+EXPORT float CALL GetObjectDepth(const Object* object);
+EXPORT float CALL GetObjectMinX(const Object* object);
+EXPORT float CALL GetObjectMinY(const Object* object);
+EXPORT float CALL GetObjectMinZ(const Object* object);
+EXPORT float CALL GetObjectMaxX(const Object* object);
+EXPORT float CALL GetObjectMaxY(const Object* object);
+EXPORT float CALL GetObjectMaxZ(const Object* object);
+EXPORT bool_t CALL MoveObject(Object* object, float x, float y, float z);
+EXPORT void CALL TurnObject(Object* object, float pitch, float yaw, float roll);
+EXPORT bool_t CALL ObjectCollidesBoxes(Object* object);
+EXPORT bool_t CALL ObjectCollidesObject(Object* object, Object* object2);
+EXPORT void CALL DrawObject(Object* object);
+EXPORT int CALL GetObjectNumFrames(const Object* object);
 EXPORT void CALL object_setanimfps(float fps);
-EXPORT float CALL object_animfps();
+EXPORT float CALL GetObjectFPS();
 
 #ifdef __cplusplus
 } /* extern "C" */

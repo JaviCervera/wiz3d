@@ -10,15 +10,15 @@
 #include "util.h"
 #include <math.h>
 
-static const struct viewer_t* _view_active_viewer = NULL;
+static const Viewer* _view_active_viewer = NULL;
 static lmat4_t _view_matrix;
-static struct mesh_t* _viewer_skybox = NULL;
+static struct SMesh* _viewer_skybox = NULL;
 
-static struct mesh_t* _viewer_skybox_mesh(struct texture_t* texture);
+static struct SMesh* _SetupViewerSkyboxMesh(struct STexture* texture);
 
-EXPORT struct viewer_t* CALL viewer_new()
+EXPORT Viewer* CALL CreateViewer()
 {
-  struct viewer_t* viewer = _alloc(struct viewer_t);
+  Viewer* viewer = _Alloc(Viewer);
   viewer->x = 0;
   viewer->y = 0;
   viewer->z = 0;
@@ -30,7 +30,7 @@ EXPORT struct viewer_t* CALL viewer_new()
   viewer->vw = -1;
   viewer->vh = -1;
   viewer->clearmode = CLEAR_COLOR;
-  viewer->clearcolor = color_rgb(52, 73, 94);
+  viewer->clearcolor = GetRGB(52, 73, 94);
   viewer->skybox = NULL;
   viewer->ortho = FALSE;
   viewer->fov = 60;
@@ -43,12 +43,12 @@ EXPORT struct viewer_t* CALL viewer_new()
   return viewer;
 }
 
-EXPORT void CALL viewer_delete(struct viewer_t* viewer)
+EXPORT void CALL DeleteViewer(Viewer* viewer)
 {
   free(viewer);
 }
 
-EXPORT void CALL viewer_move(struct viewer_t* viewer, float x, float y, float z)
+EXPORT void CALL MoveViewer(Viewer* viewer, float x, float y, float z)
 {
   lvec3_t vec;
 
@@ -60,7 +60,7 @@ EXPORT void CALL viewer_move(struct viewer_t* viewer, float x, float y, float z)
   viewer->z = vec.z;
 }
 
-EXPORT void CALL viewer_turn(struct viewer_t* viewer, float pitch, float yaw, float roll)
+EXPORT void CALL TurnViewer(Viewer* viewer, float pitch, float yaw, float roll)
 {
   lvec3_t vec;
 
@@ -70,7 +70,7 @@ EXPORT void CALL viewer_turn(struct viewer_t* viewer, float pitch, float yaw, fl
   viewer->roll = vec.z;
 }
 
-EXPORT void CALL viewer_prepare(const struct viewer_t* viewer)
+EXPORT void CALL PrepareViewer(const Viewer* viewer)
 {
   int vp_w;
   int vp_h;
@@ -84,8 +84,8 @@ EXPORT void CALL viewer_prepare(const struct viewer_t* viewer)
   _view_active_viewer = viewer;
 
   /* get real viewport size */
-  vp_w = (viewer->vw != -1) ? viewer->vw : screen_width() - viewer->vx;
-  vp_h = (viewer->vh != -1) ? viewer->vh : screen_height() - viewer->vy;
+  vp_w = (viewer->vw != -1) ? viewer->vw : GetScreenWidth() - viewer->vx;
+  vp_h = (viewer->vh != -1) ? viewer->vh : GetScreenHeight() - viewer->vy;
 
   /* set viewport (must be done before setting projection) */
   lgfx_setup3d(0, 0);
@@ -113,7 +113,7 @@ EXPORT void CALL viewer_prepare(const struct viewer_t* viewer)
   _view_matrix = lmat4_translate(_view_matrix, lvec3(-viewer->x, -viewer->y, -viewer->z));
 
   /* prepare lights */
-  _light_prepare();
+  _PrepareLights();
 
   /* clear buffers */
   lgfx_setdepthwrite(TRUE);
@@ -122,9 +122,9 @@ EXPORT void CALL viewer_prepare(const struct viewer_t* viewer)
   {
     case CLEAR_COLOR:
       lgfx_clearcolorbuffer(
-        color_red(viewer->clearcolor) / 255.0f,
-        color_green(viewer->clearcolor) / 255.0f,
-        color_blue(viewer->clearcolor) / 255.0f);
+        GetRed(viewer->clearcolor) / 255.0f,
+        GetGreen(viewer->clearcolor) / 255.0f,
+        GetBlue(viewer->clearcolor) / 255.0f);
       break;
     case CLEAR_SKYBOX:
       halfrange = (viewer->max - viewer->min) * 0.5f;
@@ -138,25 +138,25 @@ EXPORT void CALL viewer_prepare(const struct viewer_t* viewer)
       lgfx_setmodelview(modelview.m);
 
       /* draw skybox */
-      _mesh_draw(_viewer_skybox_mesh(viewer->skybox), NULL);
+      _DrawMesh(_SetupViewerSkyboxMesh(viewer->skybox), NULL);
 
       break;
   }
 }
 
-const struct viewer_t* _viewer_active()
+const Viewer* _GetActiveViewer()
 {
   return _view_active_viewer;
 }
 
-const void* _viewer_activematrix()
+const void* _GetActiveMatrix()
 {
   return &_view_matrix;
 }
 
-static struct mesh_t* _viewer_skybox_mesh(struct texture_t* texture)
+static struct SMesh* _SetupViewerSkyboxMesh(struct STexture* texture)
 {
-  if (!_viewer_skybox) _viewer_skybox = _mesh_newskybox();
-  mesh_material(_viewer_skybox, 0)->texture = texture;
+  if (!_viewer_skybox) _viewer_skybox = _CreateSkyboxMesh();
+  GetMeshMaterial(_viewer_skybox, 0)->texture = texture;
   return _viewer_skybox;
 }

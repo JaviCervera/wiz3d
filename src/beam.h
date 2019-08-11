@@ -8,7 +8,7 @@
 #include "light.h"
 #include "log.h"
 #include "material.h"
-#include "memory.h"
+#include "memblock.h"
 #include "object.h"
 #include "pixmap.h"
 #include "screen.h"
@@ -20,8 +20,8 @@ extern "C"
 {
 #endif
 
-EXPORT bool_t CALL beam_init();
-EXPORT void CALL beam_finish();
+EXPORT bool_t CALL InitBeam();
+EXPORT void CALL ShutdownBeam();
 
 #ifdef __cplusplus
 } /* extern "C" */

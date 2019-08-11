@@ -7,64 +7,64 @@
 int main()
 {
   /* data */
-  struct viewer_t* viewer;
-  struct light_t* dir_light;
-  struct light_t* point_light1;
-  struct light_t* point_light2;
-  struct object_t* angel;
+  Viewer* viewer;
+  Light* dir_light;
+  Light* point_light1;
+  Light* point_light2;
+  Object* angel;
   float value = 0;
 
   /* setup */
-  beam_init();
-  screen_set(800, 600, FALSE, TRUE);
+  InitBeam();
+  SetScreen(800, 600, FALSE, TRUE);
 
   /* create and position viewer */
-  viewer = viewer_new();
-  viewer->clearcolor = color_rgb(15, 15, 15);
-  viewer_move(viewer, 7, 7, -7);
-  viewer_turn(viewer, 37.5f, -45, 0);
+  viewer = CreateViewer();
+  viewer->clearcolor = GetRGB(15, 15, 15);
+  MoveViewer(viewer, 7, 7, -7);
+  TurnViewer(viewer, 37.5f, -45, 0);
 
   /* setup lighting */
-  light_setambient(color_rgb(15, 15, 15));
-  dir_light = light_new(LIGHT_DIRECTIONAL);
-  dir_light->color = color_rgb(100, 100, 100);
-  point_light1 = light_new(LIGHT_POINT);
-  light_move(point_light1, 0, 0, -2);
-  point_light1->color = color_rgb(255, 100, 0);
-  point_light2 = light_new(LIGHT_POINT);
-  light_move(point_light2, 0, 8, 4);
-  point_light2->color = color_rgb(0, 100, 255);
+  SetAmbientColor(GetRGB(15, 15, 15));
+  dir_light = CreateLight(LIGHT_DIRECTIONAL);
+  dir_light->color = GetRGB(100, 100, 100);
+  point_light1 = CreateLight(LIGHT_POINT);
+  MoveLight(point_light1, 0, 0, -2);
+  point_light1->color = GetRGB(255, 100, 0);
+  point_light2 = CreateLight(LIGHT_POINT);
+  MoveLight(point_light2, 0, 8, 4);
+  point_light2->color = GetRGB(0, 100, 255);
 
   /* load object (contains embedded texture) */
-  angel = object_load("data/angel.assbin");
-  object_turn(angel, 90, 0, 0);
+  angel = LoadObject("data/angel.assbin");
+  TurnObject(angel, 90, 0, 0);
 
   /* main loop */
-  while (screen_opened() && !input_keydown(KEY_ESC))
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
   {
     float s, c;
 
     /* rotate statue */
-    object_turn(angel, 0, ROTATION_SPEED * screen_delta(), 0);
+    TurnObject(angel, 0, ROTATION_SPEED * GetDeltaTime(), 0);
 
     /* update lighting */
-    value += screen_delta();
+    value += GetDeltaTime();
     s = 0.5f + fabsf(sinf(value)) * 0.5f;
     c = 0.5f + fabsf(cosf(value)) * 0.5f;
     point_light1->range = 10 * s;
     point_light2->range = 10 * c;
 
     /* draw scene */
-    viewer_prepare(viewer);
-    object_draw(angel);
+    PrepareViewer(viewer);
+    DrawObject(angel);
 
     /* draw ui */
-    screen_setup2d();
-    screen_setdrawcolor(color_rgb(240, 240, 240));
-    screen_drawtext(TEXT, (screen_width() - screen_textwidth(TEXT)) / 2, 8);
-    screen_refresh();
+    Setup2D();
+    SetDrawColor(GetRGB(240, 240, 240));
+    DrawText(TEXT, (GetScreenWidth() - GetTextWidth(TEXT)) / 2, 8);
+    RefreshScreen();
   }
 
   /* shutdown */
-  beam_finish();
+  ShutdownBeam();
 }

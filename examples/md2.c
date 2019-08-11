@@ -4,33 +4,33 @@
 int main()
 {
   /* data */
-  struct viewer_t* viewer;
-  struct object_t* md2;
+  Viewer* viewer;
+  Object* md2;
   bool_t walking;
   bool_t space_down;
   char str[STRING_SIZE];
 
   /* setup */
-  beam_init();
-  screen_set(800, 600, FALSE, TRUE);
+  InitBeam();
+  SetScreen(800, 600, FALSE, TRUE);
 
   /* create and position viewer */
-  viewer = viewer_new();
+  viewer = CreateViewer();
   viewer->clearcolor = COLOR_DARKGRAY;
-  viewer_move(viewer, 0, 2, -4);
-  viewer_turn(viewer, 15, 0, 0);
+  MoveViewer(viewer, 0, 2, -4);
+  TurnViewer(viewer, 15, 0, 0);
 
   /* load md2 */
-  md2 = object_load("data/german.md2");
+  md2 = LoadObject("data/german.md2");
   md2->animmode = ANIM_LOOP;
-  object_turn(md2, 0, 90, 0);
-  object_material(md2, 0)->texture = texture_load("data/german.png"); /* this shouldn't be necessary */
+  TurnObject(md2, 0, 90, 0);
+  GetObjectMaterial(md2, 0)->texture = LoadTexture("data/german.png"); /* this shouldn't be necessary */
 
   /* main loop */
-  while (screen_opened() && !input_keydown(KEY_ESC))
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
   {
     /* update animation */
-    if (input_keydown(KEY_SPACE))
+    if (IsKeyPressed(KEY_SPACE))
     {
       if (!space_down) walking = !walking;
       space_down = TRUE;
@@ -51,18 +51,18 @@ int main()
     }
 
     /* draw scene */
-    viewer_prepare(viewer);
-    object_draw(md2);
+    PrepareViewer(viewer);
+    DrawObject(md2);
 
     /* draw ui */
-    screen_setup2d();
-    sprintf(str, "%i FPS", screen_fps());
-    screen_drawtext(str, 4, 4);
+    Setup2D();
+    sprintf(str, "%i FPS", GetScreenFPS());
+    DrawText(str, 4, 4);
     sprintf(str, "Frame: %i", (int)md2->animframe);
-    screen_drawtext(str, 4, 16);
-    screen_refresh();
+    DrawText(str, 4, 16);
+    RefreshScreen();
   }
 
   /* shutdown */
-  beam_finish();
+  ShutdownBeam();
 }

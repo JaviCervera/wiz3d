@@ -12,26 +12,26 @@ typedef struct
   char filename[PAK_NAME_SIZE];
   int offset;
   int size;
-} pakentry_t;
+} PakEntry;
 
 typedef struct
 {
   char filename[STRING_SIZE];
-  pakentry_t* entries;
-} pakfile_t;
+  PakEntry* entries;
+} PakFile;
 
-static pakfile_t* _pak_files = NULL;
+static PakFile* _pak_files = NULL;
 
-bool_t _fs_initpak(pakfile_t* pak, const char* pakname);
-const pakfile_t* _fs_pakforfile(const char* filename);
-const pakentry_t* _fs_pakentry(const pakfile_t* pak, const char* entryname);
-size_t _fs_pakentrysize(const pakfile_t* pak, const char* entryname);
-bool_t _fs_pakentrycontents(const pakfile_t* pak, const char* entryname, void* buffer);
+bool_t _InitPak(PakFile* pak, const char* pakname);
+const PakFile* _GetPakForFile(const char* filename);
+const PakEntry* _GetPakEntry(const PakFile* pak, const char* entryname);
+size_t _GetPakEntrySize(const PakFile* pak, const char* entryname);
+bool_t _GetPakEntryContents(const PakFile* pak, const char* entryname, void* buffer);
 
-bool_t fs_addpak(const char* pakname)
+bool_t AddPak(const char* pakname)
 {
 #ifdef USE_PAK
-  pakfile_t pak;
+  PakFile pak;
   int i;
 
   /* search for pak in list */
@@ -44,7 +44,7 @@ bool_t fs_addpak(const char* pakname)
   }
 
   /* try to initialize new pak */
-  if (_fs_initpak(&pak, pakname))
+  if (_InitPak(&pak, pakname))
   {
     sb_push(_pak_files, pak);
     return TRUE;
@@ -58,22 +58,22 @@ bool_t fs_addpak(const char* pakname)
 #endif
 }
 
-bool_t fs_fileinpak(const char* filename)
+bool_t IsFileInPak(const char* filename)
 {
 #ifdef USE_PAK
-  return _fs_pakforfile(filename) != NULL;
+  return _GetPakForFile(filename) != NULL;
 #else
   return FALSE;
 #endif
 }
 
-size_t fs_filesize(const char* filename)
+size_t GetFileSize(const char* filename)
 {
-  const pakfile_t* pak;
-  pak = _fs_pakforfile(filename);
+  const PakFile* pak;
+  pak = _GetPakForFile(filename);
   if (pak)
   {
-    return _fs_pakentrysize(pak, filename);
+    return _GetPakEntrySize(pak, filename);
   }
   else
   {
@@ -94,13 +94,13 @@ size_t fs_filesize(const char* filename)
   }
 }
 
-bool_t fs_filecontents(const char* filename, void* buffer)
+bool_t GetFileContents(const char* filename, void* buffer)
 {
-  const pakfile_t* pak;
-  pak = _fs_pakforfile(filename);
+  const PakFile* pak;
+  pak = _GetPakForFile(filename);
   if (pak)
   {
-    return _fs_pakentrycontents(pak, filename, buffer);
+    return _GetPakEntryContents(pak, filename, buffer);
   }
   else
   {
@@ -136,20 +136,20 @@ typedef struct
   char id[4];
   int offset;
   int size;
-} pakheader_t;
+} PakHeader;
 
-bool_t _fs_initpak(pakfile_t* pak, const char* pakname)
+bool_t _InitPak(PakFile* pak, const char* pakname)
 {
   FILE* fhandle;
   fhandle = fopen(pakname, "rb");
   if (fhandle)
   {
-    pakheader_t header;
+    PakHeader header;
     size_t num_entries;
     size_t i;
 
     /* read header */
-    fread(&header, sizeof(pakheader_t), 1, fhandle);
+    fread(&header, sizeof(PakHeader), 1, fhandle);
     if (strncmp(header.id, "PACK", 4) != 0)
     {
       fclose(fhandle);
@@ -167,8 +167,8 @@ bool_t _fs_initpak(pakfile_t* pak, const char* pakname)
     pak->entries = NULL;
     for (i = 0; i < num_entries; ++i)
     {
-      pakentry_t entry;
-      fread(&entry, sizeof(pakentry_t), 1, fhandle);
+      PakEntry entry;
+      fread(&entry, sizeof(PakEntry), 1, fhandle);
       sb_push(pak->entries, entry);
     }
 
@@ -181,13 +181,13 @@ bool_t _fs_initpak(pakfile_t* pak, const char* pakname)
   }
 }
 
-const pakfile_t* _fs_pakforfile(const char* filename)
+const PakFile* _GetPakForFile(const char* filename)
 {
   int i;
 
   for (i = sb_count(_pak_files) - 1; i >= 0; --i)
   {
-    if (_fs_pakentry(&_pak_files[i], filename) != NULL)
+    if (_GetPakEntry(&_pak_files[i], filename) != NULL)
     {
       return &_pak_files[i];
     }
@@ -196,7 +196,7 @@ const pakfile_t* _fs_pakforfile(const char* filename)
   return NULL;
 }
 
-const pakentry_t* _fs_pakentry(const pakfile_t* pak, const char* entryname)
+const PakEntry* _GetPakEntry(const PakFile* pak, const char* entryname)
 {
   int i;
 
@@ -210,10 +210,10 @@ const pakentry_t* _fs_pakentry(const pakfile_t* pak, const char* entryname)
   return NULL;
 }
 
-size_t _fs_pakentrysize(const pakfile_t* pak, const char* entryname)
+size_t _GetPakEntrySize(const PakFile* pak, const char* entryname)
 {
-  const pakentry_t* entry;
-  entry = _fs_pakentry(pak, entryname);
+  const PakEntry* entry;
+  entry = _GetPakEntry(pak, entryname);
   if (entry)
   {
     return (size_t)entry->size;
@@ -224,10 +224,10 @@ size_t _fs_pakentrysize(const pakfile_t* pak, const char* entryname)
   }
 }
 
-bool_t _fs_pakentrycontents(const pakfile_t* pak, const char* entryname, void* buffer)
+bool_t _GetPakEntryContents(const PakFile* pak, const char* entryname, void* buffer)
 {
-  const pakentry_t* entry;
-  entry = _fs_pakentry(pak, entryname);
+  const PakEntry* entry;
+  entry = _GetPakEntry(pak, entryname);
   if (entry)
   {
     FILE* fhandle;

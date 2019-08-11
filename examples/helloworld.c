@@ -6,19 +6,19 @@
 int main()
 {
   /* setup */
-  beam_init();
-  screen_set(800, 600, FALSE, FALSE);
+  InitBeam();
+  SetScreen(800, 600, FALSE, FALSE);
 
   /* main loop */
-  while (screen_opened() && !input_keydown(KEY_ESC))
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
   {
-    screen_setup2d();
-    screen_setdrawcolor(COLOR_YELLOW);
-    screen_clear(color_multiply(COLOR_BLUE, 0.5f));
-    screen_drawtext(TEXT, (screen_width() - screen_textwidth(TEXT)) / 2, (screen_height() - screen_textheight(TEXT)) / 2);
-    screen_refresh();
+    Setup2D();
+    SetDrawColor(COLOR_YELLOW);
+    ClearScreen(MultiplyColor(COLOR_BLUE, 0.5f));
+    DrawText(TEXT, (GetScreenWidth() - GetTextWidth(TEXT)) / 2, (GetScreenHeight() - GetTextHeight(TEXT)) / 2);
+    RefreshScreen();
   }
 
   /* shutdown */
-  beam_finish();
+  ShutdownBeam();
 }
