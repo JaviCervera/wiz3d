@@ -15,6 +15,7 @@ int main()
   /* setup */
   InitBeam();
   SetScreen(800, 600, FALSE, TRUE);
+  SetScreenTitle("Collisions");
 
   /* create floor */
   floor = CreateCube();

@@ -46,6 +46,7 @@ int main()
   /* setup */
   InitBeam();
   SetScreen(800, 600, FALSE, TRUE);
+  SetScreenTitle("Primitives");
 
   /* main loop */
   while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))

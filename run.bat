@@ -5,40 +5,49 @@ copy "_build\libbeam.dll" examples
 
 echo building examples...
 cd examples
-gcc -o angel.exe angel.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
-gcc -o billboards.exe billboards.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
-gcc -o collisions.exe collisions.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
-gcc -o fog.exe fog.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
-gcc -o helloworld.exe helloworld.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
-gcc -o hoverbike.exe hoverbike.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
-gcc -o md2.exe md2.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
-gcc -o primitives.exe primitives.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
-gcc -o rotatingcube.exe rotatingcube.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
-gcc -o specular.exe specular.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 1-helloworld.exe 1-helloworld.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 2-primitives.exe 2-primitives.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 3-texture2d.exe 3-texture2d.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 4-triangle.exe 4-triangle.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 5-rotatingcube.exe 5-rotatingcube.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 6-billboards.exe 6-billboards.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 7-lighting.exe 7-lighting.c -L. -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 8-fog.exe 8-fog.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 9-collisions.exe 9-collisions.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 10-specular.exe 10-specular.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 11-md2.exe 11-md2.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 12-angel.exe 12-angel.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
+gcc -o 13-hoverbike.exe 13-hoverbike.c -DDLL_IMPORT -L../_CMAKE -lbeam.dll -mwindows
 
 echo running examples...
-angel.exe
-billboards.exe
-collisions.exe
-fog.exe
-helloworld.exe
-hoverbike.exe
-md2.exe
-primitives.exe
-rotatingcube.exe
-specular.exe
+1-helloworld.exe
+2-primitives.exe
+3-texture2d.exe
+4-triangle.exe
+5-rotatingcube.exe
+6-billboards.exe
+7-lighting.exe
+8-fog.exe
+9-collisions.exe
+10-specular.exe
+11-md2.exe
+12-angel.exe
+13-hoverbike.exe
 
 echo cleaning up...
-del angel.exe
-del billboards.exe
-del collisions.exe
-del fog.exe
-del helloworld.exe
-del hoverbike.exe
-del md2.exe
-del primitives.exe
-del rotatingcube.exe
-del specular.exe
+del 1-helloworld.exe
+del 2-primitives.exe
+del 3-texture2d.exe
+del 4-triangle.exe
+del 5-rotatingcube.exe
+del 6-billboards.exe
+del 7-lighting.exe
+del 8-fog.exe
+del 9-collisions.exe
+del 10-specular.exe
+del 11-md2.exe
+del 12-angel.exe
+del 13-hoverbike.exe
 del libbeam.dll
 cd ..
 

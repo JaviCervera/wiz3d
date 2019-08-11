@@ -8,6 +8,7 @@ int main()
   /* setup */
   InitBeam();
   SetScreen(800, 600, FALSE, FALSE);
+  SetScreenTitle(TEXT);
 
   /* main loop */
   while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))

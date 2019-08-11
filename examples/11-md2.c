@@ -13,6 +13,7 @@ int main()
   /* setup */
   InitBeam();
   SetScreen(800, 600, FALSE, TRUE);
+  SetScreenTitle("MD2 Animation");
 
   /* create and position viewer */
   viewer = CreateViewer();

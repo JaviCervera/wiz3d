@@ -6,39 +6,48 @@ cp _build/libbeam.dylib examples/libbeam.dylib
 
 echo "building examples..."
 cd examples
-gcc -o angel angel.c -L. -lbeam
-gcc -o billboards billboards.c -L. -lbeam
-gcc -o collisions collisions.c -L. -lbeam
-gcc -o fog fog.c -L. -lbeam
-gcc -o helloworld helloworld.c -L. -lbeam
-gcc -o hoverbike hoverbike.c -L. -lbeam
-gcc -o md2 md2.c -L. -lbeam
-gcc -o primitives primitives.c -L. -lbeam
-gcc -o rotatingcube rotatingcube.c -L. -lbeam
-gcc -o specular specular.c -L. -lbeam
+gcc -o 1-helloworld 1-helloworld.c -L. -lbeam
+gcc -o 2-primitives 2-primitives.c -L. -lbeam
+gcc -o 3-texture2d 3-texture2d.c -L. -lbeam
+gcc -o 4-triangle 4-triangle.c -L. -lbeam
+gcc -o 5-rotatingcube 5-rotatingcube.c -L. -lbeam
+gcc -o 6-billboards 6-billboards.c -L. -lbeam
+gcc -o 7-lighting 7-lighting.c -L. -lbeam
+gcc -o 8-fog 8-fog.c -L. -lbeam
+gcc -o 9-collisions 9-collisions.c -L. -lbeam
+gcc -o 10-specular 10-specular.c -L. -lbeam
+gcc -o 11-md2 11-md2.c -L. -lbeam
+gcc -o 12-angel 12-angel.c -L. -lbeam
+gcc -o 13-hoverbike 13-hoverbike.c -L. -lbeam
 
 echo "running examples..."
-./angel
-./billboards
-./collisions
-./fog
-./helloworld
-./hoverbike
-./md2
-./primitives
-./rotatingcube
-./specular
+./1-helloworld
+./2-primitives
+./3-texture2d
+./4-triangle
+./5-rotatingcube
+./6-billboards
+./7-lighting
+./8-fog
+./9-collisions
+./10-specular
+./11-md2
+./12-angel
+./13-hoverbike
 
 echo "cleaning up..."
-rm angel
-rm billboards
-rm collisions
-rm fog
-rm helloworld
-rm hoverbike
-rm md2
-rm primitives
-rm rotatingcube
-rm specular
+rm 1-helloworld
+rm 2-primitives
+rm 3-texture2d
+rm 4-triangle
+rm 5-rotatingcube
+rm 6-billboards
+rm 7-lighting
+rm 8-fog
+rm 9-collisions
+rm 10-specular
+rm 11-md2
+rm 12-angel
+rm 13-hoverbike
 rm libbeam.dylib
 cd ..

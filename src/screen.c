@@ -158,8 +158,7 @@ EXPORT void CALL DrawRect(float x, float y, float width, float height) {
 
 EXPORT void CALL DrawTexture(const struct STexture* tex, float x, float y, float width, float height) {
   const ltex_t* ltex = (const ltex_t*)_GetTexturePtr(tex);
-  ltex_bindcolor(ltex);
-  lgfx_drawrect(x, y, width != 0 ? width : ltex->width, height != 0 ? height : ltex->height);
+  ltex_drawrotsized(ltex, x, y, 0, 0, 0, width != 0 ? width : ltex->width, height != 0 ? height : ltex->height, 0, 0, 1, 1);
 }
 
 EXPORT void CALL DrawText(const char* text, float x, float y) {

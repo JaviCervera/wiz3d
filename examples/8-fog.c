@@ -18,6 +18,7 @@ int main()
   /* setup */
   InitBeam();
   SetScreen(800, 600, FALSE, TRUE);
+  SetScreenTitle("Fog");
 
   /* setup lighting */
   dir_light = CreateLight(LIGHT_DIRECTIONAL);
