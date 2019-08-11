@@ -32,7 +32,6 @@ int main()
   for (i = 0; i < NUM_BILLBOARDS; ++i)
   {
     billboards[i] = CreateQuad();
-    billboards[i]->billboard = BILLBOARD_FACE;
     billboards[i]->x = x;
     billboards[i]->z = z;
     GetObjectMaterial(billboards[i], 0)->texture = tex;
@@ -54,6 +53,12 @@ int main()
     TurnViewer(viewer, 0, ROTATION_SPEED * GetDeltaTime(), 0);
     viewer->x = viewer->y = viewer->z = 0;
     MoveViewer(viewer, 0, 0, -8);
+
+    /* update billboards */
+    for (i = 0; i < NUM_BILLBOARDS; ++i)
+    {
+      ObjectLookAt(billboards[i], viewer->x, viewer->y, viewer->z);
+    }
 
     /* draw scene */
     PrepareViewer(viewer);

@@ -23,6 +23,7 @@ EXPORT Light* CALL CreateLight(int type);
 EXPORT void CALL DeleteLight(Light* light);
 EXPORT void CALL MoveLight(Light* light, float x, float y, float z);
 EXPORT void CALL TurnLight(Light* light, float pitch, float yaw);
+EXPORT void CALL LightLookAt(Light* light, float x, float y, float z);
 EXPORT void CALL SetAmbientColor(int color);
 EXPORT int CALL GetAmbientColor();
 

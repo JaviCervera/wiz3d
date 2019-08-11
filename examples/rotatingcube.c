@@ -19,11 +19,11 @@ int main()
   viewer = CreateViewer();
   viewer->clearcolor = GetRGB(15, 15, 15);
   MoveViewer(viewer, 0, 2, -2);
-  TurnViewer(viewer, 45, 0, 0);
+  ViewerLookAt(viewer, 0, 0, 0);
 
   /* setup lighting */
   dir_light = CreateLight(LIGHT_DIRECTIONAL);
-  TurnLight(dir_light, 45, 45);
+  TurnLight(dir_light, 45, -45);
 
   /* create a cube */
   cube = CreateCube();

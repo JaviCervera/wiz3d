@@ -7,10 +7,6 @@
 #define ANIM_PLAY 1
 #define ANIM_LOOP 2
 
-#define BILLBOARD_NONE 0
-#define BILLBOARD_FACE 1
-#define BILLBOARD_UPRIGHT 2
-
 #define COL_NONE 0
 #define COL_SPHERE 1
 #define COL_BOX 2
@@ -27,7 +23,6 @@ typedef struct {
   float x, y, z;
   float pitch, yaw, roll;
   float sx, sy, sz;
-  int   billboard;
   int   colmode;
   float radius;
   int   animmode;
@@ -65,6 +60,7 @@ EXPORT float CALL GetObjectMaxY(const Object* object);
 EXPORT float CALL GetObjectMaxZ(const Object* object);
 EXPORT bool_t CALL MoveObject(Object* object, float x, float y, float z);
 EXPORT void CALL TurnObject(Object* object, float pitch, float yaw, float roll);
+EXPORT void CALL ObjectLookAt(Object* object, float x, float y, float z);
 EXPORT bool_t CALL ObjectCollidesBoxes(Object* object);
 EXPORT bool_t CALL ObjectCollidesObject(Object* object, Object* object2);
 EXPORT void CALL DrawObject(Object* object);

@@ -12,6 +12,7 @@
 #include "texture.h"
 #include "util.h"
 #include "viewer.h"
+#include <math.h>
 #include <string.h>
 
 static float _object_animfps = 16;
@@ -43,7 +44,6 @@ EXPORT Object* CALL CreateObject(const struct SMemblock* memblock) {
   object->sx = 1;
   object->sy = 1;
   object->sz = 1;
-  object->billboard = BILLBOARD_NONE;
   object->colmode = COL_NONE;
   object->radius = 0;
   object->animmode = ANIM_STOP;
@@ -244,10 +244,7 @@ EXPORT float CALL GetObjectMinY(const Object* object) {
 }
 
 EXPORT float CALL GetObjectMinZ(const Object* object) {
-  if (object->billboard == BILLBOARD_NONE)
-    return object->z + GetMeshBoxMinZ(object->_mesh) * object->sz;
-  else
-    return GetObjectMinX(object);
+  return object->z + GetMeshBoxMinZ(object->_mesh) * object->sz;
 }
 
 EXPORT float CALL GetObjectMaxX(const Object* object) {
@@ -259,10 +256,7 @@ EXPORT float CALL GetObjectMaxY(const Object* object) {
 }
 
 EXPORT float CALL GetObjectMaxZ(const Object* object) {
-  if (object->billboard == BILLBOARD_NONE)
-    return object->z + GetMeshBoxMaxZ(object->_mesh) * object->sz;
-  else
-    return GetObjectMaxX(object);
+  return object->z + GetMeshBoxMaxZ(object->_mesh) * object->sz;
 }
 
 EXPORT bool_t CALL MoveObject(Object* object, float x, float y, float z) {
@@ -303,6 +297,13 @@ EXPORT void CALL TurnObject(Object* object, float pitch, float yaw, float roll) 
   object->pitch = vec.x;
   object->yaw = vec.y;
   object->roll = vec.z;
+}
+
+EXPORT void CALL ObjectLookAt(Object* object, float x, float y, float z) {
+  lvec3_t dir;
+  dir = lvec3_norm(lvec3_sub(lvec3(object->x, object->y, object->z), lvec3(x, y, z)));
+  object->pitch = lm_rad2deg((float)asin(-dir.y));
+  object->yaw = lm_rad2deg((float)atan2(dir.x, dir.z));
 }
 
 EXPORT bool_t CALL ObjectCollidesBoxes(Object* object) {
@@ -376,22 +377,10 @@ EXPORT void CALL DrawObject(Object* object) {
   }
 
   /* calculate modelview */
-  switch (object->billboard) {
-    case BILLBOARD_NONE:
-      modelview = lmat4_transform(
-        lvec3(object->x, object->y, object->z),
-        lquat_fromeuler(lvec3_rad(lvec3(object->pitch, object->yaw, object->roll))),
-        lvec3(object->sx, object->sy, object->sz));
-      break;
-    default:
-      modelview = lmat4_billboard(
-        *(const lmat4_t*)_GetActiveMatrix(),
-        lvec3(object->x, object->y, object->z),
-        lm_deg2rad(object->roll),
-        object->sx, object->sy,
-        object->billboard == BILLBOARD_UPRIGHT ? TRUE : FALSE);
-      break;
-  }
+  modelview = lmat4_transform(
+    lvec3(object->x, object->y, object->z),
+    lquat_fromeuler(lvec3_rad(lvec3(object->pitch, object->yaw, object->roll))),
+    lvec3(object->sx, object->sy, object->sz));
   modelview = lmat4_mul(*(const lmat4_t*)_GetActiveMatrix(), modelview);
   lgfx_setmodelview(modelview.m);
 

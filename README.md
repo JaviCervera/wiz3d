@@ -70,7 +70,7 @@ See [here](./doc/documentation.md).
 - [x] Pascal case for function names.
 - [x] Trailing braces.
 - [x] File system with pak support.
-- [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat.
+- [x] Remove billboard property from objects, and add LightLookAt, ObjectLookAt, ViewerLookAt.
 - [ ] Audio with support for wav and ogg formats (OpenAL, SDL & Allegro).
 - [ ] material.ambient.
 - [ ] Spot lights.

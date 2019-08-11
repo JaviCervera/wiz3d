@@ -22,7 +22,7 @@ int main()
   viewer = CreateViewer();
   viewer->clearcolor = GetRGB(15, 15, 15);
   MoveViewer(viewer, 7, 7, -7);
-  TurnViewer(viewer, 37.5f, -45, 0);
+  ViewerLookAt(viewer, 0, 0, 0);
 
   /* setup lighting */
   SetAmbientColor(GetRGB(15, 15, 15));

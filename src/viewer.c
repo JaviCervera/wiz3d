@@ -66,6 +66,13 @@ EXPORT void CALL TurnViewer(Viewer* viewer, float pitch, float yaw, float roll) 
   viewer->roll = vec.z;
 }
 
+EXPORT void CALL ViewerLookAt(Viewer* viewer, float x, float y, float z) {
+  lvec3_t dir;
+  dir = lvec3_norm(lvec3_sub(lvec3(x, y, z), lvec3(viewer->x, viewer->y, viewer->z)));
+  viewer->pitch = lm_rad2deg((float)asin(-dir.y));
+  viewer->yaw = lm_rad2deg((float)atan2(dir.x, dir.z));
+}
+
 EXPORT void CALL PrepareViewer(const Viewer* viewer) {
   int vp_w;
   int vp_h;

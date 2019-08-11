@@ -4,6 +4,7 @@
 #include "light.h"
 #include "util.h"
 #include "viewer.h"
+#include <math.h>
 
 static int _light_ambient;
 static Light* _lights[NUM_LIGHTS] = {};
@@ -67,6 +68,13 @@ EXPORT void CALL TurnLight(Light* light, float pitch, float yaw) {
   vec = lvec3_add(lvec3(light->pitch, light->yaw, 0), lvec3(pitch, yaw, 0));
   light->pitch = vec.x;
   light->yaw = vec.y;
+}
+
+EXPORT void CALL LightLookAt(Light* light, float x, float y, float z) {
+  lvec3_t dir;
+  dir = lvec3_norm(lvec3_sub(lvec3(x, y, z), lvec3(light->x, light->y, light->z)));
+  light->pitch = lm_rad2deg((float)asin(-dir.y));
+  light->yaw = lm_rad2deg((float)atan2(dir.x, dir.z));
 }
 
 EXPORT void CALL SetAmbientColor(int color) {

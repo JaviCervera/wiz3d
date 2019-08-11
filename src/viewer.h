@@ -37,6 +37,7 @@ EXPORT Viewer* CALL CreateViewer();
 EXPORT void CALL DeleteViewer(Viewer* viewer);
 EXPORT void CALL MoveViewer(Viewer* viewer, float x, float y, float z);
 EXPORT void CALL TurnViewer(Viewer* viewer, float pitch, float yaw, float roll);
+EXPORT void CALL ViewerLookAt(Viewer* viewer, float x, float y, float z);
 EXPORT void CALL PrepareViewer(const Viewer* viewer);
 
 #ifndef SWIG

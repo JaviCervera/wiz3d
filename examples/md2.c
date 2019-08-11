@@ -42,7 +42,7 @@ int main()
     if (walking)
     {
       md2->animmin = 31;
-      md2->animmax = 0; // 51
+      md2->animmax = 0; /* 51 */
     }
     else
     {
