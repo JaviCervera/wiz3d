@@ -16,7 +16,7 @@
 struct loadedfont_t {
   char name[STRING_SIZE];
   float height;
-  struct Font* font;
+  struct SFont* font;
 };
 
 static void* _screen_ptr = NULL;
@@ -27,9 +27,9 @@ static int _screen_fpscounter = 0;
 static float _screen_fpstime = 0;
 static struct loadedfont_t* _screen_loadedfonts = NULL;
 #ifdef USE_DEFAULT_FONT
-static struct Font* _default_font = NULL;
+static struct SFont* _default_font = NULL;
 #endif
-static struct Font* _screen_font = NULL;
+static struct SFont* _screen_font = NULL;
 
 EXPORT void CALL SetScreen(int width, int height, bool_t fullscreen, bool_t resizable) {
   int i;
@@ -38,6 +38,7 @@ EXPORT void CALL SetScreen(int width, int height, bool_t fullscreen, bool_t resi
   for (i = 0; i < sb_count(_screen_loadedfonts); ++i)
     ReleaseFont(_screen_loadedfonts[i].font);
   sb_free(_screen_loadedfonts);
+  _screen_loadedfonts = NULL;
 #ifdef USE_DEFAULT_FONT
   if (_default_font) ReleaseFont(_default_font);
 #endif
@@ -100,7 +101,7 @@ EXPORT void CALL SetDrawColor(int color) {
 }
 
 EXPORT void CALL SetDrawFont(const char* filename, float height) {
-  struct Font* font = NULL;
+  struct SFont* font = NULL;
   int i;
 
   /* search for already loaded font */

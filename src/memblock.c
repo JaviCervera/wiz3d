@@ -1,10 +1,24 @@
+#include "file_system.h"
 #include "memblock.h"
 #include <string.h>
 
 EXPORT struct SMemblock* CALL CreateMemblock(int size) {
   char* memblock = (char*)calloc(1, size + 4);
-  ((int*)memblock)[0] = size;
+  ((int*)memblock)[0] = (int)size;
   return (struct SMemblock*)((int*)memblock+1);
+}
+
+EXPORT struct SMemblock* CALL LoadMemblock(const char* filename) {
+  size_t size;
+  struct SMemblock* memblock = NULL;
+
+  size = GetFileSize(filename);
+  if (size > 0) {
+    memblock = CreateMemblock(size);
+    _GetFileContents(filename, memblock);
+  }
+
+  return memblock;
 }
 
 EXPORT void CALL DeleteMemblock(struct SMemblock* memblock) {

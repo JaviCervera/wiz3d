@@ -8,6 +8,7 @@
 #include "color.h"
 #include "light.h"
 #include "material.h"
+#include "memblock.h"
 #include "mesh.h"
 #include "pixmap.h"
 #include "screen.h"
@@ -37,29 +38,34 @@ typedef struct SMesh {
   lvec3_t boxmax;
 } Mesh;
 
-bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh);
-bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh);
+bool_t _InitAssimpMesh(const struct SMemblock* memblock, Mesh* mesh);
+bool_t _InitMD2Mesh(const struct SMemblock* memblock, Mesh* mesh);
 
 
-Mesh* CreateMesh() {
+Mesh* CreateMesh(const struct SMemblock* memblock) {
   Mesh* mesh;
+  bool_t init_ok;
+
   mesh = _Alloc(struct SMesh);
   mesh->refcount = 1;
   mesh->buffers = NULL;
   mesh->materials = NULL;
-  return mesh;
-}
+  
+  if (memblock) {
+    init_ok = FALSE;
+    if (GetMemblockInt(memblock, 0) == 844121161) {
+      init_ok = _InitMD2Mesh(memblock, mesh);
+    } else {
+      init_ok = _InitAssimpMesh(memblock, mesh);
+    }
 
-bool_t LoadMesh(const char* filename, Mesh* mesh) {
-  char ext[STRING_SIZE];
-  ExtractExt(filename, ext, sizeof(ext));
-  if (StringCompareLower(ext, "assbin") == 0) {
-    return _LoadAssimpMesh(filename, mesh);
-  } else if (StringCompareLower(ext, "md2") == 0) {
-    return _LoadMD2Mesh(filename, mesh);
-  } else {
-    return FALSE;
+    if (!init_ok) {
+      ReleaseMesh(mesh);
+      mesh = NULL;
+    }
   }
+  
+  return mesh;
 }
 
 void RetainMesh(Mesh* mesh) {
@@ -363,7 +369,7 @@ Mesh* _CreateSkyboxMesh() {
   int ulb, ulf, urb, urf;
   int dlb, dlf, drb, drf;
 
-  mesh = CreateMesh();
+  mesh = CreateMesh(NULL);
   buffer = AddMeshBuffer(mesh);
 
   /* add vertices */
@@ -406,11 +412,11 @@ Mesh* _CreateSkyboxMesh() {
   return mesh;
 }
 
-bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh) {
+bool_t _InitAssimpMesh(const struct SMemblock* memblock, Mesh* mesh) {
   lassbin_scene_t* scene;
   int m, t;
 
-  scene = lassbin_load(filename);
+  scene = lassbin_loadmem((const char*)memblock);
   if (!scene) return FALSE;
 
   /* make sure that meshes use 16 bits indices */
@@ -471,9 +477,9 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh) {
         int tex_index;
         struct SPixmap* pixmap;
         tex_index = tex_name[1] - 48; /* convert ascii code tu number */
-        pixmap = _CreatePixmapFromData(scene->textures[tex_index].data, lassbin_texturesize(&scene->textures[tex_index]));
+        pixmap = _CreateEmptyPixmapFromData(scene->textures[tex_index].data, lassbin_texturesize(&scene->textures[tex_index]));
         if (pixmap) {
-          texture = CreateTextureFromPixmap(pixmap);
+          texture = CreateTexture(pixmap);
           DeletePixmap(pixmap);
         }
       } else {
@@ -525,14 +531,14 @@ bool_t _LoadAssimpMesh(const char* filename, Mesh* mesh) {
   return TRUE;
 }
 
-bool_t _LoadMD2Mesh(const char* filename, Mesh* mesh) {
+bool_t _InitMD2Mesh(const struct SMemblock* memblock, Mesh* mesh) {
   lmd2_model_t*  mdl;
   Frame* frame;
   int buffer;
   int i;
 
   /* load md2 */
-  mdl = lmd2_load(filename);
+  mdl = lmd2_loadmem((const char*)memblock);
   if (!mdl) return FALSE;
 
   /* create mesh */

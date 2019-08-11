@@ -26,7 +26,7 @@ const PakEntry* _GetPakEntry(const PakFile* pak, const char* entryname);
 size_t _GetPakEntrySize(const PakFile* pak, const char* entryname);
 bool_t _GetPakEntryContents(const PakFile* pak, const char* entryname, void* buffer);
 
-bool_t AddPak(const char* pakname) {
+bool_t AddPackage(const char* pakname) {
 #ifdef USE_PAK
   PakFile pak;
   int i;
@@ -50,7 +50,7 @@ bool_t AddPak(const char* pakname) {
 #endif
 }
 
-bool_t IsFileInPak(const char* filename) {
+bool_t IsFilePacked(const char* filename) {
 #ifdef USE_PAK
   return _GetPakForFile(filename) != NULL;
 #else
@@ -78,24 +78,24 @@ size_t GetFileSize(const char* filename) {
   }
 }
 
-bool_t GetFileContents(const char* filename, void* buffer) {
-  const PakFile* pak;
-  pak = _GetPakForFile(filename);
-  if (pak) {
-    return _GetPakEntryContents(pak, filename, buffer);
+bool_t _GetFileContents(const char* filename, void* buffer) {
+  FILE* fhandle;
+  fhandle = fopen(filename, "rb");
+  if (fhandle) {
+    size_t size;
+    fseek(fhandle, 0, SEEK_END);
+    size = ftell(fhandle);
+    fseek(fhandle, 0, SEEK_SET);
+    fread(buffer, size, 1, fhandle);
+    fclose(fhandle);
+    return TRUE;
   } else {
-    FILE* fhandle;
-    fhandle = fopen(filename, "rb");
-    if (fhandle) {
-      size_t size;
-      fseek(fhandle, 0, SEEK_END);
-      size = ftell(fhandle);
-      fseek(fhandle, 0, SEEK_SET);
-      fread(buffer, size, 1, fhandle);
-      fclose(fhandle);
-      return size;
+    const PakFile* pak;
+    pak = _GetPakForFile(filename);
+    if (pak) {
+      return _GetPakEntryContents(pak, filename, buffer);
     } else {
-      return 0;
+      return FALSE;
     }
   }
 }

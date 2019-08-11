@@ -10,6 +10,7 @@ extern "C" {
 struct SMemblock;
 
 EXPORT struct SMemblock* CALL CreateMemblock(int size);
+EXPORT struct SMemblock* CALL LoadMemblock(const char* filename);
 EXPORT void CALL DeleteMemblock(struct SMemblock* memblock);
 EXPORT int CALL GetMemblockSize(const struct SMemblock* memblock);
 EXPORT unsigned char CALL GetMemblockByte(const struct SMemblock* memblock, int offset);

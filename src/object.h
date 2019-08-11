@@ -20,6 +20,7 @@ extern "C" {
 #endif
 
 struct SMaterial;
+struct SMemblock;
 struct SMesh;
 
 typedef struct {
@@ -40,7 +41,7 @@ typedef struct {
 #endif
 } Object;
 
-EXPORT Object* CALL CreateObject();
+EXPORT Object* CALL CreateObject(const struct SMemblock* memblock);
 EXPORT Object* CALL CreateCube();
 EXPORT Object* CALL CreateQuad();
 EXPORT Object* CALL CreateTriangle();

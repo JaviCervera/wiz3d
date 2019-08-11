@@ -9,10 +9,10 @@ extern "C" {
 
 #ifndef SWIG
 struct SMaterial;
+struct SMemblock;
 struct SMesh;
 
-struct SMesh* CreateMesh();
-bool_t LoadMesh(const char* filename, struct SMesh* mesh);
+struct SMesh* CreateMesh(const struct SMemblock* memblock);
 void RetainMesh(struct SMesh* mesh);
 void ReleaseMesh(struct SMesh* mesh);
 int AddMeshBuffer(struct SMesh* mesh);

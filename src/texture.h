@@ -11,9 +11,8 @@ struct SMemblock;
 struct SPixmap;
 struct STexture;
 
-EXPORT struct STexture* CALL CreateTexture(int width, int height);
-EXPORT struct STexture* CALL CreateTextureFromMemblock(const struct SMemblock* memblock);
-EXPORT struct STexture* CALL CreateTextureFromPixmap(const struct SPixmap* pixmap);
+EXPORT struct STexture* CALL CreateTexture(const struct SPixmap* pixmap);
+EXPORT struct STexture* CALL CreateEmptyTexture(int width, int height);
 EXPORT struct STexture* CALL LoadTexture(const char* filename);
 #ifndef SWIG
 void RetainTexture(struct STexture* texture);

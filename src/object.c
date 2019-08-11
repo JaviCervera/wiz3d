@@ -5,6 +5,7 @@
 #include "colbox.h"
 #include "color.h"
 #include "material.h"
+#include "memblock.h"
 #include "mesh.h"
 #include "object.h"
 #include "screen.h"
@@ -16,6 +17,8 @@
 static float _object_animfps = 16;
 
 void _SetObjectMaterials(Object* object) {
+  sb_free(object->_materials);
+  object->_materials = NULL;
   sb_add(object->_materials, GetNumMeshBuffers(object->_mesh));
   memcpy(
     object->_materials,
@@ -23,8 +26,14 @@ void _SetObjectMaterials(Object* object) {
     sizeof(Material) * GetNumMeshBuffers(object->_mesh));
 }
 
-EXPORT Object* CALL CreateObject() {
-  Object* object = _Alloc(Object);
+EXPORT Object* CALL CreateObject(const struct SMemblock* memblock) {
+  struct SMesh* mesh;
+  Object* object;
+
+  mesh = CreateMesh(memblock);
+  if (!mesh) return NULL;
+  
+  object = _Alloc(Object);
   object->x = 0;
   object->y = 0;
   object->z = 0;
@@ -42,8 +51,10 @@ EXPORT Object* CALL CreateObject() {
   object->animframe = 0;
   object->animmin = 0;
   object->animmax = 0;
-  object->_mesh = CreateMesh();
+  object->_mesh = mesh;
   object->_materials = NULL;
+  RebuildObjectMesh(object);
+  _SetObjectMaterials(object);
   return object;
 }
 
@@ -52,7 +63,7 @@ EXPORT Object* CALL CreateCube() {
   struct SMesh* mesh;
   int buffer;
 
-  object = CreateObject();
+  object = CreateObject(NULL);
   mesh = object->_mesh;
   buffer = AddMeshBuffer(mesh);
 
@@ -114,7 +125,7 @@ EXPORT Object* CALL CreateQuad() {
   struct SMesh* mesh;
   int buffer;
 
-  object = CreateObject();
+  object = CreateObject(NULL);
   mesh = object->_mesh;
   buffer = AddMeshBuffer(mesh);
 
@@ -136,7 +147,7 @@ EXPORT Object* CALL CreateTriangle() {
   struct SMesh* mesh;
   int buffer;
 
-  object = CreateObject();
+  object = CreateObject(NULL);
   mesh = object->_mesh;
   buffer = AddMeshBuffer(mesh);
 
@@ -151,23 +162,20 @@ EXPORT Object* CALL CreateTriangle() {
 }
 
 EXPORT Object* CALL LoadObject(const char* filename) {
-  Object* object;
-  struct SMesh* mesh;
+  struct SMemblock* memblock;
+  Object* object = NULL;
 
-  object = CreateObject();
-  mesh = object->_mesh;
-  if (LoadMesh(filename, mesh)) {
-    RebuildObjectMesh(object);
-    _SetObjectMaterials(object);
-    return object;
-  } else {
-    DeleteObject(object);
-    return NULL;
+  memblock = LoadMemblock(filename);
+  if (memblock) {
+    object = CreateObject(memblock);
+    DeleteMemblock(memblock);
   }
+
+  return object;
 }
 
 EXPORT Object* CALL CloneObject(const Object* object) {
-  Object* new_object = CreateObject();
+  Object* new_object = CreateObject(NULL);
   new_object->x = object->x;
   new_object->y = object->y;
   new_object->z = object->z;

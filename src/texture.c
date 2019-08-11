@@ -10,33 +10,17 @@ typedef struct STexture {
   ltex_t* ptr;
 } Texture;
 
-EXPORT Texture* CALL CreateTexture(int width, int height) {
+EXPORT Texture* CALL CreateTexture(const struct SPixmap* pixmap) {
+  Texture* tex;
+  tex = CreateEmptyTexture(GetPixmapWidth(pixmap), GetPixmapHeight(pixmap));
+  if (tex) SetTexturePixels(tex, pixmap);
+  return tex;
+}
+
+EXPORT Texture* CALL CreateEmptyTexture(int width, int height) {
   Texture* tex = _Alloc(Texture);
   tex->refcount = 0;
   tex->ptr = ltex_alloc(width, height, _texture_filtering);
-  return tex;
-}
-
-EXPORT Texture* CALL CreateTextureFromMemblock(const struct SMemblock* memblock) {
-  struct SPixmap* pixmap;
-  Texture* tex;
-
-  /* create pixmap */
-  pixmap = CreatePixmapFromMemblock(memblock);
-
-  /* create texture */
-  tex = CreateTextureFromPixmap(pixmap);
-
-  /* delete pixmap */
-  DeletePixmap(pixmap);
-
-  return tex;
-}
-
-EXPORT Texture* CALL CreateTextureFromPixmap(const struct SPixmap* pixmap) {
-  Texture* tex;
-  tex = CreateTexture(GetPixmapWidth(pixmap), GetPixmapHeight(pixmap));
-  if (tex) SetTexturePixels(tex, pixmap);
   return tex;
 }
 
@@ -49,7 +33,7 @@ EXPORT Texture* CALL LoadTexture(const char* filename) {
   if (!pixmap) return NULL;
 
   /* create texture */
-  tex = CreateTextureFromPixmap(pixmap);
+  tex = CreateTexture(pixmap);
 
   /* delete pixmap */
   DeletePixmap(pixmap);

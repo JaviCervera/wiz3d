@@ -9,7 +9,11 @@ typedef struct SPixmap {
   int height;
 } Pixmap;
 
-EXPORT Pixmap* CALL CreatePixmap(int width, int height) {
+EXPORT Pixmap* CALL CreatePixmap(const struct SMemblock* memblock) {
+  return _CreateEmptyPixmapFromData((const unsigned char*)memblock, GetMemblockSize(memblock));
+}
+
+EXPORT Pixmap* CALL CreateEmptyPixmap(int width, int height) {
   Pixmap* pixmap = _Alloc(struct SPixmap);
   pixmap->pixels = _AllocMany(int, width * height);
   pixmap->width = width;
@@ -17,24 +21,15 @@ EXPORT Pixmap* CALL CreatePixmap(int width, int height) {
   return pixmap;
 }
 
-EXPORT Pixmap* CALL CreatePixmapFromMemblock(const struct SMemblock* memblock) {
-  return _CreatePixmapFromData((const unsigned char*)memblock, GetMemblockSize(memblock));
-}
-
 EXPORT Pixmap* CALL LoadPixmap(const char* filename) {
-  unsigned char* buffer;
-  int w, h;
-  Pixmap* pixmap;
+  struct SMemblock* memblock;
+  Pixmap* pixmap = NULL;
 
-  /* load buffer */
-  buffer = stbi_load(filename, &w, &h, NULL, 4);
-  if (!buffer) return NULL;
-
-  /* create pixmap */
-  pixmap = _Alloc(struct SPixmap);
-  pixmap->pixels = (int*)buffer;
-  pixmap->width = w;
-  pixmap->height = h;
+  memblock = LoadMemblock(filename);
+  if (memblock) {
+    pixmap = CreatePixmap(memblock);
+    DeleteMemblock(memblock);
+  }
 
   return pixmap;
 }
@@ -60,7 +55,7 @@ EXPORT void CALL SetPixmapColor(Pixmap* pixmap, int x, int y, int color) {
   pixmap->pixels[y*pixmap->width + x] = color;
 }
 
-Pixmap* _CreatePixmapFromData(const unsigned char* data, size_t len) {
+Pixmap* _CreateEmptyPixmapFromData(const unsigned char* data, size_t len) {
   unsigned char* buffer;
   int w, h;
   Pixmap* pixmap;

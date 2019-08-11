@@ -10,7 +10,7 @@ This module allows the addition of static collision boxes to your scene.
 
 Adds a new collision box to the scene within the given boundaries.
 
-`void ClearColbox()`
+`void ClearColboxes()`
 
 Clears all collision boxes.
 
@@ -421,11 +421,11 @@ Get the global animation frames per second.
 
 A pixmap is a buffer in memory which contains image data, allows for manipulation of individual pixels, and can be copied to a texture. A pixmap is represented by the opaque `pixmap_t` structure.
 
-`struct SPixmap* CreatePixmap(int width, int height)`
+`struct SPixmap* CreateEmptyPixmap(int width, int height)`
 
 Creates a new pixmap with the given width and height and return its pointer.
 
-`struct SPixmap* CreatePixmapFromMemblock(const struct SMemblock* memblock)`
+`struct SPixmap* CreatePixmap(const struct SMemblock* memblock)`
 
 Creates a new pixmap with the data contained in the given memory buffer and returns its pointer. The data should be in a supported format like bmp, jpg or png.
 
@@ -617,7 +617,7 @@ Tells whether the specified channel is playing or not.
 
 Textures are buffers of pixels in video RAM that can be applied to materials.
 
-`struct STexture* CreateTexture(int width, int height)`
+`struct STexture* CreateEmptyTexture(int width, int height)`
 
 Creates a new texture with the given size in pixels. We can use `texture_setpixmap` to fill the pixels of the texture.
 
@@ -625,7 +625,7 @@ Creates a new texture with the given size in pixels. We can use `texture_setpixm
 
 Creates a new texture with the image data at the specified memory buffer. It should be in a supported format like bmp, jpg or png.
 
-`struct STexture* CreateTextureFromPixmap(const struct SPixmap* pixmap)`
+`struct STexture* CreateTexture(const struct SPixmap* pixmap)`
 
 Creates a texture from the pixel data in the given pixmap.
 
