@@ -66,7 +66,7 @@ See [here](./doc/documentation.md).
 - [x] Support for Allegro, GLFW and SDL in beam_config.h.
 - [x] Remove Lua support and convert Beam into a dll.
 - [x] Dependencies build inside root _CMAKE dir.
-- [ ] SDL2 is now default platform.
+- [x] SDL2 is now default platform.
 - [ ] Pascal case, trailing braces.
 - [ ] File system with pak support (object_loadmem).
 - [ ] Remove billboard property from objects, and add light_lookat, object_lookat, viewer_lookat.
