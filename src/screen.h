@@ -1,7 +1,6 @@
 #ifndef SCREEN_H_INCLUDED
 #define SCREEN_H_INCLUDED
 
-#include "beam_config.h"
 #include "types.h"
 
 #ifdef __cplusplus
@@ -18,9 +17,7 @@ EXPORT void CALL SetViewport(int x, int y, int w, int h);
 EXPORT void CALL SetResolution(int w, int h);
 EXPORT void CALL SetDrawColor(int color);
 EXPORT void CALL SetDrawFont(const char* filename, float height);
-#ifdef USE_DEFAULT_FONT
 EXPORT void CALL SetDefaultFont();
-#endif
 EXPORT void CALL ClearScreen(int color);
 EXPORT void CALL DrawPoint(float x, float y);
 EXPORT void CALL DrawLine(float x1, float y1, float x2, float y2);

@@ -7,6 +7,7 @@
 #include "platform.h"
 #include "util.h"
 #include <math.h>
+#include <stdio.h>
 
 bool_t p_Init() {
   return glfwInit();

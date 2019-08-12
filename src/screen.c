@@ -33,6 +33,7 @@ static struct SFont* _screen_font = NULL;
 
 EXPORT void CALL SetScreen(int width, int height, bool_t fullscreen, bool_t resizable) {
   int i;
+  float font_height;
 
   /* unload fonts */
   for (i = 0; i < sb_count(_screen_loadedfonts); ++i)
@@ -51,7 +52,12 @@ EXPORT void CALL SetScreen(int width, int height, bool_t fullscreen, bool_t resi
 
   /* load default font */
 #ifdef USE_DEFAULT_FONT
-  _default_font = _LoadBase64Font(DEFAULT_FONT, DEFAULT_FONT_BLOCKSIZE, 14);
+#ifdef USE_RETINA
+  font_height = 28;
+#else
+  font_height = 14;
+#endif
+  _default_font = _LoadBase64Font(DEFAULT_FONT, DEFAULT_FONT_BLOCKSIZE, font_height);
   _screen_font = _default_font;
 #else
   _screen_font = NULL;
@@ -134,11 +140,11 @@ EXPORT void CALL ClearScreen(int color) {
   );
 }
 
-#ifdef USE_DEFAULT_FONT
 EXPORT void CALL SetDefaultFont() {
+#ifdef USE_DEFAULT_FONT
   _screen_font = _default_font;
-}
 #endif
+}
 
 EXPORT void CALL DrawPoint(float x, float y) {
   lgfx_drawpoint(x, y);
@@ -162,7 +168,9 @@ EXPORT void CALL DrawTexture(const struct STexture* tex, float x, float y, float
 }
 
 EXPORT void CALL DrawText(const char* text, float x, float y) {
-  DrawFont(_screen_font, text, x, y);
+  if (_screen_font) {
+    DrawFont(_screen_font, text, x, y);
+  }
 }
 
 EXPORT int CALL GetScreenWidth() {
@@ -194,11 +202,19 @@ EXPORT int CALL GetDesktopHeight() {
 }
 
 EXPORT float CALL GetTextWidth(const char* text) {
-  return GetFontTextWidth(_screen_font, text);
+  if (_screen_font) {
+    return GetFontTextWidth(_screen_font, text);
+  } else {
+    return 0;
+  }
 }
 
 EXPORT float CALL GetTextHeight(const char* text) {
-  return GetFontTextHeight(_screen_font, text);
+  if (_screen_font) {
+    return GetFontTextHeight(_screen_font, text);
+  } else {
+    return 0;
+  }
 }
 
 void* _GetScreenPtr() {
