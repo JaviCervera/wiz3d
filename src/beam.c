@@ -1,6 +1,5 @@
-#include "platform.h"
 #include "beam.h"
-#include "sound.h"
+#include "platform.h"
 #define LITE_ASSBIN_USE_GFX
 #define LITE_MD2_USE_GFX
 #define LITE_ASSBIN_IMPLEMENTATION
@@ -34,13 +33,11 @@ EXPORT bool_t CALL InitBeam() {
   bool_t ret;
   ret = p_Init();
   if (!ret) return FALSE;
-  /*ret = _sound_initaudio();*/
   return ret != FALSE;
 }
 
 EXPORT void CALL ShutdownBeam() {
   if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
-  /*_sound_deinitaudio();*/
   p_Shutdown();
 }
 

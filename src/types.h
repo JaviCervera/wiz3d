@@ -1,10 +1,6 @@
 #ifndef TYPES_H_INCLUDED
 #define TYPES_H_INCLUDED
 
-#define FALSE           0
-#define TRUE            1
-#define STRING_SIZE     64
-#define NUM_LIGHTS      8
 #ifdef _WIN32
 #if defined(DLLEXPORT)
 #define EXPORT __declspec(dllexport)
@@ -18,6 +14,9 @@
 #define EXPORT
 #define CALL
 #endif
+
+#define FALSE           0
+#define TRUE            1
 
 typedef char bool_t;
 

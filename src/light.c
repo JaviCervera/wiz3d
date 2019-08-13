@@ -1,5 +1,6 @@
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
+#include "beam_config.h"
 #include "color.h"
 #include "light.h"
 #include "util.h"

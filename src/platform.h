@@ -1,6 +1,7 @@
 #ifndef PLATFORM_H_INCLUDED
 #define PLATFORM_H_INCLUDED
 
+#include "beam_config.h"
 #include "types.h"
 
 #ifdef __cplusplus
@@ -32,6 +33,26 @@ int p_GetScreenWidth(void* win);
 int p_GetScreenHeight(void* win);
 
 void p_MessageBox(const char* title, const char* message);
+
+#ifdef USE_AUDIO
+bool_t p_PlayMusic(const char* filename, bool_t loop);
+void p_PauseMusic();
+void p_ResumeMusic();
+void p_StopMusic();
+void p_SetMusicVolume(float volume);
+bool_t p_IsMusicPlaying();
+void* p_LoadSound(const char* filename);
+void p_DeleteSound(void* sound);
+void* p_PlaySound(void* sound, bool_t loop);
+void p_PauseChannel(void* channel);
+void p_ResumeChannel(void* channel);
+void p_StopChannel(void* channel);
+void p_PositionChannel(void* channel, float lx, float ly, float lz, float lyaw, float sx, float sy, float sz, float radius);
+void p_SetChannelVolume(void* channel, float volume);
+void p_SetChannelPan(void* channel, float pan);
+void p_SetChannelPitch(void* channel, float pitch);
+bool_t p_IsChannelPlaying(void* channel);
+#endif
 
 #ifdef __cplusplus
 } /* extern "C" */
