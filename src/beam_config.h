@@ -13,6 +13,7 @@
    available, and you must deal with this functionality yourself.
  */
 
+/*#define USE_AUDIO*/
 #define USE_DEFAULT_FONT
 #define USE_PAK
 /*#define USE_RETINA*/

@@ -76,6 +76,7 @@ See [here](./doc/documentation.md).
 - [ ] material.ambient.
 - [ ] Spot lights.
 - [ ] More Vortex examples.
+- [ ] Audio with support for wav and ogg formats (SDL only by now).
 
 ### v1.0
 
