@@ -1,3 +1,7 @@
+#include "beam_config.h"
+
+#ifndef PLATFORM_NULL
+
 #include "input.h"
 #include "platform.h"
 #include "screen.h"
@@ -25,3 +29,5 @@ EXPORT bool_t CALL IsCursorPressed(int b) {
 EXPORT bool_t CALL IsKeyPressed(int k) {
   return p_GetKeyPressed(_GetScreenPtr(), k);
 }
+
+#endif /* PLATFORM_NULL */

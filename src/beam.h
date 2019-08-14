@@ -14,6 +14,7 @@
 #include "pixmap.h"
 #include "screen.h"
 #include "texture.h"
+#include "time.h"
 #include "viewer.h"
 
 #ifdef __cplusplus

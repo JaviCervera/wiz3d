@@ -6,19 +6,19 @@ cp _build/libbeam.dylib examples/libbeam.dylib
 
 echo "building examples..."
 cd examples
-gcc -o 1-helloworld 1-helloworld.c -L. -lbeam
-gcc -o 2-primitives 2-primitives.c -L. -lbeam
-gcc -o 3-texture2d 3-texture2d.c -L. -lbeam
-gcc -o 4-triangle 4-triangle.c -L. -lbeam
-gcc -o 5-rotatingcube 5-rotatingcube.c -L. -lbeam
-gcc -o 6-billboards 6-billboards.c -L. -lbeam
-gcc -o 7-lighting 7-lighting.c -L. -lbeam
-gcc -o 8-fog 8-fog.c -L. -lbeam
-gcc -o 9-collisions 9-collisions.c -L. -lbeam
-gcc -o 10-specular 10-specular.c -L. -lbeam
-gcc -o 11-md2 11-md2.c -L. -lbeam
-gcc -o 12-angel 12-angel.c -L. -lbeam
-gcc -o 13-hoverbike 13-hoverbike.c -L. -lbeam
+gcc -o 1-helloworld 1-helloworld.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 2-primitives 2-primitives.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 3-texture2d 3-texture2d.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 4-triangle 4-triangle.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 5-rotatingcube 5-rotatingcube.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 6-billboards 6-billboards.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 7-lighting 7-lighting.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 8-fog 8-fog.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 9-collisions 9-collisions.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 10-specular 10-specular.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 11-md2 11-md2.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 12-angel 12-angel.c -DPLATFORM_SDL2 -L. -lbeam
+gcc -o 13-hoverbike 13-hoverbike.c -DPLATFORM_SDL2 -L. -lbeam
 
 echo "running examples..."
 ./1-helloworld

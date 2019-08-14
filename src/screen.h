@@ -1,7 +1,10 @@
 #ifndef SCREEN_H_INCLUDED
 #define SCREEN_H_INCLUDED
 
+#include "beam_config.h"
 #include "types.h"
+
+#ifndef PLATFORM_NULL
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,7 +30,6 @@ EXPORT void CALL DrawTexture(const struct STexture* tex, float x, float y, float
 EXPORT void CALL DrawText(const char* text, float x, float y);
 EXPORT int CALL GetScreenWidth();
 EXPORT int CALL GetScreenHeight();
-EXPORT float CALL GetDeltaTime();
 EXPORT int CALL GetScreenFPS();
 EXPORT bool_t CALL IsScreenOpened();
 
@@ -44,5 +46,7 @@ void* _GetScreenPtr();
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
+#endif /* PLATFORM_NULL */
 
 #endif /* SCREEN_H_INCLUDED */

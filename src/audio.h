@@ -1,7 +1,10 @@
 #ifndef AUDIO_H_INCLUDED
 #define AUDIO_H_INCLUDED
 
+#include "beam_config.h"
 #include "types.h"
+
+#ifndef PLATFORM_NULL
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,5 +44,7 @@ bool_t IsChannelPlaying(void* channel);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
+#endif /* PLATFORM_NULL */
 
 #endif /* AUDIO_H_INCLUDED */

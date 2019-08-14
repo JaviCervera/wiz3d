@@ -1,6 +1,6 @@
 #include "beam_config.h"
 
-#ifdef USE_SDL2
+#ifdef PLATFORM_SDL2
 
 #include "../lib/litelibs/litemath3d.h"
 #include "../lib/sdl2/include/SDL.h"
@@ -455,4 +455,4 @@ static void SDLCALL _MixChannels(void *udata, Uint8 *stream, int len) {
 
 #endif /* USE_AUDIO */
 
-#endif /* USE_SDL2 */
+#endif /* PLATFORM_SDL2 */

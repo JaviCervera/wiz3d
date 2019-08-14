@@ -3,7 +3,7 @@
 
 #include "beam_config.h"
 
-#ifdef USE_GLFW
+#ifdef PLATFORM_GLFW
 
 #define KEY_SPACE 32
 #define KEY_APOSTROPHE 39
@@ -126,6 +126,6 @@
 #define KEY_RIGHT_SUPER 347
 #define KEY_MENU 348
 
-#endif /* USE_GLFW */
+#endif /* PLATFORM_GLFW */
 
 #endif /* INPUT_GLFW_H_INCLUDED */

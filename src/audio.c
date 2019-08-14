@@ -1,4 +1,7 @@
 #include "beam_config.h"
+
+#ifndef PLATFORM_NULL
+
 #include "audio.h"
 #include "platform.h"
 
@@ -167,3 +170,5 @@ bool_t IsChannelPlaying(void* channel) {
   return FALSE;
 #endif
 }
+
+#endif /* PLATFORM_NULL */

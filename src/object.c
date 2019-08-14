@@ -10,6 +10,7 @@
 #include "object.h"
 #include "screen.h"
 #include "texture.h"
+#include "time.h"
 #include "util.h"
 #include "viewer.h"
 #include <math.h>

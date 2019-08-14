@@ -86,8 +86,13 @@ EXPORT void CALL PrepareViewer(const Viewer* viewer) {
   _view_active_viewer = viewer;
 
   /* get real viewport size */
+#ifndef PLATFORM_NULL
   vp_w = (viewer->vw != -1) ? viewer->vw : GetScreenWidth() - viewer->vx;
   vp_h = (viewer->vh != -1) ? viewer->vh : GetScreenHeight() - viewer->vy;
+#else
+  vp_w = viewer->vw;
+  vp_h = viewer->vh;
+#endif
 
   /* set viewport (must be done before setting projection) */
   lgfx_setup3d(0, 0);

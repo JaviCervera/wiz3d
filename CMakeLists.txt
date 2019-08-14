@@ -1,6 +1,23 @@
 #Minimum version
 cmake_minimum_required(VERSION 2.6)
 
+#Options
+option(PLATFORM_NULL "Use NULL platform" OFF)
+option(PLATFORM_ALLEGRO "Use Allegro platform" OFF)
+option(PLATFORM_GLFW "Use GLFW platform" OFF)
+option(PLATFORM_SDL2 "Use SDL2 platform" OFF)
+
+#Define macros
+if (PLATFORM_NULL)
+	add_definitions(-DPLATFORM_NULL)
+elseif (PLATFORM_ALLEGRO)
+	add_definitions(-DPLATFORM_ALLEGRO)
+elseif (PLATFORM_GLFW)
+	add_definitions(-DPLATFORM_GLFW)
+elseif (PLATFORM_SDL2)
+	add_definitions(-DPLATFORM_SDL2)
+endif (PLATFORM_NULL)
+
 #Define project
 project(beam)
 

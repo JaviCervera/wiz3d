@@ -25,9 +25,6 @@
 #undef STB_TRUETYPE_IMPLEMENTATION
 #include "../lib/stb/stb_vorbis.c"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 EXPORT bool_t CALL InitBeam() {
   bool_t ret;
@@ -37,10 +34,8 @@ EXPORT bool_t CALL InitBeam() {
 }
 
 EXPORT void CALL ShutdownBeam() {
+#ifndef PLATFORM_NULL
   if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
+#endif
   p_Shutdown();
 }
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif

@@ -1,6 +1,6 @@
 #include "beam_config.h"
 
-#ifdef USE_GLFW
+#ifdef PLATFORM_GLFW
 
 #include "../lib/glfw/include/GLFW/glfw3.h"
 #include "../lib/tinyfiledialogs/tinyfiledialogs.h"
@@ -172,4 +172,4 @@ bool_t p_IsChannelPlaying(void* channel) {
 
 #endif /* USE_AUDIO */
 
-#endif /* USE_GLFW */
+#endif /* PLATFORM_GLFW */

@@ -3,7 +3,7 @@
 
 #include "beam_config.h"
 
-#ifdef USE_ALLEGRO
+#ifdef PLATFORM_ALLEGRO
 
 #define KEY_A 1
 #define KEY_B 2
@@ -147,6 +147,6 @@
 #define KEY_NUMLOCK 225
 #define KEY_CAPSLOCK 226
 
-#endif /* USE_ALLEGRO */
+#endif /* PLATFORM_ALLEGRO */
 
 #endif /* INPUT_ALLEGRO_H_INCLUDED */

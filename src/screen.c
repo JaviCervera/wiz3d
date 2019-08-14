@@ -1,4 +1,7 @@
 #include "beam_config.h"
+
+#ifndef PLATFORM_NULL
+
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
 #include "../lib/stb/stretchy_buffer.h"
@@ -10,6 +13,7 @@
 #include "platform.h"
 #include "screen.h"
 #include "texture.h"
+#include "time.h"
 #include "util.h"
 #include <string.h>
 
@@ -20,8 +24,6 @@ struct loadedfont_t {
 };
 
 static void* _screen_ptr = NULL;
-static float _screen_delta = 0;
-static float _screen_lasttime = 0;
 static int _screen_fps = 0;
 static int _screen_fpscounter = 0;
 static float _screen_fpstime = 0;
@@ -69,12 +71,11 @@ EXPORT void CALL RefreshScreen() {
   p_RefreshScreen(_screen_ptr);
 
   /* update delta time */
-  _screen_delta = p_GetTime() - _screen_lasttime;
-  _screen_lasttime = p_GetTime();
+  UpdateTimer();
 
   /* update fps */
   ++_screen_fpscounter;
-  _screen_fpstime += _screen_delta;
+  _screen_fpstime += GetDeltaTime();
   if (_screen_fpstime >= 1) {
     _screen_fps = _screen_fpscounter;
     _screen_fpscounter = 0;
@@ -181,10 +182,6 @@ EXPORT int CALL GetScreenHeight() {
   return p_GetScreenHeight(_screen_ptr);
 }
 
-EXPORT float CALL GetDeltaTime() {
-  return _screen_delta;
-}
-
 EXPORT int CALL GetScreenFPS() {
   return _screen_fps;
 }
@@ -220,3 +217,5 @@ EXPORT float CALL GetTextHeight(const char* text) {
 void* _GetScreenPtr() {
   return _screen_ptr;
 }
+
+#endif /* PLATFORM_NULL */

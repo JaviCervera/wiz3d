@@ -1,7 +1,10 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
+#include "beam_config.h"
 #include "types.h"
+
+#ifndef PLATFORM_NULL
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,5 +34,7 @@ EXPORT bool_t CALL IsKeyPressed(int k);
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
+
+#endif /* PLATFORM_NULL */
 
 #endif /* INPUT_H_INCLUDED */

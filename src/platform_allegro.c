@@ -1,6 +1,6 @@
 #include "beam_config.h"
 
-#ifdef USE_ALLEGRO
+#ifdef PLATFORM_ALLEGRO
 
 #include "../lib/allegro/include/allegro5/allegro.h"
 #include "../lib/allegro/addons/native_dialog/allegro5/allegro_native_dialog.h"
@@ -294,4 +294,4 @@ ALLEGRO_SAMPLE* _p_LoadWAV(const char* filename) {
 
 #endif /* USE_AUDIO */
 
-#endif /* USE_ALLEGRO */
+#endif /* PLATFORM_ALLEGRO */
