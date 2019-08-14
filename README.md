@@ -71,12 +71,11 @@ See [here](./doc/documentation.md).
 - [x] Trailing braces.
 - [x] File system with pak support.
 - [x] Remove billboard property from objects, and add LightLookAt, ObjectLookAt, ViewerLookAt.
-- [ ] More Vortex examples.
-- [ ] Audio with support for wav and ogg formats (SDL only by now).
+- [ ] Replace structs with functions for everything.
+- [ ] Lightmaps.
 - [ ] material.ambient.
 - [ ] Spot lights.
-- [ ] Lightmaps.
-- [ ] Replace structs with functions for everything.
+- [ ] More Vortex examples.
 
 ### v1.0
 

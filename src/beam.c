@@ -24,7 +24,6 @@
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "../lib/stb/stb_truetype.h"
 #undef STB_TRUETYPE_IMPLEMENTATION
-#include "../lib/stb/stb_vorbis.c"
 
 
 EXPORT bool_t CALL InitBeam() {

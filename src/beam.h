@@ -1,7 +1,6 @@
 #ifndef BEAM_H_INCLUDED
 #define BEAM_H_INCLUDED
 
-#include "audio.h"
 #include "colbox.h"
 #include "color.h"
 #include "draw.h"
