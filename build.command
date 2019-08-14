@@ -27,7 +27,7 @@ cd ../..
 
 echo "[**building beam**]"
 cd _CMAKE
-cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DPLATFORM_NULL=ON ..
+cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DPLATFORM_SDL2=ON ..
 make
 install_name_tool -id libbeam.dylib libbeam.dylib
 cd ..

@@ -1,4 +1,5 @@
 #include "beam.h"
+#include "draw.h"
 #include "platform.h"
 #define LITE_ASSBIN_USE_GFX
 #define LITE_MD2_USE_GFX
@@ -30,6 +31,9 @@ EXPORT bool_t CALL InitBeam() {
   bool_t ret;
   ret = p_Init();
   if (!ret) return FALSE;
+#ifdef PLATFORM_NULL
+  SetDefaultFont();
+#endif
   return ret != FALSE;
 }
 

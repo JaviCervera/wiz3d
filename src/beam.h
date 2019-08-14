@@ -4,6 +4,7 @@
 #include "audio.h"
 #include "colbox.h"
 #include "color.h"
+#include "draw.h"
 #include "file_system.h"
 #include "input.h"
 #include "light.h"
