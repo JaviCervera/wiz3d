@@ -4,10 +4,21 @@
 
 #include "../lib/allegro/include/allegro5/allegro.h"
 #include "../lib/allegro/addons/native_dialog/allegro5/allegro_native_dialog.h"
+#include "../lib/allegro/addons/audio/allegro5/allegro_audio.h"
+#ifdef USE_AUDIO
+#define STB_VORBIS_HEADER_ONLY
+#include "../lib/stb/stb_vorbis.c"
+#endif
 #include "input.h"
 #include "platform.h"
 #include "util.h"
 #include <math.h>
+
+#ifdef USE_AUDIO
+bool_t al_init_acodec_addon(void);
+ALLEGRO_SAMPLE* _p_LoadOGG(const char* filename);
+ALLEGRO_SAMPLE* _p_LoadWAV(const char* filename);
+#endif
 
 typedef struct {
   ALLEGRO_DISPLAY* display;
@@ -28,6 +39,16 @@ bool_t p_Init() {
   if (!ret) return FALSE;
   ret = al_install_joystick();
   if (!ret) return FALSE;
+#ifdef USE_AUDIO
+  ret = al_install_audio();
+  if (!ret) return FALSE;
+  ret = al_init_acodec_addon();
+  if (!ret) return FALSE;
+  ret = al_register_sample_loader(".ogg", _p_LoadOGG);
+  if (!ret) return FALSE;
+  ret = al_register_sample_loader(".wav", _p_LoadWAV);
+  if (!ret) return FALSE;
+#endif
   return ret != FALSE;
 }
 
@@ -175,5 +196,102 @@ int p_GetScreenHeight(void* win) {
 void p_MessageBox(const char* title, const char* message) {
   al_show_native_message_box(al_get_current_display(), title, "", message, NULL, 0);
 }
+
+#ifdef USE_AUDIO
+
+bool_t p_PlayMusic(const char* filename, bool_t loop) {
+  return FALSE;
+}
+
+void p_PauseMusic() {}
+
+void p_ResumeMusic() {}
+
+void p_StopMusic() {}
+
+void p_SetMusicVolume(float volume) {}
+
+bool_t p_IsMusicPlaying() {
+  return FALSE;
+}
+
+void* p_LoadSound(const char* filename) {
+  return al_load_sample(filename);
+}
+
+void p_DeleteSound(void* sound) {
+  al_destroy_sample((ALLEGRO_SAMPLE*)sound);
+}
+
+void* p_PlaySound(void* sound, bool_t loop) {
+  ALLEGRO_SAMPLE_INSTANCE* inst;
+  inst = al_create_sample_instance((ALLEGRO_SAMPLE*)sound);
+  if (loop) al_set_sample_instance_playmode(inst, ALLEGRO_PLAYMODE_LOOP);
+  al_play_sample_instance(inst);
+  return inst;
+}
+
+void p_PauseChannel(void* channel) {
+  al_set_sample_instance_playing((ALLEGRO_SAMPLE_INSTANCE*)channel, FALSE);
+}
+
+void p_ResumeChannel(void* channel) {
+  al_set_sample_instance_playing((ALLEGRO_SAMPLE_INSTANCE*)channel, TRUE);
+}
+
+void p_StopChannel(void* channel) {
+  al_stop_sample_instance((ALLEGRO_SAMPLE_INSTANCE*)channel);
+}
+
+void p_PositionChannel(void* channel, float lx, float ly, float lz, float lyaw, float sx, float sy, float sz, float radius) {}
+
+void p_SetChannelVolume(void* channel, float volume) {}
+
+void p_SetChannelPan(void* channel, float pan) {}
+
+void p_SetChannelPitch(void* channel, float pitch) {}
+
+bool_t p_IsChannelPlaying(void* channel) {
+  return al_get_sample_instance_playing((ALLEGRO_SAMPLE_INSTANCE*)channel);
+}
+
+ALLEGRO_SAMPLE* _p_LoadOGG(const char* filename) {
+  ALLEGRO_SAMPLE *sample;
+  stb_vorbis* file;
+  stb_vorbis_info fileinfo;
+  int length_samples;
+  short* buffer;
+
+  /* open file */
+  file = stb_vorbis_open_filename((char*)filename, NULL, NULL);
+  if (!file) return NULL;
+
+  /* load ogg */
+  fileinfo = stb_vorbis_get_info(file);
+  length_samples = stb_vorbis_stream_length_in_samples(file) * fileinfo.channels;
+  buffer = al_malloc(sizeof(short) * length_samples);
+  stb_vorbis_get_samples_short_interleaved(file, fileinfo.channels, buffer, length_samples);
+
+  /* close file */
+  stb_vorbis_close(file);
+
+  /* create allegro sample */
+  sample = al_create_sample(
+    buffer,
+    length_samples,
+    fileinfo.sample_rate,
+    ALLEGRO_AUDIO_DEPTH_INT16,
+    fileinfo.channels == 1 ? ALLEGRO_CHANNEL_CONF_1 : ALLEGRO_CHANNEL_CONF_2,
+    TRUE);
+  if (!sample) al_free(buffer);
+
+  return sample;
+}
+
+ALLEGRO_SAMPLE* _p_LoadWAV(const char* filename) {
+  return NULL;
+}
+
+#endif /* USE_AUDIO */
 
 #endif /* PLATFORM_ALLEGRO */

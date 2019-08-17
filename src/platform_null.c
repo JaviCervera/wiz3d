@@ -107,4 +107,52 @@ void p_MessageBox(const char* title, const char* message) {
 #endif
 }
 
+#ifdef USE_AUDIO
+
+bool_t p_PlayMusic(const char* filename, bool_t loop) {
+  return FALSE;
+}
+
+void p_PauseMusic() {}
+
+void p_ResumeMusic() {}
+
+void p_StopMusic() {}
+
+void p_SetMusicVolume(float volume) {}
+
+bool_t p_IsMusicPlaying() {
+  return FALSE;
+}
+
+void* p_LoadSound(const char* filename) {
+  return NULL;
+}
+
+void p_DeleteSound(void* sound) {}
+
+void* p_PlaySound(void* sound, bool_t loop) {
+  return NULL;
+}
+
+void p_PauseChannel(void* channel) {}
+
+void p_ResumeChannel(void* channel) {}
+
+void p_StopChannel(void* channel) {}
+
+void p_PositionChannel(void* channel, float lx, float ly, float lz, float lyaw, float sx, float sy, float sz, float radius) {}
+
+void p_SetChannelVolume(void* channel, float volume) {}
+
+void p_SetChannelPan(void* channel, float pan) {}
+
+void p_SetChannelPitch(void* channel, float pitch) {}
+
+bool_t p_IsChannelPlaying(void* channel) {
+  return FALSE;
+}
+
+#endif /* USE_AUDIO */
+
 #endif /* PLATFORM_NULL */
