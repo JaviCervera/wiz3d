@@ -9,7 +9,7 @@
    - PLATFORM_ALLEGRO
    - PLATFORM_GLFW
    - PLATFORM_SDL2
-   Without a platform defined, screen, input and audio functions are not
+   With the null platform screen, input and audio functions are not
    available, and you must deal with this functionality yourself.
  */
 
@@ -17,7 +17,7 @@
 #define USE_DEFAULT_FONT
 #define USE_PAK
 /*#define USE_RETINA*/
-/*#define USE_TINYFILEDIALOGS*/ /* Only used by GLFW and NULL platforms */
+#define USE_TINYFILEDIALOGS /* Only used by GLFW and NULL platforms */
 
 /* Some limits used by the engine */
 #define STRING_SIZE     64

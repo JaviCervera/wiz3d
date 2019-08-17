@@ -138,7 +138,7 @@ EXPORT float CALL GetTextHeight(const char* text) {
   }
 }
 
-void _UnloadFonts() {
+EXPORT void CALL _UnloadFonts() {
   int i;
 
   for (i = 0; i < sb_count(_loaded_fonts); ++i)

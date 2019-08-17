@@ -28,7 +28,7 @@ EXPORT float CALL GetTextWidth(const char* text);
 EXPORT float CALL GetTextHeight(const char* text);
 
 #ifndef SWIG
-void _UnloadFonts();
+EXPORT void CALL _UnloadFonts();
 #endif
 
 #ifdef __cplusplus

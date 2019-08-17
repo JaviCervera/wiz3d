@@ -1,3 +1,4 @@
+#include "beam_config.h"
 #include "beam.h"
 #include "draw.h"
 #include "platform.h"
@@ -24,7 +25,9 @@
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "../lib/stb/stb_truetype.h"
 #undef STB_TRUETYPE_IMPLEMENTATION
+#ifdef USE_AUDIO
 #include "../lib/stb/stb_vorbis.c"
+#endif
 
 
 EXPORT bool_t CALL InitBeam() {
