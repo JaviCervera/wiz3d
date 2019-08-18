@@ -10,7 +10,7 @@ typedef struct STexture {
   ltex_t* ptr;
 } Texture;
 
-EXPORT Texture* CALL CreateTexture(const struct SPixmap* pixmap) {
+EXPORT Texture* CALL CreateTexture(const Pixmap* pixmap) {
   Texture* tex;
   tex = CreateEmptyTexture(GetPixmapWidth(pixmap), GetPixmapHeight(pixmap));
   if (tex) SetTexturePixels(tex, pixmap);
@@ -25,7 +25,7 @@ EXPORT Texture* CALL CreateEmptyTexture(int width, int height) {
 }
 
 EXPORT Texture* CALL LoadTexture(const char* filename) {
-  struct SPixmap* pixmap;
+  Pixmap* pixmap;
   Texture* tex;
 
   /* load pixmap */
@@ -64,7 +64,7 @@ EXPORT int CALL GetTextureHeight(const Texture* texture) {
   return texture->ptr->height;
 }
 
-EXPORT void CALL SetTexturePixels(Texture* texture, const struct SPixmap* pixmap) {
+EXPORT void CALL SetTexturePixels(Texture* texture, const Pixmap* pixmap) {
   if (texture->ptr->width == GetPixmapWidth(pixmap) && texture->ptr->height == GetPixmapHeight(pixmap)) {
     ltex_setpixels(texture->ptr, _GetPixmapPtr(pixmap));
   }

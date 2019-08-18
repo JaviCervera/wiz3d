@@ -6,15 +6,43 @@
 #include "../lib/tinyfiledialogs/tinyfiledialogs.h"
 #include "platform.h"
 #include "util.h"
+#ifdef USE_AUDIO
+#if defined(__APPLE__)
+#include <OpenAL/al.h>
+#include <OpenAL/alc.h>
+#endif
+#define STB_VORBIS_HEADER_ONLY
+#include "../lib/stb/stb_vorbis.c"
+#endif /* USE_AUDIO */
 #include <math.h>
 #include <stdio.h>
 
+#ifdef USE_AUDIO
+static ALCdevice* _audio_device = NULL;
+static ALCcontext* _audio_context = NULL;
+#endif
+
 bool_t p_Init() {
-  return glfwInit();
+  bool_t ret;
+  ret = glfwInit();
+
+#ifdef USE_AUDIO
+  _audio_device = alcOpenDevice(NULL);
+  if (_audio_device) _audio_context = alcCreateContext(_audio_device, NULL);
+  if (_audio_context) alcMakeContextCurrent(_audio_context);
+#endif
+
+  return ret;
 }
 
 void p_Shutdown() {
   glfwTerminate();
+#ifdef USE_AUDIO
+  if (_audio_context) alcDestroyContext(_audio_context);
+  if (_audio_device) alcCloseDevice(_audio_device);
+  _audio_device = NULL;
+  _audio_context = NULL;
+#endif
 }
 
 float p_GetTime() {

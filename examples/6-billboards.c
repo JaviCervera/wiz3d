@@ -5,70 +5,66 @@
 #define NUM_BILLBOARDS 64
 #define ROTATION_SPEED 32
 
-int main()
-{
-  /* data */
+int main() {
+  /* Data */
   Viewer* viewer;
-  struct STexture* tex;
+  Texture* tex;
   Object* billboards[NUM_BILLBOARDS];
   int x, z;
   int i;
   char str[STRING_SIZE];
 
-  /* setup */
+  /* Setup */
   InitBeam();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Billboards");
 
-  /* create and position viewer */
+  /* Create and position viewer */
   viewer = CreateViewer();
-  viewer->clearcolor = COLOR_WHITE;
-  TurnViewer(viewer, 45, -45, 0);
+  SetViewerClearColor(viewer, COLOR_WHITE);
+  SetViewerRotation(viewer, 45, -45, 0);
 
-  /* load texture */
+  /* Load texture */
   tex = LoadTexture("data/smile.png");
 
-  /* create billboards */
+  /* Create billboards */
   x = z = -8;
-  for (i = 0; i < NUM_BILLBOARDS; ++i)
-  {
+  for (i = 0; i < NUM_BILLBOARDS; ++i) {
+    Material* material;
+
     billboards[i] = CreateQuad();
-    billboards[i]->x = x;
-    billboards[i]->z = z;
-    GetObjectMaterial(billboards[i], 0)->texture = tex;
-    GetObjectMaterial(billboards[i], 0)->diffuse = GetRGB(rand() % 256, rand() % 256, rand() % 256);
-    GetObjectMaterial(billboards[i], 0)->blend = BLEND_ALPHA;
+    SetObjectPosition(billboards[i], x, 0, z);
+    material = GetObjectMaterial(billboards[i], 0);
+    SetMaterialTexture(material, tex);
+    SetMaterialDiffuse(material, GetRGB(rand() % 256, rand() % 256, rand() % 256));
+    SetMaterialBlend(material, BLEND_ALPHA);
     
     x += 2;
-    if (x >= 8)
-    {
+    if (x >= 8) {
       x = -8;
       z += 2;
     }
   }
 
-  /* main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
-  {
-    /* update viewer */
+  /* Main loop */
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
+    /* Update viewer */
     TurnViewer(viewer, 0, ROTATION_SPEED * GetDeltaTime(), 0);
-    viewer->x = viewer->y = viewer->z = 0;
+    SetViewerPosition(viewer, 0, 0, 0);
     MoveViewer(viewer, 0, 0, -8);
 
-    /* update billboards */
-    for (i = 0; i < NUM_BILLBOARDS; ++i)
-    {
-      ObjectLookAt(billboards[i], viewer->x, viewer->y, viewer->z);
+    /* Update billboards */
+    for (i = 0; i < NUM_BILLBOARDS; ++i) {
+      ObjectLookAt(billboards[i], GetViewerX(viewer), GetViewerY(viewer), GetViewerZ(viewer));
     }
 
-    /* draw scene */
+    /* Draw scene */
     PrepareViewer(viewer);
-    for (i = 0; i < NUM_BILLBOARDS; ++i)
-    {
+    for (i = 0; i < NUM_BILLBOARDS; ++i) {
       DrawObject(billboards[i]);
     }
 
-    /* draw ui */
+    /* Draw UI */
     sprintf(str, "%i FPS", GetScreenFPS());
     Setup2D();
     SetDrawColor(COLOR_BLACK);
@@ -76,6 +72,6 @@ int main()
     RefreshScreen();
   }
 
-  /* shutdown */
+  /* Shutdown */
   ShutdownBeam();
 }

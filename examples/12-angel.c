@@ -4,9 +4,8 @@
 #define ROTATION_SPEED 32
 #define TEXT "Frank by misterdevious is licensed under CC Attribution-NonCommercial-ShareAlike"
 
-int main()
-{
-  /* data */
+int main() {
+  /* Data */
   Viewer* viewer;
   Light* dir_light;
   Light* point_light1;
@@ -14,58 +13,57 @@ int main()
   Object* angel;
   float value = 0;
 
-  /* setup */
+  /* Setup */
   InitBeam();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Angel");
 
-  /* create and position viewer */
+  /* Create and position viewer */
   viewer = CreateViewer();
-  viewer->clearcolor = GetRGB(15, 15, 15);
-  MoveViewer(viewer, 7, 7, -7);
+  SetViewerClearColor(viewer, GetRGB(15, 15, 15));
+  SetViewerPosition(viewer, 7, 7, -7);
   ViewerLookAt(viewer, 0, 0, 0);
 
-  /* setup lighting */
+  /* Setup lighting */
   SetAmbientColor(GetRGB(15, 15, 15));
   dir_light = CreateLight(LIGHT_DIRECTIONAL);
-  dir_light->color = GetRGB(100, 100, 100);
+  SetLightColor(dir_light, GetRGB(100, 100, 100));
   point_light1 = CreateLight(LIGHT_POINT);
-  MoveLight(point_light1, 0, 0, -2);
-  point_light1->color = GetRGB(255, 100, 0);
+  SetLightPosition(point_light1, 0, 0, -2);
+  SetLightColor(point_light1, GetRGB(255, 100, 0));
   point_light2 = CreateLight(LIGHT_POINT);
-  MoveLight(point_light2, 0, 8, 4);
-  point_light2->color = GetRGB(0, 100, 255);
+  SetLightPosition(point_light2, 0, 8, 4);
+  SetLightColor(point_light2, GetRGB(0, 100, 255));
 
-  /* load object (contains embedded texture) */
+  /* Load object (contains embedded texture) */
   angel = LoadObject("data/angel.assbin");
   TurnObject(angel, 90, 0, 0);
 
   /* main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
-  {
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
     float s, c;
 
-    /* rotate statue */
+    /* Rotate statue */
     TurnObject(angel, 0, ROTATION_SPEED * GetDeltaTime(), 0);
 
-    /* update lighting */
+    /* Update lighting */
     value += GetDeltaTime();
     s = 0.5f + fabsf(sinf(value)) * 0.5f;
     c = 0.5f + fabsf(cosf(value)) * 0.5f;
-    point_light1->range = 10 * s;
-    point_light2->range = 10 * c;
+    SetLightRange(point_light1, 10 * s);
+    SetLightRange(point_light2, 10 * c);
 
-    /* draw scene */
+    /* Draw scene */
     PrepareViewer(viewer);
     DrawObject(angel);
 
-    /* draw ui */
+    /* Draw UI */
     Setup2D();
     SetDrawColor(GetRGB(240, 240, 240));
     DrawText(TEXT, (GetScreenWidth() - GetTextWidth(TEXT)) / 2, 8);
     RefreshScreen();
   }
 
-  /* shutdown */
+  /* Shutdown */
   ShutdownBeam();
 }

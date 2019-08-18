@@ -14,13 +14,13 @@
 typedef struct {
   char name[STRING_SIZE];
   float height;
-  struct SFont* font;
+  Font* font;
 } LoadedFont;
 
 static LoadedFont* _loaded_fonts = NULL;
-static struct SFont* _active_font = NULL;
+static Font* _active_font = NULL;
 #ifdef USE_DEFAULT_FONT
-static struct SFont* _default_font = NULL;
+static Font* _default_font = NULL;
 #endif
 
 EXPORT void CALL Setup2D() {
@@ -48,7 +48,7 @@ EXPORT void CALL SetDrawColor(int color) {
 }
 
 EXPORT void CALL SetDrawFont(const char* filename, float height) {
-  struct SFont* font = NULL;
+  Font* font = NULL;
   int i;
 
   /* search for already loaded font */
@@ -111,7 +111,7 @@ EXPORT void CALL DrawRect(float x, float y, float width, float height) {
   lgfx_drawrect(x, y, width, height);
 }
 
-EXPORT void CALL DrawTexture(const struct STexture* tex, float x, float y, float width, float height) {
+EXPORT void CALL DrawTexture(const Texture* tex, float x, float y, float width, float height) {
   const ltex_t* ltex = (const ltex_t*)_GetTexturePtr(tex);
   ltex_drawrotsized(ltex, x, y, 0, 0, 0, width != 0 ? width : ltex->width, height != 0 ? height : ltex->height, 0, 0, 1, 1);
 }

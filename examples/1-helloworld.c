@@ -3,14 +3,13 @@
 #define ROTATION_SPEED 32
 #define TEXT "Hello, world!"
 
-int main()
-{
-  /* setup */
+int main() {
+  /* Setup */
   InitBeam();
   SetScreen(800, 600, FALSE, FALSE);
   SetScreenTitle(TEXT);
 
-  /* main loop */
+  /* Main loop */
   while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
   {
     Setup2D();

@@ -5,9 +5,8 @@
 #define NUM_CUBES (16 * 50)
 #define ROTATION_SPEED 32
 
-int main()
-{
-  /* data */
+int main() {
+  /* Data */
   Light* dir_light;
   Viewer* viewer;
   Object* cubes[NUM_CUBES];
@@ -15,81 +14,69 @@ int main()
   int i;
   char str[STRING_SIZE];
 
-  /* setup */
+  /* Setup */
   InitBeam();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Fog");
 
-  /* setup lighting */
+  /* Setup lighting */
   dir_light = CreateLight(LIGHT_DIRECTIONAL);
   TurnLight(dir_light, 45, 45);
 
-  /* create and position viewer */
+  /* Create and position viewer */
   viewer = CreateViewer();
-  viewer->clearcolor = COLOR_DARKGRAY;
-  MoveViewer(viewer, 0, 0, -7);
-  viewer->max = 5000;
-  viewer->fogenabled = TRUE;
-  viewer->fogmax = 20;
+  SetViewerClearColor(viewer, COLOR_DARKGRAY);
+  SetViewerPosition(viewer, 0, 0, -7);
+  SetViewerDistance(viewer, 1, 5000);
+  SetViewerFogEnabled(viewer, TRUE);
+  SetViewerFogDistance(viewer, 0, 20);
 
-  /* create billboards */
+  /* Create billboards */
   x = -7;
   z = NUM_CUBES / 16 * 2 - 2;
-  for (i = 0; i < NUM_CUBES; i += 2)
-  {
+  for (i = 0; i < NUM_CUBES; i += 2) {
     Object* cube;
 
-    if (i == 0)
-    {
+    if (i == 0) {
       cube = CreateCube();
-      GetObjectMaterial(cube, 0)->diffuse = COLOR_BROWN;
-    }
-    else
-    {
+      SetMaterialDiffuse(GetObjectMaterial(cube, 0), COLOR_BROWN);
+    } else {
       cube = CloneObject(cubes[0]);
     }
-    cube->x = x;
-    cube->y = -1.5f;
-    cube->z = z;
+    SetObjectPosition(cube, x, -1.5f, z);
     cubes[i] = cube;
 
     cube = CloneObject(cubes[0]);
-    cube->x = x;
-    cube->y = 1.5f;
-    cube->z = z;
+    SetObjectPosition(cube, x, 1.5f, z);
     cubes[i+1] = cube;
     
     x += 2;
-    if (x > 7)
-    {
+    if (x > 7) {
       x = -7;
       z -= 2;
     }
   }
 
-  /* main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
-  {
-    /* turn objects */
-    for (i = 0; i < NUM_CUBES; ++i)
-    {
+  /* Main loop */
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
+    /* Turn objects */
+    for (i = 0; i < NUM_CUBES; ++i) {
       TurnObject(cubes[i], 0, ROTATION_SPEED * GetDeltaTime(), 0);
     }
 
-    /* draw scene */
+    /* Draw scene */
     PrepareViewer(viewer);
-    for (i = 0; i < NUM_CUBES; ++i)
-    {
+    for (i = 0; i < NUM_CUBES; ++i) {
       DrawObject(cubes[i]);
     }
 
-    /* draw ui */
+    /* Draw UI */
     sprintf(str, "%i FPS", GetScreenFPS());
     Setup2D();
     DrawText(str, 4, 4);
     RefreshScreen();
   }
 
-  /* shutdown */
+  /* Shutdown */
   ShutdownBeam();
 }

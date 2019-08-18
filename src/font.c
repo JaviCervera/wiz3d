@@ -20,7 +20,7 @@ typedef struct SFont
 } Font;
 
 
-Font* CreateFontFromMemblock(const struct SMemblock* memblock, float height) {
+Font* CreateFontFromMemblock(const Memblock* memblock, float height) {
   Font* font;
   int w, h;
   unsigned char* alphabuffer;
@@ -78,7 +78,7 @@ Font* CreateFontFromMemblock(const struct SMemblock* memblock, float height) {
 }
 
 Font* LoadFont(const char* filename, float height) {
-  struct SMemblock* memblock;
+  Memblock* memblock;
   Font* font = NULL;
 
   memblock = LoadMemblock(filename);
@@ -145,7 +145,7 @@ void DrawFont(const Font* font, const char* text, float x, float y) {
 
 #ifdef USE_DEFAULT_FONT
 Font* _LoadBase64Font(const char* data, size_t size, float height) {
-  struct SMemblock* memblock;
+  Memblock* memblock;
   Font* font;
 
   memblock = CreateMemblock(BASE64_DECODE_OUT_SIZE(size));

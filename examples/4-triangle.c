@@ -3,45 +3,45 @@
 
 #define ROTATION_SPEED 90
 
-int main()
-{
-  /* data */
+int main() {
+  /* Data */
   Viewer* viewer;
   Light* dir_light;
   Object* triangle;
+  Material* material;
   char str[STRING_SIZE];
 
-  /* setup */
+  /* Setup */
   InitBeam();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Triangle");
 
-  /* create and position viewer */
+  /* Create and position viewer */
   viewer = CreateViewer();
-  viewer->clearcolor = COLOR_WHITE;
-  MoveViewer(viewer, 0, 0, -2);
+  SetViewerClearColor(viewer, COLOR_WHITE);
+  SetViewerPosition(viewer, 0, 0, -2);
 
-  /* create a triangle */
+  /* Create a triangle */
   triangle = CreateTriangle();
-  GetObjectMaterial(triangle, 0)->flags -= FLAG_CULL;
-  GetObjectMaterial(triangle, 0)->diffuse = COLOR_ORANGE;
+  material = GetObjectMaterial(triangle, 0);
+  SetMaterialFlags(material, GetMaterialFlags(material) - FLAG_CULL);
+  SetMaterialDiffuse(material, COLOR_ORANGE);
 
-  /* main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
-  {
+  /* Main loop */
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
     TurnObject(triangle, 0, ROTATION_SPEED * GetDeltaTime(), 0);
 
-    /* draw scene */
+    /* Draw scene */
     PrepareViewer(viewer);
     DrawObject(triangle);
 
-    /* draw ui */
+    /* Draw UI */
     sprintf(str, "%i FPS", GetScreenFPS());
     Setup2D();
     DrawText(str, 4, 4);
     RefreshScreen();
   }
 
-  /* shutdown */
+  /* Shutdown */
   ShutdownBeam();
 }

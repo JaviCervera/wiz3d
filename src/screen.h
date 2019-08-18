@@ -10,8 +10,6 @@
 extern "C" {
 #endif
 
-struct STexture;
-
 EXPORT void CALL SetScreen(int width, int height, bool_t fullscreen, bool_t resizable);
 EXPORT void CALL RefreshScreen();
 EXPORT void CALL SetScreenTitle(const char* title);

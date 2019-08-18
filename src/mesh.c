@@ -8,6 +8,7 @@
 #include "color.h"
 #include "light.h"
 #include "material.h"
+#include "material_internal.h"
 #include "memblock.h"
 #include "mesh.h"
 #include "pixmap.h"
@@ -38,15 +39,15 @@ typedef struct SMesh {
   lvec3_t boxmax;
 } Mesh;
 
-bool_t _InitAssimpMesh(const struct SMemblock* memblock, Mesh* mesh);
-bool_t _InitMD2Mesh(const struct SMemblock* memblock, Mesh* mesh);
+bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh);
+bool_t _InitMD2Mesh(const Memblock* memblock, Mesh* mesh);
 
 
-Mesh* CreateMesh(const struct SMemblock* memblock) {
+Mesh* CreateMesh(const Memblock* memblock) {
   Mesh* mesh;
   bool_t init_ok;
 
-  mesh = _Alloc(struct SMesh);
+  mesh = _Alloc(Mesh);
   mesh->refcount = 1;
   mesh->buffers = NULL;
   mesh->materials = NULL;
@@ -298,33 +299,34 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
   /* draw all buffers */
   for (i = 0; i < sb_count(mesh->buffers); ++i) {
     const Material* material;
+    const Viewer* viewer;
     int specular;
 
     material = &materials[i];
 
     /* set material settings */
-    specular = MultiplyColor(material->specular, material->shininess);
-    lgfx_setblend(material->blend);
-    ltex_bindcolor((const ltex_t*)_GetTexturePtr(material->texture));
+    specular = MultiplyColor(GetMaterialSpecular(material), GetMaterialShininess(material));
+    lgfx_setblend(GetMaterialBlend(material));
+    ltex_bindcolor((const ltex_t*)_GetTexturePtr(GetMaterialTexture(material)));
     lgfx_setcolor(
-      GetRed(material->diffuse) / 255.0f,
-      GetGreen(material->diffuse) / 255.0f,
-      GetBlue(material->diffuse) / 255.0f,
-      GetAlpha(material->diffuse) / 255.0f);
+      GetRed(GetMaterialDiffuse(material)) / 255.0f,
+      GetGreen(GetMaterialDiffuse(material)) / 255.0f,
+      GetBlue(GetMaterialDiffuse(material)) / 255.0f,
+      GetAlpha(GetMaterialDiffuse(material)) / 255.0f);
     lgfx_setemissive(
-      GetRed(material->emissive) / 255.0f,
-      GetGreen(material->emissive) / 255.0f,
-      GetBlue(material->emissive) / 255.0f);
+      GetRed(GetMaterialEmissive(material)) / 255.0f,
+      GetGreen(GetMaterialEmissive(material)) / 255.0f,
+      GetBlue(GetMaterialEmissive(material)) / 255.0f);
     lgfx_setspecular(
       GetRed(specular) / 255.0f,
       GetGreen(specular) / 255.0f,
       GetBlue(specular) / 255.0f);
-    lgfx_setshininess(_Clamp(material->shininess * material->shininesspower > -1 ? material->shininesspower : GetShininessPower(), 0, 128));
-    lgfx_setculling((material->flags & FLAG_CULL) == FLAG_CULL);
-    lgfx_setdepthwrite((material->flags & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
+    lgfx_setshininess(_Clamp(GetMaterialShininess(material) * GetMaterialShininessPower(material) > -1 ? GetMaterialShininessPower(material) : GetDefaultShininessPower(), 0, 128));
+    lgfx_setculling((GetMaterialFlags(material) & FLAG_CULL) == FLAG_CULL);
+    lgfx_setdepthwrite((GetMaterialFlags(material) & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
 
     /* setup lighting */
-    if ((material->flags & FLAG_LIGHTING) == FLAG_LIGHTING) {
+    if ((GetMaterialFlags(material) & FLAG_LIGHTING) == FLAG_LIGHTING) {
       int numlights = _GetNumLights();
       lgfx_setlighting(numlights);
     } else {
@@ -332,14 +334,15 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
     }
 
     /* setup fog */
-    if ((material->flags & FLAG_FOG) == FLAG_FOG) {
+    viewer = _GetActiveViewer();
+    if ((GetMaterialFlags(material) & FLAG_FOG) == FLAG_FOG) {
       lgfx_setfog(
-        _GetActiveViewer()->fogenabled,
-        GetRed(_GetActiveViewer()->fogcolor) / 255.0f,
-        GetGreen(_GetActiveViewer()->fogcolor) / 255.0f,
-        GetBlue(_GetActiveViewer()->fogcolor) / 255.0f,
-        _GetActiveViewer()->fogmin,
-        _GetActiveViewer()->fogmax
+        IsViewerFogEnabled(viewer),
+        GetRed(GetViewerFogColor(viewer)) / 255.0f,
+        GetGreen(GetViewerFogColor(viewer)) / 255.0f,
+        GetBlue(GetViewerFogColor(viewer)) / 255.0f,
+        GetViewerFogDistanceMin(viewer),
+        GetViewerFogDistanceMax(viewer)
       );
     } else {
       lgfx_setfog(FALSE, 0, 0, 0, 0, 0);
@@ -407,12 +410,12 @@ Mesh* _CreateSkyboxMesh() {
   AddMeshTriangle(mesh, buffer, drb, dlf, drf);
 
   /* setup material */
-  mesh->materials[0].flags = FLAG_CULL;
+  SetMaterialFlags(&mesh->materials[0], FLAG_CULL);
 
   return mesh;
 }
 
-bool_t _InitAssimpMesh(const struct SMemblock* memblock, Mesh* mesh) {
+bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
   lassbin_scene_t* scene;
   int m, t;
 
@@ -470,12 +473,12 @@ bool_t _InitAssimpMesh(const struct SMemblock* memblock, Mesh* mesh) {
 
     /* apply texture */
     if (tex_name) {
-      struct STexture* texture = NULL;
+      Texture* texture = NULL;
 
       if (tex_name[0] == '*') {
         /* create embedded texture */
         int tex_index;
-        struct SPixmap* pixmap;
+        Pixmap* pixmap;
         tex_index = tex_name[1] - 48; /* convert ascii code tu number */
         pixmap = _CreateEmptyPixmapFromData(scene->textures[tex_index].data, lassbin_texturesize(&scene->textures[tex_index]));
         if (pixmap) {
@@ -487,43 +490,43 @@ bool_t _InitAssimpMesh(const struct SMemblock* memblock, Mesh* mesh) {
         texture = LoadTexture(tex_name);
       }
       if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
-      mesh->materials[buffer].texture = texture;
+      SetMaterialTexture(&mesh->materials[buffer], texture);
     }
 
     /* apply diffuse */
     if (diffuse) {
-      mesh->materials[buffer].diffuse = GetRGBA(
+      SetMaterialDiffuse(&mesh->materials[buffer], GetRGBA(
         (int)diffuse[0] * 255,
         (int)diffuse[1] * 255,
         (int)diffuse[2] * 255,
         (int)opacity * 255
-      );
+      ));
     } else {
-      mesh->materials[buffer].diffuse = GetRGBA(1, 1, 1, (int)opacity * 255);
+      SetMaterialDiffuse(&mesh->materials[buffer], GetRGBA(1, 1, 1, (int)opacity * 255));
     }
 
     /* apply emissive */
     if (emissive) {
-      mesh->materials[buffer].emissive = GetRGBA(
+      SetMaterialEmissive(&mesh->materials[buffer], GetRGBA(
         (int)emissive[0] * 255,
         (int)emissive[1] * 255,
         (int)emissive[2] * 255,
         255
-      );
+      ));
     }
 
     /* apply specular */
     if (specular) {
-      mesh->materials[buffer].specular = GetRGBA(
+      SetMaterialSpecular(&mesh->materials[buffer], GetRGBA(
         (int)specular[0] * 255,
         (int)specular[1] * 255,
         (int)specular[2] * 255,
         255
-      );
+      ));
     }
 
     /* apply shininess */
-    mesh->materials[buffer].shininess = shininess;
+    SetMaterialShininess(&mesh->materials[buffer], shininess);
   }
 
   lassbin_free(scene);
@@ -531,7 +534,7 @@ bool_t _InitAssimpMesh(const struct SMemblock* memblock, Mesh* mesh) {
   return TRUE;
 }
 
-bool_t _InitMD2Mesh(const struct SMemblock* memblock, Mesh* mesh) {
+bool_t _InitMD2Mesh(const Memblock* memblock, Mesh* mesh) {
   lmd2_model_t*  mdl;
   Frame* frame;
   int buffer;
@@ -546,9 +549,9 @@ bool_t _InitMD2Mesh(const struct SMemblock* memblock, Mesh* mesh) {
 
   /* load texture */
   if (mdl->header.num_skins > 0) {
-    struct STexture* texture = LoadTexture(mdl->skins[0].name);
+    Texture* texture = LoadTexture(mdl->skins[0].name);
     if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
-    GetMeshMaterial(mesh, buffer)->texture = texture;
+    SetMaterialTexture(GetMeshMaterial(mesh, buffer), texture);
   }
 
   /* create vertices */

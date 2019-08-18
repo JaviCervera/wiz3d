@@ -158,7 +158,7 @@ Materials define the way that 3D objects look. A material is defined by the foll
 ```
 Material
 {
-  struct STexture* texture;
+  Texture* texture;
   int               diffuse;
   int               emissive;
   int               specular;
@@ -205,51 +205,51 @@ Beam can allocate and manipulate memory buffers with this module. It defines an 
 
 Allocates a memory buffer of the specified size and returns a pointer to it.
 
-`void DeleteMemblock(struct SMemblock* memblock)`
+`void DeleteMemblock(Memblock* memblock)`
 
 Frees the specified memory buffer. You should not use the pointer after this.
 
-`int GetMemblockSize(const struct SMemblock* memblock)`
+`int GetMemblockSize(const Memblock* memblock)`
 
 Returns the size in bytes of the specified memory buffer.
 
-`unsigned char GetMemblockByte(const struct SMemblock* memblock, int offset)`
+`unsigned char GetMemblockByte(const Memblock* memblock, int offset)`
 
 Reads an unsigned byte (0...255) from the specified offset in the memory buffer.
 
-`unsigned short GetMemblockShort(const struct SMemblock* memblock, int offset)`
+`unsigned short GetMemblockShort(const Memblock* memblock, int offset)`
 
 Reads a short (2 bytes, range 0...65535) from the specified offset in the memory buffer.
 
-`int GetMemblockInt(const struct SMemblock* memblock, int offset)`
+`int GetMemblockInt(const Memblock* memblock, int offset)`
 
 Reads a signed integer from the specified offset in the memory buffer.
 
-`float GetMemblockFloat(const struct SMemblock* memblock, int offset)`
+`float GetMemblockFloat(const Memblock* memblock, int offset)`
 
 Reads a 32 bit float from the specified offset in the memory buffer.
 
-`double GetMemblockDouble(const struct SMemblock* memblock, int offset)`
+`double GetMemblockDouble(const Memblock* memblock, int offset)`
 
 Reads a 64 bit float from the specified offset in the memory buffer.
 
-`void SetMemblockByte(struct SMemblock* memblock, int offset, unsigned char val)`
+`void SetMemblockByte(Memblock* memblock, int offset, unsigned char val)`
 
 Writes an unsigned byte to the specified offset in the memory buffer.
 
-`void SetMemblockShort(struct SMemblock* memblock, int offset, unsigned short val)`
+`void SetMemblockShort(Memblock* memblock, int offset, unsigned short val)`
 
 Writes an unsigned short to the specified offset in the memory buffer.
 
-`void SetMemblockInt(struct SMemblock* memblock, int offset, int val)`
+`void SetMemblockInt(Memblock* memblock, int offset, int val)`
 
 Writes a signed integer to the specified offset in the memory buffer.
 
-`void SetMemblockFloat(struct SMemblock* memblock, int offset, float val)`
+`void SetMemblockFloat(Memblock* memblock, int offset, float val)`
 
 Writes a 32 bit float to the specified offset in the memory buffer.
 
-`void SetMemblockDouble(struct SMemblock* memblock, int offset, double val)`
+`void SetMemblockDouble(Memblock* memblock, int offset, double val)`
 
 Writes a 64 bit float to the specified offset in the memory buffer.
 
@@ -421,35 +421,35 @@ Get the global animation frames per second.
 
 A pixmap is a buffer in memory which contains image data, allows for manipulation of individual pixels, and can be copied to a texture. A pixmap is represented by the opaque `pixmap_t` structure.
 
-`struct SPixmap* CreateEmptyPixmap(int width, int height)`
+`Pixmap* CreateEmptyPixmap(int width, int height)`
 
 Creates a new pixmap with the given width and height and return its pointer.
 
-`struct SPixmap* CreatePixmap(const struct SMemblock* memblock)`
+`Pixmap* CreatePixmap(const Memblock* memblock)`
 
 Creates a new pixmap with the data contained in the given memory buffer and returns its pointer. The data should be in a supported format like bmp, jpg or png.
 
-`struct SPixmap* LoadPixmap(const char* filename)`
+`Pixmap* LoadPixmap(const char* filename)`
 
 Loads a pixmap from the specified file and returns its pointer. The file should be in a supported format like bmp, jpg on png.
 
-`void DeletePixmap(struct SPixmap* pixmap)`
+`void DeletePixmap(Pixmap* pixmap)`
 
 Deletes the fiven pixmap. You must not use the pointer after that.
 
-`int GetPixmapWidth(const struct SPixmap* pixmap)`
+`int GetPixmapWidth(const Pixmap* pixmap)`
 
 Returns the width in pixels of the given pixmap.
 
-`int GetPixmapHeight(const struct SPixmap* pixmap)`
+`int GetPixmapHeight(const Pixmap* pixmap)`
 
 Returns the height in pixels of the given pixmap.
 
-`int GetPixmapColor(const struct SPixmap* pixmap, int x, int y)`
+`int GetPixmapColor(const Pixmap* pixmap, int x, int y)`
 
 Returns the color of the pixel at the coordinates x, y in the given pixmap.
 
-`void SetPixmapColor(struct SPixmap* pixmap, int x, int y, int color)`
+`void SetPixmapColor(Pixmap* pixmap, int x, int y, int color)`
 
 Sets the color of the pixels at the coordinates x, y in the given pixmap.
 
@@ -513,7 +513,7 @@ Draws an ellipse that begins at the given coordinates and extends with the given
 
 Draws a rectangle that begins at the given coordinates and extends with the given size.
 
-`void DrawTexture(const struct STexture* tex, float x, float y, float width, float height)`
+`void DrawTexture(const Texture* tex, float x, float y, float width, float height)`
 
 Draws the texture with the given coordinates and size. Pass 0 as width or height to use the texture's original width or height.
 
@@ -617,35 +617,35 @@ Tells whether the specified channel is playing or not.
 
 Textures are buffers of pixels in video RAM that can be applied to materials.
 
-`struct STexture* CreateEmptyTexture(int width, int height)`
+`Texture* CreateEmptyTexture(int width, int height)`
 
 Creates a new texture with the given size in pixels. We can use `texture_setpixmap` to fill the pixels of the texture.
 
-`struct STexture* CreateTextureFromMemblock(const struct SMemblock* memblock)`
+`Texture* CreateTextureFromMemblock(const Memblock* memblock)`
 
 Creates a new texture with the image data at the specified memory buffer. It should be in a supported format like bmp, jpg or png.
 
-`struct STexture* CreateTexture(const struct SPixmap* pixmap)`
+`Texture* CreateTexture(const Pixmap* pixmap)`
 
 Creates a texture from the pixel data in the given pixmap.
 
-`struct STexture* LoadTexture(const char* filename)`
+`Texture* LoadTexture(const char* filename)`
 
 Loads the specified texture file and returns its pointer. It should be in a supported format like bmp, jpg or png.
 
-`void DeleteTexture(struct STexture* texture)`
+`void DeleteTexture(Texture* texture)`
 
 Deletes the texture from memory. Materials must not be referencing this material, and you should not try to use it after this.
 
-`int GetTextureWidth(const struct STexture* texture)`
+`int GetTextureWidth(const Texture* texture)`
 
 Returns the width in pixels of the given texture.
 
-`int GetTextureHeight(const struct STexture* texture)`
+`int GetTextureHeight(const Texture* texture)`
 
 Returns the height in pixels of the given texture.
 
-`void SetTexturePixels(struct STexture* texture, const struct SPixmap* pixmap)`
+`void SetTexturePixels(Texture* texture, const Pixmap* pixmap)`
 
 Sets the pixels of the given texture, by copying the pixels in the given pixmap.
 

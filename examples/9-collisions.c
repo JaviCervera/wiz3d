@@ -1,8 +1,7 @@
 #include "../src/beam.h"
 
-int main()
-{
-  /* data */
+int main() {
+  /* Data */
   Object* floor;
   Object* ball;
   Object* block;
@@ -12,85 +11,79 @@ int main()
   Light* dir_light;
   int direction = 1;
 
-  /* setup */
+  /* Setup */
   InitBeam();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Collisions");
 
-  /* create floor */
+  /* Create floor */
   floor = CreateCube();
   MoveObject(floor, 0, -0.5f, 4);
-  floor->colmode = COL_BOX;
-  floor->sx = floor->sz = 20;
-  GetObjectMaterial(floor, 0)->diffuse = COLOR_BLUE;
+  SetObjectCollision(floor, COL_BOX);
+  SetObjectScale(floor, 20, 1, 20);
+  SetMaterialDiffuse(GetObjectMaterial(floor, 0), COLOR_BLUE);
 
-  /* load ball */
+  /* Load ball */
   ball = LoadObject("data/sphere.assbin");
   MoveObject(ball, 0, 0.5f, -4);
-  ball->colmode = COL_SPHERE;
-  ball->radius = 0.5f;
-  GetObjectMaterial(ball, 0)->diffuse = COLOR_RED;
+  SetObjectCollision(ball, COL_SPHERE);
+  SetObjectRadius(ball, 0.5f);
+  SetMaterialDiffuse(GetObjectMaterial(ball, 0), COLOR_RED);
 
-  /* create block */
+  /* Create block */
   block = CreateCube();
   MoveObject(block, 0, 2, 0);
-  block->colmode = COL_BOX;
-  block->sx = block->sy = 4;
-  GetObjectMaterial(block, 0)->diffuse = COLOR_LIGHTGRAY;
+  SetObjectCollision(block, COL_BOX);
+  SetObjectScale(block, 4, 4, 1);
+  SetMaterialDiffuse(GetObjectMaterial(block, 0), COLOR_LIGHTGRAY);
 
-  /* create ball shadow */
+  /* Create ball shadow */
   ball_shadow = CreateQuad();
-  ball_shadow->pitch = 90;
-  GetObjectMaterial(ball_shadow, 0)->texture = LoadTexture("data/circle_shadow.png");
-  GetObjectMaterial(ball_shadow, 0)->diffuse = COLOR_BLACK;
-  GetObjectMaterial(ball_shadow, 0)->blend = BLEND_ALPHA;
+  SetObjectRotation(ball_shadow, 90, 0, 0);
+  SetMaterialTexture(GetObjectMaterial(ball_shadow, 0), LoadTexture("data/circle_shadow.png"));
+  SetMaterialDiffuse(GetObjectMaterial(ball_shadow, 0), COLOR_BLACK);
+  SetMaterialBlend(GetObjectMaterial(ball_shadow, 0), BLEND_ALPHA);
 
-  /* create block shadow */
+  /* Create block shadow */
   block_shadow = CreateQuad();
-  block_shadow->pitch = 90;
-  block_shadow->sx = 4;
-  GetObjectMaterial(block_shadow, 0)->diffuse = COLOR_LIGHTGRAY;
-  GetObjectMaterial(block_shadow, 0)->blend = BLEND_MUL;
+  SetObjectRotation(block_shadow, 90, 0, 0);
+  SetObjectScale(block_shadow, 4, 1, 1);
+  SetMaterialDiffuse(GetObjectMaterial(block_shadow, 0), COLOR_LIGHTGRAY);
+  SetMaterialBlend(GetObjectMaterial(block_shadow, 0), BLEND_MUL);
 
-  /* create and position viewer */
+  /* Create and position viewer */
   viewer = CreateViewer();
   MoveViewer(viewer, 0, 7, -8);
   TurnViewer(viewer, 45, 0, 0);
 
-  /* setup lighting */
+  /* Setup lighting */
   SetAmbientColor(COLOR_LIGHTGRAY);
   dir_light = CreateLight(LIGHT_DIRECTIONAL);
-  dir_light->pitch = 15;
-  dir_light->yaw = 60;
+  SetLightRotation(dir_light, 15, 60);
 
-  /* main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
-  {
-    /* move ball */
+  /* Main loop */
+  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
+    /* Move ball */
     if (IsKeyPressed(KEY_UP)) MoveObject(ball, 0, 0, 2 * GetDeltaTime());
     if (IsKeyPressed(KEY_DOWN)) MoveObject(ball, 0, 0, -2 * GetDeltaTime());
     if (IsKeyPressed(KEY_LEFT)) MoveObject(ball, -2 * GetDeltaTime(), 0, 0);
     if (IsKeyPressed(KEY_RIGHT)) MoveObject(ball, 2 * GetDeltaTime(), 0, 0);
 
-    /* move block */
+    /* Move block */
     MoveObject(block, 0, 2 * direction * GetDeltaTime(), 0);
-    if (block->y >= 4)
-    {
-      block->y = 4;
+    if (GetObjectY(block) >= 4) {
+      SetObjectPosition(block, GetObjectX(block), 4, GetObjectZ(block));
       direction = -1;
     }
-    if (ObjectCollidesObject(block, floor) || ObjectCollidesObject(block, ball))
-    {
+    if (ObjectCollidesObject(block, floor) || ObjectCollidesObject(block, ball)) {
       direction = 1;
     }
 
-    /* update shadows */
-    ball_shadow->x = ball->x;
-    ball_shadow->z = ball->z;
-    block_shadow->x = block->x;
-    block_shadow->z = block->z;
+    /* Update shadows */
+    SetObjectPosition(ball_shadow, GetObjectX(ball), 0, GetObjectZ(ball));
+    SetObjectPosition(block_shadow, GetObjectX(block), 0, GetObjectZ(block));
 
-    /* draw scene */
+    /* Draw scene */
     PrepareViewer(viewer);
     DrawObject(floor);
     DrawObject(ball);
@@ -98,10 +91,10 @@ int main()
     DrawObject(block_shadow);
     DrawObject(ball_shadow);
 
-    /* draw ui */
+    /* Draw UI */
     RefreshScreen();
   }
 
-  /* shutdown */
+  /* Shutdown */
   ShutdownBeam();
 }

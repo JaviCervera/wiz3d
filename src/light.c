@@ -7,6 +7,14 @@
 #include "viewer.h"
 #include <math.h>
 
+typedef struct SLight {
+  float x, y, z;
+  float pitch, yaw;
+  int   type;
+  int   color;
+  float range;
+} Light;
+
 static int _light_ambient;
 static Light* _lights[NUM_LIGHTS] = {};
 
@@ -50,6 +58,32 @@ EXPORT void CALL DeleteLight(Light* light) {
   free(light);
 }
 
+EXPORT int CALL GetLightType(const Light* light) { return light->type; }
+
+EXPORT void CALL SetLightType(Light* light, int type) {
+  light->type = _Clamp(type, LIGHT_DIRECTIONAL, LIGHT_POINT);
+}
+
+EXPORT int CALL GetLightColor(const Light* light) { return light->color; }
+
+EXPORT void CALL SetLightColor(Light* light, int color) { light->color = color; }
+
+EXPORT float CALL GetLightRange(const Light* light) { return light->range; }
+
+EXPORT void CALL SetLightRange(Light* light, float range) { light->range = range; }
+
+EXPORT float CALL GetLightX(const Light* light) { return light->x; }
+
+EXPORT float CALL GetLightY(const Light* light) { return light->y; }
+
+EXPORT float CALL GetLightZ(const Light* light) { return light->z; }
+
+EXPORT void CALL SetLightPosition(Light* light, float x, float y, float z) {
+  light->x = x;
+  light->y = y;
+  light->z = z;
+}
+
 EXPORT void CALL MoveLight(Light* light, float x, float y, float z) {
   lvec3_t vec;
 
@@ -61,6 +95,15 @@ EXPORT void CALL MoveLight(Light* light, float x, float y, float z) {
   light->x = vec.x;
   light->y = vec.y;
   light->z = vec.z;
+}
+
+EXPORT float CALL GetLightPitch(const Light* light) { return light->pitch; }
+
+EXPORT float CALL GetLightYaw(const Light* light) { return light->yaw; }
+
+EXPORT void CALL SetLightRotation(Light* light, float pitch, float yaw) {
+  light->pitch = pitch;
+  light->yaw = yaw;
 }
 
 EXPORT void CALL TurnLight(Light* light, float pitch, float yaw) {
@@ -78,16 +121,14 @@ EXPORT void CALL LightLookAt(Light* light, float x, float y, float z) {
   light->yaw = lm_rad2deg((float)atan2(dir.x, dir.z));
 }
 
+EXPORT int CALL GetAmbientColor() { return _light_ambient; }
+
 EXPORT void CALL SetAmbientColor(int color) {
   _light_ambient = color;
   lgfx_setambient(
     GetRed(color) / 255.0f,
     GetGreen(color) / 255.0f,
     GetBlue(color) / 255.0f);
-}
-
-EXPORT int CALL GetAmbientColor() {
-  return _light_ambient;
 }
 
 void _PrepareLights() {

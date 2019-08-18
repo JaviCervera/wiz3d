@@ -62,21 +62,13 @@ See [here](./doc/documentation.md).
 
 ### v0.9-beta
 
-- [x] beam_config.h to selectively include engine features in compilation.
-- [x] Support for Allegro, GLFW and SDL in beam_config.h.
-- [x] Remove Lua support and convert Beam into a dll.
-- [x] Dependencies build inside root _CMAKE dir.
-- [x] SDL2 is now default platform.
-- [x] Pascal case for function names.
-- [x] Trailing braces.
-- [x] File system with pak support.
-- [x] Remove billboard property from objects, and add LightLookAt, ObjectLookAt, ViewerLookAt.
-- [ ] Replace structs with functions for everything.
+- [x] Replace structs with functions for everything.
+- [ ] Add Transform type.
 - [ ] Lightmaps.
 - [ ] material.ambient.
 - [ ] Spot lights.
-- [ ] More Vortex examples.
 - [ ] Audio with support for wav and ogg formats (OpenAL only by now).
+- [ ] More Vortex examples.
 
 ### v1.0
 

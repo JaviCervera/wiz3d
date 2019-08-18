@@ -9,12 +9,12 @@ typedef struct SPixmap {
   int height;
 } Pixmap;
 
-EXPORT Pixmap* CALL CreatePixmap(const struct SMemblock* memblock) {
+EXPORT Pixmap* CALL CreatePixmap(const Memblock* memblock) {
   return _CreateEmptyPixmapFromData((const unsigned char*)memblock, GetMemblockSize(memblock));
 }
 
 EXPORT Pixmap* CALL CreateEmptyPixmap(int width, int height) {
-  Pixmap* pixmap = _Alloc(struct SPixmap);
+  Pixmap* pixmap = _Alloc(Pixmap);
   pixmap->pixels = _AllocMany(int, width * height);
   pixmap->width = width;
   pixmap->height = height;
@@ -22,7 +22,7 @@ EXPORT Pixmap* CALL CreateEmptyPixmap(int width, int height) {
 }
 
 EXPORT Pixmap* CALL LoadPixmap(const char* filename) {
-  struct SMemblock* memblock;
+  Memblock* memblock;
   Pixmap* pixmap = NULL;
 
   memblock = LoadMemblock(filename);
@@ -65,7 +65,7 @@ Pixmap* _CreateEmptyPixmapFromData(const unsigned char* data, size_t len) {
   if (!buffer) return NULL;
 
   /* create pixmap */
-  pixmap = _Alloc(struct SPixmap);
+  pixmap = _Alloc(Pixmap);
   pixmap->pixels = (int*)buffer;
   pixmap->width = w;
   pixmap->height = h;
