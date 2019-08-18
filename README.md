@@ -63,8 +63,7 @@ See [here](./doc/documentation.md).
 ### v0.9-beta
 
 - [x] Replace structs with functions for everything.
-- [ ] Add Transform type.
-- [ ] Lightmaps.
+- [ ] Lightmaps (add other missing features from ColdSteel and Soil).
 - [ ] material.ambient.
 - [ ] Spot lights.
 - [ ] Audio with support for wav and ogg formats (OpenAL only by now).
