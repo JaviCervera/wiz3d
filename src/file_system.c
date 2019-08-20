@@ -26,7 +26,7 @@ const PakEntry* _GetPakEntry(const PakFile* pak, const char* entryname);
 size_t _GetPakEntrySize(const PakFile* pak, const char* entryname);
 bool_t _GetPakEntryContents(const PakFile* pak, const char* entryname, void* buffer);
 
-bool_t AddPackage(const char* pakname) {
+EXPORT bool_t CALL spAddPackage(const char* pakname) {
 #ifdef USE_PAK
   PakFile pak;
   int i;
@@ -50,7 +50,7 @@ bool_t AddPackage(const char* pakname) {
 #endif
 }
 
-bool_t IsFilePacked(const char* filename) {
+EXPORT bool_t CALL spIsFilePacked(const char* filename) {
 #ifdef USE_PAK
   return _GetPakForFile(filename) != NULL;
 #else
@@ -58,7 +58,7 @@ bool_t IsFilePacked(const char* filename) {
 #endif
 }
 
-size_t GetFileSize(const char* filename) {
+EXPORT size_t CALL spGetFileSize(const char* filename) {
   const PakFile* pak;
   pak = _GetPakForFile(filename);
   if (pak) {

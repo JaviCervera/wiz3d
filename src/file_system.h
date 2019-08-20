@@ -7,9 +7,9 @@
 extern "C" {
 #endif
 
-bool_t AddPackage(const char* pakname);
-bool_t IsFilePacked(const char* filename);
-size_t GetFileSize(const char* filename);
+EXPORT bool_t CALL spAddPackage(const char* pakname);
+EXPORT bool_t CALL spIsFilePacked(const char* filename);
+EXPORT size_t CALL spGetFileSize(const char* filename);
 
 #ifndef SWIG
 bool_t _GetFileContents(const char* filename, void* buffer);

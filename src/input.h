@@ -24,12 +24,12 @@ extern "C" {
 #include "input_glfw.h"
 #include "input_sdl.h"
 
-EXPORT void CALL SetCursorVisible(bool_t visible);
-EXPORT void CALL SetCursorPosition(int x, int y);
-EXPORT int CALL GetCursorX();
-EXPORT int CALL GetCursorY();
-EXPORT bool_t CALL IsCursorPressed(int b);
-EXPORT bool_t CALL IsKeyPressed(int k);
+EXPORT void CALL spSetCursorVisible(bool_t visible);
+EXPORT void CALL spSetCursorPosition(int x, int y);
+EXPORT int CALL spGetCursorX();
+EXPORT int CALL spGetCursorY();
+EXPORT bool_t CALL spIsCursorPressed(int b);
+EXPORT bool_t CALL spIsKeyPressed(int k);
 
 #ifdef __cplusplus
 } /* extern "C" */

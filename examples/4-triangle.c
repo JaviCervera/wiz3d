@@ -12,36 +12,36 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  InitSpark();
-  SetScreen(800, 600, FALSE, TRUE);
-  SetScreenTitle("Triangle");
+  spInitSpark();
+  spSetScreen(800, 600, FALSE, TRUE);
+  spSetScreenTitle("Triangle");
 
   /* Create and position viewer */
-  viewer = CreateViewer();
-  SetViewerClearColor(viewer, COLOR_WHITE);
-  SetViewerPosition(viewer, 0, 0, -2);
+  viewer = spCreateViewer();
+  spSetViewerClearColor(viewer, COLOR_WHITE);
+  spSetViewerPosition(viewer, 0, 0, -2);
 
   /* Create a triangle */
-  triangle = CreateTriangle();
-  material = GetObjectMaterial(triangle, 0);
-  SetMaterialFlags(material, GetMaterialFlags(material) - FLAG_CULL);
-  SetMaterialDiffuse(material, COLOR_ORANGE);
+  triangle = spCreateTriangle();
+  material = spGetObjectMaterial(triangle, 0);
+  spSetMaterialFlags(material, spGetMaterialFlags(material) - FLAG_CULL);
+  spSetMaterialDiffuse(material, COLOR_ORANGE);
 
   /* Main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
-    TurnObject(triangle, 0, ROTATION_SPEED * GetDeltaTime(), 0);
+  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
+    spTurnObject(triangle, 0, ROTATION_SPEED * spGetDeltaTime(), 0);
 
     /* Draw scene */
-    PrepareViewer(viewer);
-    DrawObject(triangle);
+    spPrepareViewer(viewer);
+    spDrawObject(triangle);
 
     /* Draw UI */
-    sprintf(str, "%i FPS", GetScreenFPS());
-    Setup2D();
-    DrawText(str, 4, 4);
-    RefreshScreen();
+    sprintf(str, "%i FPS", spGetScreenFPS());
+    spSetup2D();
+    spDrawText(str, 4, 4);
+    spRefreshScreen();
   }
 
   /* Shutdown */
-  ShutdownSpark();
+  spShutdownSpark();
 }

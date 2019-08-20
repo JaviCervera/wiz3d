@@ -7,9 +7,9 @@
 extern "C" {
 #endif
 
-EXPORT void CALL UpdateTimer();
+EXPORT void CALL spUpdateTimer();
 
-EXPORT float CALL GetDeltaTime();
+EXPORT float CALL spGetDeltaTime();
 
 #ifdef __cplusplus
 } /* extern "C" */

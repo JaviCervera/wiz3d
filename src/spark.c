@@ -30,7 +30,7 @@
 #endif
 
 
-EXPORT bool_t CALL InitSpark() {
+EXPORT bool_t CALL spInitSpark() {
   bool_t ret;
   ret = p_Init();
   if (!ret) return FALSE;
@@ -40,7 +40,7 @@ EXPORT bool_t CALL InitSpark() {
   return ret != FALSE;
 }
 
-EXPORT void CALL ShutdownSpark() {
+EXPORT void CALL spShutdownSpark() {
 #ifndef PLATFORM_NULL
   if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
 #endif

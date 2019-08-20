@@ -9,11 +9,11 @@ typedef struct SPixmap {
   int height;
 } Pixmap;
 
-EXPORT Pixmap* CALL CreatePixmap(const Memblock* memblock) {
-  return _CreateEmptyPixmapFromData((const unsigned char*)memblock, GetMemblockSize(memblock));
+EXPORT Pixmap* CALL spCreatePixmap(const Memblock* memblock) {
+  return _CreateEmptyPixmapFromData((const unsigned char*)memblock, spGetMemblockSize(memblock));
 }
 
-EXPORT Pixmap* CALL CreateEmptyPixmap(int width, int height) {
+EXPORT Pixmap* CALL spCreateEmptyPixmap(int width, int height) {
   Pixmap* pixmap = _Alloc(Pixmap);
   pixmap->pixels = _AllocMany(int, width * height);
   pixmap->width = width;
@@ -21,37 +21,37 @@ EXPORT Pixmap* CALL CreateEmptyPixmap(int width, int height) {
   return pixmap;
 }
 
-EXPORT Pixmap* CALL LoadPixmap(const char* filename) {
+EXPORT Pixmap* CALL spLoadPixmap(const char* filename) {
   Memblock* memblock;
   Pixmap* pixmap = NULL;
 
-  memblock = LoadMemblock(filename);
+  memblock = spLoadMemblock(filename);
   if (memblock) {
-    pixmap = CreatePixmap(memblock);
-    DeleteMemblock(memblock);
+    pixmap = spCreatePixmap(memblock);
+    spDeleteMemblock(memblock);
   }
 
   return pixmap;
 }
 
-EXPORT void CALL DeletePixmap(Pixmap* pixmap) {
+EXPORT void CALL spDeletePixmap(Pixmap* pixmap) {
   free(pixmap->pixels);
   free(pixmap);
 }
 
-EXPORT int CALL GetPixmapWidth(const Pixmap* pixmap) {
+EXPORT int CALL spGetPixmapWidth(const Pixmap* pixmap) {
   return pixmap->width;
 }
 
-EXPORT int CALL GetPixmapHeight(const Pixmap* pixmap) {
+EXPORT int CALL spGetPixmapHeight(const Pixmap* pixmap) {
   return pixmap->height;
 }
 
-EXPORT int CALL GetPixmapColor(const Pixmap* pixmap, int x, int y) {
+EXPORT int CALL spGetPixmapColor(const Pixmap* pixmap, int x, int y) {
   return pixmap->pixels[y*pixmap->width + x];
 }
 
-EXPORT void CALL SetPixmapColor(Pixmap* pixmap, int x, int y, int color) {
+EXPORT void CALL spSetPixmapColor(Pixmap* pixmap, int x, int y, int color) {
   pixmap->pixels[y*pixmap->width + x] = color;
 }
 

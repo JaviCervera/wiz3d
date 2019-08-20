@@ -22,8 +22,8 @@
 extern "C" {
 #endif
 
-EXPORT bool_t CALL InitSpark();
-EXPORT void CALL ShutdownSpark();
+EXPORT bool_t CALL spInitSpark();
+EXPORT void CALL spShutdownSpark();
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -10,14 +10,14 @@ typedef struct {
 
 static Colbox* _colboxes = NULL; /* array of boxes */
 
-EXPORT void CALL AddColbox(float minx, float miny, float minz, float maxx, float maxy, float maxz) {
+EXPORT void CALL spAddColbox(float minx, float miny, float minz, float maxx, float maxy, float maxz) {
   Colbox box;
   box.min = lvec3(minx, miny, minz);
   box.max = lvec3(maxx, maxy, maxz);
   sb_push(_colboxes, box);
 }
 
-EXPORT void CALL ClearColboxes() {
+EXPORT void CALL spClearColboxes() {
   sb_free(_colboxes);
   _colboxes = NULL;
 }

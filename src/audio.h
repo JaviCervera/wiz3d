@@ -11,35 +11,35 @@ extern "C" {
 #endif
 
 /* Music */
-EXPORT bool_t CALL PlayMusic(const char* filename, bool_t loop);
-EXPORT void CALL PauseMusic();
-EXPORT void CALL ResumeMusic();
-EXPORT void CALL StopMusic();
-EXPORT void CALL SetMusicVolume(float volume);
-EXPORT bool_t CALL IsMusicPlaying();
+EXPORT bool_t CALL spPlayMusic(const char* filename, bool_t loop);
+EXPORT void CALL spPauseMusic();
+EXPORT void CALL spResumeMusic();
+EXPORT void CALL spStopMusic();
+EXPORT void CALL spSetMusicVolume(float volume);
+EXPORT bool_t CALL spIsMusicPlaying();
 
 /* Sound */
-EXPORT void* CALL LoadSound(const char* filename);
-EXPORT void CALL DeleteSound(void* sound);
-EXPORT void* CALL PlaySound(void* sound, bool_t loop);
+EXPORT void* CALL spLoadSound(const char* filename);
+EXPORT void CALL spDeleteSound(void* sound);
+EXPORT void* CALL spPlaySound(void* sound, bool_t loop);
 
 /* Listener */
-EXPORT void CALL PositionListener(float x, float y, float z);
-EXPORT float CALL GetListenerX();
-EXPORT float CALL GetListenerY();
-EXPORT float CALL GetListenerZ();
-EXPORT void CALL RotateListener(float yaw);
-EXPORT float CALL GetListenerYaw();
+EXPORT void CALL spPositionListener(float x, float y, float z);
+EXPORT float CALL spGetListenerX();
+EXPORT float CALL spGetListenerY();
+EXPORT float CALL spGetListenerZ();
+EXPORT void CALL spRotateListener(float yaw);
+EXPORT float CALL spGetListenerYaw();
 
 /* Channel */
-EXPORT void CALL PauseChannel(void* channel);
-EXPORT void CALL ResumeChannel(void* channel);
-EXPORT void CALL StopChannel(void* channel);
-EXPORT void CALL PositionChannel(void* channel, float x, float y, float z, float radius);
-EXPORT void CALL SetChannelVolume(void* channel, float volume);
-EXPORT void CALL SetChannelPan(void* channel, float pan);
-EXPORT void CALL SetChannelPitch(void* channel, float pitch);
-EXPORT bool_t CALL IsChannelPlaying(void* channel);
+EXPORT void CALL spPauseChannel(void* channel);
+EXPORT void CALL spResumeChannel(void* channel);
+EXPORT void CALL spStopChannel(void* channel);
+EXPORT void CALL spPositionChannel(void* channel, float x, float y, float z, float radius);
+EXPORT void CALL spSetChannelVolume(void* channel, float volume);
+EXPORT void CALL spSetChannelPan(void* channel, float pan);
+EXPORT void CALL spSetChannelPitch(void* channel, float pitch);
+EXPORT bool_t CALL spIsChannelPlaying(void* channel);
 
 #ifdef __cplusplus
 } /* extern "C" */

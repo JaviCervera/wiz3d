@@ -18,7 +18,7 @@ typedef struct SLight {
 static int _light_ambient;
 static Light* _lights[NUM_LIGHTS] = {};
 
-EXPORT Light* CALL CreateLight(int type) {
+EXPORT Light* CALL spCreateLight(int type) {
   int i;
   Light* light;
 
@@ -45,7 +45,7 @@ EXPORT Light* CALL CreateLight(int type) {
   return light;
 }
 
-EXPORT void CALL DeleteLight(Light* light) {
+EXPORT void CALL spDeleteLight(Light* light) {
   size_t i;
 
   /* find light index in array */
@@ -58,33 +58,33 @@ EXPORT void CALL DeleteLight(Light* light) {
   free(light);
 }
 
-EXPORT int CALL GetLightType(const Light* light) { return light->type; }
+EXPORT int CALL spGetLightType(const Light* light) { return light->type; }
 
-EXPORT void CALL SetLightType(Light* light, int type) {
+EXPORT void CALL spSetLightType(Light* light, int type) {
   light->type = _Clamp(type, LIGHT_DIRECTIONAL, LIGHT_POINT);
 }
 
-EXPORT int CALL GetLightColor(const Light* light) { return light->color; }
+EXPORT int CALL spGetLightColor(const Light* light) { return light->color; }
 
-EXPORT void CALL SetLightColor(Light* light, int color) { light->color = color; }
+EXPORT void CALL spSetLightColor(Light* light, int color) { light->color = color; }
 
-EXPORT float CALL GetLightRange(const Light* light) { return light->range; }
+EXPORT float CALL spGetLightRange(const Light* light) { return light->range; }
 
-EXPORT void CALL SetLightRange(Light* light, float range) { light->range = range; }
+EXPORT void CALL spSetLightRange(Light* light, float range) { light->range = range; }
 
-EXPORT float CALL GetLightX(const Light* light) { return light->x; }
+EXPORT float CALL spGetLightX(const Light* light) { return light->x; }
 
-EXPORT float CALL GetLightY(const Light* light) { return light->y; }
+EXPORT float CALL spGetLightY(const Light* light) { return light->y; }
 
-EXPORT float CALL GetLightZ(const Light* light) { return light->z; }
+EXPORT float CALL spGetLightZ(const Light* light) { return light->z; }
 
-EXPORT void CALL SetLightPosition(Light* light, float x, float y, float z) {
+EXPORT void CALL spSetLightPosition(Light* light, float x, float y, float z) {
   light->x = x;
   light->y = y;
   light->z = z;
 }
 
-EXPORT void CALL MoveLight(Light* light, float x, float y, float z) {
+EXPORT void CALL spMoveLight(Light* light, float x, float y, float z) {
   lvec3_t vec;
 
   vec = lvec3_add(
@@ -97,16 +97,16 @@ EXPORT void CALL MoveLight(Light* light, float x, float y, float z) {
   light->z = vec.z;
 }
 
-EXPORT float CALL GetLightPitch(const Light* light) { return light->pitch; }
+EXPORT float CALL spGetLightPitch(const Light* light) { return light->pitch; }
 
-EXPORT float CALL GetLightYaw(const Light* light) { return light->yaw; }
+EXPORT float CALL spGetLightYaw(const Light* light) { return light->yaw; }
 
-EXPORT void CALL SetLightRotation(Light* light, float pitch, float yaw) {
+EXPORT void CALL spSetLightRotation(Light* light, float pitch, float yaw) {
   light->pitch = pitch;
   light->yaw = yaw;
 }
 
-EXPORT void CALL TurnLight(Light* light, float pitch, float yaw) {
+EXPORT void CALL spTurnLight(Light* light, float pitch, float yaw) {
   lvec3_t vec;
 
   vec = lvec3_add(lvec3(light->pitch, light->yaw, 0), lvec3(pitch, yaw, 0));
@@ -114,21 +114,21 @@ EXPORT void CALL TurnLight(Light* light, float pitch, float yaw) {
   light->yaw = vec.y;
 }
 
-EXPORT void CALL LightLookAt(Light* light, float x, float y, float z) {
+EXPORT void CALL spLightLookAt(Light* light, float x, float y, float z) {
   lvec3_t dir;
   dir = lvec3_norm(lvec3_sub(lvec3(x, y, z), lvec3(light->x, light->y, light->z)));
   light->pitch = lm_rad2deg((float)asin(-dir.y));
   light->yaw = lm_rad2deg((float)atan2(dir.x, dir.z));
 }
 
-EXPORT int CALL GetAmbientColor() { return _light_ambient; }
+EXPORT int CALL spGetAmbientColor() { return _light_ambient; }
 
-EXPORT void CALL SetAmbientColor(int color) {
+EXPORT void CALL spSetAmbientColor(int color) {
   _light_ambient = color;
   lgfx_setambient(
-    GetRed(color) / 255.0f,
-    GetGreen(color) / 255.0f,
-    GetBlue(color) / 255.0f);
+    spGetRed(color) / 255.0f,
+    spGetGreen(color) / 255.0f,
+    spGetBlue(color) / 255.0f);
 }
 
 void _PrepareLights() {
@@ -160,9 +160,9 @@ void _PrepareLights() {
         pos.y,
         pos.z,
         light->type,
-        GetRed(light->color) / 255.0f,
-        GetGreen(light->color) / 255.0f,
-        GetBlue(light->color) / 255.0f,
+        spGetRed(light->color) / 255.0f,
+        spGetGreen(light->color) / 255.0f,
+        spGetBlue(light->color) / 255.0f,
         1.0f / light->range);
     }
   }

@@ -81,10 +81,10 @@ Font* LoadFont(const char* filename, float height) {
   Memblock* memblock;
   Font* font = NULL;
 
-  memblock = LoadMemblock(filename);
+  memblock = spLoadMemblock(filename);
   if (memblock) {
     font = CreateFontFromMemblock(memblock, height);
-    DeleteMemblock(memblock);
+    spDeleteMemblock(memblock);
   }
 
   return font;
@@ -148,10 +148,10 @@ Font* _LoadBase64Font(const char* data, size_t size, float height) {
   Memblock* memblock;
   Font* font;
 
-  memblock = CreateMemblock(BASE64_DECODE_OUT_SIZE(size));
+  memblock = spCreateMemblock(BASE64_DECODE_OUT_SIZE(size));
   base64_decode(data, size, (unsigned char*)memblock);
   font = CreateFontFromMemblock(memblock, height);
-  DeleteMemblock(memblock);
+  spDeleteMemblock(memblock);
 
   return font;
 }

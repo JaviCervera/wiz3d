@@ -16,46 +16,46 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  InitSpark();
-  SetScreen(800, 600, FALSE, TRUE);
-  SetScreenTitle("Lighting");
+  spInitSpark();
+  spSetScreen(800, 600, FALSE, TRUE);
+  spSetScreenTitle("Lighting");
 
   /* Create and position viewer */
-  viewer = CreateViewer();
-  SetViewerClearColor(viewer, COLOR_BLACK);
-  SetViewerPosition(viewer, 0, 32, -90);
-  SetViewerRotation(viewer, 16, 0, 0);
+  viewer = spCreateViewer();
+  spSetViewerClearColor(viewer, COLOR_BLACK);
+  spSetViewerPosition(viewer, 0, 32, -90);
+  spSetViewerRotation(viewer, 16, 0, 0);
 
   /* Setup lighting */
-  SetAmbientColor(COLOR_BLACK);
-  lights[0] = CreateLight(LIGHT_POINT);
-  SetLightRange(lights[0], 192);
-  SetLightColor(lights[0], COLOR_RED);
-  SetLightRotation(lights[0], 0, 0);
-  lights[1] = CreateLight(LIGHT_POINT);
-  SetLightRange(lights[1], 192);
-  SetLightColor(lights[1], COLOR_GREEN);
-  SetLightRotation(lights[1], 0, 120);
-  lights[2] = CreateLight(LIGHT_POINT);
-  SetLightRange(lights[2], 192);
-  SetLightColor(lights[2], COLOR_BLUE);
-  SetLightRotation(lights[2], 0, 240);
+  spSetAmbientColor(COLOR_BLACK);
+  lights[0] = spCreateLight(LIGHT_POINT);
+  spSetLightRange(lights[0], 192);
+  spSetLightColor(lights[0], COLOR_RED);
+  spSetLightRotation(lights[0], 0, 0);
+  lights[1] = spCreateLight(LIGHT_POINT);
+  spSetLightRange(lights[1], 192);
+  spSetLightColor(lights[1], COLOR_GREEN);
+  spSetLightRotation(lights[1], 0, 120);
+  lights[2] = spCreateLight(LIGHT_POINT);
+  spSetLightRange(lights[2], 192);
+  spSetLightColor(lights[2], COLOR_BLUE);
+  spSetLightRotation(lights[2], 0, 240);
 
   /* Create spheres */
   x = -32; z = -32;
   for (i = 0; i < NUM_SPHERES; ++i) {
     if (i == 0) {
       Material* material;
-      spheres[i] = LoadObject("data/sphere.assbin");
-      SetObjectScale(spheres[i], 4, 4, 4);
-      material = GetObjectMaterial(spheres[i], 0);
-      SetMaterialDiffuse(material, COLOR_WHITE);
-      SetMaterialSpecular(material, COLOR_WHITE);
-      SetMaterialShininess(material, 0.4f);
+      spheres[i] = spLoadObject("data/sphere.assbin");
+      spSetObjectScale(spheres[i], 4, 4, 4);
+      material = spGetObjectMaterial(spheres[i], 0);
+      spSetMaterialDiffuse(material, COLOR_WHITE);
+      spSetMaterialSpecular(material, COLOR_WHITE);
+      spSetMaterialShininess(material, 0.4f);
     } else {
-      spheres[i] = CloneObject(spheres[0]);
+      spheres[i] = spCloneObject(spheres[0]);
     }
-    SetObjectPosition(spheres[i], x, 0, z);
+    spSetObjectPosition(spheres[i], x, 0, z);
     x += 8;
     if (x > 32) {
       x = -32;
@@ -64,27 +64,27 @@ int main() {
   }
 
   /* Main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
+  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
     /* Update lights */
     for (i = 0; i < NUM_LIGHTS_; ++i) {
-      TurnLight(lights[i], 0, -ROTATION_SPEED * GetDeltaTime());
-      SetLightPosition(lights[i], 0, 0, 0);
-      MoveLight(lights[i], 0, 0, -48);
+      spTurnLight(lights[i], 0, -ROTATION_SPEED * spGetDeltaTime());
+      spSetLightPosition(lights[i], 0, 0, 0);
+      spMoveLight(lights[i], 0, 0, -48);
     }
 
     /* Draw scene */
-    PrepareViewer(viewer);
+    spPrepareViewer(viewer);
     for (i = 0; i < NUM_SPHERES; ++i) {
-      DrawObject(spheres[i]);
+      spDrawObject(spheres[i]);
     }
 
     /* Draw UI */
-    Setup2D();
-    sprintf(str, "%i FPS", GetScreenFPS());
-    DrawText(str, 4, 4);
-    RefreshScreen();
+    spSetup2D();
+    sprintf(str, "%i FPS", spGetScreenFPS());
+    spDrawText(str, 4, 4);
+    spRefreshScreen();
   }
 
   /* Shutdown */
-  ShutdownSpark();
+  spShutdownSpark();
 }

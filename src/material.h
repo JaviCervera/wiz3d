@@ -18,25 +18,25 @@
 extern "C" {
 #endif
 
-EXPORT Texture* CALL GetMaterialTexture(const Material* material);
-EXPORT void CALL SetMaterialTexture(Material* material, Texture* texture);
-EXPORT int CALL GetMaterialDiffuse(const Material* material);
-EXPORT void CALL SetMaterialDiffuse(Material* material, int color);
-EXPORT int CALL GetMaterialEmissive(const Material* material);
-EXPORT void CALL SetMaterialEmissive(Material* material, int color);
-EXPORT int CALL GetMaterialSpecular(const Material* material);
-EXPORT void CALL SetMaterialSpecular(Material* material, int color);
-EXPORT float CALL GetMaterialShininess(const Material* material);
-EXPORT void CALL SetMaterialShininess(Material* material, float shininess);
-EXPORT int CALL GetMaterialBlend(const Material* material);
-EXPORT void CALL SetMaterialBlend(Material* material, int blend);
-EXPORT int CALL GetMaterialFlags(const Material* material);
-EXPORT void CALL SetMaterialFlags(Material* material, int flags);
-EXPORT int CALL GetMaterialShininessPower(const Material* material);
-EXPORT void CALL SetMaterialShininessPower(Material* material, int power);
+EXPORT Texture* CALL spGetMaterialTexture(const Material* material);
+EXPORT void CALL spSetMaterialTexture(Material* material, Texture* texture);
+EXPORT int CALL spGetMaterialDiffuse(const Material* material);
+EXPORT void CALL spSetMaterialDiffuse(Material* material, int color);
+EXPORT int CALL spGetMaterialEmissive(const Material* material);
+EXPORT void CALL spSetMaterialEmissive(Material* material, int color);
+EXPORT int CALL spGetMaterialSpecular(const Material* material);
+EXPORT void CALL spSetMaterialSpecular(Material* material, int color);
+EXPORT float CALL spGetMaterialShininess(const Material* material);
+EXPORT void CALL spSetMaterialShininess(Material* material, float shininess);
+EXPORT int CALL spGetMaterialBlend(const Material* material);
+EXPORT void CALL spSetMaterialBlend(Material* material, int blend);
+EXPORT int CALL spGetMaterialFlags(const Material* material);
+EXPORT void CALL spSetMaterialFlags(Material* material, int flags);
+EXPORT int CALL spGetMaterialShininessPower(const Material* material);
+EXPORT void CALL spSetMaterialShininessPower(Material* material, int power);
 
-EXPORT int CALL GetDefaultShininessPower();
-EXPORT void CALL SetDefaultShininessPower(int power);
+EXPORT int CALL spGetDefaultShininessPower();
+EXPORT void CALL spSetDefaultShininessPower(int power);
 
 #ifndef SWIG
 void _InitMaterial(Material* material);

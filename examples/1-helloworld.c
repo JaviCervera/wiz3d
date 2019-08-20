@@ -5,20 +5,20 @@
 
 int main() {
   /* Setup */
-  InitSpark();
-  SetScreen(800, 600, FALSE, FALSE);
-  SetScreenTitle(TEXT);
+  spInitSpark();
+  spSetScreen(800, 600, FALSE, FALSE);
+  spSetScreenTitle(TEXT);
 
   /* Main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC))
+  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC))
   {
-    Setup2D();
-    SetDrawColor(COLOR_YELLOW);
-    ClearScreen(MultiplyColor(COLOR_BLUE, 0.5f));
-    DrawText(TEXT, (GetScreenWidth() - GetTextWidth(TEXT)) / 2, (GetScreenHeight() - GetTextHeight(TEXT)) / 2);
-    RefreshScreen();
+    spSetup2D();
+    spSetDrawColor(COLOR_YELLOW);
+    spClearScreen(spMultiplyColor(COLOR_BLUE, 0.5f));
+    spDrawText(TEXT, (spGetScreenWidth() - spGetTextWidth(TEXT)) / 2, (spGetScreenHeight() - spGetTextHeight(TEXT)) / 2);
+    spRefreshScreen();
   }
 
-  /* shutdown */
-  ShutdownSpark();
+  /* Shutdown */
+  spShutdownSpark();
 }

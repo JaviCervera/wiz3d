@@ -5,22 +5,22 @@ int main() {
   Texture* texture;
 
   /* Setup */
-  InitSpark();
-  SetScreen(800, 600, FALSE, FALSE);
-  SetScreenTitle("Texture 2D");
+  spInitSpark();
+  spSetScreen(800, 600, FALSE, FALSE);
+  spSetScreenTitle("Texture 2D");
 
   /* Load texture */
-  SetTextureFilter(FALSE);
-  texture = LoadTexture("data/smile.png");
+  spSetTextureFilter(FALSE);
+  texture = spLoadTexture("data/smile.png");
 
   /* Main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
-    Setup2D();
-    ClearScreen(COLOR_BLACK);
-    DrawTexture(texture, (GetScreenWidth() - GetTextureWidth(texture)) / 2, (GetScreenHeight() - GetTextureHeight(texture)) / 2, 0, 0);
-    RefreshScreen();
+  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
+    spSetup2D();
+    spClearScreen(COLOR_BLACK);
+    spDrawTexture(texture, (spGetScreenWidth() - spGetTextureWidth(texture)) / 2, (spGetScreenHeight() - spGetTextureHeight(texture)) / 2, 0, 0);
+    spRefreshScreen();
   }
 
   /* Shutdown */
-  ShutdownSpark();
+  spShutdownSpark();
 }

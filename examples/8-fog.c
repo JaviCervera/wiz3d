@@ -15,21 +15,21 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  InitSpark();
-  SetScreen(800, 600, FALSE, TRUE);
-  SetScreenTitle("Fog");
+  spInitSpark();
+  spSetScreen(800, 600, FALSE, TRUE);
+  spSetScreenTitle("Fog");
 
   /* Setup lighting */
-  dir_light = CreateLight(LIGHT_DIRECTIONAL);
-  TurnLight(dir_light, 45, 45);
+  dir_light = spCreateLight(LIGHT_DIRECTIONAL);
+  spTurnLight(dir_light, 45, 45);
 
   /* Create and position viewer */
-  viewer = CreateViewer();
-  SetViewerClearColor(viewer, COLOR_DARKGRAY);
-  SetViewerPosition(viewer, 0, 0, -7);
-  SetViewerDistance(viewer, 1, 5000);
-  SetViewerFogEnabled(viewer, TRUE);
-  SetViewerFogDistance(viewer, 0, 20);
+  viewer = spCreateViewer();
+  spSetViewerClearColor(viewer, COLOR_DARKGRAY);
+  spSetViewerPosition(viewer, 0, 0, -7);
+  spSetViewerDistance(viewer, 1, 5000);
+  spSetViewerFogEnabled(viewer, TRUE);
+  spSetViewerFogDistance(viewer, 0, 20);
 
   /* Create billboards */
   x = -7;
@@ -38,16 +38,16 @@ int main() {
     Object* cube;
 
     if (i == 0) {
-      cube = CreateCube();
-      SetMaterialDiffuse(GetObjectMaterial(cube, 0), COLOR_BROWN);
+      cube = spCreateCube();
+      spSetMaterialDiffuse(spGetObjectMaterial(cube, 0), COLOR_BROWN);
     } else {
-      cube = CloneObject(cubes[0]);
+      cube = spCloneObject(cubes[0]);
     }
-    SetObjectPosition(cube, x, -1.5f, z);
+    spSetObjectPosition(cube, x, -1.5f, z);
     cubes[i] = cube;
 
-    cube = CloneObject(cubes[0]);
-    SetObjectPosition(cube, x, 1.5f, z);
+    cube = spCloneObject(cubes[0]);
+    spSetObjectPosition(cube, x, 1.5f, z);
     cubes[i+1] = cube;
     
     x += 2;
@@ -58,25 +58,25 @@ int main() {
   }
 
   /* Main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
+  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
     /* Turn objects */
     for (i = 0; i < NUM_CUBES; ++i) {
-      TurnObject(cubes[i], 0, ROTATION_SPEED * GetDeltaTime(), 0);
+      spTurnObject(cubes[i], 0, ROTATION_SPEED * spGetDeltaTime(), 0);
     }
 
     /* Draw scene */
-    PrepareViewer(viewer);
+    spPrepareViewer(viewer);
     for (i = 0; i < NUM_CUBES; ++i) {
-      DrawObject(cubes[i]);
+      spDrawObject(cubes[i]);
     }
 
     /* Draw UI */
-    sprintf(str, "%i FPS", GetScreenFPS());
-    Setup2D();
-    DrawText(str, 4, 4);
-    RefreshScreen();
+    sprintf(str, "%i FPS", spGetScreenFPS());
+    spSetup2D();
+    spDrawText(str, 4, 4);
+    spRefreshScreen();
   }
 
   /* Shutdown */
-  ShutdownSpark();
+  spShutdownSpark();
 }

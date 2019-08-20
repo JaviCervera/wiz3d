@@ -12,7 +12,7 @@ static int _screen_fps = 0;
 static int _screen_fpscounter = 0;
 static float _screen_fpstime = 0;
 
-EXPORT void CALL SetScreen(int width, int height, bool_t fullscreen, bool_t resizable) {
+EXPORT void CALL spSetScreen(int width, int height, bool_t fullscreen, bool_t resizable) {
   /* unload fonts */
   _UnloadFonts();
 
@@ -23,19 +23,19 @@ EXPORT void CALL SetScreen(int width, int height, bool_t fullscreen, bool_t resi
   _screen_ptr = p_OpenScreen(width, height, fullscreen, 0, TRUE, resizable);
 
   /* set default font */
-  SetDefaultFont();
+  spSetDefaultFont();
 }
 
-EXPORT void CALL RefreshScreen() {
+EXPORT void CALL spRefreshScreen() {
   /* refresh screen */
   p_RefreshScreen(_screen_ptr);
 
   /* update delta time */
-  UpdateTimer();
+  spUpdateTimer();
 
   /* update fps */
   ++_screen_fpscounter;
-  _screen_fpstime += GetDeltaTime();
+  _screen_fpstime += spGetDeltaTime();
   if (_screen_fpstime >= 1) {
     _screen_fps = _screen_fpscounter;
     _screen_fpscounter = 0;
@@ -43,31 +43,31 @@ EXPORT void CALL RefreshScreen() {
   }
 }
 
-EXPORT void CALL SetScreenTitle(const char* title) {
+EXPORT void CALL spSetScreenTitle(const char* title) {
   p_SetScreenTitle(_screen_ptr, title);
 }
 
-EXPORT int CALL GetScreenWidth() {
+EXPORT int CALL spGetScreenWidth() {
   return p_GetScreenWidth(_screen_ptr);
 }
 
-EXPORT int CALL GetScreenHeight() {
+EXPORT int CALL spGetScreenHeight() {
   return p_GetScreenHeight(_screen_ptr);
 }
 
-EXPORT int CALL GetScreenFPS() {
+EXPORT int CALL spGetScreenFPS() {
   return _screen_fps;
 }
 
-EXPORT bool_t CALL IsScreenOpened() {
+EXPORT bool_t CALL spIsScreenOpened() {
   return p_IsScreenOpened(_screen_ptr);
 }
 
-EXPORT int CALL GetDesktopWidth() {
+EXPORT int CALL spGetDesktopWidth() {
   return p_GetDesktopWidth();
 }
 
-EXPORT int CALL GetDesktopHeight() {
+EXPORT int CALL spGetDesktopHeight() {
   return p_GetDesktopHeight();
 }
 

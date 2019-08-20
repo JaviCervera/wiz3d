@@ -12,7 +12,7 @@ static float _listener_z = 0;
 static float _listener_yaw = 0;
 #endif
 
-EXPORT bool_t CALL PlayMusic(const char* filename, bool_t loop) {
+EXPORT bool_t CALL spPlayMusic(const char* filename, bool_t loop) {
 #ifdef USE_AUDIO
   return p_PlayMusic(filename, loop);
 #else
@@ -20,31 +20,31 @@ EXPORT bool_t CALL PlayMusic(const char* filename, bool_t loop) {
 #endif
 }
 
-EXPORT void CALL PauseMusic() {
+EXPORT void CALL spPauseMusic() {
 #ifdef USE_AUDIO
   p_PauseMusic();
 #endif
 }
 
-EXPORT void CALL ResumeMusic() {
+EXPORT void CALL spResumeMusic() {
 #ifdef USE_AUDIO
   p_ResumeMusic();
 #endif
 }
 
-EXPORT void CALL StopMusic() {
+EXPORT void CALL spStopMusic() {
 #ifdef USE_AUDIO
   p_StopMusic();
 #endif
 }
 
-EXPORT void CALL SetMusicVolume(float volume) {
+EXPORT void CALL spSetMusicVolume(float volume) {
 #ifdef USE_AUDIO
   p_SetMusicVolume(volume);
 #endif
 }
 
-EXPORT bool_t CALL IsMusicPlaying() {
+EXPORT bool_t CALL spIsMusicPlaying() {
 #ifdef USE_AUDIO
   return p_IsMusicPlaying();
 #else
@@ -53,7 +53,7 @@ EXPORT bool_t CALL IsMusicPlaying() {
 }
 
 
-EXPORT void* CALL LoadSound(const char* filename) {
+EXPORT void* CALL spLoadSound(const char* filename) {
 #ifdef USE_AUDIO
   return p_LoadSound(filename);
 #else
@@ -61,13 +61,13 @@ EXPORT void* CALL LoadSound(const char* filename) {
 #endif
 }
 
-EXPORT void CALL DeleteSound(void* sound) {
+EXPORT void CALL spDeleteSound(void* sound) {
 #ifdef USE_AUDIO
   p_DeleteSound(sound);
 #endif
 }
 
-EXPORT void* CALL PlaySound(void* sound, bool_t loop) {
+EXPORT void* CALL spPlaySound(void* sound, bool_t loop) {
 #ifdef USE_AUDIO
   return p_PlaySound(sound, loop);
 #else
@@ -75,7 +75,7 @@ EXPORT void* CALL PlaySound(void* sound, bool_t loop) {
 #endif
 }
 
-EXPORT void CALL PositionListener(float x, float y, float z) {
+EXPORT void CALL spPositionListener(float x, float y, float z) {
 #ifdef USE_AUDIO
   _listener_x = x;
   _listener_y = y;
@@ -83,7 +83,7 @@ EXPORT void CALL PositionListener(float x, float y, float z) {
 #endif
 }
 
-EXPORT float CALL GetListenerX() {
+EXPORT float CALL spGetListenerX() {
 #ifdef USE_AUDIO
   return _listener_x;
 #else
@@ -91,7 +91,7 @@ EXPORT float CALL GetListenerX() {
 #endif
 }
 
-EXPORT float CALL GetListenerY() {
+EXPORT float CALL spGetListenerY() {
 #ifdef USE_AUDIO
   return _listener_y;
 #else
@@ -99,7 +99,7 @@ EXPORT float CALL GetListenerY() {
 #endif
 }
 
-EXPORT float CALL GetListenerZ() {
+EXPORT float CALL spGetListenerZ() {
 #ifdef USE_AUDIO
   return _listener_z;
 #else
@@ -107,13 +107,13 @@ EXPORT float CALL GetListenerZ() {
 #endif
 }
 
-EXPORT void CALL RotateListener(float yaw) {
+EXPORT void CALL spRotateListener(float yaw) {
 #ifdef USE_AUDIO
   _listener_yaw = yaw;
 #endif
 }
 
-EXPORT float CALL GetListenerYaw() {
+EXPORT float CALL spGetListenerYaw() {
 #ifdef USE_AUDIO
   return _listener_yaw;
 #else
@@ -121,49 +121,49 @@ EXPORT float CALL GetListenerYaw() {
 #endif
 }
 
-EXPORT void CALL PauseChannel(void* channel) {
+EXPORT void CALL spPauseChannel(void* channel) {
 #ifdef USE_AUDIO
   p_PauseChannel(channel);
 #endif
 }
 
-EXPORT void CALL ResumeChannel(void* channel) {
+EXPORT void CALL spResumeChannel(void* channel) {
 #ifdef USE_AUDIO
   p_ResumeChannel(channel);
 #endif
 }
 
-EXPORT void CALL StopChannel(void* channel) {
+EXPORT void CALL spStopChannel(void* channel) {
 #ifdef USE_AUDIO
   p_StopChannel(channel);
 #endif
 }
 
-EXPORT void CALL PositionChannel(void* channel, float x, float y, float z, float radius) {
+EXPORT void CALL spPositionChannel(void* channel, float x, float y, float z, float radius) {
 #ifdef USE_AUDIO
   p_PositionChannel(channel, _listener_x, _listener_y, _listener_z, _listener_yaw, x, y, z, radius);
 #endif
 }
 
-EXPORT void CALL SetChannelVolume(void* channel, float volume) {
+EXPORT void CALL spSetChannelVolume(void* channel, float volume) {
 #ifdef USE_AUDIO
   p_SetChannelVolume(channel, volume);
 #endif
 }
 
-EXPORT void CALL SetChannelPan(void* channel, float pan) {
+EXPORT void CALL spSetChannelPan(void* channel, float pan) {
 #ifdef USE_AUDIO
   p_SetChannelPan(channel, pan);
 #endif
 }
 
-EXPORT void CALL SetChannelPitch(void* channel, float pitch) {
+EXPORT void CALL spSetChannelPitch(void* channel, float pitch) {
 #ifdef USE_AUDIO
   p_SetChannelPitch(channel, pitch);
 #endif
 }
 
-EXPORT bool_t CALL IsChannelPlaying(void* channel) {
+EXPORT bool_t CALL spIsChannelPlaying(void* channel) {
 #ifdef USE_AUDIO
   return p_IsChannelPlaying(channel);
 #else

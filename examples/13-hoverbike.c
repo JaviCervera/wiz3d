@@ -12,51 +12,51 @@ int main() {
   Material* mat1;
 
   /* Setup */
-  InitSpark();
-  SetScreen(800, 600, FALSE, TRUE);
-  SetScreenTitle("Hoverbike");
+  spInitSpark();
+  spSetScreen(800, 600, FALSE, TRUE);
+  spSetScreenTitle("Hoverbike");
 
   /* Create and position viewer */
-  viewer = CreateViewer();
-  SetViewerClearMode(viewer, CLEAR_SKYBOX);
-  SetViewerSkybox(viewer, LoadTexture("data/skybox.png"));
-  SetViewerPosition(viewer, 0, 4, -8);
-  SetViewerRotation(viewer, 20, 0, 0);
+  viewer = spCreateViewer();
+  spSetViewerClearMode(viewer, CLEAR_SKYBOX);
+  spSetViewerSkybox(viewer, spLoadTexture("data/skybox.png"));
+  spSetViewerPosition(viewer, 0, 4, -8);
+  spSetViewerRotation(viewer, 20, 0, 0);
 
   /* Setup lighting */
-  SetDefaultShininessPower(2);
-  dir_light = CreateLight(LIGHT_DIRECTIONAL);
-  TurnLight(dir_light, 45, -45);
+  spSetDefaultShininessPower(2);
+  dir_light = spCreateLight(LIGHT_DIRECTIONAL);
+  spTurnLight(dir_light, 45, -45);
 
   /* Load hoverbike */
-  hoverbike = LoadObject("data/hoverbike.assbin");
-  SetObjectScale(hoverbike, 0.025f, 0.025f, 0.025f);
-  mat0 = GetObjectMaterial(hoverbike, 0);
-  mat1 = GetObjectMaterial(hoverbike, 1);
-  SetMaterialTexture(mat0, LoadTexture("data/bike.png"));
-  SetMaterialDiffuse(mat0, COLOR_WHITE);
-  SetMaterialSpecular(mat0, COLOR_WHITE);
-  SetMaterialTexture(mat1, LoadTexture("data/glass.png"));
-  SetMaterialDiffuse(mat1, COLOR_WHITE);
-  SetMaterialSpecular(mat1, COLOR_WHITE);
-  SetMaterialBlend(mat1, BLEND_ALPHA);
+  hoverbike = spLoadObject("data/hoverbike.assbin");
+  spSetObjectScale(hoverbike, 0.025f, 0.025f, 0.025f);
+  mat0 = spGetObjectMaterial(hoverbike, 0);
+  mat1 = spGetObjectMaterial(hoverbike, 1);
+  spSetMaterialTexture(mat0, spLoadTexture("data/bike.png"));
+  spSetMaterialDiffuse(mat0, COLOR_WHITE);
+  spSetMaterialSpecular(mat0, COLOR_WHITE);
+  spSetMaterialTexture(mat1, spLoadTexture("data/glass.png"));
+  spSetMaterialDiffuse(mat1, COLOR_WHITE);
+  spSetMaterialSpecular(mat1, COLOR_WHITE);
+  spSetMaterialBlend(mat1, BLEND_ALPHA);
 
   /* Main loop */
-  while (IsScreenOpened() && !IsKeyPressed(KEY_ESC)) {
+  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
     /* Turn hoverbike */
-    TurnObject(hoverbike, 0, ROTATION_SPEED * GetDeltaTime(), 0);
+    spTurnObject(hoverbike, 0, ROTATION_SPEED * spGetDeltaTime(), 0);
 
     /* Draw scene */
-    PrepareViewer(viewer);
-    DrawObject(hoverbike);
+    spPrepareViewer(viewer);
+    spDrawObject(hoverbike);
 
     /* Draw UI */
-    Setup2D();
-    SetDrawColor(GetRGB(240, 240, 240));
-    DrawText(TEXT, (GetScreenWidth() - GetTextWidth(TEXT)) / 2, 8);
-    RefreshScreen();
+    spSetup2D();
+    spSetDrawColor(spGetRGB(240, 240, 240));
+    spDrawText(TEXT, (spGetScreenWidth() - spGetTextWidth(TEXT)) / 2, 8);
+    spRefreshScreen();
   }
 
   /* Shutdown */
-  ShutdownSpark();
+  spShutdownSpark();
 }

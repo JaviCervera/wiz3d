@@ -36,7 +36,7 @@ static Mesh* _viewer_skybox = NULL;
 
 static Mesh* _SetupViewerSkyboxMesh(Texture* texture);
 
-EXPORT Viewer* CALL CreateViewer() {
+EXPORT Viewer* CALL spCreateViewer() {
   Viewer* viewer = _Alloc(Viewer);
   viewer->x = 0;
   viewer->y = 0;
@@ -49,7 +49,7 @@ EXPORT Viewer* CALL CreateViewer() {
   viewer->vw = -1;
   viewer->vh = -1;
   viewer->clearmode = CLEAR_COLOR;
-  viewer->clearcolor = GetRGB(52, 73, 94);
+  viewer->clearcolor = spGetRGB(52, 73, 94);
   viewer->skybox = NULL;
   viewer->ortho = FALSE;
   viewer->fov = 60;
@@ -62,21 +62,21 @@ EXPORT Viewer* CALL CreateViewer() {
   return viewer;
 }
 
-EXPORT void CALL DeleteViewer(Viewer* viewer) { free(viewer); }
+EXPORT void CALL spDeleteViewer(Viewer* viewer) { free(viewer); }
 
-EXPORT float CALL GetViewerX(const Viewer* viewer) { return viewer->x; }
+EXPORT float CALL spGetViewerX(const Viewer* viewer) { return viewer->x; }
 
-EXPORT float CALL GetViewerY(const Viewer* viewer) { return viewer->y; }
+EXPORT float CALL spGetViewerY(const Viewer* viewer) { return viewer->y; }
 
-EXPORT float CALL GetViewerZ(const Viewer* viewer) { return viewer->z; }
+EXPORT float CALL spGetViewerZ(const Viewer* viewer) { return viewer->z; }
 
-EXPORT void CALL SetViewerPosition(Viewer* viewer, float x, float y, float z) {
+EXPORT void CALL spSetViewerPosition(Viewer* viewer, float x, float y, float z) {
   viewer->x = x;
   viewer->y = y;
   viewer->z = z;
 }
 
-EXPORT void CALL MoveViewer(Viewer* viewer, float x, float y, float z) {
+EXPORT void CALL spMoveViewer(Viewer* viewer, float x, float y, float z) {
   lvec3_t vec;
 
   vec = lvec3_add(
@@ -87,19 +87,19 @@ EXPORT void CALL MoveViewer(Viewer* viewer, float x, float y, float z) {
   viewer->z = vec.z;
 }
 
-EXPORT float CALL GetViewerPitch(const Viewer* viewer) { return viewer->pitch; }
+EXPORT float CALL spGetViewerPitch(const Viewer* viewer) { return viewer->pitch; }
 
-EXPORT float CALL GetViewerYaw(const Viewer* viewer) { return viewer->yaw; }
+EXPORT float CALL spGetViewerYaw(const Viewer* viewer) { return viewer->yaw; }
 
-EXPORT float CALL GetViewerRoll(const Viewer* viewer) { return viewer->roll; }
+EXPORT float CALL spGetViewerRoll(const Viewer* viewer) { return viewer->roll; }
 
-EXPORT void CALL SetViewerRotation(Viewer* viewer, float pitch, float yaw, float roll) {
+EXPORT void CALL spSetViewerRotation(Viewer* viewer, float pitch, float yaw, float roll) {
   viewer->pitch = pitch;
   viewer->yaw = yaw;
   viewer->roll = roll;
 }
 
-EXPORT void CALL TurnViewer(Viewer* viewer, float pitch, float yaw, float roll) {
+EXPORT void CALL spTurnViewer(Viewer* viewer, float pitch, float yaw, float roll) {
   lvec3_t vec;
 
   vec = lvec3_add(lvec3(viewer->pitch, viewer->yaw, viewer->roll), lvec3(pitch, yaw, roll));
@@ -108,75 +108,75 @@ EXPORT void CALL TurnViewer(Viewer* viewer, float pitch, float yaw, float roll) 
   viewer->roll = vec.z;
 }
 
-EXPORT void CALL ViewerLookAt(Viewer* viewer, float x, float y, float z) {
+EXPORT void CALL spViewerLookAt(Viewer* viewer, float x, float y, float z) {
   lvec3_t dir;
   dir = lvec3_norm(lvec3_sub(lvec3(x, y, z), lvec3(viewer->x, viewer->y, viewer->z)));
   viewer->pitch = lm_rad2deg((float)asin(-dir.y));
   viewer->yaw = lm_rad2deg((float)atan2(dir.x, dir.z));
 }
 
-EXPORT int CALL GetViewerViewportX(const Viewer* viewer) { return viewer->vx; }
+EXPORT int CALL spGetViewerViewportX(const Viewer* viewer) { return viewer->vx; }
 
-EXPORT int CALL GetViewerViewportY(const Viewer* viewer) { return viewer->vy; }
+EXPORT int CALL spGetViewerViewportY(const Viewer* viewer) { return viewer->vy; }
 
-EXPORT int CALL GetViewerViewportWidth(const Viewer* viewer) { return viewer->vw; }
+EXPORT int CALL spGetViewerViewportWidth(const Viewer* viewer) { return viewer->vw; }
 
-EXPORT int CALL GetViewerViewportHeight(const Viewer* viewer) { return viewer->vh; }
+EXPORT int CALL spGetViewerViewportHeight(const Viewer* viewer) { return viewer->vh; }
 
-EXPORT void CALL SetViewerViewport(Viewer* viewer, int x, int y, int width, int height) {
+EXPORT void CALL spSetViewerViewport(Viewer* viewer, int x, int y, int width, int height) {
   viewer->vx = x;
   viewer->vy = y;
   viewer->vw = width;
   viewer->vh = height;
 }
 
-EXPORT int CALL GetViewerClearMode(const Viewer* viewer) { return viewer->clearmode; }
+EXPORT int CALL spGetViewerClearMode(const Viewer* viewer) { return viewer->clearmode; }
 
-EXPORT void CALL SetViewerClearMode(Viewer* viewer, int mode) { viewer->clearmode = _Clamp(mode, CLEAR_NONE, CLEAR_SKYBOX); }
+EXPORT void CALL spSetViewerClearMode(Viewer* viewer, int mode) { viewer->clearmode = _Clamp(mode, CLEAR_NONE, CLEAR_SKYBOX); }
 
-EXPORT int CALL GetViewerClearColor(const Viewer* viewer) { return viewer->clearcolor; }
+EXPORT int CALL spGetViewerClearColor(const Viewer* viewer) { return viewer->clearcolor; }
 
-EXPORT void CALL SetViewerClearColor(Viewer* viewer, int color) { viewer->clearcolor = color; }
+EXPORT void CALL spSetViewerClearColor(Viewer* viewer, int color) { viewer->clearcolor = color; }
 
-EXPORT Texture* CALL GetViewerSkybox(const Viewer* viewer) { return viewer->skybox; }
+EXPORT Texture* CALL spGetViewerSkybox(const Viewer* viewer) { return viewer->skybox; }
 
-EXPORT void CALL SetViewerSkybox(Viewer* viewer, Texture* texture) { viewer->skybox = texture; }
+EXPORT void CALL spSetViewerSkybox(Viewer* viewer, Texture* texture) { viewer->skybox = texture; }
 
-EXPORT bool_t CALL IsViewerOrtho(const Viewer* viewer) { return viewer->ortho; }
+EXPORT bool_t CALL spIsViewerOrtho(const Viewer* viewer) { return viewer->ortho; }
 
-EXPORT void CALL SetViewerOrtho(Viewer* viewer, bool_t ortho) { viewer->ortho = ortho; }
+EXPORT void CALL spSetViewerOrtho(Viewer* viewer, bool_t ortho) { viewer->ortho = ortho; }
 
-EXPORT float CALL GetViewerFov(const Viewer* viewer) { return viewer->fov; }
+EXPORT float CALL spGetViewerFov(const Viewer* viewer) { return viewer->fov; }
 
-EXPORT void CALL SetViewerFov(Viewer* viewer, float enable) { viewer->fov = enable; }
+EXPORT void CALL spSetViewerFov(Viewer* viewer, float enable) { viewer->fov = enable; }
 
-EXPORT float CALL GetViewerDistanceMin(const Viewer* viewer) { return viewer->min; }
+EXPORT float CALL spGetViewerDistanceMin(const Viewer* viewer) { return viewer->min; }
 
-EXPORT float CALL GetViewerDistanceMax(const Viewer* viewer) { return viewer->max; }
+EXPORT float CALL spGetViewerDistanceMax(const Viewer* viewer) { return viewer->max; }
 
-EXPORT void CALL SetViewerDistance(Viewer* viewer, float min, float max) {
+EXPORT void CALL spSetViewerDistance(Viewer* viewer, float min, float max) {
   viewer->min = min;
   viewer->max = max;
 }
 
-EXPORT bool_t CALL IsViewerFogEnabled(const Viewer* viewer) { return viewer->fogenabled; }
+EXPORT bool_t CALL spIsViewerFogEnabled(const Viewer* viewer) { return viewer->fogenabled; }
 
-EXPORT void CALL SetViewerFogEnabled(Viewer* viewer, bool_t enable) { viewer->fogenabled = enable; }
+EXPORT void CALL spSetViewerFogEnabled(Viewer* viewer, bool_t enable) { viewer->fogenabled = enable; }
 
-EXPORT int CALL GetViewerFogColor(const Viewer* viewer) { return viewer->fogcolor; }
+EXPORT int CALL spGetViewerFogColor(const Viewer* viewer) { return viewer->fogcolor; }
 
-EXPORT void CALL SetViewerFogColor(Viewer* viewer, int color) { viewer->fogcolor = color; }
+EXPORT void CALL spSetViewerFogColor(Viewer* viewer, int color) { viewer->fogcolor = color; }
 
-EXPORT float CALL GetViewerFogDistanceMin(const Viewer* viewer) { return viewer->fogmin; }
+EXPORT float CALL spGetViewerFogDistanceMin(const Viewer* viewer) { return viewer->fogmin; }
 
-EXPORT float CALL GetViewerFogDistanceMax(const Viewer* viewer) { return viewer->fogmax; }
+EXPORT float CALL spGetViewerFogDistanceMax(const Viewer* viewer) { return viewer->fogmax; }
 
-EXPORT void CALL SetViewerFogDistance(Viewer* viewer, float min, float max) {
+EXPORT void CALL spSetViewerFogDistance(Viewer* viewer, float min, float max) {
   viewer->fogmin = min;
   viewer->fogmax = max;
 }
 
-EXPORT void CALL PrepareViewer(const Viewer* viewer) {
+EXPORT void CALL spPrepareViewer(const Viewer* viewer) {
   int vp_w;
   int vp_h;
   float ratio;
@@ -190,8 +190,8 @@ EXPORT void CALL PrepareViewer(const Viewer* viewer) {
 
   /* get real viewport size */
 #ifndef PLATFORM_NULL
-  vp_w = (viewer->vw != -1) ? viewer->vw : GetScreenWidth() - viewer->vx;
-  vp_h = (viewer->vh != -1) ? viewer->vh : GetScreenHeight() - viewer->vy;
+  vp_w = (viewer->vw != -1) ? viewer->vw : spGetScreenWidth() - viewer->vx;
+  vp_h = (viewer->vh != -1) ? viewer->vh : spGetScreenHeight() - viewer->vy;
 #else
   vp_w = viewer->vw;
   vp_h = viewer->vh;
@@ -228,9 +228,9 @@ EXPORT void CALL PrepareViewer(const Viewer* viewer) {
   switch (viewer->clearmode) {
     case CLEAR_COLOR:
       lgfx_clearcolorbuffer(
-        GetRed(viewer->clearcolor) / 255.0f,
-        GetGreen(viewer->clearcolor) / 255.0f,
-        GetBlue(viewer->clearcolor) / 255.0f);
+        spGetRed(viewer->clearcolor) / 255.0f,
+        spGetGreen(viewer->clearcolor) / 255.0f,
+        spGetBlue(viewer->clearcolor) / 255.0f);
       break;
     case CLEAR_SKYBOX:
       halfrange = (viewer->max - viewer->min) * 0.5f;
@@ -260,6 +260,6 @@ const void* _GetActiveMatrix() {
 
 static Mesh* _SetupViewerSkyboxMesh(Texture* texture) {
   if (!_viewer_skybox) _viewer_skybox = _CreateSkyboxMesh();
-  SetMaterialTexture(GetMeshMaterial(_viewer_skybox, 0), texture);
+  spSetMaterialTexture(GetMeshMaterial(_viewer_skybox, 0), texture);
   return _viewer_skybox;
 }

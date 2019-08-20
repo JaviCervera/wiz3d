@@ -9,7 +9,7 @@ static char _log_filename[STRING_SIZE] = "";
 
 static void _InitLog();
 
-EXPORT void CALL LogInfo(const char* msg) {
+EXPORT void CALL spLogInfo(const char* msg) {
   _InitLog();
   printf("[INFO] %s\n", msg);
   if (strcmp(_log_filename, "") != 0) WriteString("[INFO] ", _log_filename, TRUE);
@@ -17,7 +17,7 @@ EXPORT void CALL LogInfo(const char* msg) {
   if (strcmp(_log_filename, "") != 0) WriteString("\r\n", _log_filename, TRUE);
 }
 
-EXPORT void CALL LogWarning(const char* msg) {
+EXPORT void CALL spLogWarning(const char* msg) {
   _InitLog();
   printf("[WARNING] %s\n", msg);
   if (strcmp(_log_filename, "") != 0) WriteString("[WARNING] ", _log_filename, TRUE);
@@ -25,7 +25,7 @@ EXPORT void CALL LogWarning(const char* msg) {
   if (strcmp(_log_filename, "") != 0) WriteString("\r\n", _log_filename, TRUE);
 }
 
-EXPORT void CALL LogError(const char* msg) {
+EXPORT void CALL spLogError(const char* msg) {
   _InitLog();
   printf("[ERROR] %s\n", msg);
   if (strcmp(_log_filename, "") != 0) WriteString("[ERROR] ", _log_filename, TRUE);

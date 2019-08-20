@@ -10,16 +10,16 @@
 extern "C" {
 #endif
 
-EXPORT void CALL SetScreen(int width, int height, bool_t fullscreen, bool_t resizable);
-EXPORT void CALL RefreshScreen();
-EXPORT void CALL SetScreenTitle(const char* title);
-EXPORT int CALL GetScreenWidth();
-EXPORT int CALL GetScreenHeight();
-EXPORT int CALL GetScreenFPS();
-EXPORT bool_t CALL IsScreenOpened();
+EXPORT void CALL spSetScreen(int width, int height, bool_t fullscreen, bool_t resizable);
+EXPORT void CALL spRefreshScreen();
+EXPORT void CALL spSetScreenTitle(const char* title);
+EXPORT int CALL spGetScreenWidth();
+EXPORT int CALL spGetScreenHeight();
+EXPORT int CALL spGetScreenFPS();
+EXPORT bool_t CALL spIsScreenOpened();
 
-EXPORT int CALL GetDesktopWidth();
-EXPORT int CALL GetDesktopHeight();
+EXPORT int CALL spGetDesktopWidth();
+EXPORT int CALL spGetDesktopHeight();
 
 #ifndef SWIG
 void* _GetScreenPtr();
