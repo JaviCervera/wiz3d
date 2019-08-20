@@ -59,11 +59,13 @@ EXPORT bool_t CALL spIsFilePacked(const char* filename) {
 }
 
 EXPORT size_t CALL spGetFileSize(const char* filename) {
+#ifdef USE_PAK
   const PakFile* pak;
   pak = _GetPakForFile(filename);
   if (pak) {
     return _GetPakEntrySize(pak, filename);
   } else {
+#endif
     FILE* fhandle;
     fhandle = fopen(filename, "rb");
     if (fhandle) {
@@ -75,7 +77,9 @@ EXPORT size_t CALL spGetFileSize(const char* filename) {
     } else {
       return 0;
     }
+#ifdef USE_PAK
   }
+#endif
 }
 
 bool_t _GetFileContents(const char* filename, void* buffer) {
@@ -89,6 +93,7 @@ bool_t _GetFileContents(const char* filename, void* buffer) {
     fread(buffer, size, 1, fhandle);
     fclose(fhandle);
     return TRUE;
+#ifdef USE_PAK
   } else {
     const PakFile* pak;
     pak = _GetPakForFile(filename);
@@ -97,6 +102,7 @@ bool_t _GetFileContents(const char* filename, void* buffer) {
     } else {
       return FALSE;
     }
+#endif
   }
 }
 
