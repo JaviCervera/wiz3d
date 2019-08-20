@@ -12,7 +12,7 @@ static float _listener_z = 0;
 static float _listener_yaw = 0;
 #endif
 
-bool_t PlayMusic(const char* filename, bool_t loop) {
+EXPORT bool_t CALL PlayMusic(const char* filename, bool_t loop) {
 #ifdef USE_AUDIO
   return p_PlayMusic(filename, loop);
 #else
@@ -20,31 +20,31 @@ bool_t PlayMusic(const char* filename, bool_t loop) {
 #endif
 }
 
-void PauseMusic() {
+EXPORT void CALL PauseMusic() {
 #ifdef USE_AUDIO
   p_PauseMusic();
 #endif
 }
 
-void ResumeMusic() {
+EXPORT void CALL ResumeMusic() {
 #ifdef USE_AUDIO
   p_ResumeMusic();
 #endif
 }
 
-void StopMusic() {
+EXPORT void CALL StopMusic() {
 #ifdef USE_AUDIO
   p_StopMusic();
 #endif
 }
 
-void SetMusicVolume(float volume) {
+EXPORT void CALL SetMusicVolume(float volume) {
 #ifdef USE_AUDIO
   p_SetMusicVolume(volume);
 #endif
 }
 
-bool_t IsMusicPlaying() {
+EXPORT bool_t CALL IsMusicPlaying() {
 #ifdef USE_AUDIO
   return p_IsMusicPlaying();
 #else
@@ -53,7 +53,7 @@ bool_t IsMusicPlaying() {
 }
 
 
-void* LoadSound(const char* filename) {
+EXPORT void* CALL LoadSound(const char* filename) {
 #ifdef USE_AUDIO
   return p_LoadSound(filename);
 #else
@@ -61,13 +61,13 @@ void* LoadSound(const char* filename) {
 #endif
 }
 
-void DeleteSound(void* sound) {
+EXPORT void CALL DeleteSound(void* sound) {
 #ifdef USE_AUDIO
   p_DeleteSound(sound);
 #endif
 }
 
-void* PlaySound(void* sound, bool_t loop) {
+EXPORT void* CALL PlaySound(void* sound, bool_t loop) {
 #ifdef USE_AUDIO
   return p_PlaySound(sound, loop);
 #else
@@ -75,7 +75,7 @@ void* PlaySound(void* sound, bool_t loop) {
 #endif
 }
 
-void PositionListener(float x, float y, float z) {
+EXPORT void CALL PositionListener(float x, float y, float z) {
 #ifdef USE_AUDIO
   _listener_x = x;
   _listener_y = y;
@@ -83,7 +83,7 @@ void PositionListener(float x, float y, float z) {
 #endif
 }
 
-float GetListenerX() {
+EXPORT float CALL GetListenerX() {
 #ifdef USE_AUDIO
   return _listener_x;
 #else
@@ -91,7 +91,7 @@ float GetListenerX() {
 #endif
 }
 
-float GetListenerY() {
+EXPORT float CALL GetListenerY() {
 #ifdef USE_AUDIO
   return _listener_y;
 #else
@@ -99,7 +99,7 @@ float GetListenerY() {
 #endif
 }
 
-float GetListenerZ() {
+EXPORT float CALL GetListenerZ() {
 #ifdef USE_AUDIO
   return _listener_z;
 #else
@@ -107,13 +107,13 @@ float GetListenerZ() {
 #endif
 }
 
-void RotateListener(float yaw) {
+EXPORT void CALL RotateListener(float yaw) {
 #ifdef USE_AUDIO
   _listener_yaw = yaw;
 #endif
 }
 
-float GetListenerYaw() {
+EXPORT float CALL GetListenerYaw() {
 #ifdef USE_AUDIO
   return _listener_yaw;
 #else
@@ -121,49 +121,49 @@ float GetListenerYaw() {
 #endif
 }
 
-void PauseChannel(void* channel) {
+EXPORT void CALL PauseChannel(void* channel) {
 #ifdef USE_AUDIO
   p_PauseChannel(channel);
 #endif
 }
 
-void ResumeChannel(void* channel) {
+EXPORT void CALL ResumeChannel(void* channel) {
 #ifdef USE_AUDIO
   p_ResumeChannel(channel);
 #endif
 }
 
-void StopChannel(void* channel) {
+EXPORT void CALL StopChannel(void* channel) {
 #ifdef USE_AUDIO
   p_StopChannel(channel);
 #endif
 }
 
-void PositionChannel(void* channel, float x, float y, float z, float radius) {
+EXPORT void CALL PositionChannel(void* channel, float x, float y, float z, float radius) {
 #ifdef USE_AUDIO
   p_PositionChannel(channel, _listener_x, _listener_y, _listener_z, _listener_yaw, x, y, z, radius);
 #endif
 }
 
-void SetChannelVolume(void* channel, float volume) {
+EXPORT void CALL SetChannelVolume(void* channel, float volume) {
 #ifdef USE_AUDIO
   p_SetChannelVolume(channel, volume);
 #endif
 }
 
-void SetChannelPan(void* channel, float pan) {
+EXPORT void CALL SetChannelPan(void* channel, float pan) {
 #ifdef USE_AUDIO
   p_SetChannelPan(channel, pan);
 #endif
 }
 
-void SetChannelPitch(void* channel, float pitch) {
+EXPORT void CALL SetChannelPitch(void* channel, float pitch) {
 #ifdef USE_AUDIO
   p_SetChannelPitch(channel, pitch);
 #endif
 }
 
-bool_t IsChannelPlaying(void* channel) {
+EXPORT bool_t CALL IsChannelPlaying(void* channel) {
 #ifdef USE_AUDIO
   return p_IsChannelPlaying(channel);
 #else
