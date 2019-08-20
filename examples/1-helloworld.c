@@ -1,11 +1,11 @@
-#include "../src/beam.h"
+#include "../src/spark.h"
 
 #define ROTATION_SPEED 32
 #define TEXT "Hello, world!"
 
 int main() {
   /* Setup */
-  InitBeam();
+  InitSpark();
   SetScreen(800, 600, FALSE, FALSE);
   SetScreenTitle(TEXT);
 
@@ -20,5 +20,5 @@ int main() {
   }
 
   /* shutdown */
-  ShutdownBeam();
+  ShutdownSpark();
 }

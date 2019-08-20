@@ -1,11 +1,11 @@
-#include "../src/beam.h"
+#include "../src/spark.h"
 
 int main() {
   /* Data */
   Texture* texture;
 
   /* Setup */
-  InitBeam();
+  InitSpark();
   SetScreen(800, 600, FALSE, FALSE);
   SetScreenTitle("Texture 2D");
 
@@ -22,5 +22,5 @@ int main() {
   }
 
   /* Shutdown */
-  ShutdownBeam();
+  ShutdownSpark();
 }

@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/spark.h"
 #include <stdlib.h>
 
 #define MAX_PRIMITIVES 1000
@@ -38,7 +38,7 @@ int main() {
   int i;
 
   /* Setup */
-  InitBeam();
+  InitSpark();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Primitives");
 
@@ -64,5 +64,5 @@ int main() {
   }
 
   /* Shutdown */
-  ShutdownBeam();
+  ShutdownSpark();
 }

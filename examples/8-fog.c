@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/spark.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,7 +15,7 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  InitBeam();
+  InitSpark();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Fog");
 
@@ -78,5 +78,5 @@ int main() {
   }
 
   /* Shutdown */
-  ShutdownBeam();
+  ShutdownSpark();
 }

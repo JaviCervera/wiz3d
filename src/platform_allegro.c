@@ -1,4 +1,4 @@
-#include "beam_config.h"
+#include "spark_config.h"
 
 #ifdef PLATFORM_ALLEGRO
 

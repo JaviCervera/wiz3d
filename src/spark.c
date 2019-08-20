@@ -1,5 +1,5 @@
-#include "beam_config.h"
-#include "beam.h"
+#include "spark_config.h"
+#include "spark.h"
 #include "draw.h"
 #include "platform.h"
 #define LITE_ASSBIN_USE_GFX
@@ -30,7 +30,7 @@
 #endif
 
 
-EXPORT bool_t CALL InitBeam() {
+EXPORT bool_t CALL InitSpark() {
   bool_t ret;
   ret = p_Init();
   if (!ret) return FALSE;
@@ -40,7 +40,7 @@ EXPORT bool_t CALL InitBeam() {
   return ret != FALSE;
 }
 
-EXPORT void CALL ShutdownBeam() {
+EXPORT void CALL ShutdownSpark() {
 #ifndef PLATFORM_NULL
   if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
 #endif

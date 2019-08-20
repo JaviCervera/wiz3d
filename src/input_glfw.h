@@ -1,7 +1,7 @@
 #ifndef INPUT_GLFW_H_INCLUDED
 #define INPUT_GLFW_H_INCLUDED
 
-#include "beam_config.h"
+#include "spark_config.h"
 
 #ifdef PLATFORM_GLFW
 

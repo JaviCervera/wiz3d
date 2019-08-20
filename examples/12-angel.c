@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/spark.h"
 #include <math.h>
 
 #define ROTATION_SPEED 32
@@ -14,7 +14,7 @@ int main() {
   float value = 0;
 
   /* Setup */
-  InitBeam();
+  InitSpark();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Angel");
 
@@ -65,5 +65,5 @@ int main() {
   }
 
   /* Shutdown */
-  ShutdownBeam();
+  ShutdownSpark();
 }

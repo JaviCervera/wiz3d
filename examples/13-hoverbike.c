@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/spark.h"
 
 #define ROTATION_SPEED 32
 #define TEXT "Hover Bike by Ptis is licensed under CC Attribution-NonCommercial"
@@ -12,7 +12,7 @@ int main() {
   Material* mat1;
 
   /* Setup */
-  InitBeam();
+  InitSpark();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Hoverbike");
 
@@ -58,5 +58,5 @@ int main() {
   }
 
   /* Shutdown */
-  ShutdownBeam();
+  ShutdownSpark();
 }

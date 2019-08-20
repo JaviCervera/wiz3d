@@ -1,7 +1,7 @@
 #ifndef PLATFORM_H_INCLUDED
 #define PLATFORM_H_INCLUDED
 
-#include "beam_config.h"
+#include "spark_config.h"
 #include "types.h"
 
 #ifdef __cplusplus

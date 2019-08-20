@@ -1,7 +1,7 @@
 .vscode
 _CMAKE
 *log.txt
-_build/libbeam*
+_build/libspark*
 _build/OpenAL32.dll
 src/wrap_*.c
 stuff/inputcodes_out.txt

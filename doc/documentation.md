@@ -101,7 +101,7 @@ Tells whether the given mouse button is pressed or not.
 Tells whether the given key is pressed or not.
 
 ## light
-Beam allows the definition of up to 8 lights in the scene. Directional and point lights are supported. Each light is represented by the following structure:
+Spark allows the definition of up to 8 lights in the scene. Directional and point lights are supported. Each light is represented by the following structure:
 
 ```
 Light
@@ -199,7 +199,7 @@ Sets the default shininess power for all materials whose shininess power value i
 
 ## memory
 
-Beam can allocate and manipulate memory buffers with this module. It defines an opaque structure `memory_t`.
+Spark can allocate and manipulate memory buffers with this module. It defines an opaque structure `memory_t`.
 
 `struct memory_t* CreateMemblock(int size)`
 
@@ -559,7 +559,7 @@ Returns the height in pixels of the given text with the current font.
 
 ## sound
 
-Beam support audio playback several sounds at once using multiple channels. A sound is defined by the opaque structure `sound_t`, while a channel is defined by the opaque structure `channel_t`.
+Spark support audio playback several sounds at once using multiple channels. A sound is defined by the opaque structure `sound_t`, while a channel is defined by the opaque structure `channel_t`.
 
 `bool_t sound_playmusic(const char* filename, bool_t loop)`
 

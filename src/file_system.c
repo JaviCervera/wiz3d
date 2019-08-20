@@ -1,5 +1,5 @@
 #include "../lib/stb/stretchy_buffer.h"
-#include "beam_config.h"
+#include "spark_config.h"
 #include "file_system.h"
 #include <stdio.h>
 #include <string.h>

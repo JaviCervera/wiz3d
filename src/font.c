@@ -1,4 +1,4 @@
-#include "beam_config.h"
+#include "spark_config.h"
 #ifdef USE_DEFAULT_FONT
 #include "../lib/base64/base64.h"
 #endif

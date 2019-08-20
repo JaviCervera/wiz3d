@@ -1,5 +1,5 @@
-#ifndef BEAM_H_INCLUDED
-#define BEAM_H_INCLUDED
+#ifndef SPARK_H_INCLUDED
+#define SPARK_H_INCLUDED
 
 #include "audio.h"
 #include "colbox.h"
@@ -22,11 +22,11 @@
 extern "C" {
 #endif
 
-EXPORT bool_t CALL InitBeam();
-EXPORT void CALL ShutdownBeam();
+EXPORT bool_t CALL InitSpark();
+EXPORT void CALL ShutdownSpark();
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* BEAM_H_INCLUDED */
+#endif /* SPARK_H_INCLUDED */

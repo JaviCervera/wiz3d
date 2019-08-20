@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/spark.h"
 
 int main() {
   /* Data */
@@ -12,7 +12,7 @@ int main() {
   int direction = 1;
 
   /* Setup */
-  InitBeam();
+  InitSpark();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Collisions");
 
@@ -96,5 +96,5 @@ int main() {
   }
 
   /* Shutdown */
-  ShutdownBeam();
+  ShutdownSpark();
 }

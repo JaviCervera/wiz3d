@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/spark.h"
 #include <stdio.h>
 
 #define ROTATION_SPEED 90
@@ -11,7 +11,7 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  InitBeam();
+  InitSpark();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("Rotating Cube");
 
@@ -45,5 +45,5 @@ int main() {
   }
 
   /* Shutdown */
-  ShutdownBeam();
+  ShutdownSpark();
 }

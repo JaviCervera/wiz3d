@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/spark.h"
 #include <stdio.h>
 
 int main() {
@@ -10,7 +10,7 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  InitBeam();
+  InitSpark();
   SetScreen(800, 600, FALSE, TRUE);
   SetScreenTitle("MD2 Animation");
 
@@ -52,5 +52,5 @@ int main() {
   }
 
   /* Shutdown */
-  ShutdownBeam();
+  ShutdownSpark();
 }

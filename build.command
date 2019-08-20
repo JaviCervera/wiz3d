@@ -25,15 +25,15 @@ cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=
 make
 cd ../..
 
-echo "[**building beam**]"
+echo "[**building spark**]"
 cd _CMAKE
 cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DPLATFORM_GLFW=ON ..
 make
-install_name_tool -id libbeam.dylib libbeam.dylib
+install_name_tool -id libspark.dylib libspark.dylib
 cd ..
 
-echo "[**moving beam to _build dir**]"
+echo "[**moving spark to _build dir**]"
 mkdir _build
-mv _CMAKE/libbeam.dylib _build/libbeam.dylib
+mv _CMAKE/libspark.dylib _build/libspark.dylib
 
 echo "done."

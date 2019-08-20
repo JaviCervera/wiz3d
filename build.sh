@@ -25,14 +25,14 @@ cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -DSDL_SHARED=OFF -DSDL_A
 make
 cd ../..
 
-echo "[**building beam**]"
+echo "[**building spark**]"
 cd _CMAKE
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel ..
 make
 cd ..
 
-echo "[**moving beam to _build dir**]"
+echo "[**moving spark to _build dir**]"
 mkdir _build
-mv _CMAKE/libbeam.so _build/libbeam.so
+mv _CMAKE/libspark.so _build/libspark.so
 
 echo "done."

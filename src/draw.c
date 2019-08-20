@@ -1,4 +1,4 @@
-#include "beam_config.h"
+#include "spark_config.h"
 
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/stb/stretchy_buffer.h"

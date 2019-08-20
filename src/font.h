@@ -1,7 +1,7 @@
 #ifndef FONT_H_INCLUDED
 #define FONT_H_INCLUDED
 
-#include "beam_config.h"
+#include "spark_config.h"
 #include "types.h"
 
 #ifdef __cplusplus
