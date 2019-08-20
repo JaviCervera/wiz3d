@@ -28,7 +28,7 @@ cd ../..
 
 echo [**building beam**]
 cd _CMAKE
-cmake -G "MinGW Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel ..
+cmake -G "MinGW Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel -DPLATFORM_GLFW=ON ..
 mingw32-make
 cd ..
 
