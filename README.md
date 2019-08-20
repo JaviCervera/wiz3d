@@ -64,6 +64,8 @@ See [here](./doc/documentation.md).
 
 - [x] Replace structs with functions for everything.
 - [ ] Lightmaps (add other missing features from ColdSteel and Soil).
+- [ ] Fix object shininess.
+- [ ] Replace light range with attenuation.
 - [ ] material.ambient.
 - [ ] Spot lights.
 - [ ] Audio with support for wav and ogg formats (OpenAL only by now).
