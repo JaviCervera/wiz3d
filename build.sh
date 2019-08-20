@@ -27,7 +27,7 @@ cd ../..
 
 echo "[**building spark**]"
 cd _CMAKE
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel ..
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -DPLATFORM_GLFW=ON ..
 make
 cd ..
 

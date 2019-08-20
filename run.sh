@@ -3,19 +3,19 @@ cd `dirname $0`
 
 echo "building examples..."
 cd examples
-gcc -o 1-helloworld 1-helloworld.c -L../_build -lspark
-gcc -o 2-primitives 2-primitives.c -L../_build -lspark
-gcc -o 3-texture2d 3-texture2d.c -L../_build -lspark
-gcc -o 4-triangle 4-triangle.c -L../_build -lspark
-gcc -o 5-rotatingcube 5-rotatingcube.c -L../_build -lspark
-gcc -o 6-billboards 6-billboards.c -L../_build -lspark
-gcc -o 7-lighting 7-lighting.c -L../_build -lspark
-gcc -o 8-fog 8-fog.c -L../_build -lspark
-gcc -o 9-collisions 9-collisions.c -L../_build -lspark
-gcc -o 10-specular 10-specular.c -L../_build -lspark
-gcc -o 11-md2 11-md2.c -L../_build -lspark
-gcc -o 12-angel 12-angel.c -L../_build -lspark -lm
-gcc -o 13-hoverbike 13-hoverbike.c -L../_build -lspark
+gcc -o 1-helloworld 1-helloworld.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 2-primitives 2-primitives.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 3-texture2d 3-texture2d.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 4-triangle 4-triangle.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 5-rotatingcube 5-rotatingcube.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 6-billboards 6-billboards.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 7-lighting 7-lighting.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 8-fog 8-fog.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 9-collisions 9-collisions.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 10-specular 10-specular.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 11-md2 11-md2.c -DPLATFORM_GLFW -L../_build -lspark
+gcc -o 12-angel 12-angel.c -DPLATFORM_GLFW -L../_build -lspark -lm
+gcc -o 13-hoverbike 13-hoverbike.c -DPLATFORM_GLFW -L../_build -lspark
 
 echo "running examples..."
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../_build
