@@ -26,8 +26,6 @@ EXPORT bool_t CALL spInitSpark();
 EXPORT void CALL spShutdownSpark();
 EXPORT bool_t CALL spIsMultitexturingSupported();
 EXPORT bool_t CALL spIsMipmappingSupported();
-EXPORT bool_t CALL spIsMipmappingEnabled();
-EXPORT void CALL spSetMipmappingEnabled(bool_t enable);
 
 #ifdef __cplusplus
 } /* extern "C" */

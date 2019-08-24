@@ -30,9 +30,6 @@
 #endif
 
 
-static bool_t _mipmapping_enabled = TRUE;
-
-
 EXPORT bool_t CALL spInitSpark() {
   bool_t ret;
   ret = p_Init();
@@ -57,12 +54,4 @@ EXPORT bool_t CALL spIsMultitexturingSupported() {
 
 EXPORT bool_t CALL spIsMipmappingSupported() {
   return lgfx_mipmapping_supported();
-}
-
-EXPORT bool_t CALL spIsMipmappingEnabled() {
-  return spIsMipmappingSupported() && _mipmapping_enabled;
-}
-
-EXPORT void CALL spSetMipmappingEnabled(bool_t enable) {
-  _mipmapping_enabled = enable;
 }
