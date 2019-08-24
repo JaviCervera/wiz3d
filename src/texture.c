@@ -3,7 +3,7 @@
 #include "texture.h"
 #include "util.h"
 
-static bool_t _texture_filtering = TRUE;
+static int _texture_filter = FILTER_MIPMAP;
 
 typedef struct STexture {
   int refcount; /* use int instead of size_t because non counted textures can have negative values here */
@@ -20,7 +20,7 @@ EXPORT Texture* CALL spCreateTexture(const Pixmap* pixmap) {
 EXPORT Texture* CALL spCreateEmptyTexture(int width, int height) {
   Texture* tex = _Alloc(Texture);
   tex->refcount = 0;
-  tex->ptr = ltex_alloc(width, height, _texture_filtering);
+  tex->ptr = ltex_alloc(width, height, _texture_filter);
   return tex;
 }
 
@@ -70,8 +70,12 @@ EXPORT void CALL spSetTexturePixels(Texture* texture, const Pixmap* pixmap) {
   }
 }
 
-EXPORT void CALL spSetTextureFilter(bool_t filter) {
-  _texture_filtering = filter;
+EXPORT int CALL spGetTextureFilter() {
+  return _texture_filter;
+}
+
+EXPORT void CALL spSetTextureFilter(int filter) {
+  _texture_filter = filter;
 }
 
 const void* _GetTexturePtr(const Texture* texture) {

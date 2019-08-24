@@ -18,7 +18,7 @@
 #define FALSE           0
 #define TRUE            1
 
-typedef char bool_t;
+typedef int bool_t;
 
 struct SFont;
 struct SLight;

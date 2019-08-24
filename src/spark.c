@@ -30,12 +30,16 @@
 #endif
 
 
+static bool_t _mipmapping_enabled = TRUE;
+
+
 EXPORT bool_t CALL spInitSpark() {
   bool_t ret;
   ret = p_Init();
   if (!ret) return FALSE;
 #ifdef PLATFORM_NULL
-  SetDefaultFont();
+  lgfx_init();
+  spSetDefaultFont();
 #endif
   return ret != FALSE;
 }
@@ -45,4 +49,20 @@ EXPORT void CALL spShutdownSpark() {
   if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
 #endif
   p_Shutdown();
+}
+
+EXPORT bool_t CALL spIsMultitexturingSupported() {
+  return lgfx_multitexture_supported();
+}
+
+EXPORT bool_t CALL spIsMipmappingSupported() {
+  return lgfx_mipmapping_supported();
+}
+
+EXPORT bool_t CALL spIsMipmappingEnabled() {
+  return spIsMipmappingSupported() && _mipmapping_enabled;
+}
+
+EXPORT void CALL spSetMipmappingEnabled(bool_t enable) {
+  _mipmapping_enabled = enable;
 }

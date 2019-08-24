@@ -3,6 +3,10 @@
 
 #include "types.h"
 
+#define FILTER_NONE 0
+#define FILTER_LINEAR 1
+#define FILTER_MIPMAP 2
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,7 +22,9 @@ EXPORT void CALL spDeleteTexture(Texture* texture);
 EXPORT int CALL spGetTextureWidth(const Texture* texture);
 EXPORT int CALL spGetTextureHeight(const Texture* texture);
 EXPORT void CALL spSetTexturePixels(Texture* texture, const Pixmap* pixmap);
-EXPORT void CALL spSetTextureFilter(bool_t filter);
+
+EXPORT int CALL spGetTextureFilter();
+EXPORT void CALL spSetTextureFilter(int filter);
 
 #ifndef SWIG
 const void* _GetTexturePtr(const Texture* texture);

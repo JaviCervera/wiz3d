@@ -20,6 +20,8 @@ extern "C" {
 
 EXPORT Texture* CALL spGetMaterialTexture(const Material* material);
 EXPORT void CALL spSetMaterialTexture(Material* material, Texture* texture);
+EXPORT Texture* CALL spGetMaterialLightmap(const Material* material);
+EXPORT void CALL spSetMaterialLightmap(Material* material, Texture* lightmap);
 EXPORT int CALL spGetMaterialDiffuse(const Material* material);
 EXPORT void CALL spSetMaterialDiffuse(Material* material, int color);
 EXPORT int CALL spGetMaterialEmissive(const Material* material);

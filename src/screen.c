@@ -2,6 +2,7 @@
 
 #ifndef PLATFORM_NULL
 
+#include "../lib/litelibs/litegfx.h"
 #include "draw.h"
 #include "platform.h"
 #include "screen.h"
@@ -13,27 +14,18 @@ static int _screen_fpscounter = 0;
 static float _screen_fpstime = 0;
 
 EXPORT void CALL spSetScreen(int width, int height, bool_t fullscreen, bool_t resizable) {
-  /* unload fonts */
   _UnloadFonts();
-
-  /* close screen if opened */
   if (_screen_ptr) p_CloseScreen(_screen_ptr);
-
-  /* open screen */
   _screen_ptr = p_OpenScreen(width, height, fullscreen, 0, TRUE, resizable);
-
-  /* set default font */
+  lgfx_init();
   spSetDefaultFont();
 }
 
 EXPORT void CALL spRefreshScreen() {
-  /* refresh screen */
   p_RefreshScreen(_screen_ptr);
-
-  /* update delta time */
   spUpdateTimer();
 
-  /* update fps */
+  /* Update FPS */
   ++_screen_fpscounter;
   _screen_fpstime += spGetDeltaTime();
   if (_screen_fpstime >= 1) {

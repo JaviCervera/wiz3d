@@ -9,7 +9,7 @@ gcc -o 1-helloworld.exe 1-helloworld.c -DDLL_IMPORT -DPLATFORM_GLFW -L../_CMAKE 
 gcc -o 2-primitives.exe 2-primitives.c -DDLL_IMPORT -DPLATFORM_GLFW -L../_CMAKE -lspark.dll -mwindows
 gcc -o 3-texture2d.exe 3-texture2d.c -DDLL_IMPORT -DPLATFORM_GLFW -L../_CMAKE -lspark.dll -mwindows
 gcc -o 4-triangle.exe 4-triangle.c -DDLL_IMPORT -DPLATFORM_GLFW -L../_CMAKE -lspark.dll -mwindows
-gcc -o 5-rotatingcube.exe 5-rotatingcube.c -DDLL_IMPORT -DPLATFORM_GLFW -L../_CMAKE -lspark.dll -mwindows
+gcc -o 5-lightmap.exe 5-lightmap.c -DDLL_IMPORT -DPLATFORM_GLFW -L../_CMAKE -lspark.dll -mwindows
 gcc -o 6-billboards.exe 6-billboards.c -DDLL_IMPORT -DPLATFORM_GLFW -L../_CMAKE -lspark.dll -mwindows
 gcc -o 7-lighting.exe 7-lighting.c -L. -DDLL_IMPORT -DPLATFORM_GLFW -L../_CMAKE -lspark.dll -mwindows
 gcc -o 8-fog.exe 8-fog.c -DDLL_IMPORT -DPLATFORM_GLFW -L../_CMAKE -lspark.dll -mwindows
@@ -24,7 +24,7 @@ echo running examples...
 2-primitives.exe
 3-texture2d.exe
 4-triangle.exe
-5-rotatingcube.exe
+5-lightmap.exe
 6-billboards.exe
 7-lighting.exe
 8-fog.exe
@@ -39,7 +39,7 @@ del 1-helloworld.exe
 del 2-primitives.exe
 del 3-texture2d.exe
 del 4-triangle.exe
-del 5-rotatingcube.exe
+del 5-lightmap.exe
 del 6-billboards.exe
 del 7-lighting.exe
 del 8-fog.exe

@@ -10,6 +10,10 @@ EXPORT Texture* CALL spGetMaterialTexture(const Material* material) { return mat
 
 EXPORT void CALL spSetMaterialTexture(Material* material, Texture* texture) { material->texture = texture; }
 
+EXPORT Texture* CALL spGetMaterialLightmap(const Material* material) { return material->lightmap; }
+
+EXPORT void CALL spSetMaterialLightmap(Material* material, Texture* lightmap) { material->lightmap = lightmap; }
+
 EXPORT int CALL spGetMaterialDiffuse(const Material* material) { return material->diffuse; }
 
 EXPORT void CALL spSetMaterialDiffuse(Material* material, int color) { material->diffuse = color; }
@@ -44,6 +48,7 @@ EXPORT void CALL spSetDefaultShininessPower(int power) { _material_shininesspowe
 
 void _InitMaterial(Material* material) {
   material->texture = NULL;
+  material->lightmap = NULL;
   material->diffuse = COLOR_WHITE;
   material->emissive = COLOR_BLACK;
   material->specular = COLOR_WHITE;

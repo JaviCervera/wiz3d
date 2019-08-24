@@ -63,8 +63,11 @@ See [here](./doc/documentation.md).
 ### v0.9-beta
 
 - [x] Replace structs with functions for everything.
-- [ ] Lightmaps (add other missing features from ColdSteel and Soil).
+- [x] Mipmapping and lightmaps.
+- [ ] Cube mapping.
+- [ ] Other features from ColdSteel, Soil and Wiz3D?
 - [ ] Fix object shininess.
+- [ ] Replace spCreateLight with a fixed set of 8 lights that you can setup.
 - [ ] Replace light range with attenuation.
 - [ ] material.ambient.
 - [ ] Spot lights.
@@ -73,6 +76,8 @@ See [here](./doc/documentation.md).
 
 ### v1.0
 
+- [ ] Modern pipeline support, with the ability to use custom shaders, and normal, light, emissive, specular, ambient and cubic textures.
+- [ ] Cache resources when loading.
 - [ ] More DrawTexture options.
 - [ ] Add billboard animation support.
 - [ ] Ini file support.
@@ -88,7 +93,9 @@ See [here](./doc/documentation.md).
 
 ### v2.0
 
-- [ ] Modern pipeline support, with the ability to use custom shaders, and normal, light, emissive, specular, ambient and cubic textures.
+- [ ] Vulkan renderer.
+- [ ] Skeletal animation.
+- [ ] Physically Based Rendering.
 
 ### Other
 

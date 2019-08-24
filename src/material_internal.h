@@ -9,6 +9,7 @@ extern "C" {
 
 typedef struct SMaterial {
   Texture* texture;
+  Texture* lightmap;
   int diffuse;
   int emissive;
   int specular;

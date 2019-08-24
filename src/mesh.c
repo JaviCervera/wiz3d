@@ -301,13 +301,24 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
     const Material* material;
     const Viewer* viewer;
     int specular;
+    bool_t use_lighting;
 
     material = &materials[i];
+
+    /* get lighting settings */
+    if ((spGetMaterialFlags(material) & FLAG_LIGHTING) == FLAG_LIGHTING) {
+      use_lighting = _GetNumLights() > 0;
+    } else {
+      use_lighting = FALSE;
+    }
 
     /* set material settings */
     specular = spMultiplyColor(spGetMaterialSpecular(material), spGetMaterialShininess(material));
     lgfx_setblend(spGetMaterialBlend(material));
-    ltex_bindcolor((const ltex_t*)_GetTexturePtr(spGetMaterialTexture(material)));
+    ltex_bind(
+      (const ltex_t*)_GetTexturePtr(spGetMaterialTexture(material)),
+      (const ltex_t*)_GetTexturePtr(spGetMaterialLightmap(material)),
+      use_lighting);
     lgfx_setcolor(
       spGetRed(spGetMaterialDiffuse(material)) / 255.0f,
       spGetGreen(spGetMaterialDiffuse(material)) / 255.0f,
@@ -326,12 +337,7 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
     lgfx_setdepthwrite((spGetMaterialFlags(material) & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
 
     /* setup lighting */
-    if ((spGetMaterialFlags(material) & FLAG_LIGHTING) == FLAG_LIGHTING) {
-      int numlights = _GetNumLights();
-      lgfx_setlighting(numlights);
-    } else {
-      lgfx_setlighting(0);
-    }
+    lgfx_setlighting(use_lighting ? _GetNumLights() : 0);
 
     /* setup fog */
     viewer = _GetActiveViewer();
@@ -354,13 +360,13 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
         mesh->buffers[i].vertices,
         mesh->buffers[i].indices,
         sb_count(mesh->buffers[i].indices),
-        MODE_TRIANGLES
+        R_TRIANGLES
       );
     } else {
       lvert_draw(
         mesh->buffers[i].vertices,
         sb_count(mesh->buffers[i].vertices),
-        MODE_TRIANGLES);
+        R_TRIANGLES);
     }
   }
 }

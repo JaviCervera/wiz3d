@@ -10,7 +10,7 @@ gcc -o 1-helloworld 1-helloworld.c -DPLATFORM_GLFW -L. -lspark
 gcc -o 2-primitives 2-primitives.c -DPLATFORM_GLFW -L. -lspark
 gcc -o 3-texture2d 3-texture2d.c -DPLATFORM_GLFW -L. -lspark
 gcc -o 4-triangle 4-triangle.c -DPLATFORM_GLFW -L. -lspark
-gcc -o 5-rotatingcube 5-rotatingcube.c -DPLATFORM_GLFW -L. -lspark
+gcc -o 5-lightmap 5-lightmap.c -DPLATFORM_GLFW -L. -lspark
 gcc -o 6-billboards 6-billboards.c -DPLATFORM_GLFW -L. -lspark
 gcc -o 7-lighting 7-lighting.c -DPLATFORM_GLFW -L. -lspark
 gcc -o 8-fog 8-fog.c -DPLATFORM_GLFW -L. -lspark
@@ -25,7 +25,7 @@ echo "running examples..."
 ./2-primitives
 ./3-texture2d
 ./4-triangle
-./5-rotatingcube
+./5-lightmap
 ./6-billboards
 ./7-lighting
 ./8-fog
@@ -40,7 +40,7 @@ rm 1-helloworld
 rm 2-primitives
 rm 3-texture2d
 rm 4-triangle
-rm 5-rotatingcube
+rm 5-lightmap
 rm 6-billboards
 rm 7-lighting
 rm 8-fog
