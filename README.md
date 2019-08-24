@@ -66,7 +66,7 @@ See [here](./doc/documentation.md).
 - [x] Mipmapping and lightmaps.
 - [ ] Cube mapping.
 - [ ] Other features from ColdSteel, Soil and Wiz3D?
-- [ ] Fix object shininess.
+- [ ] Fix object shininess.
 - [ ] Replace spCreateLight with a fixed set of 8 lights that you can setup.
 - [ ] Replace light range with attenuation.
 - [ ] material.ambient.
