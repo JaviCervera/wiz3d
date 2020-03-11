@@ -18,27 +18,27 @@
 extern "C" {
 #endif
 
-EXPORT Texture* CALL spGetMaterialTexture(const Material* material);
-EXPORT void CALL spSetMaterialTexture(Material* material, Texture* texture);
-EXPORT Texture* CALL spGetMaterialLightmap(const Material* material);
-EXPORT void CALL spSetMaterialLightmap(Material* material, Texture* lightmap);
-EXPORT int CALL spGetMaterialDiffuse(const Material* material);
-EXPORT void CALL spSetMaterialDiffuse(Material* material, int color);
-EXPORT int CALL spGetMaterialEmissive(const Material* material);
-EXPORT void CALL spSetMaterialEmissive(Material* material, int color);
-EXPORT int CALL spGetMaterialSpecular(const Material* material);
-EXPORT void CALL spSetMaterialSpecular(Material* material, int color);
-EXPORT float CALL spGetMaterialShininess(const Material* material);
-EXPORT void CALL spSetMaterialShininess(Material* material, float shininess);
-EXPORT int CALL spGetMaterialBlend(const Material* material);
-EXPORT void CALL spSetMaterialBlend(Material* material, int blend);
-EXPORT int CALL spGetMaterialFlags(const Material* material);
-EXPORT void CALL spSetMaterialFlags(Material* material, int flags);
-EXPORT int CALL spGetMaterialShininessPower(const Material* material);
-EXPORT void CALL spSetMaterialShininessPower(Material* material, int power);
+EXPORT Texture* CALL bmGetMaterialTexture(const Material* material);
+EXPORT void CALL bmSetMaterialTexture(Material* material, Texture* texture);
+EXPORT Texture* CALL bmGetMaterialLightmap(const Material* material);
+EXPORT void CALL bmSetMaterialLightmap(Material* material, Texture* lightmap);
+EXPORT int CALL bmGetMaterialDiffuse(const Material* material);
+EXPORT void CALL bmSetMaterialDiffuse(Material* material, int color);
+EXPORT int CALL bmGetMaterialEmissive(const Material* material);
+EXPORT void CALL bmSetMaterialEmissive(Material* material, int color);
+EXPORT int CALL bmGetMaterialSpecular(const Material* material);
+EXPORT void CALL bmSetMaterialSpecular(Material* material, int color);
+EXPORT float CALL bmGetMaterialShininess(const Material* material);
+EXPORT void CALL bmSetMaterialShininess(Material* material, float shininess);
+EXPORT int CALL bmGetMaterialBlend(const Material* material);
+EXPORT void CALL bmSetMaterialBlend(Material* material, int blend);
+EXPORT int CALL bmGetMaterialFlags(const Material* material);
+EXPORT void CALL bmSetMaterialFlags(Material* material, int flags);
+EXPORT int CALL bmGetMaterialShininessPower(const Material* material);
+EXPORT void CALL bmSetMaterialShininessPower(Material* material, int power);
 
-EXPORT int CALL spGetDefaultShininessPower();
-EXPORT void CALL spSetDefaultShininessPower(int power);
+EXPORT int CALL bmGetDefaultShininessPower();
+EXPORT void CALL bmSetDefaultShininessPower(int power);
 
 #ifndef SWIG
 void _InitMaterial(Material* material);

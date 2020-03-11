@@ -54,7 +54,7 @@ Mesh* CreateMesh(const Memblock* memblock) {
   
   if (memblock) {
     init_ok = FALSE;
-    if (spGetMemblockInt(memblock, 0) == 844121161) {
+    if (bmGetMemblockInt(memblock, 0) == 844121161) {
       init_ok = _InitMD2Mesh(memblock, mesh);
     } else {
       init_ok = _InitAssimpMesh(memblock, mesh);
@@ -116,10 +116,10 @@ int AddMeshVertex(Mesh* mesh, int buffer, float x, float y, float z, float nx, f
       x, y, z,
       nx, ny, nz,
       u, v,
-      spGetRed(color) / 255.0f,
-      spGetGreen(color) / 255.0f,
-      spGetBlue(color) / 255.0f,
-      spGetAlpha(color) / 255.0f));
+      bmGetRed(color) / 255.0f,
+      bmGetGreen(color) / 255.0f,
+      bmGetBlue(color) / 255.0f,
+      bmGetAlpha(color) / 255.0f));
   return sb_count(mesh->buffers[buffer].vertices) - 1;
 }
 
@@ -306,49 +306,49 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
     material = &materials[i];
 
     /* get lighting settings */
-    if ((spGetMaterialFlags(material) & FLAG_LIGHTING) == FLAG_LIGHTING) {
+    if ((bmGetMaterialFlags(material) & FLAG_LIGHTING) == FLAG_LIGHTING) {
       use_lighting = _GetNumLights() > 0;
     } else {
       use_lighting = FALSE;
     }
 
     /* set material settings */
-    specular = spMultiplyColor(spGetMaterialSpecular(material), spGetMaterialShininess(material));
-    lgfx_setblend(spGetMaterialBlend(material));
+    specular = bmMultiplyColor(bmGetMaterialSpecular(material), bmGetMaterialShininess(material));
+    lgfx_setblend(bmGetMaterialBlend(material));
     ltex_bind(
-      (const ltex_t*)_GetTexturePtr(spGetMaterialTexture(material)),
-      (const ltex_t*)_GetTexturePtr(spGetMaterialLightmap(material)),
+      (const ltex_t*)_GetTexturePtr(bmGetMaterialTexture(material)),
+      (const ltex_t*)_GetTexturePtr(bmGetMaterialLightmap(material)),
       use_lighting);
     lgfx_setcolor(
-      spGetRed(spGetMaterialDiffuse(material)) / 255.0f,
-      spGetGreen(spGetMaterialDiffuse(material)) / 255.0f,
-      spGetBlue(spGetMaterialDiffuse(material)) / 255.0f,
-      spGetAlpha(spGetMaterialDiffuse(material)) / 255.0f);
+      bmGetRed(bmGetMaterialDiffuse(material)) / 255.0f,
+      bmGetGreen(bmGetMaterialDiffuse(material)) / 255.0f,
+      bmGetBlue(bmGetMaterialDiffuse(material)) / 255.0f,
+      bmGetAlpha(bmGetMaterialDiffuse(material)) / 255.0f);
     lgfx_setemissive(
-      spGetRed(spGetMaterialEmissive(material)) / 255.0f,
-      spGetGreen(spGetMaterialEmissive(material)) / 255.0f,
-      spGetBlue(spGetMaterialEmissive(material)) / 255.0f);
+      bmGetRed(bmGetMaterialEmissive(material)) / 255.0f,
+      bmGetGreen(bmGetMaterialEmissive(material)) / 255.0f,
+      bmGetBlue(bmGetMaterialEmissive(material)) / 255.0f);
     lgfx_setspecular(
-      spGetRed(specular) / 255.0f,
-      spGetGreen(specular) / 255.0f,
-      spGetBlue(specular) / 255.0f);
-    lgfx_setshininess(_Clamp(spGetMaterialShininess(material) * spGetMaterialShininessPower(material) > -1 ? spGetMaterialShininessPower(material) : spGetDefaultShininessPower(), 0, 128));
-    lgfx_setculling((spGetMaterialFlags(material) & FLAG_CULL) == FLAG_CULL);
-    lgfx_setdepthwrite((spGetMaterialFlags(material) & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
+      bmGetRed(specular) / 255.0f,
+      bmGetGreen(specular) / 255.0f,
+      bmGetBlue(specular) / 255.0f);
+    lgfx_setshininess(_Clamp(bmGetMaterialShininess(material) * bmGetMaterialShininessPower(material) > -1 ? bmGetMaterialShininessPower(material) : bmGetDefaultShininessPower(), 0, 128));
+    lgfx_setculling((bmGetMaterialFlags(material) & FLAG_CULL) == FLAG_CULL);
+    lgfx_setdepthwrite((bmGetMaterialFlags(material) & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
 
     /* setup lighting */
     lgfx_setlighting(use_lighting ? _GetNumLights() : 0);
 
     /* setup fog */
     viewer = _GetActiveViewer();
-    if ((spGetMaterialFlags(material) & FLAG_FOG) == FLAG_FOG) {
+    if ((bmGetMaterialFlags(material) & FLAG_FOG) == FLAG_FOG) {
       lgfx_setfog(
-        spIsViewerFogEnabled(viewer),
-        spGetRed(spGetViewerFogColor(viewer)) / 255.0f,
-        spGetGreen(spGetViewerFogColor(viewer)) / 255.0f,
-        spGetBlue(spGetViewerFogColor(viewer)) / 255.0f,
-        spGetViewerFogDistanceMin(viewer),
-        spGetViewerFogDistanceMax(viewer)
+        bmIsViewerFogEnabled(viewer),
+        bmGetRed(bmGetViewerFogColor(viewer)) / 255.0f,
+        bmGetGreen(bmGetViewerFogColor(viewer)) / 255.0f,
+        bmGetBlue(bmGetViewerFogColor(viewer)) / 255.0f,
+        bmGetViewerFogDistanceMin(viewer),
+        bmGetViewerFogDistanceMax(viewer)
       );
     } else {
       lgfx_setfog(FALSE, 0, 0, 0, 0, 0);
@@ -416,7 +416,7 @@ Mesh* _CreateSkyboxMesh() {
   AddMeshTriangle(mesh, buffer, drb, dlf, drf);
 
   /* setup material */
-  spSetMaterialFlags(&mesh->materials[0], FLAG_CULL);
+  bmSetMaterialFlags(&mesh->materials[0], FLAG_CULL);
 
   return mesh;
 }
@@ -473,7 +473,7 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
     opacity = lassbin_matopacity(material);
     diffuse = lassbin_matdiffuse(material);
     emissive = lassbin_matemissive(material);
-    specular = lassbin_matspecular(material);
+    specular = lassbin_matbmecular(material);
     shininess = lassbin_matshininess(material);
     /*shinpercent = lassbin_matshinpercent(material);*/
 
@@ -488,32 +488,32 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
         tex_index = tex_name[1] - 48; /* convert ascii code tu number */
         pixmap = _CreateEmptyPixmapFromData(scene->textures[tex_index].data, lassbin_texturesize(&scene->textures[tex_index]));
         if (pixmap) {
-          texture = spCreateTexture(pixmap);
-          spDeletePixmap(pixmap);
+          texture = bmCreateTexture(pixmap);
+          bmDeletePixmap(pixmap);
         }
       } else {
         /* load texture */
-        texture = spLoadTexture(tex_name);
+        texture = bmLoadTexture(tex_name);
       }
       if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
-      spSetMaterialTexture(&mesh->materials[buffer], texture);
+      bmSetMaterialTexture(&mesh->materials[buffer], texture);
     }
 
     /* apply diffuse */
     if (diffuse) {
-      spSetMaterialDiffuse(&mesh->materials[buffer], spGetRGBA(
+      bmSetMaterialDiffuse(&mesh->materials[buffer], bmGetRGBA(
         (int)diffuse[0] * 255,
         (int)diffuse[1] * 255,
         (int)diffuse[2] * 255,
         (int)opacity * 255
       ));
     } else {
-      spSetMaterialDiffuse(&mesh->materials[buffer], spGetRGBA(1, 1, 1, (int)opacity * 255));
+      bmSetMaterialDiffuse(&mesh->materials[buffer], bmGetRGBA(1, 1, 1, (int)opacity * 255));
     }
 
     /* apply emissive */
     if (emissive) {
-      spSetMaterialEmissive(&mesh->materials[buffer], spGetRGBA(
+      bmSetMaterialEmissive(&mesh->materials[buffer], bmGetRGBA(
         (int)emissive[0] * 255,
         (int)emissive[1] * 255,
         (int)emissive[2] * 255,
@@ -523,7 +523,7 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
 
     /* apply specular */
     if (specular) {
-      spSetMaterialSpecular(&mesh->materials[buffer], spGetRGBA(
+      bmSetMaterialSpecular(&mesh->materials[buffer], bmGetRGBA(
         (int)specular[0] * 255,
         (int)specular[1] * 255,
         (int)specular[2] * 255,
@@ -532,7 +532,7 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
     }
 
     /* apply shininess */
-    spSetMaterialShininess(&mesh->materials[buffer], shininess);
+    bmSetMaterialShininess(&mesh->materials[buffer], shininess);
   }
 
   lassbin_free(scene);
@@ -555,9 +555,9 @@ bool_t _InitMD2Mesh(const Memblock* memblock, Mesh* mesh) {
 
   /* load texture */
   if (mdl->header.num_skins > 0) {
-    Texture* texture = spLoadTexture(mdl->skins[0].name);
+    Texture* texture = bmLoadTexture(mdl->skins[0].name);
     if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
-    spSetMaterialTexture(GetMeshMaterial(mesh, buffer), texture);
+    bmSetMaterialTexture(GetMeshMaterial(mesh, buffer), texture);
   }
 
   /* create vertices */

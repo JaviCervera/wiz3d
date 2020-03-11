@@ -1,7 +1,7 @@
-#ifndef SPARK_CONFIG_H_INCLUDED
-#define SPARK_CONFIG_H_INCLUDED
+#ifndef BEAM_CONFIG_H_INCLUDED
+#define BEAM_CONFIG_H_INCLUDED
 
-/* Spark can be embedded in an application that already uses an OpenGL
+/* Beam can be embedded in an application that already uses an OpenGL
    context, or can be configured to embed Allegro, GLFW or SDL2, by
    defining ONE of this macros when compiling (you can define the macro
    in this file directly, or set it with -DPLATFORM_NAME on Make or CMake):
@@ -24,4 +24,4 @@
 #define NUM_LIGHTS      8
 #define NUM_CHANNELS    8
 
-#endif /* SPARK_CONFIG_H_INCLUDED */
+#endif /* BEAM_CONFIG_H_INCLUDED */

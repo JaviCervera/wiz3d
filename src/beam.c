@@ -1,5 +1,5 @@
-#include "spark_config.h"
-#include "spark.h"
+#include "beam_config.h"
+#include "beam.h"
 #include "draw.h"
 #include "platform.h"
 #define LITE_ASSBIN_USE_GFX
@@ -30,28 +30,28 @@
 #endif
 
 
-EXPORT bool_t CALL spInitSpark() {
+EXPORT bool_t CALL bmInitBeam() {
   bool_t ret;
   ret = p_Init();
   if (!ret) return FALSE;
 #ifdef PLATFORM_NULL
   lgfx_init();
-  spSetDefaultFont();
+  bmSetDefaultFont();
 #endif
   return ret != FALSE;
 }
 
-EXPORT void CALL spShutdownSpark() {
+EXPORT void CALL bmShutdownBeam() {
 #ifndef PLATFORM_NULL
   if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
 #endif
   p_Shutdown();
 }
 
-EXPORT bool_t CALL spIsMultitexturingSupported() {
+EXPORT bool_t CALL bmIsMultitexturingSupported() {
   return lgfx_multitexture_supported();
 }
 
-EXPORT bool_t CALL spIsMipmappingSupported() {
+EXPORT bool_t CALL bmIsMipmappingSupported() {
   return lgfx_mipmapping_supported();
 }

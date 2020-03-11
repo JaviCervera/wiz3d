@@ -7,9 +7,9 @@
 extern "C" {
 #endif
 
-EXPORT void CALL spLogInfo(const char* msg);
-EXPORT void CALL spLogWarning(const char* msg);
-EXPORT void CALL spLogError(const char* msg);
+EXPORT void CALL bmLogInfo(const char* msg);
+EXPORT void CALL bmLogWarning(const char* msg);
+EXPORT void CALL bmLogError(const char* msg);
 
 #ifndef SWIG
 void _SetLogFilename(const char* filename);

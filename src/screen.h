@@ -1,7 +1,7 @@
 #ifndef SCREEN_H_INCLUDED
 #define SCREEN_H_INCLUDED
 
-#include "spark_config.h"
+#include "beam_config.h"
 #include "types.h"
 
 #ifndef PLATFORM_NULL
@@ -10,16 +10,16 @@
 extern "C" {
 #endif
 
-EXPORT void CALL spSetScreen(int width, int height, bool_t fullscreen, bool_t resizable);
-EXPORT void CALL spRefreshScreen();
-EXPORT void CALL spSetScreenTitle(const char* title);
-EXPORT int CALL spGetScreenWidth();
-EXPORT int CALL spGetScreenHeight();
-EXPORT int CALL spGetScreenFPS();
-EXPORT bool_t CALL spIsScreenOpened();
+EXPORT void CALL bmSetScreen(int width, int height, bool_t fullscreen, bool_t resizable);
+EXPORT void CALL bmRefreshScreen();
+EXPORT void CALL bmSetScreenTitle(const char* title);
+EXPORT int CALL bmGetScreenWidth();
+EXPORT int CALL bmGetScreenHeight();
+EXPORT int CALL bmGetScreenFPS();
+EXPORT bool_t CALL bmIsScreenOpened();
 
-EXPORT int CALL spGetDesktopWidth();
-EXPORT int CALL spGetDesktopHeight();
+EXPORT int CALL bmGetDesktopWidth();
+EXPORT int CALL bmGetDesktopHeight();
 
 #ifndef SWIG
 void* _GetScreenPtr();

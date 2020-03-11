@@ -1,4 +1,4 @@
-#include "../src/spark.h"
+#include "../src/beam.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,21 +15,21 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  spInitSpark();
-  spSetScreen(800, 600, FALSE, TRUE);
-  spSetScreenTitle("Fog");
+  bmInitBeam();
+  bmSetScreen(800, 600, FALSE, TRUE);
+  bmSetScreenTitle("Fog");
 
   /* Setup lighting */
-  dir_light = spCreateLight(LIGHT_DIRECTIONAL);
-  spTurnLight(dir_light, 45, 45);
+  dir_light = bmCreateLight(LIGHT_DIRECTIONAL);
+  bmTurnLight(dir_light, 45, 45);
 
   /* Create and position viewer */
-  viewer = spCreateViewer();
-  spSetViewerClearColor(viewer, COLOR_DARKGRAY);
-  spSetViewerPosition(viewer, 0, 0, -7);
-  spSetViewerDistance(viewer, 1, 5000);
-  spSetViewerFogEnabled(viewer, TRUE);
-  spSetViewerFogDistance(viewer, 0, 20);
+  viewer = bmCreateViewer();
+  bmSetViewerClearColor(viewer, COLOR_DARKGRAY);
+  bmSetViewerPosition(viewer, 0, 0, -7);
+  bmSetViewerDistance(viewer, 1, 5000);
+  bmSetViewerFogEnabled(viewer, TRUE);
+  bmSetViewerFogDistance(viewer, 0, 20);
 
   /* Create billboards */
   x = -7;
@@ -38,16 +38,16 @@ int main() {
     Object* cube;
 
     if (i == 0) {
-      cube = spCreateCube();
-      spSetMaterialDiffuse(spGetObjectMaterial(cube, 0), COLOR_BROWN);
+      cube = bmCreateCube();
+      bmSetMaterialDiffuse(bmGetObjectMaterial(cube, 0), COLOR_BROWN);
     } else {
-      cube = spCloneObject(cubes[0]);
+      cube = bmCloneObject(cubes[0]);
     }
-    spSetObjectPosition(cube, x, -1.5f, z);
+    bmSetObjectPosition(cube, x, -1.5f, z);
     cubes[i] = cube;
 
-    cube = spCloneObject(cubes[0]);
-    spSetObjectPosition(cube, x, 1.5f, z);
+    cube = bmCloneObject(cubes[0]);
+    bmSetObjectPosition(cube, x, 1.5f, z);
     cubes[i+1] = cube;
     
     x += 2;
@@ -58,25 +58,25 @@ int main() {
   }
 
   /* Main loop */
-  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
+  while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
     /* Turn objects */
     for (i = 0; i < NUM_CUBES; ++i) {
-      spTurnObject(cubes[i], 0, ROTATION_SPEED * spGetDeltaTime(), 0);
+      bmTurnObject(cubes[i], 0, ROTATION_SPEED * bmGetDeltaTime(), 0);
     }
 
     /* Draw scene */
-    spPrepareViewer(viewer);
+    bmPrepareViewer(viewer);
     for (i = 0; i < NUM_CUBES; ++i) {
-      spDrawObject(cubes[i]);
+      bmDrawObject(cubes[i]);
     }
 
     /* Draw UI */
-    sprintf(str, "%i FPS", spGetScreenFPS());
-    spSetup2D();
-    spDrawText(str, 4, 4);
-    spRefreshScreen();
+    sprintf(str, "%i FPS", bmGetScreenFPS());
+    bmSetup2D();
+    bmDrawText(str, 4, 4);
+    bmRefreshScreen();
   }
 
   /* Shutdown */
-  spShutdownSpark();
+  bmShutdownBeam();
 }

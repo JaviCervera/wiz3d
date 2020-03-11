@@ -1,4 +1,4 @@
-#include "spark_config.h"
+#include "beam_config.h"
 
 #ifndef PLATFORM_NULL
 
@@ -13,21 +13,21 @@ static int _screen_fps = 0;
 static int _screen_fpscounter = 0;
 static float _screen_fpstime = 0;
 
-EXPORT void CALL spSetScreen(int width, int height, bool_t fullscreen, bool_t resizable) {
+EXPORT void CALL bmSetScreen(int width, int height, bool_t fullscreen, bool_t resizable) {
   _UnloadFonts();
   if (_screen_ptr) p_CloseScreen(_screen_ptr);
   _screen_ptr = p_OpenScreen(width, height, fullscreen, 0, TRUE, resizable);
   lgfx_init();
-  spSetDefaultFont();
+  bmSetDefaultFont();
 }
 
-EXPORT void CALL spRefreshScreen() {
+EXPORT void CALL bmRefreshScreen() {
   p_RefreshScreen(_screen_ptr);
-  spUpdateTimer();
+  bmUpdateTimer();
 
   /* Update FPS */
   ++_screen_fpscounter;
-  _screen_fpstime += spGetDeltaTime();
+  _screen_fpstime += bmGetDeltaTime();
   if (_screen_fpstime >= 1) {
     _screen_fps = _screen_fpscounter;
     _screen_fpscounter = 0;
@@ -35,31 +35,31 @@ EXPORT void CALL spRefreshScreen() {
   }
 }
 
-EXPORT void CALL spSetScreenTitle(const char* title) {
+EXPORT void CALL bmSetScreenTitle(const char* title) {
   p_SetScreenTitle(_screen_ptr, title);
 }
 
-EXPORT int CALL spGetScreenWidth() {
+EXPORT int CALL bmGetScreenWidth() {
   return p_GetScreenWidth(_screen_ptr);
 }
 
-EXPORT int CALL spGetScreenHeight() {
+EXPORT int CALL bmGetScreenHeight() {
   return p_GetScreenHeight(_screen_ptr);
 }
 
-EXPORT int CALL spGetScreenFPS() {
+EXPORT int CALL bmGetScreenFPS() {
   return _screen_fps;
 }
 
-EXPORT bool_t CALL spIsScreenOpened() {
+EXPORT bool_t CALL bmIsScreenOpened() {
   return p_IsScreenOpened(_screen_ptr);
 }
 
-EXPORT int CALL spGetDesktopWidth() {
+EXPORT int CALL bmGetDesktopWidth() {
   return p_GetDesktopWidth();
 }
 
-EXPORT int CALL spGetDesktopHeight() {
+EXPORT int CALL bmGetDesktopHeight() {
   return p_GetDesktopHeight();
 }
 

@@ -1,4 +1,4 @@
-#include "spark_config.h"
+#include "beam_config.h"
 
 #ifndef PLATFORM_NULL
 
@@ -6,27 +6,27 @@
 #include "platform.h"
 #include "screen.h"
 
-EXPORT void CALL spSetCursorVisible(bool_t visible) {
+EXPORT void CALL bmSetCursorVisible(bool_t visible) {
   p_SetCursorVisible(_GetScreenPtr(), visible);
 }
 
-EXPORT void CALL spSetCursorPosition(int x, int y) {
+EXPORT void CALL bmSetCursorPosition(int x, int y) {
   p_SetCursorPosition(_GetScreenPtr(), x, y);
 }
 
-EXPORT int CALL spGetCursorX() {
+EXPORT int CALL bmGetCursorX() {
   return p_GetCursorX(_GetScreenPtr());
 }
 
-EXPORT int CALL spGetCursorY() {
+EXPORT int CALL bmGetCursorY() {
   return p_GetCursorY(_GetScreenPtr());
 }
 
-EXPORT bool_t CALL spIsCursorPressed(int b) {
+EXPORT bool_t CALL bmIsCursorPressed(int b) {
   return p_GetCursorPressed(_GetScreenPtr(), b);
 }
 
-EXPORT bool_t CALL spIsKeyPressed(int k) {
+EXPORT bool_t CALL bmIsKeyPressed(int k) {
   return p_GetKeyPressed(_GetScreenPtr(), k);
 }
 

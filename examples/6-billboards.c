@@ -1,4 +1,4 @@
-#include "../src/spark.h"
+#include "../src/beam.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,29 +15,29 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  spInitSpark();
-  spSetScreen(800, 600, FALSE, TRUE);
-  spSetScreenTitle("Billboards");
+  bmInitBeam();
+  bmSetScreen(800, 600, FALSE, TRUE);
+  bmSetScreenTitle("Billboards");
 
   /* Create and position viewer */
-  viewer = spCreateViewer();
-  spSetViewerClearColor(viewer, COLOR_WHITE);
-  spSetViewerRotation(viewer, 45, -45, 0);
+  viewer = bmCreateViewer();
+  bmSetViewerClearColor(viewer, COLOR_WHITE);
+  bmSetViewerRotation(viewer, 45, -45, 0);
 
   /* Load texture */
-  tex = spLoadTexture("data/smile.png");
+  tex = bmLoadTexture("data/smile.png");
 
   /* Create billboards */
   x = z = -8;
   for (i = 0; i < NUM_BILLBOARDS; ++i) {
     Material* material;
 
-    billboards[i] = spCreateQuad();
-    spSetObjectPosition(billboards[i], x, 0, z);
-    material = spGetObjectMaterial(billboards[i], 0);
-    spSetMaterialTexture(material, tex);
-    spSetMaterialDiffuse(material, spGetRGB(rand() % 256, rand() % 256, rand() % 256));
-    spSetMaterialBlend(material, BLEND_ALPHA);
+    billboards[i] = bmCreateQuad();
+    bmSetObjectPosition(billboards[i], x, 0, z);
+    material = bmGetObjectMaterial(billboards[i], 0);
+    bmSetMaterialTexture(material, tex);
+    bmSetMaterialDiffuse(material, bmGetRGB(rand() % 256, rand() % 256, rand() % 256));
+    bmSetMaterialBlend(material, BLEND_ALPHA);
     
     x += 2;
     if (x >= 8) {
@@ -47,31 +47,31 @@ int main() {
   }
 
   /* Main loop */
-  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
+  while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
     /* Update viewer */
-    spTurnViewer(viewer, 0, ROTATION_SPEED * spGetDeltaTime(), 0);
-    spSetViewerPosition(viewer, 0, 0, 0);
-    spMoveViewer(viewer, 0, 0, -8);
+    bmTurnViewer(viewer, 0, ROTATION_SPEED * bmGetDeltaTime(), 0);
+    bmSetViewerPosition(viewer, 0, 0, 0);
+    bmMoveViewer(viewer, 0, 0, -8);
 
     /* Update billboards */
     for (i = 0; i < NUM_BILLBOARDS; ++i) {
-      spObjectLookAt(billboards[i], spGetViewerX(viewer), spGetViewerY(viewer), spGetViewerZ(viewer));
+      bmObjectLookAt(billboards[i], bmGetViewerX(viewer), bmGetViewerY(viewer), bmGetViewerZ(viewer));
     }
 
     /* Draw scene */
-    spPrepareViewer(viewer);
+    bmPrepareViewer(viewer);
     for (i = 0; i < NUM_BILLBOARDS; ++i) {
-      spDrawObject(billboards[i]);
+      bmDrawObject(billboards[i]);
     }
 
     /* Draw UI */
-    sprintf(str, "%i FPS", spGetScreenFPS());
-    spSetup2D();
-    spSetDrawColor(COLOR_BLACK);
-    spDrawText(str, 4, 4);
-    spRefreshScreen();
+    sprintf(str, "%i FPS", bmGetScreenFPS());
+    bmSetup2D();
+    bmSetDrawColor(COLOR_BLACK);
+    bmDrawText(str, 4, 4);
+    bmRefreshScreen();
   }
 
   /* Shutdown */
-  spShutdownSpark();
+  bmShutdownBeam();
 }

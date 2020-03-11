@@ -1,5 +1,5 @@
 #include "../lib/stb/stretchy_buffer.h"
-#include "spark_config.h"
+#include "beam_config.h"
 #include "file_system.h"
 #include <stdio.h>
 #include <string.h>
@@ -26,7 +26,7 @@ const PakEntry* _GetPakEntry(const PakFile* pak, const char* entryname);
 size_t _GetPakEntrySize(const PakFile* pak, const char* entryname);
 bool_t _GetPakEntryContents(const PakFile* pak, const char* entryname, void* buffer);
 
-EXPORT bool_t CALL spAddPackage(const char* pakname) {
+EXPORT bool_t CALL bmAddPackage(const char* pakname) {
 #ifdef USE_PAK
   PakFile pak;
   int i;
@@ -50,7 +50,7 @@ EXPORT bool_t CALL spAddPackage(const char* pakname) {
 #endif
 }
 
-EXPORT bool_t CALL spIsFilePacked(const char* filename) {
+EXPORT bool_t CALL bmIsFilePacked(const char* filename) {
 #ifdef USE_PAK
   return _GetPakForFile(filename) != NULL;
 #else
@@ -58,7 +58,7 @@ EXPORT bool_t CALL spIsFilePacked(const char* filename) {
 #endif
 }
 
-EXPORT size_t CALL spGetFileSize(const char* filename) {
+EXPORT size_t CALL bmGetFileSize(const char* filename) {
 #ifdef USE_PAK
   const PakFile* pak;
   pak = _GetPakForFile(filename);

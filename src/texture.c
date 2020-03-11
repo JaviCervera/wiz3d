@@ -10,33 +10,33 @@ typedef struct STexture {
   ltex_t* ptr;
 } Texture;
 
-EXPORT Texture* CALL spCreateTexture(const Pixmap* pixmap) {
+EXPORT Texture* CALL bmCreateTexture(const Pixmap* pixmap) {
   Texture* tex;
-  tex = spCreateEmptyTexture(spGetPixmapWidth(pixmap), spGetPixmapHeight(pixmap));
-  if (tex) spSetTexturePixels(tex, pixmap);
+  tex = bmCreateEmptyTexture(bmGetPixmapWidth(pixmap), bmGetPixmapHeight(pixmap));
+  if (tex) bmSetTexturePixels(tex, pixmap);
   return tex;
 }
 
-EXPORT Texture* CALL spCreateEmptyTexture(int width, int height) {
+EXPORT Texture* CALL bmCreateEmptyTexture(int width, int height) {
   Texture* tex = _Alloc(Texture);
   tex->refcount = 0;
   tex->ptr = ltex_alloc(width, height, _texture_filter);
   return tex;
 }
 
-EXPORT Texture* CALL spLoadTexture(const char* filename) {
+EXPORT Texture* CALL bmLoadTexture(const char* filename) {
   Pixmap* pixmap;
   Texture* tex;
 
   /* load pixmap */
-  pixmap = spLoadPixmap(filename);
+  pixmap = bmLoadPixmap(filename);
   if (!pixmap) return NULL;
 
   /* create texture */
-  tex = spCreateTexture(pixmap);
+  tex = bmCreateTexture(pixmap);
 
   /* delete pixmap */
-  spDeletePixmap(pixmap);
+  bmDeletePixmap(pixmap);
 
   return tex;
 }
@@ -47,34 +47,34 @@ void RetainTexture(Texture* texture) {
 
 void ReleaseTexture(Texture* texture) {
   if (--texture->refcount == 0) {
-    spDeleteTexture(texture);
+    bmDeleteTexture(texture);
   }
 }
 
-EXPORT void CALL spDeleteTexture(Texture* texture) {
+EXPORT void CALL bmDeleteTexture(Texture* texture) {
   ltex_free(texture->ptr);
   free(texture);
 }
 
-EXPORT int CALL spGetTextureWidth(const Texture* texture) {
+EXPORT int CALL bmGetTextureWidth(const Texture* texture) {
   return texture->ptr->width;
 }
 
-EXPORT int CALL spGetTextureHeight(const Texture* texture) {
+EXPORT int CALL bmGetTextureHeight(const Texture* texture) {
   return texture->ptr->height;
 }
 
-EXPORT void CALL spSetTexturePixels(Texture* texture, const Pixmap* pixmap) {
-  if (texture->ptr->width == spGetPixmapWidth(pixmap) && texture->ptr->height == spGetPixmapHeight(pixmap)) {
+EXPORT void CALL bmSetTexturePixels(Texture* texture, const Pixmap* pixmap) {
+  if (texture->ptr->width == bmGetPixmapWidth(pixmap) && texture->ptr->height == bmGetPixmapHeight(pixmap)) {
     ltex_setpixels(texture->ptr, _GetPixmapPtr(pixmap));
   }
 }
 
-EXPORT int CALL spGetTextureFilter() {
+EXPORT int CALL bmGetTextureFilter() {
   return _texture_filter;
 }
 
-EXPORT void CALL spSetTextureFilter(int filter) {
+EXPORT void CALL bmSetTextureFilter(int filter) {
   _texture_filter = filter;
 }
 

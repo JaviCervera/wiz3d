@@ -1,4 +1,4 @@
-#include "spark_config.h"
+#include "beam_config.h"
 
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/stb/stretchy_buffer.h"
@@ -23,31 +23,31 @@ static Font* _active_font = NULL;
 static Font* _default_font = NULL;
 #endif
 
-EXPORT void CALL spSetup2D() {
+EXPORT void CALL bmSetup2D() {
 #ifndef PLATFORM_NULL
-  lgfx_setup2d(spGetScreenWidth(), spGetScreenHeight());
+  lgfx_setup2d(bmGetScreenWidth(), bmGetScreenHeight());
 #else
   lgfx_setup2d(0, 0);
 #endif
 }
 
-EXPORT void CALL spSetViewport(int x, int y, int w, int h) {
+EXPORT void CALL bmSetViewport(int x, int y, int w, int h) {
   lgfx_setviewport(x, y, w, h);
 }
 
-EXPORT void CALL spSetResolution(int w, int h) {
+EXPORT void CALL bmSetResolution(int w, int h) {
   lgfx_setresolution(w, h);
 }
 
-EXPORT void CALL spSetDrawColor(int color) {
+EXPORT void CALL bmSetDrawColor(int color) {
   lgfx_setcolor(
-    spGetRed(color) / 255.0f,
-    spGetGreen(color) / 255.0f,
-    spGetBlue(color) / 255.0f,
-    spGetAlpha(color) / 255.0f);
+    bmGetRed(color) / 255.0f,
+    bmGetGreen(color) / 255.0f,
+    bmGetBlue(color) / 255.0f,
+    bmGetAlpha(color) / 255.0f);
 }
 
-EXPORT void CALL spSetDrawFont(const char* filename, float height) {
+EXPORT void CALL bmSetDrawFont(const char* filename, float height) {
   Font* font = NULL;
   int i;
 
@@ -73,15 +73,15 @@ EXPORT void CALL spSetDrawFont(const char* filename, float height) {
   }
 }
 
-EXPORT void CALL spClearScreen(int color) {
+EXPORT void CALL bmClearScreen(int color) {
   lgfx_clearcolorbuffer(
-    spGetRed(color) / 255.0f,
-    spGetGreen(color) / 255.0f,
-    spGetBlue(color) / 255.0f
+    bmGetRed(color) / 255.0f,
+    bmGetGreen(color) / 255.0f,
+    bmGetBlue(color) / 255.0f
   );
 }
 
-EXPORT void CALL spSetDefaultFont() {
+EXPORT void CALL bmSetDefaultFont() {
 #ifdef USE_DEFAULT_FONT
 #ifdef USE_RETINA
   float font_height = 28;
@@ -95,34 +95,34 @@ EXPORT void CALL spSetDefaultFont() {
 #endif
 }
 
-EXPORT void CALL spDrawPoint(float x, float y) {
+EXPORT void CALL bmDrawPoint(float x, float y) {
   lgfx_drawpoint(x, y);
 }
 
-EXPORT void CALL spDrawLine(float x1, float y1, float x2, float y2) {
+EXPORT void CALL bmDrawLine(float x1, float y1, float x2, float y2) {
   lgfx_drawline(x1, y1, x2, y2);
 }
 
-EXPORT void CALL spDrawEllipse(float x, float y, float width, float height) {
+EXPORT void CALL bmDrawEllipse(float x, float y, float width, float height) {
   lgfx_drawoval(x, y, width, height);
 }
 
-EXPORT void CALL spDrawRect(float x, float y, float width, float height) {
+EXPORT void CALL bmDrawRect(float x, float y, float width, float height) {
   lgfx_drawrect(x, y, width, height);
 }
 
-EXPORT void CALL spDrawTexture(const Texture* tex, float x, float y, float width, float height) {
+EXPORT void CALL bmDrawTexture(const Texture* tex, float x, float y, float width, float height) {
   const ltex_t* ltex = (const ltex_t*)_GetTexturePtr(tex);
   ltex_drawrotsized(ltex, x, y, 0, 0, 0, width != 0 ? width : ltex->width, height != 0 ? height : ltex->height, 0, 0, 1, 1);
 }
 
-EXPORT void CALL spDrawText(const char* text, float x, float y) {
+EXPORT void CALL bmDrawText(const char* text, float x, float y) {
   if (_active_font) {
     DrawFont(_active_font, text, x, y);
   }
 }
 
-EXPORT float CALL spGetTextWidth(const char* text) {
+EXPORT float CALL bmGetTextWidth(const char* text) {
   if (_active_font) {
     return GetFontTextWidth(_active_font, text);
   } else {
@@ -130,7 +130,7 @@ EXPORT float CALL spGetTextWidth(const char* text) {
   }
 }
 
-EXPORT float CALL spGetTextHeight(const char* text) {
+EXPORT float CALL bmGetTextHeight(const char* text) {
   if (_active_font) {
     return GetFontTextHeight(_active_font, text);
   } else {

@@ -10,26 +10,26 @@
 extern "C" {
 #endif
 
-EXPORT Light* CALL spCreateLight(int type);
-EXPORT void CALL spDeleteLight(Light* light);
-EXPORT int CALL spGetLightType(const Light* light);
-EXPORT void CALL spSetLightType(Light* light, int type);
-EXPORT int CALL spGetLightColor(const Light* light);
-EXPORT void CALL spSetLightColor(Light* light, int color);
-EXPORT float CALL spGetLightRange(const Light* light);
-EXPORT void CALL spSetLightRange(Light* light, float range);
-EXPORT float CALL spGetLightX(const Light* light);
-EXPORT float CALL spGetLightY(const Light* light);
-EXPORT float CALL spGetLightZ(const Light* light);
-EXPORT void CALL spSetLightPosition(Light* light, float x, float y, float z);
-EXPORT void CALL spMoveLight(Light* light, float x, float y, float z);
-EXPORT float CALL spGetLightPitch(const Light* light);
-EXPORT float CALL spGetLightYaw(const Light* light);
-EXPORT void CALL spSetLightRotation(Light* light, float pitch, float yaw);
-EXPORT void CALL spTurnLight(Light* light, float pitch, float yaw);
-EXPORT void CALL spLightLookAt(Light* light, float x, float y, float z);
-EXPORT int CALL spGetAmbientColor();
-EXPORT void CALL spSetAmbientColor(int color);
+EXPORT Light* CALL bmCreateLight(int type);
+EXPORT void CALL bmDeleteLight(Light* light);
+EXPORT int CALL bmGetLightType(const Light* light);
+EXPORT void CALL bmSetLightType(Light* light, int type);
+EXPORT int CALL bmGetLightColor(const Light* light);
+EXPORT void CALL bmSetLightColor(Light* light, int color);
+EXPORT float CALL bmGetLightRange(const Light* light);
+EXPORT void CALL bmSetLightRange(Light* light, float range);
+EXPORT float CALL bmGetLightX(const Light* light);
+EXPORT float CALL bmGetLightY(const Light* light);
+EXPORT float CALL bmGetLightZ(const Light* light);
+EXPORT void CALL bmSetLightPosition(Light* light, float x, float y, float z);
+EXPORT void CALL bmMoveLight(Light* light, float x, float y, float z);
+EXPORT float CALL bmGetLightPitch(const Light* light);
+EXPORT float CALL bmGetLightYaw(const Light* light);
+EXPORT void CALL bmSetLightRotation(Light* light, float pitch, float yaw);
+EXPORT void CALL bmTurnLight(Light* light, float pitch, float yaw);
+EXPORT void CALL bmLightLookAt(Light* light, float x, float y, float z);
+EXPORT int CALL bmGetAmbientColor();
+EXPORT void CALL bmSetAmbientColor(int color);
 
 #ifndef SWIG
 void _PrepareLights();

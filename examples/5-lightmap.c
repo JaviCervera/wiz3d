@@ -1,4 +1,4 @@
-#include "../src/spark.h"
+#include "../src/beam.h"
 #include <stdio.h>
 
 #define ROTATION_SPEED 90
@@ -13,36 +13,36 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  spInitSpark();
-  spSetScreen(800, 600, FALSE, TRUE);
-  spSetScreenTitle("Lightmapping");
+  bmInitBeam();
+  bmSetScreen(800, 600, FALSE, TRUE);
+  bmSetScreenTitle("Lightmapping");
 
   /* Create and position viewer */
-  viewer = spCreateViewer();
-  spSetViewerClearColor(viewer, spGetRGB(15, 15, 15));
-  spSetViewerPosition(viewer, 0, 2, -2);
-  spViewerLookAt(viewer, 0, 0, 0);
+  viewer = bmCreateViewer();
+  bmSetViewerClearColor(viewer, bmGetRGB(15, 15, 15));
+  bmSetViewerPosition(viewer, 0, 2, -2);
+  bmViewerLookAt(viewer, 0, 0, 0);
 
   /* Setup lighting */
-  spSetAmbientColor(COLOR_BLACK);
-  dir_light = spCreateLight(LIGHT_DIRECTIONAL);
-  spTurnLight(dir_light, 45, -45);
+  bmSetAmbientColor(COLOR_BLACK);
+  dir_light = bmCreateLight(LIGHT_DIRECTIONAL);
+  bmTurnLight(dir_light, 45, -45);
 
   /* Create a cube */
-  cube = spCreateCube();
-  material = spGetObjectMaterial(cube, 0);
-  spSetMaterialTexture(material, spLoadTexture("data/box.png"));
-  spSetMaterialLightmap(material, spLoadTexture("data/lightmap.png"));
+  cube = bmCreateCube();
+  material = bmGetObjectMaterial(cube, 0);
+  bmSetMaterialTexture(material, bmLoadTexture("data/box.png"));
+  bmSetMaterialLightmap(material, bmLoadTexture("data/lightmap.png"));
 
   /* Main loop */
-  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
+  while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
     /* Update lighting mode */
-    if (spIsKeyPressed(KEY_SPACE)) {
+    if (bmIsKeyPressed(KEY_SPACE)) {
       if (!space_down) {
-        if (spGetMaterialFlags(material) & FLAG_LIGHTING) {
-          spSetMaterialFlags(material, spGetMaterialFlags(material) - FLAG_LIGHTING);
+        if (bmGetMaterialFlags(material) & FLAG_LIGHTING) {
+          bmSetMaterialFlags(material, bmGetMaterialFlags(material) - FLAG_LIGHTING);
         } else {
-          spSetMaterialFlags(material, spGetMaterialFlags(material) + FLAG_LIGHTING);
+          bmSetMaterialFlags(material, bmGetMaterialFlags(material) + FLAG_LIGHTING);
         }
       }
       space_down = TRUE;
@@ -51,21 +51,21 @@ int main() {
     }
 
     /* Turn cube */
-    spTurnObject(cube, 0, ROTATION_SPEED * spGetDeltaTime(), 0);
+    bmTurnObject(cube, 0, ROTATION_SPEED * bmGetDeltaTime(), 0);
 
     /* Draw scene */
-    spPrepareViewer(viewer);
-    spDrawObject(cube);
+    bmPrepareViewer(viewer);
+    bmDrawObject(cube);
 
     /* Draw UI */
-    spSetup2D();
-    sprintf(str, "%i FPS", spGetScreenFPS());
-    spDrawText(str, 4, 4);
+    bmSetup2D();
+    sprintf(str, "%i FPS", bmGetScreenFPS());
+    bmDrawText(str, 4, 4);
     sprintf(str, "Press SPACE to switch dynamic lighting");
-    spDrawText(str, 4, 16);
-    spRefreshScreen();
+    bmDrawText(str, 4, 16);
+    bmRefreshScreen();
   }
 
   /* Shutdown */
-  spShutdownSpark();
+  bmShutdownBeam();
 }

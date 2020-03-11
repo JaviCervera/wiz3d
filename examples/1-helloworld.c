@@ -1,24 +1,24 @@
-#include "../src/spark.h"
+#include "../src/beam.h"
 
 #define ROTATION_SPEED 32
 #define TEXT "Hello, world!"
 
 int main() {
   /* Setup */
-  spInitSpark();
-  spSetScreen(800, 600, FALSE, FALSE);
-  spSetScreenTitle(TEXT);
+  bmInitBeam();
+  bmSetScreen(800, 600, FALSE, FALSE);
+  bmSetScreenTitle(TEXT);
 
   /* Main loop */
-  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC))
+  while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC))
   {
-    spSetup2D();
-    spSetDrawColor(COLOR_YELLOW);
-    spClearScreen(spMultiplyColor(COLOR_BLUE, 0.5f));
-    spDrawText(TEXT, (spGetScreenWidth() - spGetTextWidth(TEXT)) / 2, (spGetScreenHeight() - spGetTextHeight(TEXT)) / 2);
-    spRefreshScreen();
+    bmSetup2D();
+    bmSetDrawColor(COLOR_YELLOW);
+    bmClearScreen(bmMultiplyColor(COLOR_BLUE, 0.5f));
+    bmDrawText(TEXT, (bmGetScreenWidth() - bmGetTextWidth(TEXT)) / 2, (bmGetScreenHeight() - bmGetTextHeight(TEXT)) / 2);
+    bmRefreshScreen();
   }
 
   /* Shutdown */
-  spShutdownSpark();
+  bmShutdownBeam();
 }

@@ -1,5 +1,5 @@
-#ifndef SPARK_H_INCLUDED
-#define SPARK_H_INCLUDED
+#ifndef BEAM_H_INCLUDED
+#define BEAM_H_INCLUDED
 
 #include "audio.h"
 #include "colbox.h"
@@ -22,13 +22,13 @@
 extern "C" {
 #endif
 
-EXPORT bool_t CALL spInitSpark();
-EXPORT void CALL spShutdownSpark();
-EXPORT bool_t CALL spIsMultitexturingSupported();
-EXPORT bool_t CALL spIsMipmappingSupported();
+EXPORT bool_t CALL bmInitBeam();
+EXPORT void CALL bmShutdownBeam();
+EXPORT bool_t CALL bmIsMultitexturingSupported();
+EXPORT bool_t CALL bmIsMipmappingSupported();
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* SPARK_H_INCLUDED */
+#endif /* BEAM_H_INCLUDED */

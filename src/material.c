@@ -6,45 +6,45 @@
 
 static int _material_shininesspower = 128;
 
-EXPORT Texture* CALL spGetMaterialTexture(const Material* material) { return material->texture; }
+EXPORT Texture* CALL bmGetMaterialTexture(const Material* material) { return material->texture; }
 
-EXPORT void CALL spSetMaterialTexture(Material* material, Texture* texture) { material->texture = texture; }
+EXPORT void CALL bmSetMaterialTexture(Material* material, Texture* texture) { material->texture = texture; }
 
-EXPORT Texture* CALL spGetMaterialLightmap(const Material* material) { return material->lightmap; }
+EXPORT Texture* CALL bmGetMaterialLightmap(const Material* material) { return material->lightmap; }
 
-EXPORT void CALL spSetMaterialLightmap(Material* material, Texture* lightmap) { material->lightmap = lightmap; }
+EXPORT void CALL bmSetMaterialLightmap(Material* material, Texture* lightmap) { material->lightmap = lightmap; }
 
-EXPORT int CALL spGetMaterialDiffuse(const Material* material) { return material->diffuse; }
+EXPORT int CALL bmGetMaterialDiffuse(const Material* material) { return material->diffuse; }
 
-EXPORT void CALL spSetMaterialDiffuse(Material* material, int color) { material->diffuse = color; }
+EXPORT void CALL bmSetMaterialDiffuse(Material* material, int color) { material->diffuse = color; }
 
-EXPORT int CALL spGetMaterialEmissive(const Material* material) { return material->emissive; }
+EXPORT int CALL bmGetMaterialEmissive(const Material* material) { return material->emissive; }
 
-EXPORT void CALL spSetMaterialEmissive(Material* material, int color) { material->emissive = color; }
+EXPORT void CALL bmSetMaterialEmissive(Material* material, int color) { material->emissive = color; }
 
-EXPORT int CALL spGetMaterialSpecular(const Material* material) { return material->specular; }
+EXPORT int CALL bmGetMaterialSpecular(const Material* material) { return material->specular; }
 
-EXPORT void CALL spSetMaterialSpecular(Material* material, int color) { material->specular = color; }
+EXPORT void CALL bmSetMaterialSpecular(Material* material, int color) { material->specular = color; }
 
-EXPORT float CALL spGetMaterialShininess(const Material* material) { return material->shininess; }
+EXPORT float CALL bmGetMaterialShininess(const Material* material) { return material->shininess; }
 
-EXPORT void CALL spSetMaterialShininess(Material* material, float shininess) { material->shininess = shininess; }
+EXPORT void CALL bmSetMaterialShininess(Material* material, float shininess) { material->shininess = shininess; }
 
-EXPORT int CALL spGetMaterialBlend(const Material* material) { return material->blend; }
+EXPORT int CALL bmGetMaterialBlend(const Material* material) { return material->blend; }
 
-EXPORT void CALL spSetMaterialBlend(Material* material, int blend) { material->blend = blend; }
+EXPORT void CALL bmSetMaterialBlend(Material* material, int blend) { material->blend = blend; }
 
-EXPORT int CALL spGetMaterialFlags(const Material* material) { return material->flags; }
+EXPORT int CALL bmGetMaterialFlags(const Material* material) { return material->flags; }
 
-EXPORT void CALL spSetMaterialFlags(Material* material, int flags) { material->flags = flags; }
+EXPORT void CALL bmSetMaterialFlags(Material* material, int flags) { material->flags = flags; }
 
-EXPORT int CALL spGetMaterialShininessPower(const Material* material) { return material->shininesspower; }
+EXPORT int CALL bmGetMaterialShininessPower(const Material* material) { return material->shininesspower; }
 
-EXPORT void CALL spSetMaterialShininessPower(Material* material, int power) { material->shininesspower = power; }
+EXPORT void CALL bmSetMaterialShininessPower(Material* material, int power) { material->shininesspower = power; }
 
-EXPORT int CALL spGetDefaultShininessPower() { return _material_shininesspower; }
+EXPORT int CALL bmGetDefaultShininessPower() { return _material_shininesspower; }
 
-EXPORT void CALL spSetDefaultShininessPower(int power) { _material_shininesspower = _Clamp(power, 0, 128); }
+EXPORT void CALL bmSetDefaultShininessPower(int power) { _material_shininesspower = _Clamp(power, 0, 128); }
 
 void _InitMaterial(Material* material) {
   material->texture = NULL;

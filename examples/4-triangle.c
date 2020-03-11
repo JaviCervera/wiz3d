@@ -1,4 +1,4 @@
-#include "../src/spark.h"
+#include "../src/beam.h"
 #include <stdio.h>
 
 #define ROTATION_SPEED 90
@@ -12,36 +12,36 @@ int main() {
   char str[STRING_SIZE];
 
   /* Setup */
-  spInitSpark();
-  spSetScreen(800, 600, FALSE, TRUE);
-  spSetScreenTitle("Triangle");
+  bmInitBeam();
+  bmSetScreen(800, 600, FALSE, TRUE);
+  bmSetScreenTitle("Triangle");
 
   /* Create and position viewer */
-  viewer = spCreateViewer();
-  spSetViewerClearColor(viewer, COLOR_WHITE);
-  spSetViewerPosition(viewer, 0, 0, -2);
+  viewer = bmCreateViewer();
+  bmSetViewerClearColor(viewer, COLOR_WHITE);
+  bmSetViewerPosition(viewer, 0, 0, -2);
 
   /* Create a triangle */
-  triangle = spCreateTriangle();
-  material = spGetObjectMaterial(triangle, 0);
-  spSetMaterialFlags(material, spGetMaterialFlags(material) - FLAG_CULL);
-  spSetMaterialDiffuse(material, COLOR_ORANGE);
+  triangle = bmCreateTriangle();
+  material = bmGetObjectMaterial(triangle, 0);
+  bmSetMaterialFlags(material, bmGetMaterialFlags(material) - FLAG_CULL);
+  bmSetMaterialDiffuse(material, COLOR_ORANGE);
 
   /* Main loop */
-  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
-    spTurnObject(triangle, 0, ROTATION_SPEED * spGetDeltaTime(), 0);
+  while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
+    bmTurnObject(triangle, 0, ROTATION_SPEED * bmGetDeltaTime(), 0);
 
     /* Draw scene */
-    spPrepareViewer(viewer);
-    spDrawObject(triangle);
+    bmPrepareViewer(viewer);
+    bmDrawObject(triangle);
 
     /* Draw UI */
-    sprintf(str, "%i FPS", spGetScreenFPS());
-    spSetup2D();
-    spDrawText(str, 4, 4);
-    spRefreshScreen();
+    sprintf(str, "%i FPS", bmGetScreenFPS());
+    bmSetup2D();
+    bmDrawText(str, 4, 4);
+    bmRefreshScreen();
   }
 
   /* Shutdown */
-  spShutdownSpark();
+  bmShutdownBeam();
 }

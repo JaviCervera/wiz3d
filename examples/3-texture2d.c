@@ -1,26 +1,26 @@
-#include "../src/spark.h"
+#include "../src/beam.h"
 
 int main() {
   /* Data */
   Texture* texture;
 
   /* Setup */
-  spInitSpark();
-  spSetScreen(800, 600, FALSE, FALSE);
-  spSetScreenTitle("Texture 2D");
+  bmInitBeam();
+  bmSetScreen(800, 600, FALSE, FALSE);
+  bmSetScreenTitle("Texture 2D");
 
   /* Load texture */
-  spSetTextureFilter(FALSE);
-  texture = spLoadTexture("data/smile.png");
+  bmSetTextureFilter(FALSE);
+  texture = bmLoadTexture("data/smile.png");
 
   /* Main loop */
-  while (spIsScreenOpened() && !spIsKeyPressed(KEY_ESC)) {
-    spSetup2D();
-    spClearScreen(COLOR_BLACK);
-    spDrawTexture(texture, (spGetScreenWidth() - spGetTextureWidth(texture)) / 2, (spGetScreenHeight() - spGetTextureHeight(texture)) / 2, 0, 0);
-    spRefreshScreen();
+  while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
+    bmSetup2D();
+    bmClearScreen(COLOR_BLACK);
+    bmDrawTexture(texture, (bmGetScreenWidth() - bmGetTextureWidth(texture)) / 2, (bmGetScreenHeight() - bmGetTextureHeight(texture)) / 2, 0, 0);
+    bmRefreshScreen();
   }
 
   /* Shutdown */
-  spShutdownSpark();
+  bmShutdownBeam();
 }

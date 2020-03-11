@@ -1,4 +1,4 @@
-#include "spark_config.h"
+#include "beam_config.h"
 
 #ifdef PLATFORM_NULL
 

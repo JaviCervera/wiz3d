@@ -1,7 +1,7 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
-#include "spark_config.h"
+#include "beam_config.h"
 #include "types.h"
 
 #ifndef PLATFORM_NULL
@@ -24,12 +24,12 @@ extern "C" {
 #include "input_glfw.h"
 #include "input_sdl.h"
 
-EXPORT void CALL spSetCursorVisible(bool_t visible);
-EXPORT void CALL spSetCursorPosition(int x, int y);
-EXPORT int CALL spGetCursorX();
-EXPORT int CALL spGetCursorY();
-EXPORT bool_t CALL spIsCursorPressed(int b);
-EXPORT bool_t CALL spIsKeyPressed(int k);
+EXPORT void CALL bmSetCursorVisible(bool_t visible);
+EXPORT void CALL bmSetCursorPosition(int x, int y);
+EXPORT int CALL bmGetCursorX();
+EXPORT int CALL bmGetCursorY();
+EXPORT bool_t CALL bmIsCursorPressed(int b);
+EXPORT bool_t CALL bmIsKeyPressed(int k);
 
 #ifdef __cplusplus
 } /* extern "C" */
