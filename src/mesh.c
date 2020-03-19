@@ -473,7 +473,7 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
     opacity = lassbin_matopacity(material);
     diffuse = lassbin_matdiffuse(material);
     emissive = lassbin_matemissive(material);
-    specular = lassbin_matbmecular(material);
+    specular = lassbin_matspecular(material);
     shininess = lassbin_matshininess(material);
     /*shinpercent = lassbin_matshinpercent(material);*/
 
