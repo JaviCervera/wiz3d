@@ -50,8 +50,8 @@ int main() {
     value += bmGetDeltaTime();
     s = 0.5f + fabsf(sinf(value)) * 0.5f;
     c = 0.5f + fabsf(cosf(value)) * 0.5f;
-    bmSetLightRange(point_light1, 10 * s);
-    bmSetLightRange(point_light2, 10 * c);
+    bmSetLightLinearAttenuation(point_light1, 1.0f / (10 * s));
+    bmSetLightLinearAttenuation(point_light2, 1.0f / (10 * c));
 
     /* Draw scene */
     bmPrepareViewer(viewer);

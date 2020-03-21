@@ -29,15 +29,15 @@ int main() {
   /* Setup lighting */
   bmSetAmbientColor(COLOR_BLACK);
   lights[0] = bmCreateLight(LIGHT_POINT);
-  bmSetLightRange(lights[0], 192);
+  bmSetLightLinearAttenuation(lights[0], 1.0f / 192);
   bmSetLightColor(lights[0], COLOR_RED);
   bmSetLightRotation(lights[0], 0, 0);
   lights[1] = bmCreateLight(LIGHT_POINT);
-  bmSetLightRange(lights[1], 192);
+  bmSetLightLinearAttenuation(lights[1], 1.0f / 192);
   bmSetLightColor(lights[1], COLOR_GREEN);
   bmSetLightRotation(lights[1], 0, 120);
   lights[2] = bmCreateLight(LIGHT_POINT);
-  bmSetLightRange(lights[2], 192);
+  bmSetLightLinearAttenuation(lights[2], 1.0f / 192);
   bmSetLightColor(lights[2], COLOR_BLUE);
   bmSetLightRotation(lights[2], 0, 240);
 

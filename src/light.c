@@ -7,12 +7,15 @@
 #include "viewer.h"
 #include <math.h>
 
+
 typedef struct SLight {
     float x, y, z;
     float pitch, yaw;
-    int     type;
-    int     color;
-    float range;
+    int type;
+    int color;
+    float constAtt;
+    float linearAtt;
+    float quadraticAtt;
 } Light;
 
 static int _light_ambient;
@@ -40,7 +43,7 @@ EXPORT Light* CALL bmCreateLight(int type) {
     light->yaw = 0;
     light->type = type;
     light->color = COLOR_WHITE;
-    light->range = 1000;
+    light->linearAtt = 0;
     _lights[i] = light;
     return light;
 }
@@ -68,9 +71,9 @@ EXPORT int CALL bmGetLightColor(const Light* light) { return light->color; }
 
 EXPORT void CALL bmSetLightColor(Light* light, int color) { light->color = color; }
 
-EXPORT float CALL bmGetLightRange(const Light* light) { return light->range; }
+EXPORT float CALL bmGetLightLinearAttenuation(const Light* light) { return light->linearAtt; }
 
-EXPORT void CALL bmSetLightRange(Light* light, float range) { light->range = range; }
+EXPORT void CALL bmSetLightLinearAttenuation(Light* light, float att) { light->linearAtt = att; }
 
 EXPORT float CALL bmGetLightX(const Light* light) { return light->x; }
 
@@ -163,7 +166,7 @@ void _PrepareLights() {
                 bmGetRed(light->color) / 255.0f,
                 bmGetGreen(light->color) / 255.0f,
                 bmGetBlue(light->color) / 255.0f,
-                1.0f / light->range);
+                light->linearAtt);
         }
     }
 }
