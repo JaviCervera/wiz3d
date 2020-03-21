@@ -47,17 +47,17 @@ EXPORT int CALL bmGetDefaultShininessPower() { return _material_shininesspower; 
 EXPORT void CALL bmSetDefaultShininessPower(int power) { _material_shininesspower = _Clamp(power, 0, 128); }
 
 void _InitMaterial(Material* material) {
-  material->texture = NULL;
-  material->lightmap = NULL;
-  material->diffuse = COLOR_WHITE;
-  material->emissive = COLOR_BLACK;
-  material->specular = COLOR_WHITE;
-  material->shininess = 0;
-  material->blend = BLEND_SOLID;
-  material->flags = FLAG_ALL;
-  material->shininesspower = -1;
+    material->texture = NULL;
+    material->lightmap = NULL;
+    material->diffuse = COLOR_WHITE;
+    material->emissive = COLOR_BLACK;
+    material->specular = COLOR_WHITE;
+    material->shininess = 0;
+    material->blend = BLEND_SOLID;
+    material->flags = FLAG_ALL;
+    material->shininesspower = -1;
 }
 
 void _FinishMaterial(Material* material) {
-  if (material->texture) ReleaseTexture(material->texture);
+    if (material->texture) ReleaseTexture(material->texture);
 }

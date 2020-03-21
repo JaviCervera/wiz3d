@@ -7,11 +7,11 @@
 extern "C" {
 #endif
 
-#define _Min(A, B)       (A < B ? A : B)
-#define _Max(A, B)       (A > B ? A : B)
-#define _Clamp(A, B, C)  _Min(_Max(A, B), C)
-#define _Alloc(T)        ((T*)malloc(sizeof(T)))
-#define _AllocMany(T,N)   ((T*)malloc(N*sizeof(T)))
+#define _Min(A, B)             (A < B ? A : B)
+#define _Max(A, B)             (A > B ? A : B)
+#define _Clamp(A, B, C)    _Min(_Max(A, B), C)
+#define _Alloc(T)                ((T*)malloc(sizeof(T)))
+#define _AllocMany(T,N)     ((T*)malloc(N*sizeof(T)))
 
 void StripExt(const char* filename, char* out, size_t len);
 void ExtractExt(const char* filename, char* out, size_t len);

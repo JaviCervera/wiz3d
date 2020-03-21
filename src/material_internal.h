@@ -8,15 +8,15 @@ extern "C" {
 #endif
 
 typedef struct SMaterial {
-  Texture* texture;
-  Texture* lightmap;
-  int diffuse;
-  int emissive;
-  int specular;
-  float shininess;
-  int blend;
-  int flags;
-  int shininesspower;
+    Texture* texture;
+    Texture* lightmap;
+    int diffuse;
+    int emissive;
+    int specular;
+    float shininess;
+    int blend;
+    int flags;
+    int shininesspower;
 } Material;
 
 #ifdef __cplusplus

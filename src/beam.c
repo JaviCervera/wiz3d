@@ -31,27 +31,27 @@
 
 
 EXPORT bool_t CALL bmInitBeam() {
-  bool_t ret;
-  ret = p_Init();
-  if (!ret) return FALSE;
+    bool_t ret;
+    ret = p_Init();
+    if (!ret) return FALSE;
 #ifdef PLATFORM_NULL
-  lgfx_init();
-  bmSetDefaultFont();
+    lgfx_init();
+    bmSetDefaultFont();
 #endif
-  return ret != FALSE;
+    return ret != FALSE;
 }
 
 EXPORT void CALL bmShutdownBeam() {
 #ifndef PLATFORM_NULL
-  if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
+    if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
 #endif
-  p_Shutdown();
+    p_Shutdown();
 }
 
 EXPORT bool_t CALL bmIsMultitexturingSupported() {
-  return lgfx_multitexture_supported();
+    return lgfx_multitexture_supported();
 }
 
 EXPORT bool_t CALL bmIsMipmappingSupported() {
-  return lgfx_mipmapping_supported();
+    return lgfx_mipmapping_supported();
 }

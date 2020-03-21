@@ -23,139 +23,139 @@ static ALCcontext* _audio_context = NULL;
 #endif
 
 bool_t p_Init() {
-  bool_t ret;
-  ret = glfwInit();
+    bool_t ret;
+    ret = glfwInit();
 
 #ifdef USE_AUDIO
-  _audio_device = alcOpenDevice(NULL);
-  if (_audio_device) _audio_context = alcCreateContext(_audio_device, NULL);
-  if (_audio_context) alcMakeContextCurrent(_audio_context);
+    _audio_device = alcOpenDevice(NULL);
+    if (_audio_device) _audio_context = alcCreateContext(_audio_device, NULL);
+    if (_audio_context) alcMakeContextCurrent(_audio_context);
 #endif
 
-  return ret;
+    return ret;
 }
 
 void p_Shutdown() {
-  glfwTerminate();
+    glfwTerminate();
 #ifdef USE_AUDIO
-  if (_audio_context) alcDestroyContext(_audio_context);
-  if (_audio_device) alcCloseDevice(_audio_device);
-  _audio_device = NULL;
-  _audio_context = NULL;
+    if (_audio_context) alcDestroyContext(_audio_context);
+    if (_audio_device) alcCloseDevice(_audio_device);
+    _audio_device = NULL;
+    _audio_context = NULL;
 #endif
 }
 
 float p_GetTime() {
-  return (float)glfwGetTime();
+    return (float)glfwGetTime();
 }
 
 void p_SetCursorVisible(void* win, bool_t visible) {
-  glfwSetInputMode((GLFWwindow*)win, GLFW_CURSOR, visible ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_HIDDEN);
+    glfwSetInputMode((GLFWwindow*)win, GLFW_CURSOR, visible ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_HIDDEN);
 }
 
 void p_SetCursorPosition(void* win, int x, int y) {
-  glfwSetCursorPos((GLFWwindow*)win, x, y);
+    glfwSetCursorPos((GLFWwindow*)win, x, y);
 }
 
 int p_GetCursorX(void* win) {
-  double x;
-  glfwGetCursorPos((GLFWwindow*)win, &x, NULL);
-  return (int)floor(x);
+    double x;
+    glfwGetCursorPos((GLFWwindow*)win, &x, NULL);
+    return (int)floor(x);
 }
 
 int p_GetCursorY(void* win) {
-  double y;
-  glfwGetCursorPos((GLFWwindow*)win, NULL, &y);
-  return (int)floor(y);
+    double y;
+    glfwGetCursorPos((GLFWwindow*)win, NULL, &y);
+    return (int)floor(y);
 }
 
 bool_t p_GetCursorPressed(void* win, int button) {
-  return glfwGetMouseButton((GLFWwindow*)win, button) == GLFW_PRESS;
+    return glfwGetMouseButton((GLFWwindow*)win, button) == GLFW_PRESS;
 }
 
 bool_t p_GetKeyPressed(void* win, int key) {
-  return glfwGetKey((GLFWwindow*)win, key) == GLFW_PRESS;
+    return glfwGetKey((GLFWwindow*)win, key) == GLFW_PRESS;
 }
 
 int p_GetDesktopWidth() {
-  return glfwGetVideoMode(glfwGetPrimaryMonitor())->width;
+    return glfwGetVideoMode(glfwGetPrimaryMonitor())->width;
 }
 
 int p_GetDesktopHeight() {
-  return glfwGetVideoMode(glfwGetPrimaryMonitor())->height;
+    return glfwGetVideoMode(glfwGetPrimaryMonitor())->height;
 }
 
 void* p_OpenScreen(int width, int height, bool_t fullscreen, int samples, bool_t vsync, bool_t resizable) {
-  GLFWwindow* win;
+    GLFWwindow* win;
 
-  /* set flags */
-  glfwWindowHint(GLFW_SAMPLES, samples);
-  glfwWindowHint(GLFW_RESIZABLE, resizable);
+    /* set flags */
+    glfwWindowHint(GLFW_SAMPLES, samples);
+    glfwWindowHint(GLFW_RESIZABLE, resizable);
 #ifdef USE_RETINA
-  glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
+    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_TRUE);
 #else
-  glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
+    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
 #endif
 
-  /* create window */
-  win = glfwCreateWindow(width, height, "", fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
-  glfwMakeContextCurrent(win);
+    /* create window */
+    win = glfwCreateWindow(width, height, "", fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
+    glfwMakeContextCurrent(win);
 
-  /* set vsync */
-  glfwSwapInterval(vsync ? 1 : 0);
+    /* set vsync */
+    glfwSwapInterval(vsync ? 1 : 0);
 
-  return win;
+    return win;
 }
 
 void p_CloseScreen(void* win) {
-  glfwDestroyWindow((GLFWwindow*)win);
+    glfwDestroyWindow((GLFWwindow*)win);
 }
 
 bool_t p_IsScreenOpened(void* win) {
-  return win && !glfwWindowShouldClose((GLFWwindow*)win);
+    return win && !glfwWindowShouldClose((GLFWwindow*)win);
 }
 
 void p_RefreshScreen(void* win) {
-  glfwSwapBuffers((GLFWwindow*)win);
-  glfwPollEvents();
+    glfwSwapBuffers((GLFWwindow*)win);
+    glfwPollEvents();
 }
 
 void p_SetScreenTitle(void* win, const char* title) {
-  glfwSetWindowTitle((GLFWwindow*)win, title);
+    glfwSetWindowTitle((GLFWwindow*)win, title);
 }
 
 int p_GetScreenWidth(void* win) {
-  int w;
+    int w;
 #ifdef USE_RETINA
-  glfwGetFramebufferSize((GLFWwindow*)win, &w, NULL);
+    glfwGetFramebufferSize((GLFWwindow*)win, &w, NULL);
 #else
-  glfwGetWindowSize((GLFWwindow*)win, &w, NULL);
+    glfwGetWindowSize((GLFWwindow*)win, &w, NULL);
 #endif
-  return w;
+    return w;
 }
 
 int p_GetScreenHeight(void* win) {
-  int h;
+    int h;
 #ifdef USE_RETINA
-  glfwGetFramebufferSize((GLFWwindow*)win, NULL, &h);
+    glfwGetFramebufferSize((GLFWwindow*)win, NULL, &h);
 #else
-  glfwGetWindowSize((GLFWwindow*)win, NULL, &h);
+    glfwGetWindowSize((GLFWwindow*)win, NULL, &h);
 #endif
-  return h;
+    return h;
 }
 
 void p_MessageBox(const char* title, const char* message) {
 #ifdef USE_TINYFILEDIALOGS
-  tinyfd_messageBox(title, message, "ok", "info", 0);
+    tinyfd_messageBox(title, message, "ok", "info", 0);
 #else
-  printf("[%s] %s\n", title, message);
+    printf("[%s] %s\n", title, message);
 #endif
 }
 
 #ifdef USE_AUDIO
 
 bool_t p_PlayMusic(const char* filename, bool_t loop) {
-  return FALSE;
+    return FALSE;
 }
 
 void p_PauseMusic() {}
@@ -167,17 +167,17 @@ void p_StopMusic() {}
 void p_SetMusicVolume(float volume) {}
 
 bool_t p_IsMusicPlaying() {
-  return FALSE;
+    return FALSE;
 }
 
 void* p_LoadSound(const char* filename) {
-  return NULL;
+    return NULL;
 }
 
 void p_DeleteSound(void* sound) {}
 
 void* p_PlaySound(void* sound, bool_t loop) {
-  return NULL;
+    return NULL;
 }
 
 void p_PauseChannel(void* channel) {}
@@ -195,7 +195,7 @@ void p_SetChannelPan(void* channel, float pan) {}
 void p_SetChannelPitch(void* channel, float pitch) {}
 
 bool_t p_IsChannelPlaying(void* channel) {
-  return FALSE;
+    return FALSE;
 }
 
 #endif /* USE_AUDIO */

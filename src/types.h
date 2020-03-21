@@ -15,8 +15,8 @@
 #define CALL
 #endif
 
-#define FALSE           0
-#define TRUE            1
+#define FALSE                     0
+#define TRUE                        1
 
 typedef int bool_t;
 

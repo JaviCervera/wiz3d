@@ -3,8 +3,8 @@
 
 #include "types.h"
 
-#define CLEAR_NONE   0
-#define CLEAR_COLOR  1
+#define CLEAR_NONE     0
+#define CLEAR_COLOR    1
 #define CLEAR_SKYBOX 2
 
 #ifdef __cplusplus
