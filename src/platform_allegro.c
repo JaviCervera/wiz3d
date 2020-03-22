@@ -2,9 +2,9 @@
 
 #ifdef PLATFORM_ALLEGRO
 
-#include "../lib/allegro/include/allegro5/allegro.h"
-#include "../lib/allegro/addons/native_dialog/allegro5/allegro_native_dialog.h"
-#include "../lib/allegro/addons/audio/allegro5/allegro_audio.h"
+#include "../lib/allegro5/include/allegro5/allegro.h"
+#include "../lib/allegro5/addons/native_dialog/allegro5/allegro_native_dialog.h"
+#include "../lib/allegro5/addons/audio/allegro5/allegro_audio.h"
 #ifdef USE_AUDIO
 #define STB_VORBIS_HEADER_ONLY
 #include "../lib/stb/stb_vorbis.c"

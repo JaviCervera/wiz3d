@@ -2,7 +2,7 @@
 
 #ifdef PLATFORM_GLFW
 
-#include "../lib/glfw/include/GLFW/glfw3.h"
+#include "../lib/glfw3/include/GLFW/glfw3.h"
 #include "../lib/tinyfiledialogs/tinyfiledialogs.h"
 #include "platform.h"
 #include "util.h"

@@ -25,7 +25,7 @@ project(beam)
 file(GLOB BEAM_FILES "src/*.c" "lib/base64/base64.c" "lib/tinyfiledialogs/tinyfiledialogs.c")
 
 #Add header and lib directories
-include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib ${CMAKE_CURRENT_SOURCE_DIR}/lib/allegro/include ${CMAKE_CURRENT_SOURCE_DIR}/_CMAKE/_ALLEGRO/include)
+include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib ${CMAKE_CURRENT_SOURCE_DIR}/lib/allegro5/include ${CMAKE_CURRENT_SOURCE_DIR}/_CMAKE/_ALLEGRO/include)
 link_directories(${LINK_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/_CMAKE/_ALLEGRO/lib ${CMAKE_CURRENT_SOURCE_DIR}/_CMAKE/_GLFW/src ${CMAKE_CURRENT_SOURCE_DIR}/_CMAKE/_SDL2)
 
 #Add executable targets
