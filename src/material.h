@@ -34,11 +34,6 @@ EXPORT int CALL bmGetMaterialBlend(const Material* material);
 EXPORT void CALL bmSetMaterialBlend(Material* material, int blend);
 EXPORT int CALL bmGetMaterialFlags(const Material* material);
 EXPORT void CALL bmSetMaterialFlags(Material* material, int flags);
-EXPORT int CALL bmGetMaterialShininessPower(const Material* material);
-EXPORT void CALL bmSetMaterialShininessPower(Material* material, int power);
-
-EXPORT int CALL bmGetDefaultShininessPower();
-EXPORT void CALL bmSetDefaultShininessPower(int power);
 
 #ifndef SWIG
 void _InitMaterial(Material* material);

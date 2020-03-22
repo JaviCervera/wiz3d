@@ -24,7 +24,6 @@ int main() {
   bmSetViewerRotation(viewer, 20, 0, 0);
 
   /* Setup lighting */
-  bmSetDefaultShininessPower(2);
   dir_light = bmCreateLight(LIGHT_DIRECTIONAL);
   bmTurnLight(dir_light, 45, -45);
 
@@ -36,9 +35,11 @@ int main() {
   bmSetMaterialTexture(mat0, bmLoadTexture("data/bike.png"));
   bmSetMaterialDiffuse(mat0, COLOR_WHITE);
   bmSetMaterialSpecular(mat0, COLOR_WHITE);
+  bmSetMaterialShininess(mat0, 0.8f);
   bmSetMaterialTexture(mat1, bmLoadTexture("data/glass.png"));
   bmSetMaterialDiffuse(mat1, COLOR_WHITE);
   bmSetMaterialSpecular(mat1, COLOR_WHITE);
+  bmSetMaterialShininess(mat1, 0.8f);
   bmSetMaterialBlend(mat1, BLEND_ALPHA);
 
   /* Main loop */

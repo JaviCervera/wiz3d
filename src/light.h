@@ -4,7 +4,7 @@
 #include "types.h"
 
 #define LIGHT_DIRECTIONAL 0
-#define LIGHT_POINT             1
+#define LIGHT_POINT 1
 
 #ifdef __cplusplus
 extern "C" {

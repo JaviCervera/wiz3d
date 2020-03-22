@@ -4,8 +4,6 @@
 #include "texture.h"
 #include "util.h"
 
-static int _material_shininesspower = 128;
-
 EXPORT Texture* CALL bmGetMaterialTexture(const Material* material) { return material->texture; }
 
 EXPORT void CALL bmSetMaterialTexture(Material* material, Texture* texture) { material->texture = texture; }
@@ -28,7 +26,7 @@ EXPORT void CALL bmSetMaterialSpecular(Material* material, int color) { material
 
 EXPORT float CALL bmGetMaterialShininess(const Material* material) { return material->shininess; }
 
-EXPORT void CALL bmSetMaterialShininess(Material* material, float shininess) { material->shininess = shininess; }
+EXPORT void CALL bmSetMaterialShininess(Material* material, float shininess) { material->shininess = _Clamp(shininess, 0.0f, 1.0f); }
 
 EXPORT int CALL bmGetMaterialBlend(const Material* material) { return material->blend; }
 
@@ -38,24 +36,15 @@ EXPORT int CALL bmGetMaterialFlags(const Material* material) { return material->
 
 EXPORT void CALL bmSetMaterialFlags(Material* material, int flags) { material->flags = flags; }
 
-EXPORT int CALL bmGetMaterialShininessPower(const Material* material) { return material->shininesspower; }
-
-EXPORT void CALL bmSetMaterialShininessPower(Material* material, int power) { material->shininesspower = power; }
-
-EXPORT int CALL bmGetDefaultShininessPower() { return _material_shininesspower; }
-
-EXPORT void CALL bmSetDefaultShininessPower(int power) { _material_shininesspower = _Clamp(power, 0, 128); }
-
 void _InitMaterial(Material* material) {
     material->texture = NULL;
     material->lightmap = NULL;
     material->diffuse = COLOR_WHITE;
     material->emissive = COLOR_BLACK;
     material->specular = COLOR_WHITE;
-    material->shininess = 0;
+    material->shininess = 0.0f;
     material->blend = BLEND_SOLID;
     material->flags = FLAG_ALL;
-    material->shininesspower = -1;
 }
 
 void _FinishMaterial(Material* material) {

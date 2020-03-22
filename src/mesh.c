@@ -300,7 +300,6 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
     for (i = 0; i < sb_count(mesh->buffers); ++i) {
         const Material* material;
         const Viewer* viewer;
-        int specular;
         bool_t use_lighting;
 
         material = &materials[i];
@@ -313,7 +312,6 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
         }
 
         /* set material settings */
-        specular = bmMultiplyColor(bmGetMaterialSpecular(material), bmGetMaterialShininess(material));
         lgfx_setblend(bmGetMaterialBlend(material));
         ltex_bind(
             (const ltex_t*)_GetTexturePtr(bmGetMaterialTexture(material)),
@@ -328,11 +326,15 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
             bmGetRed(bmGetMaterialEmissive(material)) / 255.0f,
             bmGetGreen(bmGetMaterialEmissive(material)) / 255.0f,
             bmGetBlue(bmGetMaterialEmissive(material)) / 255.0f);
-        lgfx_setspecular(
-            bmGetRed(specular) / 255.0f,
-            bmGetGreen(specular) / 255.0f,
-            bmGetBlue(specular) / 255.0f);
-        lgfx_setshininess(_Clamp(bmGetMaterialShininess(material) * bmGetMaterialShininessPower(material) > -1 ? bmGetMaterialShininessPower(material) : bmGetDefaultShininessPower(), 0, 128));
+        if (bmGetMaterialShininess(material) > 0.0f) {
+            lgfx_setspecular(
+                bmGetRed(bmGetMaterialSpecular(material)) / 255.0f,
+                bmGetGreen(bmGetMaterialSpecular(material)) / 255.0f,
+                bmGetBlue(bmGetMaterialSpecular(material)) / 255.0f);
+        } else {
+            lgfx_setspecular(0, 0, 0);
+        }
+        lgfx_setshininess(bmGetMaterialShininess(material) * 128);
         lgfx_setculling((bmGetMaterialFlags(material) & FLAG_CULL) == FLAG_CULL);
         lgfx_setdepthwrite((bmGetMaterialFlags(material) & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
 
@@ -383,23 +385,23 @@ Mesh* _CreateSkyboxMesh() {
 
     /* add vertices */
     ldb = AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0, 1, COLOR_WHITE);
-    ldf = AddMeshVertex(mesh, buffer, -0.5f, -0.5f,    0.5f, 0, 0, 0, 0.16666667f, 1, COLOR_WHITE);
-    lub = AddMeshVertex(mesh, buffer, -0.5f,    0.5f, -0.5f, 0, 0, 0, 0, 0, COLOR_WHITE);
-    luf = AddMeshVertex(mesh, buffer, -0.5f,    0.5f,    0.5f, 0, 0, 0, 0.16666667f, 0, COLOR_WHITE);
-    rdb = AddMeshVertex(mesh, buffer,    0.5f, -0.5f, -0.5f, 0, 0, 0, 0.5f, 1, COLOR_WHITE);
-    rdf = AddMeshVertex(mesh, buffer,    0.5f, -0.5f,    0.5f, 0, 0, 0, 0.33333333f, 1, COLOR_WHITE);
-    rub = AddMeshVertex(mesh, buffer,    0.5f,    0.5f, -0.5f, 0, 0, 0, 0.5f, 0, COLOR_WHITE);
-    ruf = AddMeshVertex(mesh, buffer,    0.5f,    0.5f,    0.5f, 0, 0, 0, 0.33333333f, 0, COLOR_WHITE);
+    ldf = AddMeshVertex(mesh, buffer, -0.5f, -0.5f, 0.5f, 0, 0, 0, 0.16666667f, 1, COLOR_WHITE);
+    lub = AddMeshVertex(mesh, buffer, -0.5f, 0.5f, -0.5f, 0, 0, 0, 0, 0, COLOR_WHITE);
+    luf = AddMeshVertex(mesh, buffer, -0.5f, 0.5f, 0.5f, 0, 0, 0, 0.16666667f, 0, COLOR_WHITE);
+    rdb = AddMeshVertex(mesh, buffer, 0.5f, -0.5f, -0.5f, 0, 0, 0, 0.5f, 1, COLOR_WHITE);
+    rdf = AddMeshVertex(mesh, buffer, 0.5f, -0.5f, 0.5f, 0, 0, 0, 0.33333333f, 1, COLOR_WHITE);
+    rub = AddMeshVertex(mesh, buffer, 0.5f, 0.5f, -0.5f, 0, 0, 0, 0.5f, 0, COLOR_WHITE);
+    ruf = AddMeshVertex(mesh, buffer, 0.5f, 0.5f, 0.5f, 0, 0, 0, 0.33333333f, 0, COLOR_WHITE);
     ldb1 = AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.66555555f, 1, COLOR_WHITE);
-    lub1 = AddMeshVertex(mesh, buffer, -0.5f,    0.5f, -0.5f, 0, 0, 0, 0.66555555f, 0, COLOR_WHITE);
-    ulb =    AddMeshVertex(mesh, buffer, -0.5f,    0.5f, -0.5f, 0, 0, 0, 0.66666667f, 0, COLOR_WHITE);
-    ulf =    AddMeshVertex(mesh, buffer, -0.5f,    0.5f,    0.5f, 0, 0, 0, 0.66666667f, 1, COLOR_WHITE);
-    urb =    AddMeshVertex(mesh, buffer,    0.5f,    0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
-    urf =    AddMeshVertex(mesh, buffer,    0.5f,    0.5f,    0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
-    dlb =    AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
-    dlf =    AddMeshVertex(mesh, buffer, -0.5f, -0.5f,    0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
-    drb =    AddMeshVertex(mesh, buffer,    0.5f, -0.5f, -0.5f, 0, 0, 0, 1, 0, COLOR_WHITE);
-    drf =    AddMeshVertex(mesh, buffer,    0.5f, -0.5f,    0.5f, 0, 0, 0, 1, 1, COLOR_WHITE);
+    lub1 = AddMeshVertex(mesh, buffer, -0.5f, 0.5f, -0.5f, 0, 0, 0, 0.66555555f, 0, COLOR_WHITE);
+    ulb = AddMeshVertex(mesh, buffer, -0.5f, 0.5f, -0.5f, 0, 0, 0, 0.66666667f, 0, COLOR_WHITE);
+    ulf = AddMeshVertex(mesh, buffer, -0.5f, 0.5f, 0.5f, 0, 0, 0, 0.66666667f, 1, COLOR_WHITE);
+    urb = AddMeshVertex(mesh, buffer, 0.5f, 0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
+    urf = AddMeshVertex(mesh, buffer, 0.5f, 0.5f, 0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
+    dlb = AddMeshVertex(mesh, buffer, -0.5f, -0.5f, -0.5f, 0, 0, 0, 0.83333335f, 0, COLOR_WHITE);
+    dlf = AddMeshVertex(mesh, buffer, -0.5f, -0.5f, 0.5f, 0, 0, 0, 0.83333335f, 1, COLOR_WHITE);
+    drb = AddMeshVertex(mesh, buffer, 0.5f, -0.5f, -0.5f, 0, 0, 0, 1, 0, COLOR_WHITE);
+    drf = AddMeshVertex(mesh, buffer, 0.5f, -0.5f, 0.5f, 0, 0, 0, 1, 1, COLOR_WHITE);
 
     /* add indices */
     AddMeshTriangle(mesh, buffer, lub, luf, ldf); /* left face */
@@ -474,7 +476,7 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
         diffuse = lassbin_matdiffuse(material);
         emissive = lassbin_matemissive(material);
         specular = lassbin_matspecular(material);
-        shininess = lassbin_matshininess(material);
+        shininess = _Clamp(lassbin_matshininess(material), 0.0f, 1.0f);
         /*shinpercent = lassbin_matshinpercent(material);*/
 
         /* apply texture */

@@ -16,7 +16,6 @@ typedef struct SMaterial {
     float shininess;
     int blend;
     int flags;
-    int shininesspower;
 } Material;
 
 #ifdef __cplusplus

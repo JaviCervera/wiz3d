@@ -140,8 +140,10 @@ void _PrepareLights() {
         if (_lights[i]) {
             Light* light;
             lvec3_t pos;
+            float w;
 
             light = _lights[i];
+            w = (light->type == LIGHT_DIRECTIONAL) ? 0 : 1;
 
             /* get position in viewer space */
             if (light->type == LIGHT_DIRECTIONAL) {
@@ -154,7 +156,7 @@ void _PrepareLights() {
                     light->y,
                     light->z);
             }
-            pos = lmat4_mulvec3(*(const lmat4_t*)_GetActiveMatrix(), pos, 0);
+            pos = lmat4_mulvec3(*(const lmat4_t*)_GetActiveMatrix(), pos, w);
 
             /* set light data */
             lgfx_setlight(
@@ -162,7 +164,7 @@ void _PrepareLights() {
                 pos.x,
                 pos.y,
                 pos.z,
-                light->type,
+                w,
                 bmGetRed(light->color) / 255.0f,
                 bmGetGreen(light->color) / 255.0f,
                 bmGetBlue(light->color) / 255.0f,
