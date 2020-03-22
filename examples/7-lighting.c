@@ -31,14 +31,17 @@ int main() {
     lights[0] = bmCreateLight(LIGHT_POINT);
     bmSetLightLinearAttenuation(lights[0], 0.05f);
     bmSetLightColor(lights[0], COLOR_RED);
+    bmSetLightSpecularColored(lights[0], FALSE);
     bmSetLightRotation(lights[0], 0, 0);
     lights[1] = bmCreateLight(LIGHT_POINT);
     bmSetLightLinearAttenuation(lights[1], 0.05f);
     bmSetLightColor(lights[1], COLOR_GREEN);
+    bmSetLightSpecularColored(lights[1], FALSE);
     bmSetLightRotation(lights[1], 0, 120);
     lights[2] = bmCreateLight(LIGHT_POINT);
     bmSetLightLinearAttenuation(lights[2], 0.05f);
     bmSetLightColor(lights[2], COLOR_BLUE);
+    bmSetLightSpecularColored(lights[2], FALSE);
     bmSetLightRotation(lights[2], 0, 240);
 
     /* Create spheres */
@@ -47,10 +50,11 @@ int main() {
         if (i == 0) {
             Material* material;
             spheres[i] = bmLoadObject("data/sphere.assbin");
-            bmSetObjectScale(spheres[i], 4, 4, 4);
+            bmSetObjectScale(spheres[i], 2, 2, 2);
             material = bmGetObjectMaterial(spheres[i], 0);
             bmSetMaterialDiffuse(material, COLOR_WHITE);
-            bmSetMaterialShininess(material, 0.125f);
+            bmSetMaterialSpecular(material, COLOR_WHITE);
+            bmSetMaterialShininess(material, 0.95f);
         } else {
             spheres[i] = bmCloneObject(spheres[0]);
         }
@@ -64,6 +68,8 @@ int main() {
 
     /* Main loop */
     while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
+        bmPrepareViewer(viewer);
+
         /* Update lights */
         for (i = 0; i < NUM_LIGHTS_; ++i) {
             bmTurnLight(lights[i], 0, -ROTATION_SPEED * bmGetDeltaTime());
@@ -72,7 +78,6 @@ int main() {
         }
 
         /* Draw scene */
-        bmPrepareViewer(viewer);
         for (i = 0; i < NUM_SPHERES; ++i) {
             bmDrawObject(spheres[i]);
         }

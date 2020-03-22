@@ -334,7 +334,7 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
         } else {
             lgfx_setspecular(0, 0, 0);
         }
-        lgfx_setshininess(bmGetMaterialShininess(material) * 128);
+        lgfx_setshininess((1.0f - bmGetMaterialShininess(material)) * 128);
         lgfx_setculling((bmGetMaterialFlags(material) & FLAG_CULL) == FLAG_CULL);
         lgfx_setdepthwrite((bmGetMaterialFlags(material) & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
 
@@ -487,7 +487,7 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
                 /* create embedded texture */
                 int tex_index;
                 Pixmap* pixmap;
-                tex_index = tex_name[1] - 48; /* convert ascii code tu number */
+                tex_index = tex_name[1] - 48; /* convert ascii code to number */
                 pixmap = _CreateEmptyPixmapFromData(scene->textures[tex_index].data, lassbin_texturesize(&scene->textures[tex_index]));
                 if (pixmap) {
                     texture = bmCreateTexture(pixmap);

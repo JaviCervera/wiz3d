@@ -16,6 +16,8 @@ EXPORT int CALL bmGetLightType(const Light* light);
 EXPORT void CALL bmSetLightType(Light* light, int type);
 EXPORT int CALL bmGetLightColor(const Light* light);
 EXPORT void CALL bmSetLightColor(Light* light, int color);
+EXPORT bool_t CALL bmIsLightSpecularColored(const Light* light);
+EXPORT void CALL bmSetLightSpecularColored(Light* light, bool_t has_color);
 EXPORT float CALL bmGetLightLinearAttenuation(const Light* light);
 EXPORT void CALL bmSetLightLinearAttenuation(Light* light, float att);
 EXPORT float CALL bmGetLightX(const Light* light);

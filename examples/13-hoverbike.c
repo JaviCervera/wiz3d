@@ -25,6 +25,7 @@ int main() {
 
     /* Setup lighting */
     dir_light = bmCreateLight(LIGHT_DIRECTIONAL);
+    bmSetLightSpecularColored(dir_light, FALSE);
     bmTurnLight(dir_light, 45, -45);
 
     /* Load hoverbike */
@@ -35,11 +36,11 @@ int main() {
     bmSetMaterialTexture(mat0, bmLoadTexture("data/bike.png"));
     bmSetMaterialDiffuse(mat0, COLOR_WHITE);
     bmSetMaterialSpecular(mat0, COLOR_WHITE);
-    bmSetMaterialShininess(mat0, 0.8f);
+    bmSetMaterialShininess(mat0, 0.95f);
     bmSetMaterialTexture(mat1, bmLoadTexture("data/glass.png"));
     bmSetMaterialDiffuse(mat1, COLOR_WHITE);
     bmSetMaterialSpecular(mat1, COLOR_WHITE);
-    bmSetMaterialShininess(mat1, 0.8f);
+    bmSetMaterialShininess(mat1, 0.99f);
     bmSetMaterialBlend(mat1, BLEND_ALPHA);
 
     /* Main loop */

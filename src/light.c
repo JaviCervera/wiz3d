@@ -13,6 +13,7 @@ typedef struct SLight {
     float pitch, yaw;
     int type;
     int color;
+    bool_t colorSpecular;
     float constAtt;
     float linearAtt;
     float quadraticAtt;
@@ -43,6 +44,7 @@ EXPORT Light* CALL bmCreateLight(int type) {
     light->yaw = 0;
     light->type = type;
     light->color = COLOR_WHITE;
+    light->colorSpecular = TRUE;
     light->linearAtt = 0;
     _lights[i] = light;
     return light;
@@ -71,6 +73,10 @@ EXPORT int CALL bmGetLightColor(const Light* light) { return light->color; }
 
 EXPORT void CALL bmSetLightColor(Light* light, int color) { light->color = color; }
 
+EXPORT bool_t CALL bmIsLightSpecularColored(const Light* light) { return light->colorSpecular; }
+
+EXPORT void CALL bmSetLightSpecularColored(Light* light, bool_t has_color) { light->colorSpecular = _Clamp(has_color, FALSE, TRUE); }
+
 EXPORT float CALL bmGetLightLinearAttenuation(const Light* light) { return light->linearAtt; }
 
 EXPORT void CALL bmSetLightLinearAttenuation(Light* light, float att) { light->linearAtt = att; }
@@ -90,14 +96,12 @@ EXPORT void CALL bmSetLightPosition(Light* light, float x, float y, float z) {
 EXPORT void CALL bmMoveLight(Light* light, float x, float y, float z) {
     lvec3_t vec;
 
-    vec = lvec3_add(
-        lvec3(light->x, light->y, light->z),
-        lquat_mulvec3(
-            lquat_fromeuler(lvec3_rad(lvec3(light->pitch, light->yaw, 0))),
-            lvec3(x, y, z)));
-    light->x = vec.x;
-    light->y = vec.y;
-    light->z = vec.z;
+    vec = lquat_mulvec3(
+        lquat_fromeuler(lvec3_rad(lvec3(light->pitch, light->yaw, 0))),
+        lvec3(x, y, z));
+    light->x += vec.x;
+    light->y += vec.y;
+    light->z += vec.z;
 }
 
 EXPORT float CALL bmGetLightPitch(const Light* light) { return light->pitch; }
@@ -110,11 +114,8 @@ EXPORT void CALL bmSetLightRotation(Light* light, float pitch, float yaw) {
 }
 
 EXPORT void CALL bmTurnLight(Light* light, float pitch, float yaw) {
-    lvec3_t vec;
-
-    vec = lvec3_add(lvec3(light->pitch, light->yaw, 0), lvec3(pitch, yaw, 0));
-    light->pitch = vec.x;
-    light->yaw = vec.y;
+    light->pitch += pitch;
+    light->yaw += yaw;
 }
 
 EXPORT void CALL bmLightLookAt(Light* light, float x, float y, float z) {
@@ -168,6 +169,7 @@ void _PrepareLights() {
                 bmGetRed(light->color) / 255.0f,
                 bmGetGreen(light->color) / 255.0f,
                 bmGetBlue(light->color) / 255.0f,
+                light->colorSpecular,
                 light->linearAtt);
         }
     }
