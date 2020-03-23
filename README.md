@@ -1,6 +1,6 @@
-# Wiz3d
+# Wiz3D
 
-Wiz3d is a minimalist game engine licensed under the Zlib license. Its main features are:
+Wiz3D is a minimalist game engine licensed under the Zlib license. Its main features are:
 
 * Simple procedural API written in C.
 * OpenGL fixed pipeline graphics.
@@ -34,7 +34,7 @@ You should have **Cmake** installed to be able to build the engine. For example,
 
 `$sudo apt install cmake`
 
-Then, from a Terminal go to the Wiz3d folder and run the build script:
+Then, from a Terminal go to the Wiz3D folder and run the build script:
 
 `$./build.sh`
 
