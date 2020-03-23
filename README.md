@@ -8,18 +8,6 @@ Beam is a minimalist game engine licensed under the Zlib license. Its main featu
 
 It has the goal of being easily portable to any platform. It has currently been tested on Windows, macOS and Linux.
 
-Since Beam uses submodules, to correctly clone the repository, do:
-
-`git clone --recursive https://github.com/JaviCervera/beam.git`
-
-If you have already cloned the repository without initializing submodules, you can do it afterwards running this on the Beam repository:
-
-`git submodule update --init`
-
-To pull changes from the repository, including its submodules, do:
-
-`git pull --recurse-submodules`
-
 ## Building
 
 ### Windows
@@ -64,11 +52,10 @@ See [here](./doc/documentation.md).
 
 - [x] Replace structs with functions for everything.
 - [x] Mipmapping and lightmaps.
+- [x] Fix object shininess.
+- [x] Replace light range with attenuation.
 - [ ] Cube mapping.
 - [ ] Other features from ColdSteel, Soil and Wiz3D?
-- [ ] Fix object shininess.
-- [ ] Replace bmCreateLight with a fixed set of 8 lights that you can setup.
-- [ ] Replace light range with attenuation.
 - [ ] material.ambient.
 - [ ] Spot lights.
 - [ ] Audio with support for wav and ogg formats (OpenAL only by now).
