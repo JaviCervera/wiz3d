@@ -25,14 +25,14 @@ cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -DSDL_SHARED=OFF -DSDL_A
 make
 cd ../..
 
-echo "[**building beam**]"
+echo "[**building wiz3d**]"
 cd _CMAKE
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=MinSizeRel -DPLATFORM_GLFW=ON ..
 make
 cd ..
 
-echo "[**moving beam to _build dir**]"
+echo "[**moving wiz3d to _build dir**]"
 mkdir _build
-mv _CMAKE/libbeam.so _build/libbeam.so
+mv _CMAKE/libwiz3d.so _build/libwiz3d.so
 
 echo "done."

@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/wiz3d.h"
 #include <math.h>
 
 #define ROTATION_SPEED 32
@@ -14,56 +14,56 @@ int main() {
     float value = 0;
 
     /* Setup */
-    bmInitBeam();
-    bmSetScreen(800, 600, FALSE, TRUE);
-    bmSetScreenTitle("Angel");
+    wzInitWiz3D();
+    wzSetScreen(800, 600, FALSE, TRUE);
+    wzSetScreenTitle("Angel");
 
     /* Create and position viewer */
-    viewer = bmCreateViewer();
-    bmSetViewerClearColor(viewer, bmGetRGB(15, 15, 15));
-    bmSetViewerPosition(viewer, 7, 7, -7);
-    bmViewerLookAt(viewer, 0, 0, 0);
+    viewer = wzCreateViewer();
+    wzSetViewerClearColor(viewer, wzGetRGB(15, 15, 15));
+    wzSetViewerPosition(viewer, 7, 7, -7);
+    wzViewerLookAt(viewer, 0, 0, 0);
 
     /* Setup lighting */
-    bmSetAmbientColor(bmGetRGB(15, 15, 15));
-    dir_light = bmCreateLight(LIGHT_DIRECTIONAL);
-    bmSetLightColor(dir_light, bmGetRGB(100, 100, 100));
-    point_light1 = bmCreateLight(LIGHT_POINT);
-    bmSetLightPosition(point_light1, 0, 0, -2);
-    bmSetLightColor(point_light1, bmGetRGB(255, 100, 0));
-    point_light2 = bmCreateLight(LIGHT_POINT);
-    bmSetLightPosition(point_light2, 0, 8, 4);
-    bmSetLightColor(point_light2, bmGetRGB(0, 100, 255));
+    wzSetAmbientColor(wzGetRGB(15, 15, 15));
+    dir_light = wzCreateLight(LIGHT_DIRECTIONAL);
+    wzSetLightColor(dir_light, wzGetRGB(100, 100, 100));
+    point_light1 = wzCreateLight(LIGHT_POINT);
+    wzSetLightPosition(point_light1, 0, 0, -2);
+    wzSetLightColor(point_light1, wzGetRGB(255, 100, 0));
+    point_light2 = wzCreateLight(LIGHT_POINT);
+    wzSetLightPosition(point_light2, 0, 8, 4);
+    wzSetLightColor(point_light2, wzGetRGB(0, 100, 255));
 
     /* Load object (contains embedded texture) */
-    angel = bmLoadObject("data/angel.assbin");
-    bmTurnObject(angel, 90, 0, 0);
+    angel = wzLoadObject("data/angel.assbin");
+    wzTurnObject(angel, 90, 0, 0);
 
     /* main loop */
-    while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
+    while (wzIsScreenOpened() && !wzIsKeyPressed(KEY_ESC)) {
         float s, c;
 
         /* Rotate statue */
-        bmTurnObject(angel, 0, ROTATION_SPEED * bmGetDeltaTime(), 0);
+        wzTurnObject(angel, 0, ROTATION_SPEED * wzGetDeltaTime(), 0);
 
         /* Update lighting */
-        value += bmGetDeltaTime();
+        value += wzGetDeltaTime();
         s = 0.5f + fabsf(sinf(value)) * 0.5f;
         c = 0.5f + fabsf(cosf(value)) * 0.5f;
-        bmSetLightLinearAttenuation(point_light1, 1.0f / (10 * s));
-        bmSetLightLinearAttenuation(point_light2, 1.0f / (10 * c));
+        wzSetLightLinearAttenuation(point_light1, 1.0f / (10 * s));
+        wzSetLightLinearAttenuation(point_light2, 1.0f / (10 * c));
 
         /* Draw scene */
-        bmPrepareViewer(viewer);
-        bmDrawObject(angel);
+        wzPrepareViewer(viewer);
+        wzDrawObject(angel);
 
         /* Draw UI */
-        bmSetup2D();
-        bmSetDrawColor(bmGetRGB(240, 240, 240));
-        bmDrawText(TEXT, (bmGetScreenWidth() - bmGetTextWidth(TEXT)) / 2, 8);
-        bmRefreshScreen();
+        wzSetup2D();
+        wzSetDrawColor(wzGetRGB(240, 240, 240));
+        wzDrawText(TEXT, (wzGetScreenWidth() - wzGetTextWidth(TEXT)) / 2, 8);
+        wzRefreshScreen();
     }
 
     /* Shutdown */
-    bmShutdownBeam();
+    wzShutdownWiz3D();
 }

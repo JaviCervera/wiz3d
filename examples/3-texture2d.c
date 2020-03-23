@@ -1,26 +1,26 @@
-#include "../src/beam.h"
+#include "../src/wiz3d.h"
 
 int main() {
     /* Data */
     Texture* texture;
 
     /* Setup */
-    bmInitBeam();
-    bmSetScreen(800, 600, FALSE, FALSE);
-    bmSetScreenTitle("Texture 2D");
+    wzInitWiz3D();
+    wzSetScreen(800, 600, FALSE, FALSE);
+    wzSetScreenTitle("Texture 2D");
 
     /* Load texture */
-    bmSetTextureFilter(FALSE);
-    texture = bmLoadTexture("data/smile.png");
+    wzSetTextureFilter(FALSE);
+    texture = wzLoadTexture("data/smile.png");
 
     /* Main loop */
-    while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
-        bmSetup2D();
-        bmClearScreen(COLOR_BLACK);
-        bmDrawTexture(texture, (bmGetScreenWidth() - bmGetTextureWidth(texture)) / 2, (bmGetScreenHeight() - bmGetTextureHeight(texture)) / 2, 0, 0);
-        bmRefreshScreen();
+    while (wzIsScreenOpened() && !wzIsKeyPressed(KEY_ESC)) {
+        wzSetup2D();
+        wzClearScreen(COLOR_BLACK);
+        wzDrawTexture(texture, (wzGetScreenWidth() - wzGetTextureWidth(texture)) / 2, (wzGetScreenHeight() - wzGetTextureHeight(texture)) / 2, 0, 0);
+        wzRefreshScreen();
     }
 
     /* Shutdown */
-    bmShutdownBeam();
+    wzShutdownWiz3D();
 }

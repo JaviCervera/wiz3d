@@ -1,4 +1,4 @@
-#include "beam_config.h"
+#include "wiz3d_config.h"
 
 #ifndef PLATFORM_NULL
 
@@ -12,7 +12,7 @@ static float _listener_z = 0;
 static float _listener_yaw = 0;
 #endif
 
-EXPORT bool_t CALL bmPlayMusic(const char* filename, bool_t loop) {
+EXPORT bool_t CALL wzPlayMusic(const char* filename, bool_t loop) {
 #ifdef USE_AUDIO
     return p_PlayMusic(filename, loop);
 #else
@@ -20,31 +20,31 @@ EXPORT bool_t CALL bmPlayMusic(const char* filename, bool_t loop) {
 #endif
 }
 
-EXPORT void CALL bmPauseMusic() {
+EXPORT void CALL wzPauseMusic() {
 #ifdef USE_AUDIO
     p_PauseMusic();
 #endif
 }
 
-EXPORT void CALL bmResumeMusic() {
+EXPORT void CALL wzResumeMusic() {
 #ifdef USE_AUDIO
     p_ResumeMusic();
 #endif
 }
 
-EXPORT void CALL bmStopMusic() {
+EXPORT void CALL wzStopMusic() {
 #ifdef USE_AUDIO
     p_StopMusic();
 #endif
 }
 
-EXPORT void CALL bmSetMusicVolume(float volume) {
+EXPORT void CALL wzSetMusicVolume(float volume) {
 #ifdef USE_AUDIO
     p_SetMusicVolume(volume);
 #endif
 }
 
-EXPORT bool_t CALL bmIsMusicPlaying() {
+EXPORT bool_t CALL wzIsMusicPlaying() {
 #ifdef USE_AUDIO
     return p_IsMusicPlaying();
 #else
@@ -53,7 +53,7 @@ EXPORT bool_t CALL bmIsMusicPlaying() {
 }
 
 
-EXPORT void* CALL bmLoadSound(const char* filename) {
+EXPORT void* CALL wzLoadSound(const char* filename) {
 #ifdef USE_AUDIO
     return p_LoadSound(filename);
 #else
@@ -61,13 +61,13 @@ EXPORT void* CALL bmLoadSound(const char* filename) {
 #endif
 }
 
-EXPORT void CALL bmDeleteSound(void* sound) {
+EXPORT void CALL wzDeleteSound(void* sound) {
 #ifdef USE_AUDIO
     p_DeleteSound(sound);
 #endif
 }
 
-EXPORT void* CALL bmPlaySound(void* sound, bool_t loop) {
+EXPORT void* CALL wzPlaySound(void* sound, bool_t loop) {
 #ifdef USE_AUDIO
     return p_PlaySound(sound, loop);
 #else
@@ -75,7 +75,7 @@ EXPORT void* CALL bmPlaySound(void* sound, bool_t loop) {
 #endif
 }
 
-EXPORT void CALL bmPositionListener(float x, float y, float z) {
+EXPORT void CALL wzPositionListener(float x, float y, float z) {
 #ifdef USE_AUDIO
     _listener_x = x;
     _listener_y = y;
@@ -83,7 +83,7 @@ EXPORT void CALL bmPositionListener(float x, float y, float z) {
 #endif
 }
 
-EXPORT float CALL bmGetListenerX() {
+EXPORT float CALL wzGetListenerX() {
 #ifdef USE_AUDIO
     return _listener_x;
 #else
@@ -91,7 +91,7 @@ EXPORT float CALL bmGetListenerX() {
 #endif
 }
 
-EXPORT float CALL bmGetListenerY() {
+EXPORT float CALL wzGetListenerY() {
 #ifdef USE_AUDIO
     return _listener_y;
 #else
@@ -99,7 +99,7 @@ EXPORT float CALL bmGetListenerY() {
 #endif
 }
 
-EXPORT float CALL bmGetListenerZ() {
+EXPORT float CALL wzGetListenerZ() {
 #ifdef USE_AUDIO
     return _listener_z;
 #else
@@ -107,13 +107,13 @@ EXPORT float CALL bmGetListenerZ() {
 #endif
 }
 
-EXPORT void CALL bmRotateListener(float yaw) {
+EXPORT void CALL wzRotateListener(float yaw) {
 #ifdef USE_AUDIO
     _listener_yaw = yaw;
 #endif
 }
 
-EXPORT float CALL bmGetListenerYaw() {
+EXPORT float CALL wzGetListenerYaw() {
 #ifdef USE_AUDIO
     return _listener_yaw;
 #else
@@ -121,49 +121,49 @@ EXPORT float CALL bmGetListenerYaw() {
 #endif
 }
 
-EXPORT void CALL bmPauseChannel(void* channel) {
+EXPORT void CALL wzPauseChannel(void* channel) {
 #ifdef USE_AUDIO
     p_PauseChannel(channel);
 #endif
 }
 
-EXPORT void CALL bmResumeChannel(void* channel) {
+EXPORT void CALL wzResumeChannel(void* channel) {
 #ifdef USE_AUDIO
     p_ResumeChannel(channel);
 #endif
 }
 
-EXPORT void CALL bmStopChannel(void* channel) {
+EXPORT void CALL wzStopChannel(void* channel) {
 #ifdef USE_AUDIO
     p_StopChannel(channel);
 #endif
 }
 
-EXPORT void CALL bmPositionChannel(void* channel, float x, float y, float z, float radius) {
+EXPORT void CALL wzPositionChannel(void* channel, float x, float y, float z, float radius) {
 #ifdef USE_AUDIO
     p_PositionChannel(channel, _listener_x, _listener_y, _listener_z, _listener_yaw, x, y, z, radius);
 #endif
 }
 
-EXPORT void CALL bmSetChannelVolume(void* channel, float volume) {
+EXPORT void CALL wzSetChannelVolume(void* channel, float volume) {
 #ifdef USE_AUDIO
     p_SetChannelVolume(channel, volume);
 #endif
 }
 
-EXPORT void CALL bmSetChannelPan(void* channel, float pan) {
+EXPORT void CALL wzSetChannelPan(void* channel, float pan) {
 #ifdef USE_AUDIO
     p_SetChannelPan(channel, pan);
 #endif
 }
 
-EXPORT void CALL bmSetChannelPitch(void* channel, float pitch) {
+EXPORT void CALL wzSetChannelPitch(void* channel, float pitch) {
 #ifdef USE_AUDIO
     p_SetChannelPitch(channel, pitch);
 #endif
 }
 
-EXPORT bool_t CALL bmIsChannelPlaying(void* channel) {
+EXPORT bool_t CALL wzIsChannelPlaying(void* channel) {
 #ifdef USE_AUDIO
     return p_IsChannelPlaying(channel);
 #else

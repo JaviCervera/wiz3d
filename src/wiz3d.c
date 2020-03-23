@@ -1,5 +1,5 @@
-#include "beam_config.h"
-#include "beam.h"
+#include "wiz3d_config.h"
+#include "wiz3d.h"
 #include "draw.h"
 #include "platform.h"
 #define LITE_ASSBIN_USE_GFX
@@ -30,28 +30,28 @@
 #endif
 
 
-EXPORT bool_t CALL bmInitBeam() {
+EXPORT bool_t CALL wzInitWiz3D() {
     bool_t ret;
     ret = p_Init();
     if (!ret) return FALSE;
 #ifdef PLATFORM_NULL
     lgfx_init();
-    bmSetDefaultFont();
+    wzSetDefaultFont();
 #endif
     return ret != FALSE;
 }
 
-EXPORT void CALL bmShutdownBeam() {
+EXPORT void CALL wzShutdownWiz3D() {
 #ifndef PLATFORM_NULL
     if (_GetScreenPtr()) p_CloseScreen(_GetScreenPtr());
 #endif
     p_Shutdown();
 }
 
-EXPORT bool_t CALL bmIsMultitexturingSupported() {
+EXPORT bool_t CALL wzIsMultitexturingSupported() {
     return lgfx_multitexture_supported();
 }
 
-EXPORT bool_t CALL bmIsMipmappingSupported() {
+EXPORT bool_t CALL wzIsMipmappingSupported() {
     return lgfx_mipmapping_supported();
 }

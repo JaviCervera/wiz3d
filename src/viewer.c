@@ -36,7 +36,7 @@ static Mesh* _viewer_skybox = NULL;
 
 static Mesh* _SetupViewerSkyboxMesh(Texture* texture);
 
-EXPORT Viewer* CALL bmCreateViewer() {
+EXPORT Viewer* CALL wzCreateViewer() {
     Viewer* viewer = _Alloc(Viewer);
     viewer->x = 0;
     viewer->y = 0;
@@ -49,7 +49,7 @@ EXPORT Viewer* CALL bmCreateViewer() {
     viewer->vw = -1;
     viewer->vh = -1;
     viewer->clearmode = CLEAR_COLOR;
-    viewer->clearcolor = bmGetRGB(52, 73, 94);
+    viewer->clearcolor = wzGetRGB(52, 73, 94);
     viewer->skybox = NULL;
     viewer->ortho = FALSE;
     viewer->fov = 60;
@@ -62,21 +62,21 @@ EXPORT Viewer* CALL bmCreateViewer() {
     return viewer;
 }
 
-EXPORT void CALL bmDeleteViewer(Viewer* viewer) { free(viewer); }
+EXPORT void CALL wzDeleteViewer(Viewer* viewer) { free(viewer); }
 
-EXPORT float CALL bmGetViewerX(const Viewer* viewer) { return viewer->x; }
+EXPORT float CALL wzGetViewerX(const Viewer* viewer) { return viewer->x; }
 
-EXPORT float CALL bmGetViewerY(const Viewer* viewer) { return viewer->y; }
+EXPORT float CALL wzGetViewerY(const Viewer* viewer) { return viewer->y; }
 
-EXPORT float CALL bmGetViewerZ(const Viewer* viewer) { return viewer->z; }
+EXPORT float CALL wzGetViewerZ(const Viewer* viewer) { return viewer->z; }
 
-EXPORT void CALL bmSetViewerPosition(Viewer* viewer, float x, float y, float z) {
+EXPORT void CALL wzSetViewerPosition(Viewer* viewer, float x, float y, float z) {
     viewer->x = x;
     viewer->y = y;
     viewer->z = z;
 }
 
-EXPORT void CALL bmMoveViewer(Viewer* viewer, float x, float y, float z) {
+EXPORT void CALL wzMoveViewer(Viewer* viewer, float x, float y, float z) {
     lvec3_t vec;
 
     vec = lvec3_add(
@@ -87,19 +87,19 @@ EXPORT void CALL bmMoveViewer(Viewer* viewer, float x, float y, float z) {
     viewer->z = vec.z;
 }
 
-EXPORT float CALL bmGetViewerPitch(const Viewer* viewer) { return viewer->pitch; }
+EXPORT float CALL wzGetViewerPitch(const Viewer* viewer) { return viewer->pitch; }
 
-EXPORT float CALL bmGetViewerYaw(const Viewer* viewer) { return viewer->yaw; }
+EXPORT float CALL wzGetViewerYaw(const Viewer* viewer) { return viewer->yaw; }
 
-EXPORT float CALL bmGetViewerRoll(const Viewer* viewer) { return viewer->roll; }
+EXPORT float CALL wzGetViewerRoll(const Viewer* viewer) { return viewer->roll; }
 
-EXPORT void CALL bmSetViewerRotation(Viewer* viewer, float pitch, float yaw, float roll) {
+EXPORT void CALL wzSetViewerRotation(Viewer* viewer, float pitch, float yaw, float roll) {
     viewer->pitch = pitch;
     viewer->yaw = yaw;
     viewer->roll = roll;
 }
 
-EXPORT void CALL bmTurnViewer(Viewer* viewer, float pitch, float yaw, float roll) {
+EXPORT void CALL wzTurnViewer(Viewer* viewer, float pitch, float yaw, float roll) {
     lvec3_t vec;
 
     vec = lvec3_add(lvec3(viewer->pitch, viewer->yaw, viewer->roll), lvec3(pitch, yaw, roll));
@@ -108,75 +108,75 @@ EXPORT void CALL bmTurnViewer(Viewer* viewer, float pitch, float yaw, float roll
     viewer->roll = vec.z;
 }
 
-EXPORT void CALL bmViewerLookAt(Viewer* viewer, float x, float y, float z) {
+EXPORT void CALL wzViewerLookAt(Viewer* viewer, float x, float y, float z) {
     lvec3_t dir;
     dir = lvec3_norm(lvec3_sub(lvec3(x, y, z), lvec3(viewer->x, viewer->y, viewer->z)));
     viewer->pitch = lm_rad2deg((float)asin(-dir.y));
     viewer->yaw = lm_rad2deg((float)atan2(dir.x, dir.z));
 }
 
-EXPORT int CALL bmGetViewerViewportX(const Viewer* viewer) { return viewer->vx; }
+EXPORT int CALL wzGetViewerViewportX(const Viewer* viewer) { return viewer->vx; }
 
-EXPORT int CALL bmGetViewerViewportY(const Viewer* viewer) { return viewer->vy; }
+EXPORT int CALL wzGetViewerViewportY(const Viewer* viewer) { return viewer->vy; }
 
-EXPORT int CALL bmGetViewerViewportWidth(const Viewer* viewer) { return viewer->vw; }
+EXPORT int CALL wzGetViewerViewportWidth(const Viewer* viewer) { return viewer->vw; }
 
-EXPORT int CALL bmGetViewerViewportHeight(const Viewer* viewer) { return viewer->vh; }
+EXPORT int CALL wzGetViewerViewportHeight(const Viewer* viewer) { return viewer->vh; }
 
-EXPORT void CALL bmSetViewerViewport(Viewer* viewer, int x, int y, int width, int height) {
+EXPORT void CALL wzSetViewerViewport(Viewer* viewer, int x, int y, int width, int height) {
     viewer->vx = x;
     viewer->vy = y;
     viewer->vw = width;
     viewer->vh = height;
 }
 
-EXPORT int CALL bmGetViewerClearMode(const Viewer* viewer) { return viewer->clearmode; }
+EXPORT int CALL wzGetViewerClearMode(const Viewer* viewer) { return viewer->clearmode; }
 
-EXPORT void CALL bmSetViewerClearMode(Viewer* viewer, int mode) { viewer->clearmode = _Clamp(mode, CLEAR_NONE, CLEAR_SKYBOX); }
+EXPORT void CALL wzSetViewerClearMode(Viewer* viewer, int mode) { viewer->clearmode = _Clamp(mode, CLEAR_NONE, CLEAR_SKYBOX); }
 
-EXPORT int CALL bmGetViewerClearColor(const Viewer* viewer) { return viewer->clearcolor; }
+EXPORT int CALL wzGetViewerClearColor(const Viewer* viewer) { return viewer->clearcolor; }
 
-EXPORT void CALL bmSetViewerClearColor(Viewer* viewer, int color) { viewer->clearcolor = color; }
+EXPORT void CALL wzSetViewerClearColor(Viewer* viewer, int color) { viewer->clearcolor = color; }
 
-EXPORT Texture* CALL bmGetViewerSkybox(const Viewer* viewer) { return viewer->skybox; }
+EXPORT Texture* CALL wzGetViewerSkybox(const Viewer* viewer) { return viewer->skybox; }
 
-EXPORT void CALL bmSetViewerSkybox(Viewer* viewer, Texture* texture) { viewer->skybox = texture; }
+EXPORT void CALL wzSetViewerSkybox(Viewer* viewer, Texture* texture) { viewer->skybox = texture; }
 
-EXPORT bool_t CALL bmIsViewerOrtho(const Viewer* viewer) { return viewer->ortho; }
+EXPORT bool_t CALL wzIsViewerOrtho(const Viewer* viewer) { return viewer->ortho; }
 
-EXPORT void CALL bmSetViewerOrtho(Viewer* viewer, bool_t ortho) { viewer->ortho = ortho; }
+EXPORT void CALL wzSetViewerOrtho(Viewer* viewer, bool_t ortho) { viewer->ortho = ortho; }
 
-EXPORT float CALL bmGetViewerFov(const Viewer* viewer) { return viewer->fov; }
+EXPORT float CALL wzGetViewerFov(const Viewer* viewer) { return viewer->fov; }
 
-EXPORT void CALL bmSetViewerFov(Viewer* viewer, float enable) { viewer->fov = enable; }
+EXPORT void CALL wzSetViewerFov(Viewer* viewer, float enable) { viewer->fov = enable; }
 
-EXPORT float CALL bmGetViewerDistanceMin(const Viewer* viewer) { return viewer->min; }
+EXPORT float CALL wzGetViewerDistanceMin(const Viewer* viewer) { return viewer->min; }
 
-EXPORT float CALL bmGetViewerDistanceMax(const Viewer* viewer) { return viewer->max; }
+EXPORT float CALL wzGetViewerDistanceMax(const Viewer* viewer) { return viewer->max; }
 
-EXPORT void CALL bmSetViewerDistance(Viewer* viewer, float min, float max) {
+EXPORT void CALL wzSetViewerDistance(Viewer* viewer, float min, float max) {
     viewer->min = min;
     viewer->max = max;
 }
 
-EXPORT bool_t CALL bmIsViewerFogEnabled(const Viewer* viewer) { return viewer->fogenabled; }
+EXPORT bool_t CALL wzIsViewerFogEnabled(const Viewer* viewer) { return viewer->fogenabled; }
 
-EXPORT void CALL bmSetViewerFogEnabled(Viewer* viewer, bool_t enable) { viewer->fogenabled = enable; }
+EXPORT void CALL wzSetViewerFogEnabled(Viewer* viewer, bool_t enable) { viewer->fogenabled = enable; }
 
-EXPORT int CALL bmGetViewerFogColor(const Viewer* viewer) { return viewer->fogcolor; }
+EXPORT int CALL wzGetViewerFogColor(const Viewer* viewer) { return viewer->fogcolor; }
 
-EXPORT void CALL bmSetViewerFogColor(Viewer* viewer, int color) { viewer->fogcolor = color; }
+EXPORT void CALL wzSetViewerFogColor(Viewer* viewer, int color) { viewer->fogcolor = color; }
 
-EXPORT float CALL bmGetViewerFogDistanceMin(const Viewer* viewer) { return viewer->fogmin; }
+EXPORT float CALL wzGetViewerFogDistanceMin(const Viewer* viewer) { return viewer->fogmin; }
 
-EXPORT float CALL bmGetViewerFogDistanceMax(const Viewer* viewer) { return viewer->fogmax; }
+EXPORT float CALL wzGetViewerFogDistanceMax(const Viewer* viewer) { return viewer->fogmax; }
 
-EXPORT void CALL bmSetViewerFogDistance(Viewer* viewer, float min, float max) {
+EXPORT void CALL wzSetViewerFogDistance(Viewer* viewer, float min, float max) {
     viewer->fogmin = min;
     viewer->fogmax = max;
 }
 
-EXPORT void CALL bmPrepareViewer(const Viewer* viewer) {
+EXPORT void CALL wzPrepareViewer(const Viewer* viewer) {
     int vp_w;
     int vp_h;
     float ratio;
@@ -190,8 +190,8 @@ EXPORT void CALL bmPrepareViewer(const Viewer* viewer) {
 
     /* get real viewport size */
 #ifndef PLATFORM_NULL
-    vp_w = (viewer->vw != -1) ? viewer->vw : bmGetScreenWidth() - viewer->vx;
-    vp_h = (viewer->vh != -1) ? viewer->vh : bmGetScreenHeight() - viewer->vy;
+    vp_w = (viewer->vw != -1) ? viewer->vw : wzGetScreenWidth() - viewer->vx;
+    vp_h = (viewer->vh != -1) ? viewer->vh : wzGetScreenHeight() - viewer->vy;
 #else
     vp_w = viewer->vw;
     vp_h = viewer->vh;
@@ -228,9 +228,9 @@ EXPORT void CALL bmPrepareViewer(const Viewer* viewer) {
     switch (viewer->clearmode) {
         case CLEAR_COLOR:
             lgfx_clearcolorbuffer(
-                bmGetRed(viewer->clearcolor) / 255.0f,
-                bmGetGreen(viewer->clearcolor) / 255.0f,
-                bmGetBlue(viewer->clearcolor) / 255.0f);
+                wzGetRed(viewer->clearcolor) / 255.0f,
+                wzGetGreen(viewer->clearcolor) / 255.0f,
+                wzGetBlue(viewer->clearcolor) / 255.0f);
             break;
         case CLEAR_SKYBOX:
             halfrange = (viewer->max - viewer->min) * 0.5f;
@@ -260,6 +260,6 @@ const void* _GetActiveMatrix() {
 
 static Mesh* _SetupViewerSkyboxMesh(Texture* texture) {
     if (!_viewer_skybox) _viewer_skybox = _CreateSkyboxMesh();
-    bmSetMaterialTexture(GetMeshMaterial(_viewer_skybox, 0), texture);
+    wzSetMaterialTexture(GetMeshMaterial(_viewer_skybox, 0), texture);
     return _viewer_skybox;
 }

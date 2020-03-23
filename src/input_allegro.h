@@ -1,7 +1,7 @@
 #ifndef INPUT_ALLEGRO_H_INCLUDED
 #define INPUT_ALLEGRO_H_INCLUDED
 
-#include "beam_config.h"
+#include "wiz3d_config.h"
 
 #ifdef PLATFORM_ALLEGRO
 

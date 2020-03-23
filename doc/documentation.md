@@ -101,7 +101,7 @@ Tells whether the given mouse button is pressed or not.
 Tells whether the given key is pressed or not.
 
 ## light
-Beam allows the definition of up to 8 lights in the scene. Directional and point lights are supported. Each light is represented by the following structure:
+Wiz3d allows the definition of up to 8 lights in the scene. Directional and point lights are supported. Each light is represented by the following structure:
 
 ```
 Light
@@ -177,7 +177,7 @@ Material
 * `blend`: Specified how the object blends with its surroundings. Can be:
   * `_BLEND_SOLID`: The material is fully opaque.
   * `_BLEND_ALPHA`: Parts of the object can appear as transparent depending on the alpha of the texture and diffuse color.
-  * `_BLEND_ADD`: The material is added to whatever is behind it. It looks as a transparent object (except for the white parts that would look opaque), and this mode is usually used on elements such as fire or beams, because it makes the object appear brighter.
+  * `_BLEND_ADD`: The material is added to whatever is behind it. It looks as a transparent object (except for the white parts that would look opaque), and this mode is usually used on elements such as fire or wiz3ds, because it makes the object appear brighter.
   * `_BLEND_MUL`: The material is multiplied with whatever is beneath it. Rarely used, but it is useful to darken or tint the background using the material.
 * `flags`: Enables or disables some visual properties of the material. It can be a bitwise combination of:
   * `_FLAG_CULL`: Enables backface culling. This makes the backside of objects visible. Normally disabled with transparent objects.
@@ -199,7 +199,7 @@ Sets the default shininess power for all materials whose shininess power value i
 
 ## memory
 
-Beam can allocate and manipulate memory buffers with this module. It defines an opaque structure `memory_t`.
+Wiz3d can allocate and manipulate memory buffers with this module. It defines an opaque structure `memory_t`.
 
 `struct memory_t* CreateMemblock(int size)`
 
@@ -559,7 +559,7 @@ Returns the height in pixels of the given text with the current font.
 
 ## sound
 
-Beam support audio playback several sounds at once using multiple channels. A sound is defined by the opaque structure `sound_t`, while a channel is defined by the opaque structure `channel_t`.
+Wiz3d support audio playback several sounds at once using multiple channels. A sound is defined by the opaque structure `sound_t`, while a channel is defined by the opaque structure `channel_t`.
 
 `bool_t sound_playmusic(const char* filename, bool_t loop)`
 

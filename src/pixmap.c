@@ -9,11 +9,11 @@ typedef struct SPixmap {
     int height;
 } Pixmap;
 
-EXPORT Pixmap* CALL bmCreatePixmap(const Memblock* memblock) {
-    return _CreateEmptyPixmapFromData((const unsigned char*)memblock, bmGetMemblockSize(memblock));
+EXPORT Pixmap* CALL wzCreatePixmap(const Memblock* memblock) {
+    return _CreateEmptyPixmapFromData((const unsigned char*)memblock, wzGetMemblockSize(memblock));
 }
 
-EXPORT Pixmap* CALL bmCreateEmptyPixmap(int width, int height) {
+EXPORT Pixmap* CALL wzCreateEmptyPixmap(int width, int height) {
     Pixmap* pixmap = _Alloc(Pixmap);
     pixmap->pixels = _AllocMany(int, width * height);
     pixmap->width = width;
@@ -21,37 +21,37 @@ EXPORT Pixmap* CALL bmCreateEmptyPixmap(int width, int height) {
     return pixmap;
 }
 
-EXPORT Pixmap* CALL bmLoadPixmap(const char* filename) {
+EXPORT Pixmap* CALL wzLoadPixmap(const char* filename) {
     Memblock* memblock;
     Pixmap* pixmap = NULL;
 
-    memblock = bmLoadMemblock(filename);
+    memblock = wzLoadMemblock(filename);
     if (memblock) {
-        pixmap = bmCreatePixmap(memblock);
-        bmDeleteMemblock(memblock);
+        pixmap = wzCreatePixmap(memblock);
+        wzDeleteMemblock(memblock);
     }
 
     return pixmap;
 }
 
-EXPORT void CALL bmDeletePixmap(Pixmap* pixmap) {
+EXPORT void CALL wzDeletePixmap(Pixmap* pixmap) {
     free(pixmap->pixels);
     free(pixmap);
 }
 
-EXPORT int CALL bmGetPixmapWidth(const Pixmap* pixmap) {
+EXPORT int CALL wzGetPixmapWidth(const Pixmap* pixmap) {
     return pixmap->width;
 }
 
-EXPORT int CALL bmGetPixmapHeight(const Pixmap* pixmap) {
+EXPORT int CALL wzGetPixmapHeight(const Pixmap* pixmap) {
     return pixmap->height;
 }
 
-EXPORT int CALL bmGetPixmapColor(const Pixmap* pixmap, int x, int y) {
+EXPORT int CALL wzGetPixmapColor(const Pixmap* pixmap, int x, int y) {
     return pixmap->pixels[y*pixmap->width + x];
 }
 
-EXPORT void CALL bmSetPixmapColor(Pixmap* pixmap, int x, int y, int color) {
+EXPORT void CALL wzSetPixmapColor(Pixmap* pixmap, int x, int y, int color) {
     pixmap->pixels[y*pixmap->width + x] = color;
 }
 

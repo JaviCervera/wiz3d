@@ -10,33 +10,33 @@ typedef struct STexture {
     ltex_t* ptr;
 } Texture;
 
-EXPORT Texture* CALL bmCreateTexture(const Pixmap* pixmap) {
+EXPORT Texture* CALL wzCreateTexture(const Pixmap* pixmap) {
     Texture* tex;
-    tex = bmCreateEmptyTexture(bmGetPixmapWidth(pixmap), bmGetPixmapHeight(pixmap));
-    if (tex) bmSetTexturePixels(tex, pixmap);
+    tex = wzCreateEmptyTexture(wzGetPixmapWidth(pixmap), wzGetPixmapHeight(pixmap));
+    if (tex) wzSetTexturePixels(tex, pixmap);
     return tex;
 }
 
-EXPORT Texture* CALL bmCreateEmptyTexture(int width, int height) {
+EXPORT Texture* CALL wzCreateEmptyTexture(int width, int height) {
     Texture* tex = _Alloc(Texture);
     tex->refcount = 0;
     tex->ptr = ltex_alloc(width, height, _texture_filter);
     return tex;
 }
 
-EXPORT Texture* CALL bmLoadTexture(const char* filename) {
+EXPORT Texture* CALL wzLoadTexture(const char* filename) {
     Pixmap* pixmap;
     Texture* tex;
 
     /* load pixmap */
-    pixmap = bmLoadPixmap(filename);
+    pixmap = wzLoadPixmap(filename);
     if (!pixmap) return NULL;
 
     /* create texture */
-    tex = bmCreateTexture(pixmap);
+    tex = wzCreateTexture(pixmap);
 
     /* delete pixmap */
-    bmDeletePixmap(pixmap);
+    wzDeletePixmap(pixmap);
 
     return tex;
 }
@@ -47,34 +47,34 @@ void RetainTexture(Texture* texture) {
 
 void ReleaseTexture(Texture* texture) {
     if (--texture->refcount == 0) {
-        bmDeleteTexture(texture);
+        wzDeleteTexture(texture);
     }
 }
 
-EXPORT void CALL bmDeleteTexture(Texture* texture) {
+EXPORT void CALL wzDeleteTexture(Texture* texture) {
     ltex_free(texture->ptr);
     free(texture);
 }
 
-EXPORT int CALL bmGetTextureWidth(const Texture* texture) {
+EXPORT int CALL wzGetTextureWidth(const Texture* texture) {
     return texture->ptr->width;
 }
 
-EXPORT int CALL bmGetTextureHeight(const Texture* texture) {
+EXPORT int CALL wzGetTextureHeight(const Texture* texture) {
     return texture->ptr->height;
 }
 
-EXPORT void CALL bmSetTexturePixels(Texture* texture, const Pixmap* pixmap) {
-    if (texture->ptr->width == bmGetPixmapWidth(pixmap) && texture->ptr->height == bmGetPixmapHeight(pixmap)) {
+EXPORT void CALL wzSetTexturePixels(Texture* texture, const Pixmap* pixmap) {
+    if (texture->ptr->width == wzGetPixmapWidth(pixmap) && texture->ptr->height == wzGetPixmapHeight(pixmap)) {
         ltex_setpixels(texture->ptr, _GetPixmapPtr(pixmap));
     }
 }
 
-EXPORT int CALL bmGetTextureFilter() {
+EXPORT int CALL wzGetTextureFilter() {
     return _texture_filter;
 }
 
-EXPORT void CALL bmSetTextureFilter(int filter) {
+EXPORT void CALL wzSetTextureFilter(int filter) {
     _texture_filter = filter;
 }
 

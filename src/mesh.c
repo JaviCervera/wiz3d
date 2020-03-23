@@ -54,7 +54,7 @@ Mesh* CreateMesh(const Memblock* memblock) {
     
     if (memblock) {
         init_ok = FALSE;
-        if (bmGetMemblockInt(memblock, 0) == 844121161) {
+        if (wzGetMemblockInt(memblock, 0) == 844121161) {
             init_ok = _InitMD2Mesh(memblock, mesh);
         } else {
             init_ok = _InitAssimpMesh(memblock, mesh);
@@ -116,10 +116,10 @@ int AddMeshVertex(Mesh* mesh, int buffer, float x, float y, float z, float nx, f
             x, y, z,
             nx, ny, nz,
             u, v,
-            bmGetRed(color) / 255.0f,
-            bmGetGreen(color) / 255.0f,
-            bmGetBlue(color) / 255.0f,
-            bmGetAlpha(color) / 255.0f));
+            wzGetRed(color) / 255.0f,
+            wzGetGreen(color) / 255.0f,
+            wzGetBlue(color) / 255.0f,
+            wzGetAlpha(color) / 255.0f));
     return sb_count(mesh->buffers[buffer].vertices) - 1;
 }
 
@@ -305,52 +305,52 @@ void _DrawMesh(const Mesh* mesh, const Material* materials) {
         material = &materials[i];
 
         /* get lighting settings */
-        if ((bmGetMaterialFlags(material) & FLAG_LIGHTING) == FLAG_LIGHTING) {
+        if ((wzGetMaterialFlags(material) & FLAG_LIGHTING) == FLAG_LIGHTING) {
             use_lighting = _GetNumLights() > 0;
         } else {
             use_lighting = FALSE;
         }
 
         /* set material settings */
-        lgfx_setblend(bmGetMaterialBlend(material));
+        lgfx_setblend(wzGetMaterialBlend(material));
         ltex_bind(
-            (const ltex_t*)_GetTexturePtr(bmGetMaterialTexture(material)),
-            (const ltex_t*)_GetTexturePtr(bmGetMaterialLightmap(material)),
+            (const ltex_t*)_GetTexturePtr(wzGetMaterialTexture(material)),
+            (const ltex_t*)_GetTexturePtr(wzGetMaterialLightmap(material)),
             use_lighting);
         lgfx_setcolor(
-            bmGetRed(bmGetMaterialDiffuse(material)) / 255.0f,
-            bmGetGreen(bmGetMaterialDiffuse(material)) / 255.0f,
-            bmGetBlue(bmGetMaterialDiffuse(material)) / 255.0f,
-            bmGetAlpha(bmGetMaterialDiffuse(material)) / 255.0f);
+            wzGetRed(wzGetMaterialDiffuse(material)) / 255.0f,
+            wzGetGreen(wzGetMaterialDiffuse(material)) / 255.0f,
+            wzGetBlue(wzGetMaterialDiffuse(material)) / 255.0f,
+            wzGetAlpha(wzGetMaterialDiffuse(material)) / 255.0f);
         lgfx_setemissive(
-            bmGetRed(bmGetMaterialEmissive(material)) / 255.0f,
-            bmGetGreen(bmGetMaterialEmissive(material)) / 255.0f,
-            bmGetBlue(bmGetMaterialEmissive(material)) / 255.0f);
-        if (bmGetMaterialShininess(material) > 0.0f) {
+            wzGetRed(wzGetMaterialEmissive(material)) / 255.0f,
+            wzGetGreen(wzGetMaterialEmissive(material)) / 255.0f,
+            wzGetBlue(wzGetMaterialEmissive(material)) / 255.0f);
+        if (wzGetMaterialShininess(material) > 0.0f) {
             lgfx_setspecular(
-                bmGetRed(bmGetMaterialSpecular(material)) / 255.0f,
-                bmGetGreen(bmGetMaterialSpecular(material)) / 255.0f,
-                bmGetBlue(bmGetMaterialSpecular(material)) / 255.0f);
+                wzGetRed(wzGetMaterialSpecular(material)) / 255.0f,
+                wzGetGreen(wzGetMaterialSpecular(material)) / 255.0f,
+                wzGetBlue(wzGetMaterialSpecular(material)) / 255.0f);
         } else {
             lgfx_setspecular(0, 0, 0);
         }
-        lgfx_setshininess((1.0f - bmGetMaterialShininess(material)) * 128);
-        lgfx_setculling((bmGetMaterialFlags(material) & FLAG_CULL) == FLAG_CULL);
-        lgfx_setdepthwrite((bmGetMaterialFlags(material) & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
+        lgfx_setshininess((1.0f - wzGetMaterialShininess(material)) * 128);
+        lgfx_setculling((wzGetMaterialFlags(material) & FLAG_CULL) == FLAG_CULL);
+        lgfx_setdepthwrite((wzGetMaterialFlags(material) & FLAG_DEPTHWRITE) == FLAG_DEPTHWRITE);
 
         /* setup lighting */
         lgfx_setlighting(use_lighting ? _GetNumLights() : 0);
 
         /* setup fog */
         viewer = _GetActiveViewer();
-        if ((bmGetMaterialFlags(material) & FLAG_FOG) == FLAG_FOG) {
+        if ((wzGetMaterialFlags(material) & FLAG_FOG) == FLAG_FOG) {
             lgfx_setfog(
-                bmIsViewerFogEnabled(viewer),
-                bmGetRed(bmGetViewerFogColor(viewer)) / 255.0f,
-                bmGetGreen(bmGetViewerFogColor(viewer)) / 255.0f,
-                bmGetBlue(bmGetViewerFogColor(viewer)) / 255.0f,
-                bmGetViewerFogDistanceMin(viewer),
-                bmGetViewerFogDistanceMax(viewer)
+                wzIsViewerFogEnabled(viewer),
+                wzGetRed(wzGetViewerFogColor(viewer)) / 255.0f,
+                wzGetGreen(wzGetViewerFogColor(viewer)) / 255.0f,
+                wzGetBlue(wzGetViewerFogColor(viewer)) / 255.0f,
+                wzGetViewerFogDistanceMin(viewer),
+                wzGetViewerFogDistanceMax(viewer)
             );
         } else {
             lgfx_setfog(FALSE, 0, 0, 0, 0, 0);
@@ -418,7 +418,7 @@ Mesh* _CreateSkyboxMesh() {
     AddMeshTriangle(mesh, buffer, drb, dlf, drf);
 
     /* setup material */
-    bmSetMaterialFlags(&mesh->materials[0], FLAG_CULL);
+    wzSetMaterialFlags(&mesh->materials[0], FLAG_CULL);
 
     return mesh;
 }
@@ -490,32 +490,32 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
                 tex_index = tex_name[1] - 48; /* convert ascii code to number */
                 pixmap = _CreateEmptyPixmapFromData(scene->textures[tex_index].data, lassbin_texturesize(&scene->textures[tex_index]));
                 if (pixmap) {
-                    texture = bmCreateTexture(pixmap);
-                    bmDeletePixmap(pixmap);
+                    texture = wzCreateTexture(pixmap);
+                    wzDeletePixmap(pixmap);
                 }
             } else {
                 /* load texture */
-                texture = bmLoadTexture(tex_name);
+                texture = wzLoadTexture(tex_name);
             }
             if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
-            bmSetMaterialTexture(&mesh->materials[buffer], texture);
+            wzSetMaterialTexture(&mesh->materials[buffer], texture);
         }
 
         /* apply diffuse */
         if (diffuse) {
-            bmSetMaterialDiffuse(&mesh->materials[buffer], bmGetRGBA(
+            wzSetMaterialDiffuse(&mesh->materials[buffer], wzGetRGBA(
                 (int)diffuse[0] * 255,
                 (int)diffuse[1] * 255,
                 (int)diffuse[2] * 255,
                 (int)opacity * 255
             ));
         } else {
-            bmSetMaterialDiffuse(&mesh->materials[buffer], bmGetRGBA(1, 1, 1, (int)opacity * 255));
+            wzSetMaterialDiffuse(&mesh->materials[buffer], wzGetRGBA(1, 1, 1, (int)opacity * 255));
         }
 
         /* apply emissive */
         if (emissive) {
-            bmSetMaterialEmissive(&mesh->materials[buffer], bmGetRGBA(
+            wzSetMaterialEmissive(&mesh->materials[buffer], wzGetRGBA(
                 (int)emissive[0] * 255,
                 (int)emissive[1] * 255,
                 (int)emissive[2] * 255,
@@ -525,7 +525,7 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
 
         /* apply specular */
         if (specular) {
-            bmSetMaterialSpecular(&mesh->materials[buffer], bmGetRGBA(
+            wzSetMaterialSpecular(&mesh->materials[buffer], wzGetRGBA(
                 (int)specular[0] * 255,
                 (int)specular[1] * 255,
                 (int)specular[2] * 255,
@@ -534,7 +534,7 @@ bool_t _InitAssimpMesh(const Memblock* memblock, Mesh* mesh) {
         }
 
         /* apply shininess */
-        bmSetMaterialShininess(&mesh->materials[buffer], shininess);
+        wzSetMaterialShininess(&mesh->materials[buffer], shininess);
     }
 
     lassbin_free(scene);
@@ -557,9 +557,9 @@ bool_t _InitMD2Mesh(const Memblock* memblock, Mesh* mesh) {
 
     /* load texture */
     if (mdl->header.num_skins > 0) {
-        Texture* texture = bmLoadTexture(mdl->skins[0].name);
+        Texture* texture = wzLoadTexture(mdl->skins[0].name);
         if (texture) RetainTexture(texture); /* automatically loaded textures are reference counted */
-        bmSetMaterialTexture(GetMeshMaterial(mesh, buffer), texture);
+        wzSetMaterialTexture(GetMeshMaterial(mesh, buffer), texture);
     }
 
     /* create vertices */

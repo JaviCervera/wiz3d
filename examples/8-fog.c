@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/wiz3d.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,21 +15,21 @@ int main() {
     char str[STRING_SIZE];
 
     /* Setup */
-    bmInitBeam();
-    bmSetScreen(800, 600, FALSE, TRUE);
-    bmSetScreenTitle("Fog");
+    wzInitWiz3D();
+    wzSetScreen(800, 600, FALSE, TRUE);
+    wzSetScreenTitle("Fog");
 
     /* Setup lighting */
-    dir_light = bmCreateLight(LIGHT_DIRECTIONAL);
-    bmTurnLight(dir_light, 45, 45);
+    dir_light = wzCreateLight(LIGHT_DIRECTIONAL);
+    wzTurnLight(dir_light, 45, 45);
 
     /* Create and position viewer */
-    viewer = bmCreateViewer();
-    bmSetViewerClearColor(viewer, COLOR_DARKGRAY);
-    bmSetViewerPosition(viewer, 0, 0, -7);
-    bmSetViewerDistance(viewer, 1, 5000);
-    bmSetViewerFogEnabled(viewer, TRUE);
-    bmSetViewerFogDistance(viewer, 0, 20);
+    viewer = wzCreateViewer();
+    wzSetViewerClearColor(viewer, COLOR_DARKGRAY);
+    wzSetViewerPosition(viewer, 0, 0, -7);
+    wzSetViewerDistance(viewer, 1, 5000);
+    wzSetViewerFogEnabled(viewer, TRUE);
+    wzSetViewerFogDistance(viewer, 0, 20);
 
     /* Create billboards */
     x = -7;
@@ -38,16 +38,16 @@ int main() {
         Object* cube;
 
         if (i == 0) {
-            cube = bmCreateCube();
-            bmSetMaterialDiffuse(bmGetObjectMaterial(cube, 0), COLOR_BROWN);
+            cube = wzCreateCube();
+            wzSetMaterialDiffuse(wzGetObjectMaterial(cube, 0), COLOR_BROWN);
         } else {
-            cube = bmCloneObject(cubes[0]);
+            cube = wzCloneObject(cubes[0]);
         }
-        bmSetObjectPosition(cube, x, -1.5f, z);
+        wzSetObjectPosition(cube, x, -1.5f, z);
         cubes[i] = cube;
 
-        cube = bmCloneObject(cubes[0]);
-        bmSetObjectPosition(cube, x, 1.5f, z);
+        cube = wzCloneObject(cubes[0]);
+        wzSetObjectPosition(cube, x, 1.5f, z);
         cubes[i+1] = cube;
         
         x += 2;
@@ -58,25 +58,25 @@ int main() {
     }
 
     /* Main loop */
-    while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
+    while (wzIsScreenOpened() && !wzIsKeyPressed(KEY_ESC)) {
         /* Turn objects */
         for (i = 0; i < NUM_CUBES; ++i) {
-            bmTurnObject(cubes[i], 0, ROTATION_SPEED * bmGetDeltaTime(), 0);
+            wzTurnObject(cubes[i], 0, ROTATION_SPEED * wzGetDeltaTime(), 0);
         }
 
         /* Draw scene */
-        bmPrepareViewer(viewer);
+        wzPrepareViewer(viewer);
         for (i = 0; i < NUM_CUBES; ++i) {
-            bmDrawObject(cubes[i]);
+            wzDrawObject(cubes[i]);
         }
 
         /* Draw UI */
-        sprintf(str, "%i FPS", bmGetScreenFPS());
-        bmSetup2D();
-        bmDrawText(str, 4, 4);
-        bmRefreshScreen();
+        sprintf(str, "%i FPS", wzGetScreenFPS());
+        wzSetup2D();
+        wzDrawText(str, 4, 4);
+        wzRefreshScreen();
     }
 
     /* Shutdown */
-    bmShutdownBeam();
+    wzShutdownWiz3D();
 }

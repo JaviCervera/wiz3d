@@ -1,6 +1,6 @@
 #include "../lib/litelibs/litegfx.h"
 #include "../lib/litelibs/litemath3d.h"
-#include "beam_config.h"
+#include "wiz3d_config.h"
 #include "color.h"
 #include "light.h"
 #include "util.h"
@@ -22,7 +22,7 @@ typedef struct SLight {
 static int _light_ambient;
 static Light* _lights[NUM_LIGHTS] = {};
 
-EXPORT Light* CALL bmCreateLight(int type) {
+EXPORT Light* CALL wzCreateLight(int type) {
     int i;
     Light* light;
 
@@ -50,7 +50,7 @@ EXPORT Light* CALL bmCreateLight(int type) {
     return light;
 }
 
-EXPORT void CALL bmDeleteLight(Light* light) {
+EXPORT void CALL wzDeleteLight(Light* light) {
     size_t i;
 
     /* find light index in array */
@@ -63,37 +63,37 @@ EXPORT void CALL bmDeleteLight(Light* light) {
     free(light);
 }
 
-EXPORT int CALL bmGetLightType(const Light* light) { return light->type; }
+EXPORT int CALL wzGetLightType(const Light* light) { return light->type; }
 
-EXPORT void CALL bmSetLightType(Light* light, int type) {
+EXPORT void CALL wzSetLightType(Light* light, int type) {
     light->type = _Clamp(type, LIGHT_DIRECTIONAL, LIGHT_POINT);
 }
 
-EXPORT int CALL bmGetLightColor(const Light* light) { return light->color; }
+EXPORT int CALL wzGetLightColor(const Light* light) { return light->color; }
 
-EXPORT void CALL bmSetLightColor(Light* light, int color) { light->color = color; }
+EXPORT void CALL wzSetLightColor(Light* light, int color) { light->color = color; }
 
-EXPORT bool_t CALL bmIsLightSpecularColored(const Light* light) { return light->colorSpecular; }
+EXPORT bool_t CALL wzIsLightSpecularColored(const Light* light) { return light->colorSpecular; }
 
-EXPORT void CALL bmSetLightSpecularColored(Light* light, bool_t has_color) { light->colorSpecular = _Clamp(has_color, FALSE, TRUE); }
+EXPORT void CALL wzSetLightSpecularColored(Light* light, bool_t has_color) { light->colorSpecular = _Clamp(has_color, FALSE, TRUE); }
 
-EXPORT float CALL bmGetLightLinearAttenuation(const Light* light) { return light->linearAtt; }
+EXPORT float CALL wzGetLightLinearAttenuation(const Light* light) { return light->linearAtt; }
 
-EXPORT void CALL bmSetLightLinearAttenuation(Light* light, float att) { light->linearAtt = att; }
+EXPORT void CALL wzSetLightLinearAttenuation(Light* light, float att) { light->linearAtt = att; }
 
-EXPORT float CALL bmGetLightX(const Light* light) { return light->x; }
+EXPORT float CALL wzGetLightX(const Light* light) { return light->x; }
 
-EXPORT float CALL bmGetLightY(const Light* light) { return light->y; }
+EXPORT float CALL wzGetLightY(const Light* light) { return light->y; }
 
-EXPORT float CALL bmGetLightZ(const Light* light) { return light->z; }
+EXPORT float CALL wzGetLightZ(const Light* light) { return light->z; }
 
-EXPORT void CALL bmSetLightPosition(Light* light, float x, float y, float z) {
+EXPORT void CALL wzSetLightPosition(Light* light, float x, float y, float z) {
     light->x = x;
     light->y = y;
     light->z = z;
 }
 
-EXPORT void CALL bmMoveLight(Light* light, float x, float y, float z) {
+EXPORT void CALL wzMoveLight(Light* light, float x, float y, float z) {
     lvec3_t vec;
 
     vec = lquat_mulvec3(
@@ -104,35 +104,35 @@ EXPORT void CALL bmMoveLight(Light* light, float x, float y, float z) {
     light->z += vec.z;
 }
 
-EXPORT float CALL bmGetLightPitch(const Light* light) { return light->pitch; }
+EXPORT float CALL wzGetLightPitch(const Light* light) { return light->pitch; }
 
-EXPORT float CALL bmGetLightYaw(const Light* light) { return light->yaw; }
+EXPORT float CALL wzGetLightYaw(const Light* light) { return light->yaw; }
 
-EXPORT void CALL bmSetLightRotation(Light* light, float pitch, float yaw) {
+EXPORT void CALL wzSetLightRotation(Light* light, float pitch, float yaw) {
     light->pitch = pitch;
     light->yaw = yaw;
 }
 
-EXPORT void CALL bmTurnLight(Light* light, float pitch, float yaw) {
+EXPORT void CALL wzTurnLight(Light* light, float pitch, float yaw) {
     light->pitch += pitch;
     light->yaw += yaw;
 }
 
-EXPORT void CALL bmLightLookAt(Light* light, float x, float y, float z) {
+EXPORT void CALL wzLightLookAt(Light* light, float x, float y, float z) {
     lvec3_t dir;
     dir = lvec3_norm(lvec3_sub(lvec3(x, y, z), lvec3(light->x, light->y, light->z)));
     light->pitch = lm_rad2deg((float)asin(-dir.y));
     light->yaw = lm_rad2deg((float)atan2(dir.x, dir.z));
 }
 
-EXPORT int CALL bmGetAmbientColor() { return _light_ambient; }
+EXPORT int CALL wzGetAmbientColor() { return _light_ambient; }
 
-EXPORT void CALL bmSetAmbientColor(int color) {
+EXPORT void CALL wzSetAmbientColor(int color) {
     _light_ambient = color;
     lgfx_setambient(
-        bmGetRed(color) / 255.0f,
-        bmGetGreen(color) / 255.0f,
-        bmGetBlue(color) / 255.0f);
+        wzGetRed(color) / 255.0f,
+        wzGetGreen(color) / 255.0f,
+        wzGetBlue(color) / 255.0f);
 }
 
 void _PrepareLights() {
@@ -166,9 +166,9 @@ void _PrepareLights() {
                 pos.y,
                 pos.z,
                 w,
-                bmGetRed(light->color) / 255.0f,
-                bmGetGreen(light->color) / 255.0f,
-                bmGetBlue(light->color) / 255.0f,
+                wzGetRed(light->color) / 255.0f,
+                wzGetGreen(light->color) / 255.0f,
+                wzGetBlue(light->color) / 255.0f,
                 light->colorSpecular,
                 light->linearAtt);
         }

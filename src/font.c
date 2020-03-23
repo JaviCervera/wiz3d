@@ -1,4 +1,4 @@
-#include "beam_config.h"
+#include "wiz3d_config.h"
 #ifdef USE_DEFAULT_FONT
 #include "../lib/base64/base64.h"
 #endif
@@ -81,10 +81,10 @@ Font* LoadFont(const char* filename, float height) {
     Memblock* memblock;
     Font* font = NULL;
 
-    memblock = bmLoadMemblock(filename);
+    memblock = wzLoadMemblock(filename);
     if (memblock) {
         font = CreateFontFromMemblock(memblock, height);
-        bmDeleteMemblock(memblock);
+        wzDeleteMemblock(memblock);
     }
 
     return font;
@@ -148,10 +148,10 @@ Font* _LoadBase64Font(const char* data, size_t size, float height) {
     Memblock* memblock;
     Font* font;
 
-    memblock = bmCreateMemblock(BASE64_DECODE_OUT_SIZE(size));
+    memblock = wzCreateMemblock(BASE64_DECODE_OUT_SIZE(size));
     base64_decode(data, size, (unsigned char*)memblock);
     font = CreateFontFromMemblock(memblock, height);
-    bmDeleteMemblock(memblock);
+    wzDeleteMemblock(memblock);
 
     return font;
 }

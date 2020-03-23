@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/wiz3d.h"
 #include <stdio.h>
 
 #define ROTATION_SPEED 90
@@ -13,36 +13,36 @@ int main() {
     char str[STRING_SIZE];
 
     /* Setup */
-    bmInitBeam();
-    bmSetScreen(800, 600, FALSE, TRUE);
-    bmSetScreenTitle("Lightmapping");
+    wzInitWiz3D();
+    wzSetScreen(800, 600, FALSE, TRUE);
+    wzSetScreenTitle("Lightmapping");
 
     /* Create and position viewer */
-    viewer = bmCreateViewer();
-    bmSetViewerClearColor(viewer, bmGetRGB(15, 15, 15));
-    bmSetViewerPosition(viewer, 0, 2, -2);
-    bmViewerLookAt(viewer, 0, 0, 0);
+    viewer = wzCreateViewer();
+    wzSetViewerClearColor(viewer, wzGetRGB(15, 15, 15));
+    wzSetViewerPosition(viewer, 0, 2, -2);
+    wzViewerLookAt(viewer, 0, 0, 0);
 
     /* Setup lighting */
-    bmSetAmbientColor(COLOR_BLACK);
-    dir_light = bmCreateLight(LIGHT_DIRECTIONAL);
-    bmTurnLight(dir_light, 45, -45);
+    wzSetAmbientColor(COLOR_BLACK);
+    dir_light = wzCreateLight(LIGHT_DIRECTIONAL);
+    wzTurnLight(dir_light, 45, -45);
 
     /* Create a cube */
-    cube = bmCreateCube();
-    material = bmGetObjectMaterial(cube, 0);
-    bmSetMaterialTexture(material, bmLoadTexture("data/box.png"));
-    bmSetMaterialLightmap(material, bmLoadTexture("data/lightmap.png"));
+    cube = wzCreateCube();
+    material = wzGetObjectMaterial(cube, 0);
+    wzSetMaterialTexture(material, wzLoadTexture("data/box.png"));
+    wzSetMaterialLightmap(material, wzLoadTexture("data/lightmap.png"));
 
     /* Main loop */
-    while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
+    while (wzIsScreenOpened() && !wzIsKeyPressed(KEY_ESC)) {
         /* Update lighting mode */
-        if (bmIsKeyPressed(KEY_SPACE)) {
+        if (wzIsKeyPressed(KEY_SPACE)) {
             if (!space_down) {
-                if (bmGetMaterialFlags(material) & FLAG_LIGHTING) {
-                    bmSetMaterialFlags(material, bmGetMaterialFlags(material) - FLAG_LIGHTING);
+                if (wzGetMaterialFlags(material) & FLAG_LIGHTING) {
+                    wzSetMaterialFlags(material, wzGetMaterialFlags(material) - FLAG_LIGHTING);
                 } else {
-                    bmSetMaterialFlags(material, bmGetMaterialFlags(material) + FLAG_LIGHTING);
+                    wzSetMaterialFlags(material, wzGetMaterialFlags(material) + FLAG_LIGHTING);
                 }
             }
             space_down = TRUE;
@@ -51,21 +51,21 @@ int main() {
         }
 
         /* Turn cube */
-        bmTurnObject(cube, 0, ROTATION_SPEED * bmGetDeltaTime(), 0);
+        wzTurnObject(cube, 0, ROTATION_SPEED * wzGetDeltaTime(), 0);
 
         /* Draw scene */
-        bmPrepareViewer(viewer);
-        bmDrawObject(cube);
+        wzPrepareViewer(viewer);
+        wzDrawObject(cube);
 
         /* Draw UI */
-        bmSetup2D();
-        sprintf(str, "%i FPS", bmGetScreenFPS());
-        bmDrawText(str, 4, 4);
+        wzSetup2D();
+        sprintf(str, "%i FPS", wzGetScreenFPS());
+        wzDrawText(str, 4, 4);
         sprintf(str, "Press SPACE to switch dynamic lighting");
-        bmDrawText(str, 4, 16);
-        bmRefreshScreen();
+        wzDrawText(str, 4, 16);
+        wzRefreshScreen();
     }
 
     /* Shutdown */
-    bmShutdownBeam();
+    wzShutdownWiz3D();
 }

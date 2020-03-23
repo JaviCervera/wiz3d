@@ -1,4 +1,4 @@
-#include "../../src/beam_config.h"
+#include "../../src/wiz3d_config.h"
 #ifdef USE_TINYFILEDIALOGS
 
 /*_________

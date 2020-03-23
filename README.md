@@ -1,6 +1,6 @@
-# Beam
+# Wiz3d
 
-Beam is a minimalist game engine licensed under the Zlib license. Its main features are:
+Wiz3d is a minimalist game engine licensed under the Zlib license. Its main features are:
 
 * Simple procedural API written in C.
 * OpenGL fixed pipeline graphics.
@@ -12,9 +12,9 @@ It has the goal of being easily portable to any platform. It has currently been 
 
 ### Windows
 
-You should have **Cmake** installed and added to your `PATH` to build the engine. In order to compile, just double click the `build.bat` file. The library `libbeam.dll` will be created on the `_build` folder.
+You should have **Cmake** installed and added to your `PATH` to build the engine. In order to compile, just double click the `build.bat` file. The library `libwiz3d.dll` will be created on the `_build` folder.
 
-Once built, you can drastically reduce the size of the generated `libbeam.dll` library by running `compress.exe`, which will use the UPX compressor.
+Once built, you can drastically reduce the size of the generated `libwiz3d.dll` library by running `compress.exe`, which will use the UPX compressor.
 
 To run the examples, use the `run.bat` script. You must have previously built the engine.
 
@@ -24,7 +24,7 @@ You should have **Cmake** installed to be able to build the engine. You can inst
 
 `$brew install cmake`
 
-Then, just double click from Finder on `build.command` and the library file `libbeam.dylib` will be created on the `_build` folder.
+Then, just double click from Finder on `build.command` and the library file `libwiz3d.dylib` will be created on the `_build` folder.
 
 To run the examples, use the `run.command` script. You must have previously built the engine.
 
@@ -34,11 +34,11 @@ You should have **Cmake** installed to be able to build the engine. For example,
 
 `$sudo apt install cmake`
 
-Then, from a Terminal go to the Beam folder and run the build script:
+Then, from a Terminal go to the Wiz3d folder and run the build script:
 
 `$./build.sh`
 
-The library file `libbeam.so` will be created on the `_build` folder (it is a 64 bit binary).
+The library file `libwiz3d.so` will be created on the `_build` folder (it is a 64 bit binary).
 
 To run the examples, use the `run.sh` script. You must have previously built the engine.
 

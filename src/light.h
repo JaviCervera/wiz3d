@@ -10,28 +10,28 @@
 extern "C" {
 #endif
 
-EXPORT Light* CALL bmCreateLight(int type);
-EXPORT void CALL bmDeleteLight(Light* light);
-EXPORT int CALL bmGetLightType(const Light* light);
-EXPORT void CALL bmSetLightType(Light* light, int type);
-EXPORT int CALL bmGetLightColor(const Light* light);
-EXPORT void CALL bmSetLightColor(Light* light, int color);
-EXPORT bool_t CALL bmIsLightSpecularColored(const Light* light);
-EXPORT void CALL bmSetLightSpecularColored(Light* light, bool_t has_color);
-EXPORT float CALL bmGetLightLinearAttenuation(const Light* light);
-EXPORT void CALL bmSetLightLinearAttenuation(Light* light, float att);
-EXPORT float CALL bmGetLightX(const Light* light);
-EXPORT float CALL bmGetLightY(const Light* light);
-EXPORT float CALL bmGetLightZ(const Light* light);
-EXPORT void CALL bmSetLightPosition(Light* light, float x, float y, float z);
-EXPORT void CALL bmMoveLight(Light* light, float x, float y, float z);
-EXPORT float CALL bmGetLightPitch(const Light* light);
-EXPORT float CALL bmGetLightYaw(const Light* light);
-EXPORT void CALL bmSetLightRotation(Light* light, float pitch, float yaw);
-EXPORT void CALL bmTurnLight(Light* light, float pitch, float yaw);
-EXPORT void CALL bmLightLookAt(Light* light, float x, float y, float z);
-EXPORT int CALL bmGetAmbientColor();
-EXPORT void CALL bmSetAmbientColor(int color);
+EXPORT Light* CALL wzCreateLight(int type);
+EXPORT void CALL wzDeleteLight(Light* light);
+EXPORT int CALL wzGetLightType(const Light* light);
+EXPORT void CALL wzSetLightType(Light* light, int type);
+EXPORT int CALL wzGetLightColor(const Light* light);
+EXPORT void CALL wzSetLightColor(Light* light, int color);
+EXPORT bool_t CALL wzIsLightSpecularColored(const Light* light);
+EXPORT void CALL wzSetLightSpecularColored(Light* light, bool_t has_color);
+EXPORT float CALL wzGetLightLinearAttenuation(const Light* light);
+EXPORT void CALL wzSetLightLinearAttenuation(Light* light, float att);
+EXPORT float CALL wzGetLightX(const Light* light);
+EXPORT float CALL wzGetLightY(const Light* light);
+EXPORT float CALL wzGetLightZ(const Light* light);
+EXPORT void CALL wzSetLightPosition(Light* light, float x, float y, float z);
+EXPORT void CALL wzMoveLight(Light* light, float x, float y, float z);
+EXPORT float CALL wzGetLightPitch(const Light* light);
+EXPORT float CALL wzGetLightYaw(const Light* light);
+EXPORT void CALL wzSetLightRotation(Light* light, float pitch, float yaw);
+EXPORT void CALL wzTurnLight(Light* light, float pitch, float yaw);
+EXPORT void CALL wzLightLookAt(Light* light, float x, float y, float z);
+EXPORT int CALL wzGetAmbientColor();
+EXPORT void CALL wzSetAmbientColor(int color);
 
 #ifndef SWIG
 void _PrepareLights();

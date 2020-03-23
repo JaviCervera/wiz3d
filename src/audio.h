@@ -1,7 +1,7 @@
 #ifndef AUDIO_H_INCLUDED
 #define AUDIO_H_INCLUDED
 
-#include "beam_config.h"
+#include "wiz3d_config.h"
 #include "types.h"
 
 #ifndef PLATFORM_NULL
@@ -11,35 +11,35 @@ extern "C" {
 #endif
 
 /* Music */
-EXPORT bool_t CALL bmPlayMusic(const char* filename, bool_t loop);
-EXPORT void CALL bmPauseMusic();
-EXPORT void CALL bmResumeMusic();
-EXPORT void CALL bmStopMusic();
-EXPORT void CALL bmSetMusicVolume(float volume);
-EXPORT bool_t CALL bmIsMusicPlaying();
+EXPORT bool_t CALL wzPlayMusic(const char* filename, bool_t loop);
+EXPORT void CALL wzPauseMusic();
+EXPORT void CALL wzResumeMusic();
+EXPORT void CALL wzStopMusic();
+EXPORT void CALL wzSetMusicVolume(float volume);
+EXPORT bool_t CALL wzIsMusicPlaying();
 
 /* Sound */
-EXPORT void* CALL bmLoadSound(const char* filename);
-EXPORT void CALL bmDeleteSound(void* sound);
-EXPORT void* CALL bmPlaySound(void* sound, bool_t loop);
+EXPORT void* CALL wzLoadSound(const char* filename);
+EXPORT void CALL wzDeleteSound(void* sound);
+EXPORT void* CALL wzPlaySound(void* sound, bool_t loop);
 
 /* Listener */
-EXPORT void CALL bmPositionListener(float x, float y, float z);
-EXPORT float CALL bmGetListenerX();
-EXPORT float CALL bmGetListenerY();
-EXPORT float CALL bmGetListenerZ();
-EXPORT void CALL bmRotateListener(float yaw);
-EXPORT float CALL bmGetListenerYaw();
+EXPORT void CALL wzPositionListener(float x, float y, float z);
+EXPORT float CALL wzGetListenerX();
+EXPORT float CALL wzGetListenerY();
+EXPORT float CALL wzGetListenerZ();
+EXPORT void CALL wzRotateListener(float yaw);
+EXPORT float CALL wzGetListenerYaw();
 
 /* Channel */
-EXPORT void CALL bmPauseChannel(void* channel);
-EXPORT void CALL bmResumeChannel(void* channel);
-EXPORT void CALL bmStopChannel(void* channel);
-EXPORT void CALL bmPositionChannel(void* channel, float x, float y, float z, float radius);
-EXPORT void CALL bmSetChannelVolume(void* channel, float volume);
-EXPORT void CALL bmSetChannelPan(void* channel, float pan);
-EXPORT void CALL bmSetChannelPitch(void* channel, float pitch);
-EXPORT bool_t CALL bmIsChannelPlaying(void* channel);
+EXPORT void CALL wzPauseChannel(void* channel);
+EXPORT void CALL wzResumeChannel(void* channel);
+EXPORT void CALL wzStopChannel(void* channel);
+EXPORT void CALL wzPositionChannel(void* channel, float x, float y, float z, float radius);
+EXPORT void CALL wzSetChannelVolume(void* channel, float volume);
+EXPORT void CALL wzSetChannelPan(void* channel, float pan);
+EXPORT void CALL wzSetChannelPitch(void* channel, float pitch);
+EXPORT bool_t CALL wzIsChannelPlaying(void* channel);
 
 #ifdef __cplusplus
 } /* extern "C" */

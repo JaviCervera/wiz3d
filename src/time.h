@@ -7,9 +7,9 @@
 extern "C" {
 #endif
 
-EXPORT void CALL bmUpdateTimer();
+EXPORT void CALL wzUpdateTimer();
 
-EXPORT float CALL bmGetDeltaTime();
+EXPORT float CALL wzGetDeltaTime();
 
 #ifdef __cplusplus
 } /* extern "C" */

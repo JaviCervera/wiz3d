@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/wiz3d.h"
 #include "../src/util.h"
 #include <stdio.h>
 
@@ -11,45 +11,45 @@ int main() {
     char str[STRING_SIZE];
 
     /* Setup */
-    bmInitBeam();
-    bmSetScreen(800, 600, FALSE, TRUE);
-    bmSetScreenTitle("Specular");
+    wzInitWiz3D();
+    wzSetScreen(800, 600, FALSE, TRUE);
+    wzSetScreenTitle("Specular");
 
     /* Create and position viewer */
-    viewer = bmCreateViewer();
-    bmSetViewerClearColor(viewer, COLOR_DARKGRAY);
-    bmSetViewerPosition(viewer, 0, 0, -6);
+    viewer = wzCreateViewer();
+    wzSetViewerClearColor(viewer, COLOR_DARKGRAY);
+    wzSetViewerPosition(viewer, 0, 0, -6);
 
     /* Setup lighting */
-    dir_light = bmCreateLight(LIGHT_DIRECTIONAL);
-    bmTurnLight(dir_light, 30, 20);
+    dir_light = wzCreateLight(LIGHT_DIRECTIONAL);
+    wzTurnLight(dir_light, 30, 20);
 
     /* Create a cube */
-    cube = bmCreateCube();
-    mat = bmGetObjectMaterial(cube, 0);
-    bmTurnObject(cube, 45, 45, 0);
-    bmSetMaterialDiffuse(mat, COLOR_ORANGE);
-    bmSetMaterialShininess(mat, 0);
+    cube = wzCreateCube();
+    mat = wzGetObjectMaterial(cube, 0);
+    wzTurnObject(cube, 45, 45, 0);
+    wzSetMaterialDiffuse(mat, COLOR_ORANGE);
+    wzSetMaterialShininess(mat, 0);
 
     /* Main loop */
-    while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
+    while (wzIsScreenOpened() && !wzIsKeyPressed(KEY_ESC)) {
         /* Update shininess */
-        if (bmIsKeyPressed(KEY_LEFT)) bmSetMaterialShininess(mat, _Clamp(bmGetMaterialShininess(mat) - 0.2f * bmGetDeltaTime(), 0, 1));
-        if (bmIsKeyPressed(KEY_RIGHT)) bmSetMaterialShininess(mat, _Clamp(bmGetMaterialShininess(mat) + 0.2f * bmGetDeltaTime(), 0, 1));
+        if (wzIsKeyPressed(KEY_LEFT)) wzSetMaterialShininess(mat, _Clamp(wzGetMaterialShininess(mat) - 0.2f * wzGetDeltaTime(), 0, 1));
+        if (wzIsKeyPressed(KEY_RIGHT)) wzSetMaterialShininess(mat, _Clamp(wzGetMaterialShininess(mat) + 0.2f * wzGetDeltaTime(), 0, 1));
 
         /* Draw scene */
-        bmPrepareViewer(viewer);
-        bmDrawObject(cube);
+        wzPrepareViewer(viewer);
+        wzDrawObject(cube);
 
         /* Draw ui */
-        bmSetup2D();
-        sprintf(str, "%i FPS", bmGetScreenFPS());
-        bmDrawText(str, 4, 4);
-        sprintf(str, "Shininess: %f (LEFT and RIGHT to change)", bmGetMaterialShininess(mat));
-        bmDrawText(str, 4, 16);
-        bmRefreshScreen();
+        wzSetup2D();
+        sprintf(str, "%i FPS", wzGetScreenFPS());
+        wzDrawText(str, 4, 4);
+        sprintf(str, "Shininess: %f (LEFT and RIGHT to change)", wzGetMaterialShininess(mat));
+        wzDrawText(str, 4, 16);
+        wzRefreshScreen();
     }
 
     /* Shutdown */
-    bmShutdownBeam();
+    wzShutdownWiz3D();
 }

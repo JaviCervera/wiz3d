@@ -1,5 +1,5 @@
-#ifndef BEAM_H_INCLUDED
-#define BEAM_H_INCLUDED
+#ifndef WIZ3D_H_INCLUDED
+#define WIZ3D_H_INCLUDED
 
 #include "audio.h"
 #include "colbox.h"
@@ -22,13 +22,13 @@
 extern "C" {
 #endif
 
-EXPORT bool_t CALL bmInitBeam();
-EXPORT void CALL bmShutdownBeam();
-EXPORT bool_t CALL bmIsMultitexturingSupported();
-EXPORT bool_t CALL bmIsMipmappingSupported();
+EXPORT bool_t CALL wzInitWiz3D();
+EXPORT void CALL wzShutdownWiz3D();
+EXPORT bool_t CALL wzIsMultitexturingSupported();
+EXPORT bool_t CALL wzIsMipmappingSupported();
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
-#endif /* BEAM_H_INCLUDED */
+#endif /* WIZ3D_H_INCLUDED */

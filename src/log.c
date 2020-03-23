@@ -9,7 +9,7 @@ static char _log_filename[STRING_SIZE] = "";
 
 static void _InitLog();
 
-EXPORT void CALL bmLogInfo(const char* msg) {
+EXPORT void CALL wzLogInfo(const char* msg) {
     _InitLog();
     printf("[INFO] %s\n", msg);
     if (strcmp(_log_filename, "") != 0) WriteString("[INFO] ", _log_filename, TRUE);
@@ -17,7 +17,7 @@ EXPORT void CALL bmLogInfo(const char* msg) {
     if (strcmp(_log_filename, "") != 0) WriteString("\r\n", _log_filename, TRUE);
 }
 
-EXPORT void CALL bmLogWarning(const char* msg) {
+EXPORT void CALL wzLogWarning(const char* msg) {
     _InitLog();
     printf("[WARNING] %s\n", msg);
     if (strcmp(_log_filename, "") != 0) WriteString("[WARNING] ", _log_filename, TRUE);
@@ -25,7 +25,7 @@ EXPORT void CALL bmLogWarning(const char* msg) {
     if (strcmp(_log_filename, "") != 0) WriteString("\r\n", _log_filename, TRUE);
 }
 
-EXPORT void CALL bmLogError(const char* msg) {
+EXPORT void CALL wzLogError(const char* msg) {
     _InitLog();
     printf("[ERROR] %s\n", msg);
     if (strcmp(_log_filename, "") != 0) WriteString("[ERROR] ", _log_filename, TRUE);

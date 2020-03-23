@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/wiz3d.h"
 
 #define ROTATION_SPEED 32
 #define TEXT "Hover Bike by Ptis is licensed under CC Attribution-NonCommercial"
@@ -12,53 +12,53 @@ int main() {
     Material* mat1;
 
     /* Setup */
-    bmInitBeam();
-    bmSetScreen(800, 600, FALSE, TRUE);
-    bmSetScreenTitle("Hoverbike");
+    wzInitWiz3D();
+    wzSetScreen(800, 600, FALSE, TRUE);
+    wzSetScreenTitle("Hoverbike");
 
     /* Create and position viewer */
-    viewer = bmCreateViewer();
-    bmSetViewerClearMode(viewer, CLEAR_SKYBOX);
-    bmSetViewerSkybox(viewer, bmLoadTexture("data/skybox.png"));
-    bmSetViewerPosition(viewer, 0, 4, -8);
-    bmSetViewerRotation(viewer, 20, 0, 0);
+    viewer = wzCreateViewer();
+    wzSetViewerClearMode(viewer, CLEAR_SKYBOX);
+    wzSetViewerSkybox(viewer, wzLoadTexture("data/skybox.png"));
+    wzSetViewerPosition(viewer, 0, 4, -8);
+    wzSetViewerRotation(viewer, 20, 0, 0);
 
     /* Setup lighting */
-    dir_light = bmCreateLight(LIGHT_DIRECTIONAL);
-    bmSetLightSpecularColored(dir_light, FALSE);
-    bmTurnLight(dir_light, 45, -45);
+    dir_light = wzCreateLight(LIGHT_DIRECTIONAL);
+    wzSetLightSpecularColored(dir_light, FALSE);
+    wzTurnLight(dir_light, 45, -45);
 
     /* Load hoverbike */
-    hoverbike = bmLoadObject("data/hoverbike.assbin");
-    bmSetObjectScale(hoverbike, 0.025f, 0.025f, 0.025f);
-    mat0 = bmGetObjectMaterial(hoverbike, 0);
-    mat1 = bmGetObjectMaterial(hoverbike, 1);
-    bmSetMaterialTexture(mat0, bmLoadTexture("data/bike.png"));
-    bmSetMaterialDiffuse(mat0, COLOR_WHITE);
-    bmSetMaterialSpecular(mat0, COLOR_WHITE);
-    bmSetMaterialShininess(mat0, 0.95f);
-    bmSetMaterialTexture(mat1, bmLoadTexture("data/glass.png"));
-    bmSetMaterialDiffuse(mat1, COLOR_WHITE);
-    bmSetMaterialSpecular(mat1, COLOR_WHITE);
-    bmSetMaterialShininess(mat1, 0.99f);
-    bmSetMaterialBlend(mat1, BLEND_ALPHA);
+    hoverbike = wzLoadObject("data/hoverbike.assbin");
+    wzSetObjectScale(hoverbike, 0.025f, 0.025f, 0.025f);
+    mat0 = wzGetObjectMaterial(hoverbike, 0);
+    mat1 = wzGetObjectMaterial(hoverbike, 1);
+    wzSetMaterialTexture(mat0, wzLoadTexture("data/bike.png"));
+    wzSetMaterialDiffuse(mat0, COLOR_WHITE);
+    wzSetMaterialSpecular(mat0, COLOR_WHITE);
+    wzSetMaterialShininess(mat0, 0.95f);
+    wzSetMaterialTexture(mat1, wzLoadTexture("data/glass.png"));
+    wzSetMaterialDiffuse(mat1, COLOR_WHITE);
+    wzSetMaterialSpecular(mat1, COLOR_WHITE);
+    wzSetMaterialShininess(mat1, 0.99f);
+    wzSetMaterialBlend(mat1, BLEND_ALPHA);
 
     /* Main loop */
-    while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
+    while (wzIsScreenOpened() && !wzIsKeyPressed(KEY_ESC)) {
         /* Turn hoverbike */
-        bmTurnObject(hoverbike, 0, ROTATION_SPEED * bmGetDeltaTime(), 0);
+        wzTurnObject(hoverbike, 0, ROTATION_SPEED * wzGetDeltaTime(), 0);
 
         /* Draw scene */
-        bmPrepareViewer(viewer);
-        bmDrawObject(hoverbike);
+        wzPrepareViewer(viewer);
+        wzDrawObject(hoverbike);
 
         /* Draw UI */
-        bmSetup2D();
-        bmSetDrawColor(bmGetRGB(240, 240, 240));
-        bmDrawText(TEXT, (bmGetScreenWidth() - bmGetTextWidth(TEXT)) / 2, 8);
-        bmRefreshScreen();
+        wzSetup2D();
+        wzSetDrawColor(wzGetRGB(240, 240, 240));
+        wzDrawText(TEXT, (wzGetScreenWidth() - wzGetTextWidth(TEXT)) / 2, 8);
+        wzRefreshScreen();
     }
 
     /* Shutdown */
-    bmShutdownBeam();
+    wzShutdownWiz3D();
 }

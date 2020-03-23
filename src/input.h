@@ -1,7 +1,7 @@
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
 
-#include "beam_config.h"
+#include "wiz3d_config.h"
 #include "types.h"
 
 #ifndef PLATFORM_NULL
@@ -24,12 +24,12 @@ extern "C" {
 #include "input_glfw.h"
 #include "input_sdl.h"
 
-EXPORT void CALL bmSetCursorVisible(bool_t visible);
-EXPORT void CALL bmSetCursorPosition(int x, int y);
-EXPORT int CALL bmGetCursorX();
-EXPORT int CALL bmGetCursorY();
-EXPORT bool_t CALL bmIsCursorPressed(int b);
-EXPORT bool_t CALL bmIsKeyPressed(int k);
+EXPORT void CALL wzSetCursorVisible(bool_t visible);
+EXPORT void CALL wzSetCursorPosition(int x, int y);
+EXPORT int CALL wzGetCursorX();
+EXPORT int CALL wzGetCursorY();
+EXPORT bool_t CALL wzIsCursorPressed(int b);
+EXPORT bool_t CALL wzIsKeyPressed(int k);
 
 #ifdef __cplusplus
 } /* extern "C" */

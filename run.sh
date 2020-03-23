@@ -3,19 +3,19 @@ cd `dirname $0`
 
 echo "building examples..."
 cd examples
-gcc -o 1-helloworld 1-helloworld.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 2-primitives 2-primitives.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 3-texture2d 3-texture2d.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 4-triangle 4-triangle.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 5-lightmap 5-lightmap.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 6-billboards 6-billboards.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 7-lighting 7-lighting.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 8-fog 8-fog.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 9-collisions 9-collisions.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 10-specular 10-specular.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 11-md2 11-md2.c -DPLATFORM_GLFW -L../_build -lbeam
-gcc -o 12-angel 12-angel.c -DPLATFORM_GLFW -L../_build -lbeam -lm
-gcc -o 13-hoverbike 13-hoverbike.c -DPLATFORM_GLFW -L../_build -lbeam
+gcc -o 1-helloworld 1-helloworld.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 2-primitives 2-primitives.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 3-texture2d 3-texture2d.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 4-triangle 4-triangle.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 5-lightmap 5-lightmap.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 6-billboards 6-billboards.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 7-lighting 7-lighting.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 8-fog 8-fog.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 9-collisions 9-collisions.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 10-specular 10-specular.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 11-md2 11-md2.c -DPLATFORM_GLFW -L../_build -lwiz3d
+gcc -o 12-angel 12-angel.c -DPLATFORM_GLFW -L../_build -lwiz3d -lm
+gcc -o 13-hoverbike 13-hoverbike.c -DPLATFORM_GLFW -L../_build -lwiz3d
 
 echo "running examples..."
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../_build

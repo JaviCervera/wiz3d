@@ -44,7 +44,7 @@ void _SetObjectMaterials(Object* object) {
         sizeof(Material) * GetNumMeshBuffers(object->_mesh));
 }
 
-EXPORT Object* CALL bmCreateObject(const Memblock* memblock) {
+EXPORT Object* CALL wzCreateObject(const Memblock* memblock) {
     Mesh* mesh;
     Object* object;
 
@@ -70,17 +70,17 @@ EXPORT Object* CALL bmCreateObject(const Memblock* memblock) {
     object->animmax = 0;
     object->_mesh = mesh;
     object->_materials = NULL;
-    bmRebuildObjectMesh(object);
+    wzRebuildObjectMesh(object);
     _SetObjectMaterials(object);
     return object;
 }
 
-EXPORT Object* CALL bmCreateCube() {
+EXPORT Object* CALL wzCreateCube() {
     Object* object;
     Mesh* mesh;
     int buffer;
 
-    object = bmCreateObject(NULL);
+    object = wzCreateObject(NULL);
     mesh = object->_mesh;
     buffer = AddMeshBuffer(mesh);
 
@@ -132,17 +132,17 @@ EXPORT Object* CALL bmCreateCube() {
     AddMeshTriangle(mesh, buffer, 20, 21, 22);
     AddMeshTriangle(mesh, buffer, 20, 22, 23);
 
-    bmRebuildObjectMesh(object);
+    wzRebuildObjectMesh(object);
     _SetObjectMaterials(object);
     return object;
 }
 
-EXPORT Object* CALL bmCreateQuad() {
+EXPORT Object* CALL wzCreateQuad() {
     Object* object;
     Mesh* mesh;
     int buffer;
 
-    object = bmCreateObject(NULL);
+    object = wzCreateObject(NULL);
     mesh = object->_mesh;
     buffer = AddMeshBuffer(mesh);
 
@@ -154,18 +154,18 @@ EXPORT Object* CALL bmCreateQuad() {
     AddMeshTriangle(mesh, buffer, 0, 2, 3);
 
     /* set object materials */
-    bmRebuildObjectMesh(object);
+    wzRebuildObjectMesh(object);
     _SetObjectMaterials(object);
 
     return object;
 }
 
-EXPORT Object* CALL bmCreateTriangle() {
+EXPORT Object* CALL wzCreateTriangle() {
     Object* object;
     Mesh* mesh;
     int buffer;
 
-    object = bmCreateObject(NULL);
+    object = wzCreateObject(NULL);
     mesh = object->_mesh;
     buffer = AddMeshBuffer(mesh);
 
@@ -174,26 +174,26 @@ EXPORT Object* CALL bmCreateTriangle() {
     AddMeshVertex(mesh, buffer, -0.5f, -0.5f, 0, 0, 0, -1, 0, 0, COLOR_WHITE);
     AddMeshTriangle(mesh, buffer, 0, 1, 2);
 
-    bmRebuildObjectMesh(object);
+    wzRebuildObjectMesh(object);
     _SetObjectMaterials(object);
     return object;
 }
 
-EXPORT Object* CALL bmLoadObject(const char* filename) {
+EXPORT Object* CALL wzLoadObject(const char* filename) {
     Memblock* memblock;
     Object* object = NULL;
 
-    memblock = bmLoadMemblock(filename);
+    memblock = wzLoadMemblock(filename);
     if (memblock) {
-        object = bmCreateObject(memblock);
-        bmDeleteMemblock(memblock);
+        object = wzCreateObject(memblock);
+        wzDeleteMemblock(memblock);
     }
 
     return object;
 }
 
-EXPORT Object* CALL bmCloneObject(const Object* object) {
-    Object* new_object = bmCreateObject(NULL);
+EXPORT Object* CALL wzCloneObject(const Object* object) {
+    Object* new_object = wzCreateObject(NULL);
     new_object->x = object->x;
     new_object->y = object->y;
     new_object->z = object->z;
@@ -210,24 +210,24 @@ EXPORT Object* CALL bmCloneObject(const Object* object) {
     return new_object;
 }
 
-EXPORT void CALL bmDeleteObject(Object* object) {
+EXPORT void CALL wzDeleteObject(Object* object) {
     ReleaseMesh(object->_mesh);
     free(object);
 }
 
-EXPORT float CALL bmGetObjectX(const Object* object) { return object->x; }
+EXPORT float CALL wzGetObjectX(const Object* object) { return object->x; }
 
-EXPORT float CALL bmGetObjectY(const Object* object) { return object->y; }
+EXPORT float CALL wzGetObjectY(const Object* object) { return object->y; }
 
-EXPORT float CALL bmGetObjectZ(const Object* object) { return object->z; }
+EXPORT float CALL wzGetObjectZ(const Object* object) { return object->z; }
 
-EXPORT void CALL bmSetObjectPosition(Object* object, float x, float y, float z) {
+EXPORT void CALL wzSetObjectPosition(Object* object, float x, float y, float z) {
     object->x = x;
     object->y = y;
     object->z = z;
 }
 
-EXPORT bool_t CALL bmMoveObject(Object* object, float x, float y, float z) {
+EXPORT bool_t CALL wzMoveObject(Object* object, float x, float y, float z) {
     lvec3_t vec;
     bool_t collided = FALSE;
 
@@ -236,21 +236,21 @@ EXPORT bool_t CALL bmMoveObject(Object* object, float x, float y, float z) {
 
     /* move x and check collision boxes */
     object->x += vec.x;
-    if (bmObjectCollidesBoxes(object)) {
+    if (wzObjectCollidesBoxes(object)) {
         collided = TRUE;
         object->x -= vec.x;
     }
 
     /* move y and check collision boxes */
     object->y += vec.y;
-    if (bmObjectCollidesBoxes(object)) {
+    if (wzObjectCollidesBoxes(object)) {
         collided = TRUE;
         object->y -= vec.y;
     }
 
     /* move z and check collision boxes */
     object->z += vec.z;
-    if (bmObjectCollidesBoxes(object)) {
+    if (wzObjectCollidesBoxes(object)) {
         collided = TRUE;
         object->z -= vec.z;
     }
@@ -258,19 +258,19 @@ EXPORT bool_t CALL bmMoveObject(Object* object, float x, float y, float z) {
     return collided;
 }
 
-EXPORT float CALL bmGetObjectPitch(const Object* object) { return object->pitch; }
+EXPORT float CALL wzGetObjectPitch(const Object* object) { return object->pitch; }
 
-EXPORT float CALL bmGetObjectYaw(const Object* object) { return object->yaw; }
+EXPORT float CALL wzGetObjectYaw(const Object* object) { return object->yaw; }
 
-EXPORT float CALL bmGetObjectRoll(const Object* object) { return object->roll; }
+EXPORT float CALL wzGetObjectRoll(const Object* object) { return object->roll; }
 
-EXPORT void CALL bmSetObjectRotation(Object* object, float pitch, float yaw, float roll) {
+EXPORT void CALL wzSetObjectRotation(Object* object, float pitch, float yaw, float roll) {
     object->pitch = pitch;
     object->yaw = yaw;
     object->roll = roll;
 }
 
-EXPORT void CALL bmTurnObject(Object* object, float pitch, float yaw, float roll) {
+EXPORT void CALL wzTurnObject(Object* object, float pitch, float yaw, float roll) {
     lvec3_t vec;
 
     vec = lvec3_add(lvec3(object->pitch, object->yaw, object->roll), lvec3(pitch, yaw, roll));
@@ -279,65 +279,65 @@ EXPORT void CALL bmTurnObject(Object* object, float pitch, float yaw, float roll
     object->roll = vec.z;
 }
 
-EXPORT void CALL bmObjectLookAt(Object* object, float x, float y, float z) {
+EXPORT void CALL wzObjectLookAt(Object* object, float x, float y, float z) {
     lvec3_t dir;
     dir = lvec3_norm(lvec3_sub(lvec3(object->x, object->y, object->z), lvec3(x, y, z)));
     object->pitch = lm_rad2deg((float)asin(-dir.y));
     object->yaw = lm_rad2deg((float)atan2(dir.x, dir.z));
 }
 
-EXPORT float CALL bmGetObjectScaleX(const Object* object) { return object->sx; }
+EXPORT float CALL wzGetObjectScaleX(const Object* object) { return object->sx; }
 
-EXPORT float CALL bmGetObjectScaleY(const Object* object) { return object->sy; }
+EXPORT float CALL wzGetObjectScaleY(const Object* object) { return object->sy; }
 
-EXPORT float CALL bmGetObjectScaleZ(const Object* object) { return object->sz; }
+EXPORT float CALL wzGetObjectScaleZ(const Object* object) { return object->sz; }
 
-EXPORT float CALL bmGetObjectWidth(const Object* object) { return GetMeshWidth(object->_mesh) * object->sx; }
+EXPORT float CALL wzGetObjectWidth(const Object* object) { return GetMeshWidth(object->_mesh) * object->sx; }
 
-EXPORT float CALL bmGetObjectHeight(const Object* object) { return GetMeshHeight(object->_mesh) * object->sy; }
+EXPORT float CALL wzGetObjectHeight(const Object* object) { return GetMeshHeight(object->_mesh) * object->sy; }
 
-EXPORT float CALL bmGetObjectDepth(const Object* object) { return GetMeshDepth(object->_mesh) * object->sz; }
+EXPORT float CALL wzGetObjectDepth(const Object* object) { return GetMeshDepth(object->_mesh) * object->sz; }
 
-EXPORT float CALL bmGetObjectMinX(const Object* object) { return object->x + GetMeshBoxMinX(object->_mesh) * object->sx; }
+EXPORT float CALL wzGetObjectMinX(const Object* object) { return object->x + GetMeshBoxMinX(object->_mesh) * object->sx; }
 
-EXPORT float CALL bmGetObjectMinY(const Object* object) { return object->y + GetMeshBoxMinY(object->_mesh) * object->sy; }
+EXPORT float CALL wzGetObjectMinY(const Object* object) { return object->y + GetMeshBoxMinY(object->_mesh) * object->sy; }
 
-EXPORT float CALL bmGetObjectMinZ(const Object* object) { return object->z + GetMeshBoxMinZ(object->_mesh) * object->sz; }
+EXPORT float CALL wzGetObjectMinZ(const Object* object) { return object->z + GetMeshBoxMinZ(object->_mesh) * object->sz; }
 
-EXPORT float CALL bmGetObjectMaxX(const Object* object) { return object->x + GetMeshBoxMaxX(object->_mesh) * object->sx; }
+EXPORT float CALL wzGetObjectMaxX(const Object* object) { return object->x + GetMeshBoxMaxX(object->_mesh) * object->sx; }
 
-EXPORT float CALL bmGetObjectMaxY(const Object* object) { return object->y + GetMeshBoxMaxY(object->_mesh) * object->sy; }
+EXPORT float CALL wzGetObjectMaxY(const Object* object) { return object->y + GetMeshBoxMaxY(object->_mesh) * object->sy; }
 
-EXPORT float CALL bmGetObjectMaxZ(const Object* object) { return object->z + GetMeshBoxMaxZ(object->_mesh) * object->sz; }
+EXPORT float CALL wzGetObjectMaxZ(const Object* object) { return object->z + GetMeshBoxMaxZ(object->_mesh) * object->sz; }
 
-EXPORT void CALL bmSetObjectScale(Object* object, float sx, float sy, float sz) {
+EXPORT void CALL wzSetObjectScale(Object* object, float sx, float sy, float sz) {
     object->sx = sx;
     object->sy = sy;
     object->sz = sz;
 }
 
-EXPORT int CALL bmGetObjectCollision(const Object* object) { return object->colmode; }
+EXPORT int CALL wzGetObjectCollision(const Object* object) { return object->colmode; }
 
-EXPORT void CALL bmSetObjectCollision(Object* object, int mode) { object->colmode = _Clamp(mode, COL_NONE, COL_BOX); }
+EXPORT void CALL wzSetObjectCollision(Object* object, int mode) { object->colmode = _Clamp(mode, COL_NONE, COL_BOX); }
 
-EXPORT float CALL bmGetObjectRadius(const Object* object) { return object->radius; }
+EXPORT float CALL wzGetObjectRadius(const Object* object) { return object->radius; }
 
-EXPORT void CALL bmSetObjectRadius(Object* object, float radius) { object->radius = radius; }
+EXPORT void CALL wzSetObjectRadius(Object* object, float radius) { object->radius = radius; }
 
-EXPORT bool_t CALL bmObjectCollidesBoxes(Object* object) {
+EXPORT bool_t CALL wzObjectCollidesBoxes(Object* object) {
     if (object->colmode == COL_SPHERE) {
         return _CheckSphereCol(object->x, object->y, object->z, object->radius * object->radius);
     } else if (object->colmode == COL_BOX) {
         return _CheckBoxCol(
-            bmGetObjectMinX(object), bmGetObjectMinY(object), bmGetObjectMinZ(object),
-            bmGetObjectMaxX(object), bmGetObjectMaxY(object), bmGetObjectMaxZ(object)
+            wzGetObjectMinX(object), wzGetObjectMinY(object), wzGetObjectMinZ(object),
+            wzGetObjectMaxX(object), wzGetObjectMaxY(object), wzGetObjectMaxZ(object)
         );
     } else {
         return FALSE;
     }
 }
 
-EXPORT bool_t CALL bmObjectCollidesObject(Object* object, Object* object2) {
+EXPORT bool_t CALL wzObjectCollidesObject(Object* object, Object* object2) {
     if (object != object2 && object->colmode != COL_NONE && object2->colmode != COL_NONE) {
         if (object->colmode == COL_SPHERE && object2->colmode == COL_SPHERE) {
             return lcol_spheresphere(
@@ -346,22 +346,22 @@ EXPORT bool_t CALL bmObjectCollidesObject(Object* object, Object* object2) {
             ) == 1;
         } else if (object->colmode == COL_SPHERE && object2->colmode == COL_BOX) {
             return lcol_boxsphere(
-                bmGetObjectMinX(object2), bmGetObjectMinY(object2), bmGetObjectMinZ(object2),
-                bmGetObjectMaxX(object2), bmGetObjectMaxY(object2), bmGetObjectMaxZ(object2),
+                wzGetObjectMinX(object2), wzGetObjectMinY(object2), wzGetObjectMinZ(object2),
+                wzGetObjectMaxX(object2), wzGetObjectMaxY(object2), wzGetObjectMaxZ(object2),
                 object->x, object->y, object->z, object->radius * object->radius
             ) == 1;
         } else if (object->colmode == COL_BOX && object2->colmode == COL_SPHERE) {
             return lcol_boxsphere(
-                bmGetObjectMinX(object), bmGetObjectMinY(object), bmGetObjectMinZ(object),
-                bmGetObjectMaxX(object), bmGetObjectMaxY(object), bmGetObjectMaxZ(object),
+                wzGetObjectMinX(object), wzGetObjectMinY(object), wzGetObjectMinZ(object),
+                wzGetObjectMaxX(object), wzGetObjectMaxY(object), wzGetObjectMaxZ(object),
                 object2->x, object2->y, object2->z, object2->radius * object2->radius
             ) == 1;
         } else if (object->colmode == COL_BOX && object2->colmode == COL_BOX) {
             return lcol_boxbox(
-                bmGetObjectMinX(object), bmGetObjectMinY(object), bmGetObjectMinZ(object),
-                bmGetObjectMaxX(object), bmGetObjectMaxY(object), bmGetObjectMaxZ(object),
-                bmGetObjectMinX(object2), bmGetObjectMinY(object2), bmGetObjectMinZ(object2),
-                bmGetObjectMaxX(object2), bmGetObjectMaxY(object2), bmGetObjectMaxZ(object2)
+                wzGetObjectMinX(object), wzGetObjectMinY(object), wzGetObjectMinZ(object),
+                wzGetObjectMaxX(object), wzGetObjectMaxY(object), wzGetObjectMaxZ(object),
+                wzGetObjectMinX(object2), wzGetObjectMinY(object2), wzGetObjectMinZ(object2),
+                wzGetObjectMaxX(object2), wzGetObjectMaxY(object2), wzGetObjectMaxZ(object2)
             ) == 1;
         } else {
             return FALSE; /* should not get here */
@@ -371,56 +371,56 @@ EXPORT bool_t CALL bmObjectCollidesObject(Object* object, Object* object2) {
     }
 }
 
-EXPORT int CALL bmGetObjectAnimMode(const Object* object) { return object->animmode; }
+EXPORT int CALL wzGetObjectAnimMode(const Object* object) { return object->animmode; }
 
-EXPORT void CALL bmSetObjectAnimMode(Object* object, int mode) { object->animmode = _Clamp(mode, ANIM_STOP, ANIM_LOOP); }
+EXPORT void CALL wzSetObjectAnimMode(Object* object, int mode) { object->animmode = _Clamp(mode, ANIM_STOP, ANIM_LOOP); }
 
-EXPORT float CALL bmGetObjectAnimSpeed(const Object* object) { return object->animspeed; }
+EXPORT float CALL wzGetObjectAnimSpeed(const Object* object) { return object->animspeed; }
 
-EXPORT void CALL bmSetObjectAnimSpeed(Object* object, float speed) { object->animspeed = speed; }
+EXPORT void CALL wzSetObjectAnimSpeed(Object* object, float speed) { object->animspeed = speed; }
 
-EXPORT int CALL bmGetObjectFrame(const Object* object) { return object->animframe; }
+EXPORT int CALL wzGetObjectFrame(const Object* object) { return object->animframe; }
 
-EXPORT void CALL bmSetObjectFrame(Object* object, int frame) { object->animframe = frame; }
+EXPORT void CALL wzSetObjectFrame(Object* object, int frame) { object->animframe = frame; }
 
-EXPORT int CALL bmGetObjectMinFrame(const Object* object) { return object->animmin; }
+EXPORT int CALL wzGetObjectMinFrame(const Object* object) { return object->animmin; }
 
-EXPORT int CALL bmGetObjectMaxFrame(const Object* object) { return object->animmax; }
+EXPORT int CALL wzGetObjectMaxFrame(const Object* object) { return object->animmax; }
 
-EXPORT void CALL bmSetObjectAnimRange(Object* object, int min, int max) {
+EXPORT void CALL wzSetObjectAnimRange(Object* object, int min, int max) {
     object->animmin = min;
     object->animmax = max;
 }
 
-EXPORT int CALL bmGetObjectNumFrames(const Object* object) { return _GetMeshLastFrame(object->_mesh); }
+EXPORT int CALL wzGetObjectNumFrames(const Object* object) { return _GetMeshLastFrame(object->_mesh); }
 
-EXPORT int CALL bmAddSurface(Object* object) {
+EXPORT int CALL wzAddSurface(Object* object) {
     int buffer = AddMeshBuffer(object->_mesh);
     sb_add(object->_materials, 1);
     return buffer;
 }
 
-EXPORT int CALL bmGetNumSurfaces(Object* object) { return GetNumMeshBuffers(object->_mesh); }
+EXPORT int CALL wzGetNumSurfaces(Object* object) { return GetNumMeshBuffers(object->_mesh); }
 
-EXPORT int CALL bmAddVertex(Object* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color) {
+EXPORT int CALL wzAddVertex(Object* object, int buffer, float x, float y, float z, float nx, float ny, float nz, float u, float v, int color) {
     return AddMeshVertex(object->_mesh, buffer, x, y, z, nx, ny, nz, u, v, color);
 }
 
-EXPORT int CALL bmAddTriangle(Object* object, int buffer, int v0, int v1, int v2) {
+EXPORT int CALL wzAddTriangle(Object* object, int buffer, int v0, int v1, int v2) {
     return AddMeshTriangle(object->_mesh, buffer, v0, v1, v2);
 }
 
-EXPORT void CALL bmRebuildObjectMesh(Object* object) { RebuildMesh(object->_mesh); }
+EXPORT void CALL wzRebuildObjectMesh(Object* object) { RebuildMesh(object->_mesh); }
 
-EXPORT Material* CALL bmGetObjectMaterial(Object* object, int index) { return &object->_materials[index]; }
+EXPORT Material* CALL wzGetObjectMaterial(Object* object, int index) { return &object->_materials[index]; }
 
-EXPORT void CALL bmDrawObject(Object* object) {
+EXPORT void CALL wzDrawObject(Object* object) {
     lmat4_t modelview;
 
     /* calculate animation */
     if (object->animmode != ANIM_STOP) {
         int lastframe = (object->animmax != 0) ? object->animmax : _GetMeshLastFrame(object->_mesh);
-        object->animframe += object->animspeed * _object_animfps * bmGetDeltaTime();
+        object->animframe += object->animspeed * _object_animfps * wzGetDeltaTime();
         if (object->animframe > lastframe) {
             if (object->animmode == ANIM_LOOP) object->animframe -= (lastframe - object->animmin);
             else object->animframe = lastframe;
@@ -449,6 +449,6 @@ EXPORT void CALL bmDrawObject(Object* object) {
     _DrawMesh(object->_mesh, object->_materials);
 }
 
-EXPORT float CALL bmGetDefaultAnimFPS() { return _object_animfps; }
+EXPORT float CALL wzGetDefaultAnimFPS() { return _object_animfps; }
 
-EXPORT void CALL bmSetDefaultAnimFPS(float fps) { _object_animfps = fps; }
+EXPORT void CALL wzSetDefaultAnimFPS(float fps) { _object_animfps = fps; }

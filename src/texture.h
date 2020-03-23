@@ -11,20 +11,20 @@
 extern "C" {
 #endif
 
-EXPORT Texture* CALL bmCreateTexture(const Pixmap* pixmap);
-EXPORT Texture* CALL bmCreateEmptyTexture(int width, int height);
-EXPORT Texture* CALL bmLoadTexture(const char* filename);
+EXPORT Texture* CALL wzCreateTexture(const Pixmap* pixmap);
+EXPORT Texture* CALL wzCreateEmptyTexture(int width, int height);
+EXPORT Texture* CALL wzLoadTexture(const char* filename);
 #ifndef SWIG
 void RetainTexture(Texture* texture);
 void ReleaseTexture(Texture* texture);
 #endif
-EXPORT void CALL bmDeleteTexture(Texture* texture);
-EXPORT int CALL bmGetTextureWidth(const Texture* texture);
-EXPORT int CALL bmGetTextureHeight(const Texture* texture);
-EXPORT void CALL bmSetTexturePixels(Texture* texture, const Pixmap* pixmap);
+EXPORT void CALL wzDeleteTexture(Texture* texture);
+EXPORT int CALL wzGetTextureWidth(const Texture* texture);
+EXPORT int CALL wzGetTextureHeight(const Texture* texture);
+EXPORT void CALL wzSetTexturePixels(Texture* texture, const Pixmap* pixmap);
 
-EXPORT int CALL bmGetTextureFilter();
-EXPORT void CALL bmSetTextureFilter(int filter);
+EXPORT int CALL wzGetTextureFilter();
+EXPORT void CALL wzSetTextureFilter(int filter);
 
 #ifndef SWIG
 const void* _GetTexturePtr(const Texture* texture);

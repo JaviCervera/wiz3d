@@ -1,4 +1,4 @@
-#include "../src/beam.h"
+#include "../src/wiz3d.h"
 #include <stdio.h>
 
 int main() {
@@ -10,47 +10,47 @@ int main() {
     char str[STRING_SIZE];
 
     /* Setup */
-    bmInitBeam();
-    bmSetScreen(800, 600, FALSE, TRUE);
-    bmSetScreenTitle("MD2 Animation");
+    wzInitWiz3D();
+    wzSetScreen(800, 600, FALSE, TRUE);
+    wzSetScreenTitle("MD2 Animation");
 
     /* Create and position viewer */
-    viewer = bmCreateViewer();
-    bmSetViewerClearColor(viewer, COLOR_DARKGRAY);
-    bmSetViewerPosition(viewer, 0, 2, -4);
-    bmSetViewerRotation(viewer, 15, 0, 0);
+    viewer = wzCreateViewer();
+    wzSetViewerClearColor(viewer, COLOR_DARKGRAY);
+    wzSetViewerPosition(viewer, 0, 2, -4);
+    wzSetViewerRotation(viewer, 15, 0, 0);
 
     /* Load MD2 */
-    md2 = bmLoadObject("data/german.md2");
-    bmSetObjectAnimMode(md2, ANIM_LOOP);
-    bmTurnObject(md2, 0, 90, 0);
-    bmSetMaterialTexture(bmGetObjectMaterial(md2, 0), bmLoadTexture("data/german.png")); /* This shouldn't be necessary */
+    md2 = wzLoadObject("data/german.md2");
+    wzSetObjectAnimMode(md2, ANIM_LOOP);
+    wzTurnObject(md2, 0, 90, 0);
+    wzSetMaterialTexture(wzGetObjectMaterial(md2, 0), wzLoadTexture("data/german.png")); /* This shouldn't be necessary */
 
     /* Main loop */
-    while (bmIsScreenOpened() && !bmIsKeyPressed(KEY_ESC)) {
+    while (wzIsScreenOpened() && !wzIsKeyPressed(KEY_ESC)) {
         /* Update animation */
-        if (bmIsKeyPressed(KEY_SPACE)) {
+        if (wzIsKeyPressed(KEY_SPACE)) {
             if (!space_down) walking = !walking;
             space_down = TRUE;
         } else {
             space_down = FALSE;
         }
-        if (walking) bmSetObjectAnimRange(md2, 31, 0); /* 51 */
-        else bmSetObjectAnimRange(md2, 0, 25);
+        if (walking) wzSetObjectAnimRange(md2, 31, 0); /* 51 */
+        else wzSetObjectAnimRange(md2, 0, 25);
 
         /* Draw scene */
-        bmPrepareViewer(viewer);
-        bmDrawObject(md2);
+        wzPrepareViewer(viewer);
+        wzDrawObject(md2);
 
         /* Draw UI */
-        bmSetup2D();
-        sprintf(str, "%i FPS", bmGetScreenFPS());
-        bmDrawText(str, 4, 4);
-        sprintf(str, "Frame: %i", bmGetObjectFrame(md2));
-        bmDrawText(str, 4, 16);
-        bmRefreshScreen();
+        wzSetup2D();
+        sprintf(str, "%i FPS", wzGetScreenFPS());
+        wzDrawText(str, 4, 4);
+        sprintf(str, "Frame: %i", wzGetObjectFrame(md2));
+        wzDrawText(str, 4, 16);
+        wzRefreshScreen();
     }
 
     /* Shutdown */
-    bmShutdownBeam();
+    wzShutdownWiz3D();
 }

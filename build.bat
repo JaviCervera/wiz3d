@@ -26,14 +26,14 @@ cmake -G "MinGW Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel -D
 mingw32-make
 cd ../..
 
-echo [**building beam**]
+echo [**building wiz3d**]
 cd _CMAKE
 cmake -G "MinGW Makefiles" -DCMAKE_C_FLAGS=-m32 -DCMAKE_BUILD_TYPE=MinSizeRel -DPLATFORM_GLFW=ON ..
 mingw32-make
 cd ..
 
-echo [**moving beam to _build dir**]
+echo [**moving wiz3d to _build dir**]
 mkdir _build
-move "_CMAKE\libbeam.dll" "_build"
+move "_CMAKE\libwiz3d.dll" "_build"
 
 pause

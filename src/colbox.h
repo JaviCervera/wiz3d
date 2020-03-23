@@ -7,8 +7,8 @@
 extern "C" {
 #endif
 
-EXPORT void CALL bmAddColbox(float minx, float miny, float minz, float maxx, float maxy, float maxz);
-EXPORT void CALL bmClearColboxes();
+EXPORT void CALL wzAddColbox(float minx, float miny, float minz, float maxx, float maxy, float maxz);
+EXPORT void CALL wzClearColboxes();
 
 #ifndef SWIG
 bool_t _CheckBoxCol(float minx, float miny, float minz, float maxx, float maxy, float maxz);

@@ -1,7 +1,7 @@
 #ifndef SCREEN_H_INCLUDED
 #define SCREEN_H_INCLUDED
 
-#include "beam_config.h"
+#include "wiz3d_config.h"
 #include "types.h"
 
 #ifndef PLATFORM_NULL
@@ -10,16 +10,16 @@
 extern "C" {
 #endif
 
-EXPORT void CALL bmSetScreen(int width, int height, bool_t fullscreen, bool_t resizable);
-EXPORT void CALL bmRefreshScreen();
-EXPORT void CALL bmSetScreenTitle(const char* title);
-EXPORT int CALL bmGetScreenWidth();
-EXPORT int CALL bmGetScreenHeight();
-EXPORT int CALL bmGetScreenFPS();
-EXPORT bool_t CALL bmIsScreenOpened();
+EXPORT void CALL wzSetScreen(int width, int height, bool_t fullscreen, bool_t resizable);
+EXPORT void CALL wzRefreshScreen();
+EXPORT void CALL wzSetScreenTitle(const char* title);
+EXPORT int CALL wzGetScreenWidth();
+EXPORT int CALL wzGetScreenHeight();
+EXPORT int CALL wzGetScreenFPS();
+EXPORT bool_t CALL wzIsScreenOpened();
 
-EXPORT int CALL bmGetDesktopWidth();
-EXPORT int CALL bmGetDesktopHeight();
+EXPORT int CALL wzGetDesktopWidth();
+EXPORT int CALL wzGetDesktopHeight();
 
 #ifndef SWIG
 void* _GetScreenPtr();

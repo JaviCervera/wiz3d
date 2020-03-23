@@ -25,15 +25,15 @@ cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=
 make
 cd ../..
 
-echo "[**building beam**]"
+echo "[**building wiz3d**]"
 cd _CMAKE
 cmake -G "Unix Makefiles" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.9 -DCMAKE_BUILD_TYPE=MinSizeRel -DPLATFORM_GLFW=ON ..
 make
-install_name_tool -id libbeam.dylib libbeam.dylib
+install_name_tool -id libwiz3d.dylib libwiz3d.dylib
 cd ..
 
-echo "[**moving beam to _build dir**]"
+echo "[**moving wiz3d to _build dir**]"
 mkdir _build
-mv _CMAKE/libbeam.dylib _build/libbeam.dylib
+mv _CMAKE/libwiz3d.dylib _build/libwiz3d.dylib
 
 echo "done."

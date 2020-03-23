@@ -18,22 +18,22 @@
 extern "C" {
 #endif
 
-EXPORT Texture* CALL bmGetMaterialTexture(const Material* material);
-EXPORT void CALL bmSetMaterialTexture(Material* material, Texture* texture);
-EXPORT Texture* CALL bmGetMaterialLightmap(const Material* material);
-EXPORT void CALL bmSetMaterialLightmap(Material* material, Texture* lightmap);
-EXPORT int CALL bmGetMaterialDiffuse(const Material* material);
-EXPORT void CALL bmSetMaterialDiffuse(Material* material, int color);
-EXPORT int CALL bmGetMaterialEmissive(const Material* material);
-EXPORT void CALL bmSetMaterialEmissive(Material* material, int color);
-EXPORT int CALL bmGetMaterialSpecular(const Material* material);
-EXPORT void CALL bmSetMaterialSpecular(Material* material, int color);
-EXPORT float CALL bmGetMaterialShininess(const Material* material);
-EXPORT void CALL bmSetMaterialShininess(Material* material, float shininess);
-EXPORT int CALL bmGetMaterialBlend(const Material* material);
-EXPORT void CALL bmSetMaterialBlend(Material* material, int blend);
-EXPORT int CALL bmGetMaterialFlags(const Material* material);
-EXPORT void CALL bmSetMaterialFlags(Material* material, int flags);
+EXPORT Texture* CALL wzGetMaterialTexture(const Material* material);
+EXPORT void CALL wzSetMaterialTexture(Material* material, Texture* texture);
+EXPORT Texture* CALL wzGetMaterialLightmap(const Material* material);
+EXPORT void CALL wzSetMaterialLightmap(Material* material, Texture* lightmap);
+EXPORT int CALL wzGetMaterialDiffuse(const Material* material);
+EXPORT void CALL wzSetMaterialDiffuse(Material* material, int color);
+EXPORT int CALL wzGetMaterialEmissive(const Material* material);
+EXPORT void CALL wzSetMaterialEmissive(Material* material, int color);
+EXPORT int CALL wzGetMaterialSpecular(const Material* material);
+EXPORT void CALL wzSetMaterialSpecular(Material* material, int color);
+EXPORT float CALL wzGetMaterialShininess(const Material* material);
+EXPORT void CALL wzSetMaterialShininess(Material* material, float shininess);
+EXPORT int CALL wzGetMaterialBlend(const Material* material);
+EXPORT void CALL wzSetMaterialBlend(Material* material, int blend);
+EXPORT int CALL wzGetMaterialFlags(const Material* material);
+EXPORT void CALL wzSetMaterialFlags(Material* material, int flags);
 
 #ifndef SWIG
 void _InitMaterial(Material* material);
