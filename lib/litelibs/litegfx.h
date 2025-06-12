@@ -135,6 +135,7 @@ void lvert_drawindexed(const lvert_t* vertices, const unsigned short* indices, u
 #include <GL/gl.h>
 #include <GL/glext.h>
 #endif
+#define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
 #endif
 
